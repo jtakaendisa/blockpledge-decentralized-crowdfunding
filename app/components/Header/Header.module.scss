@@ -1,0 +1,45 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem;
+  color: rgb(116, 116, 116);
+  box-shadow: 0 0.5rem 1rem rgba(116, 116, 116, 0.25);
+  transition: color 0.2s;
+
+  &:hover {
+    color: rgb(53, 53, 53);
+  }
+
+  .home {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: large;
+    text-decoration: none;
+    color: rgb(116, 116, 116);
+    transition: color 0.2s;
+
+    &:hover {
+      color: rgb(53, 53, 53);
+    }
+  }
+
+  .wallet {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.625rem 1.5rem;
+    background-color: rgb(83, 167, 83);
+    color: white;
+    font-weight: 300;
+    font-size: smaller;
+    text-transform: uppercase;
+    border-radius: 50px;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: rgb(67, 136, 67);
+    }
+  }
+}
