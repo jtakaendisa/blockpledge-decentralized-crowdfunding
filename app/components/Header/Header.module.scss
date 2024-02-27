@@ -1,14 +1,24 @@
+$light-green: rgb(83, 167, 83);
+$dark-green: rgb(67, 136, 67);
+$light-gray: rgb(116, 116, 116);
+$dark-gray: rgb(53, 53, 53);
+
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   padding: 1.25rem;
-  color: rgb(116, 116, 116);
-  box-shadow: 0 0.5rem 1rem rgba(116, 116, 116, 0.25);
+  color: $light-gray;
+  background-color: white;
+  box-shadow: 0 0.5rem 1rem rgba(53, 53, 53, 0.25);
   transition: color 0.2s;
 
   &:hover {
-    color: rgb(53, 53, 53);
+    color: $dark-gray;
   }
 
   .home {
@@ -17,29 +27,28 @@
     gap: 0.2rem;
     font-size: large;
     text-decoration: none;
-    color: rgb(116, 116, 116);
+    color: $light-gray;
     transition: color 0.2s;
 
     &:hover {
-      color: rgb(53, 53, 53);
+      color: $dark-gray;
     }
   }
 
-  .wallet {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0.625rem 1.5rem;
-    background-color: rgb(83, 167, 83);
-    color: white;
+  .button {
+    font-size: 0.8125rem;
     font-weight: 300;
-    font-size: smaller;
     text-transform: uppercase;
+    background-color: $light-green;
+    color: white;
+    padding: 0.625rem 1.5rem;
+    border: none;
     border-radius: 50px;
+    cursor: pointer;
     transition: background-color 0.2s;
 
     &:hover {
-      background-color: rgb(67, 136, 67);
+      background-color: $dark-green;
     }
   }
 }

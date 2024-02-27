@@ -10,9 +10,7 @@ const Header = () => {
         <TbBusinessplan />
         <span>Genesis</span>
       </Link>
-      <div className={styles.wallet}>
-        <span>Connect Wallet</span>
-      </div>
+      <div className={styles.button}>Connect Wallet</div>
     </header>
   );
 };
