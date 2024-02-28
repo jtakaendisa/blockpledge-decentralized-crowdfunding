@@ -31,34 +31,6 @@ $dark-gray: rgb(53, 53, 53);
     align-items: center;
     width: fit-content;
     gap: 1rem;
-
-    .button {
-      font-weight: 100;
-      text-transform: uppercase;
-      background-color: $light-green;
-      color: white;
-      padding: 0.625rem 1.5rem;
-      border: 1px solid $light-green;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: background-color 0.2s;
-
-      &:hover {
-        background-color: $dark-green;
-      }
-    }
-
-    .inverse {
-      background-color: transparent;
-      color: $light-green;
-      transition: all 0.2s;
-
-      &:hover {
-        color: white;
-        background-color: $dark-green;
-        border-color: $dark-green;
-      }
-    }
   }
 
   .stats {

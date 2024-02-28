@@ -34,21 +34,4 @@ $dark-gray: rgb(53, 53, 53);
       color: $dark-gray;
     }
   }
-
-  .button {
-    font-size: 0.8125rem;
-    font-weight: 300;
-    text-transform: uppercase;
-    background-color: $light-green;
-    color: white;
-    padding: 0.625rem 1.5rem;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-
-    &:hover {
-      background-color: $dark-green;
-    }
-  }
 }

@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import Button from '../Button/Button';
 
 import styles from './Hero.module.scss';
 
@@ -11,10 +11,8 @@ const Hero = () => {
         <span>Genesis.</span>
       </h1>
       <div className={styles.buttons}>
-        <button className={styles.button}>Add Project</button>
-        <button className={classNames(styles.button, styles.inverse)}>
-          Back Projects
-        </button>
+        <Button>Add Project</Button>
+        <Button inverted>Back Projects</Button>
       </div>
       <div className={styles.stats}>
         <div className={styles.stat}>

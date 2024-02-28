@@ -1,0 +1,77 @@
+.mainContainer {
+  display: flex;
+  gap: 1rem;
+
+  .image {
+    flex: 33.33%;
+    width: 33.33%;
+    height: 24rem;
+    border-radius: 16px;
+    overflow: hidden;
+
+    & > img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .info {
+    flex: 66.66%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    & > h5 {
+      color: rgb(53, 53, 53);
+      font-size: 1rem;
+    }
+
+    & > small {
+      color: rgb(116, 116, 116);
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+      color: rgb(116, 116, 116);
+
+      .backings {
+        display: flex;
+        gap: 0.5rem;
+
+        & > small:first-of-type {
+          color: rgb(53, 53, 53);
+          font-weight: 500;
+        }
+      }
+
+      .etherTarget {
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .progressOut {
+      background-color: rgba(116, 116, 116, 0.25);
+      height: 0.25rem;
+      border-radius: 50px;
+      margin-top: 0.5rem;
+
+      .progressIn {
+        background-color: rgb(83, 167, 83);
+        height: 100%;
+        border-radius: 50px;
+      }
+    }
+  }
+}

@@ -4,15 +4,14 @@ import Projects from './components/Projects/Projects';
 
 import styles from './page.module.scss';
 
-export default function Home() {
+const HomePage = () => {
   return (
-    <div className={styles.home}>
+    <div className={styles.homePage}>
       <Header />
       <Hero />
       <Projects />
-      <div>
-        <button></button>
-      </div>
     </div>
   );
-}
+};
+
+export default HomePage;
