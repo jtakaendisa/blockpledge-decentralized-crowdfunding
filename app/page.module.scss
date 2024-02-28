@@ -4,4 +4,8 @@
   & > section {
     margin-top: 6rem;
   }
+
+  & > section:nth-child(2) {
+    margin-top: 9rem;
+  }
 }

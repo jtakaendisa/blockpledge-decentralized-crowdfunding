@@ -10,6 +10,9 @@ export default function Home() {
       <Header />
       <Hero />
       <Projects />
+      <div>
+        <button></button>
+      </div>
     </div>
   );
 }
