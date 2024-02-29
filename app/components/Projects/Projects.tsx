@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import Identicon from 'react-identicons';
+import Identicon from 'react-hooks-identicons';
 
 import Button from '../Button/Button';
 import ProgressBar from '../ProgressBar/ProgressBar';

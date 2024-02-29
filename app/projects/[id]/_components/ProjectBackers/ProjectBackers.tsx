@@ -1,9 +1,9 @@
 'use client';
 
-import Identicon from 'react-identicons';
+import { FaEthereum } from 'react-icons/fa';
+import Identicon from 'react-hooks-identicons';
 
 import styles from './ProjectBackers.module.scss';
-import { FaEthereum } from 'react-icons/fa';
 
 const ProjectBackers = () => {
   return (
@@ -12,7 +12,7 @@ const ProjectBackers = () => {
         <thead>
           <tr>
             <th>Backer</th>
-            <th>Donations</th>
+            <th>Donation</th>
             <th>Time</th>
             <th>Refunded</th>
           </tr>

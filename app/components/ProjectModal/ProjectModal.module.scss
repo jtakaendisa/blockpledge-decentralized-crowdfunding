@@ -1,0 +1,88 @@
+.backdrop {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  .modal {
+    background-color: white;
+    padding: 1.5rem;
+    width: 85%;
+    border-radius: 16px;
+
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        & > p {
+          font-weight: 600;
+        }
+
+        .close {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: transparent;
+          border: none;
+          cursor: pointer;
+        }
+      }
+
+      .image {
+        align-self: center;
+        width: 5rem;
+        height: 5rem;
+        margin: 0.5rem 0;
+        border-radius: 8px;
+        overflow: hidden;
+
+        & > img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+
+      .warning {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+
+        & > span {
+          font-size: 0.9rem;
+          color: rgb(170, 46, 40);
+        }
+      }
+    }
+
+    .input {
+      background-color: rgba(116, 116, 116, 0.25);
+      height: 2rem;
+      padding: 0 1rem;
+      border: none;
+      border-radius: 12px;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .textArea {
+      height: 5rem;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+  }
+}

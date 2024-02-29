@@ -4,12 +4,13 @@ import classNames from 'classnames';
 import styles from './Button.module.scss';
 
 interface Props {
-  color?: string;
+  color?: 'green' | 'gray' | 'red' | 'orange';
   inverted?: boolean;
   children: ReactNode;
+  onClick?: () => void;
 }
 
-const Button = ({ color = 'green', inverted, children }: Props) => {
+const Button = ({ color = 'green', inverted, children, onClick }: Props) => {
   return (
     <button
       className={classNames({
@@ -17,6 +18,7 @@ const Button = ({ color = 'green', inverted, children }: Props) => {
         [styles[color]]: color,
         [styles.inverted]: inverted,
       })}
+      onClick={onClick}
     >
       {children}
     </button>

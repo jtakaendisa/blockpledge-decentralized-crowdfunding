@@ -1,8 +1,15 @@
+'use client';
+
+import useModalStore from '@/app/store';
 import Button from '../Button/Button';
+import ProjectModal from '../ProjectModal/ProjectModal';
 
 import styles from './Hero.module.scss';
 
 const Hero = () => {
+  const addIsOpen = useModalStore((s) => s.addIsOpen);
+  const openModal = useModalStore((s) => s.setIsOpen);
+
   return (
     <section className={styles.hero}>
       <h1 className={styles.heading}>
@@ -11,7 +18,7 @@ const Hero = () => {
         <span>Genesis.</span>
       </h1>
       <div className={styles.buttons}>
-        <Button>Add Project</Button>
+        <Button onClick={() => openModal('add')}>Add Project</Button>
         <Button inverted>Back Projects</Button>
       </div>
       <div className={styles.stats}>
@@ -28,6 +35,7 @@ const Hero = () => {
           <span>Donated</span>
         </div>
       </div>
+      {addIsOpen && <ProjectModal variant="add" />}
     </section>
   );
 };

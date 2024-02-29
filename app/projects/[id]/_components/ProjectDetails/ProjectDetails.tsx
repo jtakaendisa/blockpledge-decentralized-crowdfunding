@@ -1,16 +1,23 @@
 'use client';
 
 import Image from 'next/image';
-import Identicon from 'react-identicons';
+import Identicon from 'react-hooks-identicons';
 import { FaEthereum } from 'react-icons/fa';
 
 import ProgressBar from '@/app/components/ProgressBar/ProgressBar';
 import Button from '@/app/components/Button/Button';
+import ProjectModal from '@/app/components/ProjectModal/ProjectModal';
 import robot from '@/public/images/robot.jpg';
 
 import styles from './ProjectDetails.module.scss';
+import useModalStore from '@/app/store';
 
 const ProjectDetails = () => {
+  const backIsOpen = useModalStore((s) => s.backIsOpen);
+  const editIsOpen = useModalStore((s) => s.editIsOpen);
+  const deleteIsOpen = useModalStore((s) => s.deleteIsOpen);
+  const setIsOpen = useModalStore((s) => s.setIsOpen);
+
   return (
     <section className={styles.mainContainer}>
       <div className={styles.image}>
@@ -42,12 +49,19 @@ const ProjectDetails = () => {
           </div>
         </div>
         <div className={styles.buttons}>
-          <Button>Back Project</Button>
-          <Button color="gray">Edit</Button>
-          <Button color="red">Delete</Button>
+          <Button onClick={() => setIsOpen('back')}>Back Project</Button>
+          <Button color="gray" onClick={() => setIsOpen('edit')}>
+            Edit
+          </Button>
+          <Button color="red" onClick={() => setIsOpen('delete')}>
+            Delete
+          </Button>
           <Button color="orange">Payout</Button>
         </div>
       </div>
+      {backIsOpen && <ProjectModal variant="back" />}
+      {editIsOpen && <ProjectModal variant="edit" />}
+      {deleteIsOpen && <ProjectModal variant="delete" />}
     </section>
   );
 };
