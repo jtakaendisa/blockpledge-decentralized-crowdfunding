@@ -12,7 +12,7 @@ import styles from './ProjectDetails.module.scss';
 
 const ProjectDetails = () => {
   return (
-    <div className={styles.mainContainer}>
+    <section className={styles.mainContainer}>
       <div className={styles.image}>
         <Image src={robot} alt="robot" />
       </div>
@@ -48,7 +48,7 @@ const ProjectDetails = () => {
           <Button color="orange">Payout</Button>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
