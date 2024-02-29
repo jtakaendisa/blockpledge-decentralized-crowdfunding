@@ -8,7 +8,7 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <Link href="/" className={styles.home}>
-        <span>Genesis</span>
+        <span>BlockPledge</span>
         <TbBusinessplan />
       </Link>
       <Button>Connect Wallet</Button>

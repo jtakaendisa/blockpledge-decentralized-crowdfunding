@@ -35,8 +35,8 @@ const ProjectCard = ({ card }: any) => {
         <div className={styles.info}>
           <h5>Creating a Household Robot</h5>
           <div className={styles.ownerDetails}>
-            <Identicon string="0x15...1ea2" size={15} />
-            <small>0x15...1ea2</small>
+            <Identicon string={`0x15...1ea${card}`} size={15} />
+            <small>0x15...1ea{card}</small>
           </div>
           <small className={styles.remainingTime}>2 days left</small>
           <ProgressBar progress={50} />

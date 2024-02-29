@@ -15,7 +15,7 @@ const Hero = () => {
       <h1 className={styles.heading}>
         <span>Bring creative projects to life on</span>
         <br />
-        <span>Genesis.</span>
+        <span>BlockPledge.</span>
       </h1>
       <div className={styles.buttons}>
         <Button onClick={() => openModal('add')}>Add Project</Button>
