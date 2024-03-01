@@ -1,21 +1,39 @@
-const { ethers } = require('hardhat');
+const hre = require('hardhat');
 const fs = require('fs');
 
 async function main() {
   const taxFee = 5;
-  const Contract = await ethers.getContractFactory('BlockPledge');
-  const contract = await Contract.deploy(taxFee);
+  const contract = await hre.ethers.deployContract('BlockPledge', [taxFee]);
 
-  await contract.deployed();
+  await contract.waitForDeployment();
 
-  const address = JSON.stringify({ address: contract.address }, null, 4);
-  fs.writeFile('../app/abis/contractAddress.json', address, 'utf8', (err: Error) => {
-    if (err) {
-      console.error(err);
-      return;
+  // Write contract address to contractAddress.json
+  fs.writeFile(
+    './app/abis/contractAddress.json',
+    contract.target,
+    'utf8',
+    (err: Error) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
     }
-    console.log('Deployed contract address', contract.address);
-  });
+  );
+
+  // Write contract ABI to BlockPledge.json
+  // fs.writeFile(
+  //   './app/abis/BlockPledge.json',
+  //   JSON.stringify(contract.interface, null, 2),
+  //   'utf8',
+  //   (err: Error) => {
+  //     if (err) {
+  //       console.error(err);
+  //       return;
+  //     }
+  //   }
+  // );
+
+  console.log(`Smart Contract deployed at address ${contract.target}`);
 }
 
 main().catch((error) => {

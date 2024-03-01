@@ -25,7 +25,7 @@ contract BlockPledge {
         REVERTED,
         DELETED,
         PAIDOUT
-    }
+    } 
 
     // Structs
     struct StatsStruct {
