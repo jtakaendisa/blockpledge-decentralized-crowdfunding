@@ -10,6 +10,11 @@ interface ModalStore {
   setIsOpen: (variant: ModalVariant) => void;
 }
 
+interface AccountStore {
+  connectedAccount: string;
+  setConnectedAccount: (account: string) => void;
+}
+
 const variantMap = {
   add: 'addIsOpen',
   back: 'backIsOpen',
@@ -23,7 +28,12 @@ const useModalStore = create<ModalStore>((set) => ({
   editIsOpen: false,
   deleteIsOpen: false,
   setIsOpen: (variant) =>
-    set((store) => ({ [variantMap[variant]]: !store[variantMap[variant]] })),
+    set((state) => ({ [variantMap[variant]]: !state[variantMap[variant]] })),
 }));
 
-export default useModalStore;
+const useAccountStore = create<AccountStore>((set) => ({
+  connectedAccount: '',
+  setConnectedAccount: (account) => set(() => ({ connectedAccount: account })),
+}));
+
+export { useModalStore, useAccountStore };

@@ -1,6 +1,6 @@
 'use client';
 
-import useModalStore from '@/app/store';
+import { useModalStore } from '@/app/store';
 import Button from '../Button/Button';
 import ProjectModal from '../ProjectModal/ProjectModal';
 

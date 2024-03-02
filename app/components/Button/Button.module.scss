@@ -20,6 +20,10 @@ $dark-orange: rgb(185, 83, 35);
   &:hover {
     background-color: $dark-green;
   }
+
+  &:disabled {
+    cursor: auto;
+  }
 }
 
 .green {

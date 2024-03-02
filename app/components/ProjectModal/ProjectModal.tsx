@@ -2,9 +2,9 @@ import Image from 'next/image';
 import classNames from 'classnames';
 import { FaTimes } from 'react-icons/fa';
 
-import robot from '@/public/images/robot.jpg';
+import { ModalVariant, useModalStore } from '@/app/store';
 import Button from '../Button/Button';
-import useModalStore, { ModalVariant } from '@/app/store';
+import robot from '@/public/images/robot.jpg';
 
 import styles from './ProjectModal.module.scss';
 

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.24;
 
 /**
  * @title BlockPledge
@@ -25,7 +25,7 @@ contract BlockPledge {
         REVERTED,
         DELETED,
         PAIDOUT
-    } 
+    }
 
     // Structs
     struct StatsStruct {
@@ -318,11 +318,9 @@ contract BlockPledge {
      * @param _id ID of the project.
      * @return ProjectStruct Project details.
      */
-    function getProject(uint256 _id)
-        public
-        view
-        returns (ProjectStruct memory)
-    {
+    function getProject(
+        uint256 _id
+    ) public view returns (ProjectStruct memory) {
         require(projectExists[_id], "Project not found");
         return projects[_id];
     }
@@ -340,11 +338,9 @@ contract BlockPledge {
      * @param _id ID of the project.
      * @return BackerStruct[] Array of backers.
      */
-    function getBackers(uint256 _id)
-        public
-        view
-        returns (BackerStruct[] memory)
-    {
+    function getBackers(
+        uint256 _id
+    ) public view returns (BackerStruct[] memory) {
         return backersOf[_id];
     }
 }

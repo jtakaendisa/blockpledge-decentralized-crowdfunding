@@ -8,30 +8,14 @@ async function main() {
   await contract.waitForDeployment();
 
   // Write contract address to contractAddress.json
-  fs.writeFile(
-    './app/abis/contractAddress.json',
-    contract.target,
-    'utf8',
-    (err: Error) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-    }
-  );
+  const address = JSON.stringify({ address: contract.target }, null, 4);
 
-  // Write contract ABI to BlockPledge.json
-  // fs.writeFile(
-  //   './app/abis/BlockPledge.json',
-  //   JSON.stringify(contract.interface, null, 2),
-  //   'utf8',
-  //   (err: Error) => {
-  //     if (err) {
-  //       console.error(err);
-  //       return;
-  //     }
-  //   }
-  // );
+  fs.writeFile('./app/abis/contractAddress.json', address, 'utf8', (err: Error) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+  });
 
   console.log(`Smart Contract deployed at address ${contract.target}`);
 }

@@ -4,13 +4,13 @@ import Image from 'next/image';
 import Identicon from 'react-hooks-identicons';
 import { FaEthereum } from 'react-icons/fa';
 
+import { useModalStore } from '@/app/store';
 import ProgressBar from '@/app/components/ProgressBar/ProgressBar';
 import Button from '@/app/components/Button/Button';
 import ProjectModal from '@/app/components/ProjectModal/ProjectModal';
 import robot from '@/public/images/robot.jpg';
 
 import styles from './ProjectDetails.module.scss';
-import useModalStore from '@/app/store';
 
 const ProjectDetails = () => {
   const backIsOpen = useModalStore((s) => s.backIsOpen);
