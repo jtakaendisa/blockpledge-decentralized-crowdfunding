@@ -4,14 +4,14 @@ import Link from 'next/link';
 import { TbBusinessplan } from 'react-icons/tb';
 
 import { useAccountStore } from '@/app/store';
-import useBlockChain from '@/app/hooks/useBlockChain';
+import useBlockchain from '@/app/hooks/useBlockchain';
 import Button from '../Button/Button';
 
 import styles from './Header.module.scss';
 import { useEffect } from 'react';
 
 const Header = () => {
-  const { connectWallet, checkConnection } = useBlockChain();
+  const { connectWallet, checkConnection } = useBlockchain();
   const connectedAccount = useAccountStore((s) => s.connectedAccount);
 
   useEffect(() => {
