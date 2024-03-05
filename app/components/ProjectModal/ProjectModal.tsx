@@ -1,9 +1,14 @@
+'use client';
+
+import { useEffect } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import { FaTimes } from 'react-icons/fa';
 
 import { ModalVariant, useModalStore } from '@/app/store';
+import useBlockchain from '@/app/hooks/useBlockchain';
 import Button from '../Button/Button';
 import robot from '@/public/images/robot.jpg';
 
@@ -13,25 +18,42 @@ interface Props {
   variant: ModalVariant;
 }
 
-interface AddFormInputs {
+export interface AddFormInputs {
   title: string;
-  amount: number;
-  date: Date;
+  cost: string;
+  expiresAt: Date | string | number;
   imageURL: string;
   description: string;
 }
 
-const CreateProject = ({ variant }: Props) => {
+const ProjectModal = ({ variant }: Props) => {
   const closeModal = useModalStore((s) => s.setIsOpen);
+  const { createProject } = useBlockchain();
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    reset,
+    formState: { isSubmitSuccessful },
   } = useForm<AddFormInputs>();
 
-  const onSubmit: SubmitHandler<AddFormInputs> = (data) => {
-    console.log(data);
+  const convertToTimestamp = (dateString: string) => Date.parse(dateString) / 1000;
+
+  const onSubmit: SubmitHandler<AddFormInputs> = async (data) => {
+    data.expiresAt = convertToTimestamp(data.expiresAt as string);
+    await createProject(data);
+    toast.success('Project created successfully, changes will reflect momentarily.');
+    closeModal(variant);
   };
+
+  useEffect(() => {
+    reset({
+      title: '',
+      cost: '',
+      expiresAt: '',
+      imageURL: '',
+      description: '',
+    });
+  }, [isSubmitSuccessful, reset]);
 
   if (variant === 'add') {
     return (
@@ -63,13 +85,13 @@ const CreateProject = ({ variant }: Props) => {
               step={0.01}
               min={0.01}
               placeholder="Amount (ETH)"
-              {...register('amount', { required: true })}
+              {...register('cost', { required: true })}
             />
             <input
               className={styles.input}
               type="date"
               placeholder="Expires"
-              {...register('date', { required: true })}
+              {...register('expiresAt', { required: true })}
             />
             <input
               className={styles.input}
@@ -214,4 +236,4 @@ const CreateProject = ({ variant }: Props) => {
   }
 };
 
-export default CreateProject;
+export default ProjectModal;

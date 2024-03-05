@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import localFont from 'next/font/local';
+
+import 'react-toastify/dist/ReactToastify.css';
 import './globals.scss';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = localFont({ src: '../public/fonts/inter-variable.ttf' });
 
 export const metadata: Metadata = {
   title: 'BlockPledge',

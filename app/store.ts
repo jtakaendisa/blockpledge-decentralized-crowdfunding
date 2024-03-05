@@ -15,6 +15,34 @@ interface AccountStore {
   setConnectedAccount: (account: string) => void;
 }
 
+export interface Project {
+  id: number;
+  owner: string;
+  title: string;
+  description: string;
+  imageURL: string;
+  cost: number;
+  raised: number;
+  timestamp: number;
+  expiresAt: number;
+  backers: number;
+  status: 0 | 1 | 2 | 3 | 4;
+  date: string;
+}
+
+export interface Stats {
+  totalProjects: number;
+  totalBacking: number;
+  totalDonations: number;
+}
+
+interface ProjectStore {
+  projects: Project[];
+  stats: Stats;
+  setProjects: (projects: Project[]) => void;
+  setStats: (stats: Stats) => void;
+}
+
 const variantMap = {
   add: 'addIsOpen',
   back: 'backIsOpen',
@@ -36,4 +64,15 @@ const useAccountStore = create<AccountStore>((set) => ({
   setConnectedAccount: (account) => set(() => ({ connectedAccount: account })),
 }));
 
-export { useModalStore, useAccountStore };
+const useProjectStore = create<ProjectStore>((set) => ({
+  projects: [],
+  stats: {
+    totalBacking: 0,
+    totalDonations: 0,
+    totalProjects: 0,
+  },
+  setProjects: (projects: Project[]) => set((state) => ({ ...state, projects })),
+  setStats: (stats: Stats) => set((state) => ({ ...state, stats })),
+}));
+
+export { useModalStore, useAccountStore, useProjectStore };
