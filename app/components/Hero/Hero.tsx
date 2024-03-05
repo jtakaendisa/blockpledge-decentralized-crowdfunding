@@ -1,6 +1,6 @@
 'use client';
 
-import { useModalStore } from '@/app/store';
+import { useModalStore, useProjectStore } from '@/app/store';
 import Button from '../Button/Button';
 import ProjectModal from '../ProjectModal/ProjectModal';
 
@@ -9,6 +9,9 @@ import styles from './Hero.module.scss';
 const Hero = () => {
   const addIsOpen = useModalStore((s) => s.addIsOpen);
   const openModal = useModalStore((s) => s.setIsOpen);
+  const stats = useProjectStore((s) => s.stats);
+
+  const { totalBacking, totalDonations, totalProjects } = stats;
 
   return (
     <section className={styles.hero}>
@@ -23,15 +26,15 @@ const Hero = () => {
       </div>
       <div className={styles.stats}>
         <div className={styles.stat}>
-          <span className={styles.sum}>{0}</span>
+          <span className={styles.sum}>{totalProjects}</span>
           <span>Projects</span>
         </div>
         <div className={styles.stat}>
-          <span className={styles.sum}>{0}</span>
+          <span className={styles.sum}>{totalBacking}</span>
           <span>Backings</span>
         </div>
         <div className={styles.stat}>
-          <span className={styles.sum}>{0} ETH</span>
+          <span className={styles.sum}>{totalDonations} ETH</span>
           <span>Donated</span>
         </div>
       </div>

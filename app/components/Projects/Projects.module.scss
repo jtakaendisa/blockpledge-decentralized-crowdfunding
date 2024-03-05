@@ -64,6 +64,19 @@
               color: rgb(83, 167, 83);
             }
           }
+
+          .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+            font-weight: 600;
+
+            .cost {
+              display: flex;
+              align-items: center;
+            }
+          }
         }
       }
     }
