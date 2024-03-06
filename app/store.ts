@@ -36,15 +36,24 @@ export interface Stats {
   totalDonations: number;
 }
 
+interface Backer {
+  backer: string;
+  contribution: number;
+  timestamp: string;
+  refunded: boolean;
+}
+
 interface ProjectStore {
   project: Project;
   projects: Project[];
   stats: Stats;
   end: number;
+  backers: Backer[];
   setProject: (project: Project) => void;
   setProjects: (projects: Project[]) => void;
   setStats: (stats: Stats) => void;
   setEnd: (count: number) => void;
+  setBackers: (backers: Backer[]) => void;
 }
 
 const variantMap = {
@@ -84,11 +93,13 @@ const useProjectStore = create<ProjectStore>((set) => ({
     totalDonations: 0,
     totalProjects: 0,
   },
-  end: 1,
+  end: 3,
+  backers: [],
   setProject: (project) => set((state) => ({ ...state, project })),
   setProjects: (projects) => set((state) => ({ ...state, projects })),
   setStats: (stats) => set((state) => ({ ...state, stats })),
   setEnd: (count) => set((state) => ({ ...state, end: state.end + count })),
+  setBackers: (backers) => set((state) => ({ ...state, backers })),
 }));
 
 export { useModalStore, useAccountStore, useProjectStore };

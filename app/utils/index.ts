@@ -9,7 +9,7 @@ const truncateAccount = (
       '...' +
       account.slice(account.length - endCharLength, account.length)
     );
-  }
+  } else return '';
 };
 
 const findDaysRemaining = (expiresAt: number) => {

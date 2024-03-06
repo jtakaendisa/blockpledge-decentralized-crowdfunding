@@ -1,8 +1,10 @@
 'use client';
 
 import { ethers } from 'ethers';
+import { formatDistance } from 'date-fns';
 
-import { Project, useAccountStore, useProjectStore } from '../store';
+import { useAccountStore, useProjectStore } from '../store';
+import { truncateAccount } from '../utils';
 import contractAddress from '../abis/contractAddress.json';
 import contractAbi from '../abis/app/contracts/BlockPledge.sol/BlockPledge.json';
 import { FormInputs } from '../components/ProjectModal/ProjectModal';
@@ -16,6 +18,7 @@ const useBlockchain = () => {
   const setProjects = useProjectStore((s) => s.setProjects);
   const setProject = useProjectStore((s) => s.setProject);
   const setStats = useProjectStore((s) => s.setStats);
+  const setBackers = useProjectStore((s) => s.setBackers);
 
   const connectWallet = async () => {
     try {
@@ -139,6 +142,26 @@ const useBlockchain = () => {
     }
   };
 
+  const getBackers = async (id: number) => {
+    try {
+      if (!window.ethereum) return alert('Please install Metamask');
+
+      const contract = await getContract();
+
+      if (!contract) return;
+
+      const backers = await contract.getBackers(id);
+
+      const formattedBackers = formatBackers(backers);
+
+      if (backers.length) {
+        setBackers(formattedBackers);
+      }
+    } catch (error) {
+      console.log((error as Error).message);
+    }
+  };
+
   const loadProjects = async () => {
     try {
       if (!window.ethereum) return alert('Please install Metamask');
@@ -218,6 +241,19 @@ const useBlockchain = () => {
     };
   };
 
+  const formatBackers = (backers: any[]) => {
+    return backers
+      .map((backer) => ({
+        backer: truncateAccount(backer[0], 4, 4),
+        contribution: Number(ethers.formatEther(backer[1])),
+        timestamp: formatDistance(new Date(Number(backer[2]) * 1000), Date.now(), {
+          addSuffix: true,
+        }),
+        refunded: backer[3],
+      }))
+      .reverse();
+  };
+
   return {
     connectWallet,
     getContract,
@@ -227,6 +263,7 @@ const useBlockchain = () => {
     backProject,
     loadProjects,
     loadProject,
+    getBackers,
   };
 };
 

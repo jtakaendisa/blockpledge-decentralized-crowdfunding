@@ -16,11 +16,12 @@ interface Props {
 }
 
 const ProjectPage = ({ params: { id } }: Props) => {
-  const { loadProject } = useBlockchain();
+  const { loadProject, getBackers } = useBlockchain();
 
   useEffect(() => {
     const fetchData = async () => {
       await loadProject(+id);
+      await getBackers(+id);
     };
 
     fetchData();
