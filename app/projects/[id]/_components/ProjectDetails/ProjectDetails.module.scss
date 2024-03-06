@@ -1,3 +1,9 @@
+$light-green: rgb(83, 167, 83);
+$dark-green: rgb(67, 136, 67);
+$light-gray: rgb(76, 84, 95);
+$light-red: rgb(202, 57, 49);
+$light-orange: rgb(216, 96, 41);
+
 .mainContainer {
   display: flex;
   gap: 1rem;
@@ -5,7 +11,8 @@
   .image {
     flex: 33.33%;
     width: 33.33%;
-    height: 24rem;
+    height: 28rem;
+    position: relative;
     border-radius: 16px;
     overflow: hidden;
 
@@ -68,10 +75,26 @@
       margin-top: 0.5rem;
 
       .progressIn {
-        background-color: rgb(83, 167, 83);
+        background-color: $light-green;
         height: 100%;
         border-radius: 50px;
       }
     }
+  }
+
+  .green {
+    color: $light-green;
+  }
+
+  .gray {
+    color: $light-gray;
+  }
+
+  .red {
+    color: $light-red;
+  }
+
+  .orange {
+    color: $light-orange;
   }
 }

@@ -37,10 +37,14 @@ export interface Stats {
 }
 
 interface ProjectStore {
+  project: Project;
   projects: Project[];
   stats: Stats;
+  end: number;
+  setProject: (project: Project) => void;
   setProjects: (projects: Project[]) => void;
   setStats: (stats: Stats) => void;
+  setEnd: (count: number) => void;
 }
 
 const variantMap = {
@@ -48,6 +52,14 @@ const variantMap = {
   back: 'backIsOpen',
   edit: 'editIsOpen',
   delete: 'deleteIsOpen',
+} as const;
+
+export const statusMap = {
+  0: 'OPEN',
+  1: 'APPROVED',
+  2: 'REVERTED',
+  3: 'DELETED',
+  4: 'PAIDOUT',
 } as const;
 
 const useModalStore = create<ModalStore>((set) => ({
@@ -65,14 +77,18 @@ const useAccountStore = create<AccountStore>((set) => ({
 }));
 
 const useProjectStore = create<ProjectStore>((set) => ({
+  project: {} as Project,
   projects: [],
   stats: {
     totalBacking: 0,
     totalDonations: 0,
     totalProjects: 0,
   },
-  setProjects: (projects: Project[]) => set((state) => ({ ...state, projects })),
-  setStats: (stats: Stats) => set((state) => ({ ...state, stats })),
+  end: 1,
+  setProject: (project) => set((state) => ({ ...state, project })),
+  setProjects: (projects) => set((state) => ({ ...state, projects })),
+  setStats: (stats) => set((state) => ({ ...state, stats })),
+  setEnd: (count) => set((state) => ({ ...state, end: state.end + count })),
 }));
 
 export { useModalStore, useAccountStore, useProjectStore };

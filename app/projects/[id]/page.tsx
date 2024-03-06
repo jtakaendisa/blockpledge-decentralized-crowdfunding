@@ -1,3 +1,8 @@
+'use client';
+
+import { useEffect } from 'react';
+
+import useBlockchain from '@/app/hooks/useBlockchain';
 import Header from '@/app/components/Header/Header';
 import ProjectDetails from './_components/ProjectDetails/ProjectDetails';
 import ProjectBackers from './_components/ProjectBackers/ProjectBackers';
@@ -11,6 +16,17 @@ interface Props {
 }
 
 const ProjectPage = ({ params: { id } }: Props) => {
+  const { loadProject } = useBlockchain();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await loadProject(+id);
+    };
+
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
   return (
     <div className={styles.projectPage}>
       <Header />

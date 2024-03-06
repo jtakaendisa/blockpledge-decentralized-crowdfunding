@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Identicon from 'react-hooks-identicons';
 import { FaEthereum } from 'react-icons/fa';
 
-import { useProjectStore, Project } from '@/app/store';
+import { useProjectStore, Project, statusMap } from '@/app/store';
 import { findDaysRemaining, truncateAccount } from '@/app/utils';
 import useBlockchain from '@/app/hooks/useBlockchain';
 import Button from '../Button/Button';
@@ -18,18 +18,19 @@ interface ProjectCardProps {
   project: Project;
 }
 
-const statusMap = {
-  0: 'OPEN',
-  1: 'APPROVED',
-  2: 'REVERTED',
-  3: 'DELETED',
-  4: 'PAIDOUT',
-} as const;
+export const statusColorMap = {
+  0: 'gray',
+  1: 'green',
+  2: 'gray',
+  3: 'red',
+  4: 'orange',
+};
 
 const Projects = () => {
-  const [end, setEnd] = useState(1);
   const [displayedProjects, setDisplayedProjects] = useState<Project[]>([]);
   const allProjects = useProjectStore((s) => s.projects);
+  const end = useProjectStore((s) => s.end);
+  const setEnd = useProjectStore((s) => s.setEnd);
   const { loadProjects } = useBlockchain();
   const count = 1;
 
@@ -45,10 +46,6 @@ const Projects = () => {
     setDisplayedProjects(allProjects.slice(0, end));
   }, [allProjects, end]);
 
-  const handleLoadMore = () => {
-    setEnd((prev) => prev + count);
-  };
-
   return (
     <section className={styles.projects}>
       <div className={styles.cards}>
@@ -58,7 +55,7 @@ const Projects = () => {
       </div>
       <div className={styles.buttonContainer}>
         {end < allProjects.length && (
-          <Button onClick={handleLoadMore}>Load More</Button>
+          <Button onClick={() => setEnd(count)}>Load More</Button>
         )}
       </div>
     </section>
@@ -94,7 +91,9 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
             <small>
               {backers} {backers === 1 ? 'Backer' : 'Backers'}
             </small>
-            <small>{statusMap[status]}</small>
+            <small className={styles[statusColorMap[status]]}>
+              {statusMap[status]}
+            </small>
           </div>
         </div>
       </Link>

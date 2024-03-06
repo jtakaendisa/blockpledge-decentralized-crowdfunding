@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import Link from 'next/link';
 import { TbBusinessplan } from 'react-icons/tb';
 
@@ -9,7 +10,6 @@ import useBlockchain from '@/app/hooks/useBlockchain';
 import Button from '../Button/Button';
 
 import styles from './Header.module.scss';
-import { useEffect } from 'react';
 
 const Header = () => {
   const { connectWallet } = useBlockchain();

@@ -2,10 +2,15 @@ const truncateAccount = (
   account: string,
   startCharLength: number,
   endCharLength: number
-) =>
-  account.slice(0, startCharLength) +
-  '...' +
-  account.slice(account.length - endCharLength, account.length);
+) => {
+  if (account?.length) {
+    return (
+      account.slice(0, startCharLength) +
+      '...' +
+      account.slice(account.length - endCharLength, account.length)
+    );
+  }
+};
 
 const findDaysRemaining = (expiresAt: number) => {
   const today = Number(new Date());
@@ -30,4 +35,6 @@ const findDaysRemaining = (expiresAt: number) => {
     : differenceInDays + ' days left';
 };
 
-export { truncateAccount, findDaysRemaining };
+const convertToTimestamp = (dateString: string) => Date.parse(dateString) / 1000;
+
+export { truncateAccount, findDaysRemaining, convertToTimestamp };

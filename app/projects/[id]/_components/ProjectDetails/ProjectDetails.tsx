@@ -4,64 +4,87 @@ import Image from 'next/image';
 import Identicon from 'react-hooks-identicons';
 import { FaEthereum } from 'react-icons/fa';
 
-import { useModalStore } from '@/app/store';
+import {
+  statusMap,
+  useAccountStore,
+  useModalStore,
+  useProjectStore,
+} from '@/app/store';
+import { findDaysRemaining, truncateAccount } from '@/app/utils';
 import ProgressBar from '@/app/components/ProgressBar/ProgressBar';
 import Button from '@/app/components/Button/Button';
 import ProjectModal from '@/app/components/ProjectModal/ProjectModal';
-import robot from '@/public/images/robot.jpg';
+import { statusColorMap } from '@/app/components/Projects/Projects';
 
 import styles from './ProjectDetails.module.scss';
 
 const ProjectDetails = () => {
+  const project = useProjectStore((s) => s.project);
   const backIsOpen = useModalStore((s) => s.backIsOpen);
   const editIsOpen = useModalStore((s) => s.editIsOpen);
   const deleteIsOpen = useModalStore((s) => s.deleteIsOpen);
   const setIsOpen = useModalStore((s) => s.setIsOpen);
+  const connectedAccount = useAccountStore((s) => s.connectedAccount);
+
+  const {
+    imageURL,
+    title,
+    expiresAt,
+    owner,
+    backers,
+    status,
+    description,
+    raised,
+    cost,
+  } = project;
+
+  if (!project) return null;
 
   return (
     <section className={styles.mainContainer}>
       <div className={styles.image}>
-        <Image src={robot} alt="robot" />
+        <Image src={imageURL} alt={title} fill sizes="70vw" />
       </div>
       <div className={styles.info}>
-        <h5>Creating a Household Robot</h5>
-        <small>{3} days left</small>
+        <h5>{title}</h5>
+        <small>{findDaysRemaining(expiresAt)}</small>
         <div className={styles.row}>
           <div className={styles.backings}>
-            <Identicon string="0x9e...12af" size={15} />
-            <small>0x9e...12af</small>
-            <small>{16} Backings</small>
+            <Identicon string={owner} size={15} />
+            <small>{truncateAccount(owner, 4, 4)}</small>
+            <small>{backers} Backings</small>
           </div>
-          <small>Open</small>
+          <small className={styles[statusColorMap[status]]}>{statusMap[status]}</small>
         </div>
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Enim provident
-          consectetur quia. Veritatis unde consequuntur vero nostrum laborum corporis.
-          Sequi laborum eligendi nemo minima quae necessitatibus tenetur fugiat,
-          doloribus tempore!
-        </p>
-        <ProgressBar progress={50} />
+        <p>{description}</p>
+        <ProgressBar progress={(raised / cost) * 100} />
         <div className={styles.row}>
-          <small>{3} ETH Raised</small>
+          <small>{raised} ETH Raised</small>
           <div className={styles.etherTarget}>
             <FaEthereum />
-            <small>{10} ETH</small>
+            <small>{cost} ETH</small>
           </div>
         </div>
         <div className={styles.buttons}>
           <Button onClick={() => setIsOpen('back')}>Back Project</Button>
-          <Button color="gray" onClick={() => setIsOpen('edit')}>
-            Edit
-          </Button>
-          <Button color="red" onClick={() => setIsOpen('delete')}>
-            Delete
-          </Button>
-          <Button color="orange">Payout</Button>
+          {connectedAccount === owner && (
+            <>
+              {status === 0 && (
+                <Button color="gray" onClick={() => setIsOpen('edit')}>
+                  Edit
+                </Button>
+              )}
+              <Button color="red" onClick={() => setIsOpen('delete')}>
+                Delete
+              </Button>
+              <Button color="orange">Payout</Button>
+            </>
+          )}
         </div>
       </div>
-      {backIsOpen && <ProjectModal variant="back" />}
-      {editIsOpen && <ProjectModal variant="edit" />}
-      {deleteIsOpen && <ProjectModal variant="delete" />}
+      {backIsOpen && <ProjectModal variant="back" project={project} />}
+      {editIsOpen && <ProjectModal variant="edit" project={project} />}
+      {deleteIsOpen && <ProjectModal variant="delete" project={project} />}
     </section>
   );
 };
