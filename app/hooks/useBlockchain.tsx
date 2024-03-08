@@ -3,7 +3,7 @@
 import { ethers } from 'ethers';
 import { formatDistance } from 'date-fns';
 
-import { useAccountStore, useProjectStore } from '../store';
+import { Project, useAccountStore, useProjectStore } from '../store';
 import { truncateAccount } from '../utils';
 import contractAddress from '../abis/contractAddress.json';
 import contractAbi from '../abis/app/contracts/BlockPledge.sol/BlockPledge.json';
@@ -214,7 +214,7 @@ const useBlockchain = () => {
     return `${year}-${month}-${day}`;
   };
 
-  const formatProject = (project: any) => {
+  const formatProject = (project: any): Project => {
     return {
       id: Number(project[0]),
       owner: project[1].toLowerCase(),
@@ -226,7 +226,7 @@ const useBlockchain = () => {
       timestamp: new Date(Number(project[7])).getTime(),
       expiresAt: new Date(Number(project[8])).getTime(),
       backers: Number(project[9]),
-      status: Number(project[10]),
+      status: Number(project[10]) as Project['status'],
       date: formatDate(Number(project[8]) * 1000),
     };
   };
