@@ -30,7 +30,7 @@ const ProjectDetails = () => {
   const [selectedImage, setSelectedImage] = useState(0);
 
   const {
-    imageURL,
+    imageURLs,
     title,
     expiresAt,
     owner,
@@ -41,37 +41,43 @@ const ProjectDetails = () => {
     cost,
   } = project;
 
-  const images = [
-    'https://static.nike.com/a/images/f_auto/dpr_3.0,cs_srgb/w_363,c_limit/26da2155-9f77-4952-b1e8-bf459e2eb395/how-to-skateboard-for-beginners.jpg',
-    'https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/ee1874b4-ad8f-4c1c-964e-32e58b743108/hoops-elite-backpack-32l-l0zSj5.png',
-    'https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/7df18752-e61c-4e9d-b73a-1769c44afb35/marquee-lb-mirrored-sunglasses-rvW2ml.png',
-  ];
-
   if (!project) return null;
 
   return (
     <section className={styles.mainContainer}>
-      <div className={styles.imageGallery}>
-        <div className={styles.imageLarge}>
-          <Image src={images[selectedImage]} alt={title} fill sizes="70vw" />
-        </div>
-        {images.length > 1 && (
-          <div className={styles.imageRow}>
-            {images.map((image, idx) => (
-              <div
-                key={image}
-                className={classNames({
-                  [styles.imageSmall]: true,
-                  [styles.selected]: idx === selectedImage,
-                })}
-                onClick={() => setSelectedImage(idx)}
-              >
-                <Image src={image} alt={title} fill sizes="10vw" />
-              </div>
-            ))}
+      {imageURLs?.length && (
+        <div className={styles.imageGallery}>
+          <div className={styles.imageLarge}>
+            <Image
+              src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageURLs[selectedImage]}`}
+              alt={title}
+              fill
+              sizes="70vw"
+            />
           </div>
-        )}
-      </div>
+          {imageURLs.length > 1 && (
+            <div className={styles.imageRow}>
+              {imageURLs.map((image, idx) => (
+                <div
+                  key={image}
+                  className={classNames({
+                    [styles.imageSmall]: true,
+                    [styles.selected]: idx === selectedImage,
+                  })}
+                  onClick={() => setSelectedImage(idx)}
+                >
+                  <Image
+                    src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${image}`}
+                    alt={title}
+                    fill
+                    sizes="10vw"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
       <div className={styles.info}>
         <h5>{title}</h5>
         <small>{findDaysRemaining(expiresAt)}</small>

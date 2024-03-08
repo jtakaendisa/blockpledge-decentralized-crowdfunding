@@ -46,7 +46,7 @@ const useBlockchain = () => {
   const createProject = async ({
     title,
     description,
-    imageURL,
+    imageURLs,
     cost,
     expiresAt,
   }: FormInputs) => {
@@ -62,7 +62,7 @@ const useBlockchain = () => {
       const tx = await contract.createProject(
         title,
         description,
-        imageURL,
+        imageURLs,
         convertedCost,
         expiresAt
       );
@@ -78,7 +78,7 @@ const useBlockchain = () => {
     id,
     title,
     description,
-    imageURL,
+    imageURLs,
     expiresAt,
   }: FormInputs) => {
     try {
@@ -92,7 +92,7 @@ const useBlockchain = () => {
         id,
         title,
         description,
-        imageURL,
+        imageURLs,
         expiresAt
       );
 
@@ -195,7 +195,7 @@ const useBlockchain = () => {
 
       const project = await contract.getProject(id);
 
-      const formattedProject = formatProjects([project])[0];
+      const formattedProject = formatProject(project);
 
       if (formattedProject) {
         setProject(formattedProject);
@@ -214,23 +214,25 @@ const useBlockchain = () => {
     return `${year}-${month}-${day}`;
   };
 
+  const formatProject = (project: any) => {
+    return {
+      id: Number(project[0]),
+      owner: project[1].toLowerCase(),
+      title: project[2],
+      description: project[3],
+      imageURLs: Array.from(project[4]) as string[],
+      cost: Number(project[5]) / 10 ** 18,
+      raised: Number(ethers.formatEther(project[6])),
+      timestamp: new Date(Number(project[7])).getTime(),
+      expiresAt: new Date(Number(project[8])).getTime(),
+      backers: Number(project[9]),
+      status: Number(project[10]),
+      date: formatDate(Number(project[8]) * 1000),
+    };
+  };
+
   const formatProjects = (projects: any) => {
-    return projects
-      .map((project: any) => ({
-        id: Number(project[0]),
-        owner: project[1].toLowerCase(),
-        title: project[2],
-        description: project[3],
-        imageURL: project[4],
-        cost: Number(project[5]) / 10 ** 18,
-        raised: Number(ethers.formatEther(project[6])),
-        timestamp: new Date(Number(project[7])).getTime(),
-        expiresAt: new Date(Number(project[8])).getTime(),
-        backers: Number(project[9]),
-        status: Number(project[10]),
-        date: formatDate(Number(project[8]) * 1000),
-      }))
-      .reverse();
+    return projects.map((project: any) => formatProject(project)).reverse();
   };
 
   const formatStats = (stats: any) => {

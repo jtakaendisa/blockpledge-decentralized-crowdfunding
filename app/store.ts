@@ -20,7 +20,7 @@ export interface Project {
   owner: string;
   title: string;
   description: string;
-  imageURL: string;
+  imageURLs: string[];
   cost: number;
   raised: number;
   timestamp: number;

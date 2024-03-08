@@ -38,6 +38,10 @@
           border: none;
           cursor: pointer;
         }
+
+        .disabled {
+          cursor: auto;
+        }
       }
 
       .image {

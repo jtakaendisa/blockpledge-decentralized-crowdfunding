@@ -4,9 +4,9 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'static.nike.com',
+        hostname: process.env.NEXT_PUBLIC_GATEWAY_DOMAIN,
         port: '',
-        pathname: '/a/images/**',
+        pathname: '/ipfs/**',
       },
     ],
   },

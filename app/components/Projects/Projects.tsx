@@ -63,14 +63,19 @@ const Projects = () => {
 };
 
 const ProjectCard = ({ project }: ProjectCardProps) => {
-  const { id, owner, title, imageURL, backers, expiresAt, raised, cost, status } =
+  const { id, owner, title, imageURLs, backers, expiresAt, raised, cost, status } =
     project;
 
   return (
     <div className={styles.card}>
       <Link href={`/projects/${id}`} className={styles.link}>
         <div className={styles.image}>
-          <Image src={imageURL} alt={title} fill sizes="20vw" />
+          <Image
+            src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageURLs[0]}`}
+            alt={title}
+            fill
+            sizes="10vw"
+          />
         </div>
         <div className={styles.info}>
           <h5>{title}</h5>

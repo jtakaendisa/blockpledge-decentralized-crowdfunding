@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import classNames from 'classnames';
@@ -15,6 +15,7 @@ import Button from '../Button/Button';
 import newProject from '@/public/images/new-project.jpg';
 
 import styles from './ProjectModal.module.scss';
+import usePinata from '@/app/hooks/usePinata';
 
 interface Props {
   variant: ModalVariant;
@@ -26,7 +27,7 @@ export interface FormInputs {
   title: string;
   cost: string;
   expiresAt: Date | string | number;
-  imageURL: string;
+  imageURLs: File[] | string[];
   description: string;
 }
 
@@ -47,21 +48,25 @@ const ProjectModal = ({ variant, project }: Props) => {
 
   const router = useRouter();
   const closeModal = useModalStore((s) => s.setIsOpen);
+  const [files, setFiles] = useState<File[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const [fileError, setFileError] = useState(false);
   const { createProject, updateProject, deleteProject, backProject } = useBlockchain();
+  const { uploadFiles } = usePinata(setUploading);
 
   const defaultValues =
     project && variant === 'edit'
       ? {
           title: project.title,
           description: project.description,
-          imageURL: project.imageURL,
+          imageURLs: project.imageURLs,
           cost: project.cost.toString(),
           expiresAt: project.date,
         }
       : {
           title: '',
           description: '',
-          imageURL: '',
+          imageURLs: [],
           cost: '',
           expiresAt: '',
         };
@@ -75,6 +80,16 @@ const ProjectModal = ({ variant, project }: Props) => {
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     data.expiresAt = convertToTimestamp(data.expiresAt as string);
+
+    if ((variant === 'add' || variant === 'edit') && !files.length) {
+      setFileError(true);
+      return;
+    }
+
+    if (files.length) {
+      const { uploadedCids } = await uploadFiles(files);
+      data.imageURLs = uploadedCids;
+    }
 
     switch (variant) {
       case 'add':
@@ -104,6 +119,13 @@ const ProjectModal = ({ variant, project }: Props) => {
     }
 
     closeModal(variant);
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    const selectedFiles = Array.from(e.target.files);
+    const newFiles = [...files, ...selectedFiles].slice(0, 3); // Limit to three files
+    setFiles(newFiles);
   };
 
   useEffect(() => {
@@ -136,11 +158,37 @@ const ProjectModal = ({ variant, project }: Props) => {
               {...register('expiresAt', { required: true })}
             />
             <input
-              className={styles.input}
-              type="url"
-              placeholder="Image URL"
-              {...register('imageURL', { required: true })}
+              type="file"
+              accept="image/*"
+              multiple
+              {...register('imageURLs', {
+                onChange: handleChange,
+              })}
             />
+            <div>
+              <h3>Selected Files:</h3>
+              <ul>
+                {files.map((file, index) => (
+                  <li key={index}>
+                    <Image
+                      src={URL.createObjectURL(file)}
+                      alt={file.name}
+                      width={100}
+                      height={100}
+                    />
+                    {file.name}
+                    <button
+                      onClick={() =>
+                        setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index))
+                      }
+                    >
+                      Remove
+                    </button>
+                  </li>
+                ))}
+              </ul>
+              {fileError && <span>Select at least 1 image to proceed</span>}
+            </div>
             <textarea
               className={classNames(styles.input, styles.textArea)}
               placeholder="Description"
@@ -178,7 +226,7 @@ const ProjectModal = ({ variant, project }: Props) => {
               className={styles.input}
               type="url"
               placeholder="Image URL"
-              {...register('imageURL', { required: true })}
+              {...register('imageURLs', { required: true })}
             />
             <textarea
               className={classNames(styles.input, styles.textArea)}
@@ -206,9 +254,13 @@ const ProjectModal = ({ variant, project }: Props) => {
           <div className={styles.row}>
             <p>{modalTitleMap[variant]}</p>
             <button
-              className={styles.close}
+              className={classNames({
+                [styles.close]: true,
+                [styles.disabled]: uploading,
+              })}
               type="button"
               onClick={() => closeModal(variant)}
+              disabled={uploading}
             >
               <FaTimes size={20} />
             </button>
@@ -218,13 +270,18 @@ const ProjectModal = ({ variant, project }: Props) => {
               <Image src={newProject} alt="Create a Project" />
             ) : (
               project && (
-                <Image src={project.imageURL} alt={project.title} fill sizes="20vw" />
+                <Image
+                  src={project.imageURLs[0]}
+                  alt={project.title}
+                  fill
+                  sizes="20vw"
+                />
               )
             )}
           </div>
           <InputFields />
-          <Button color={variant === 'delete' ? 'red' : undefined}>
-            {submitButtonMap[variant]}
+          <Button color={variant === 'delete' ? 'red' : undefined} disabled={uploading}>
+            {uploading ? 'Uploading Images...' : submitButtonMap[variant]}
           </Button>
         </form>
       </div>
