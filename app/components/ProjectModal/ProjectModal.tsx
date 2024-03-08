@@ -83,17 +83,20 @@ const ProjectModal = ({ variant, project }: Props) => {
           'Project created successfully, changes will reflect momentarily.'
         );
       case 'back':
-        await backProject(project!.id, data.cost);
+        if (!project) return;
+        await backProject(project.id, data.cost);
         toast.success(
           'Thank you! Project backing has been received, changes will reflect momentarily.'
         );
       case 'edit':
-        await updateProject({ ...data, id: project!.id });
+        if (!project) return;
+        await updateProject({ ...data, id: project.id });
         toast.success(
           'Project updated successfully, changes will reflect momentarily.'
         );
       case 'delete':
-        await deleteProject(project!.id);
+        if (!project) return;
+        await deleteProject(project.id);
         toast.success(
           'Project deleted successfully, changes will reflect momentarily.'
         );
