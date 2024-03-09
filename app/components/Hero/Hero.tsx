@@ -2,7 +2,7 @@
 
 import { useModalStore, useProjectStore } from '@/app/store';
 import Button from '../Button/Button';
-import ProjectModal from '../ProjectModal/ProjectModal';
+import AddProjectModal from '../modals/AddProjectModal/AddProjectModal';
 
 import styles from './Hero.module.scss';
 
@@ -38,7 +38,7 @@ const Hero = () => {
           <span>Donated</span>
         </div>
       </div>
-      {addIsOpen && <ProjectModal variant="add" />}
+      {addIsOpen && <AddProjectModal />}
     </section>
   );
 };
