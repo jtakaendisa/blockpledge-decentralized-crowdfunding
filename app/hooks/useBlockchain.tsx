@@ -98,7 +98,6 @@ const useBlockchain = () => {
   };
 
   const deleteProject = async (id: number) => {
-    console.log('delete triggered!!!');
     try {
       if (!window.ethereum) return alert('Please install Metamask');
 
@@ -110,6 +109,7 @@ const useBlockchain = () => {
 
       await tx.wait();
       await loadProject(id);
+      await getBackers(id);
     } catch (error) {
       console.log((error as Error).message);
     }
@@ -132,6 +132,7 @@ const useBlockchain = () => {
 
       await tx.wait();
       await loadProject(id);
+      await getBackers(id);
     } catch (error) {
       console.log((error as Error).message);
     }

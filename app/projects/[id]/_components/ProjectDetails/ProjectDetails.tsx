@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import classNames from 'classnames';
 import Identicon from 'react-hooks-identicons';
 import { FaEthereum } from 'react-icons/fa';
 
@@ -12,14 +13,14 @@ import {
   useProjectStore,
 } from '@/app/store';
 import { findDaysRemaining, truncateAccount } from '@/app/utils';
+import EditProjectModal from '@/app/components/modals/EditProjectModal/EditProjectModal';
+import DeleteProjectModal from '@/app/components/modals/DeleteProjectModal/DeleteProjectModal';
+import BackProjectModal from '@/app/components/modals/BackProjectModal/BackProjectModal';
 import ProgressBar from '@/app/components/ProgressBar/ProgressBar';
 import Button from '@/app/components/Button/Button';
-import ProjectModal from '@/app/components/ProjectModal/ProjectModal';
 import { statusColorMap } from '@/app/components/Projects/Projects';
 
 import styles from './ProjectDetails.module.scss';
-import classNames from 'classnames';
-import EditProjectModal from '@/app/components/modals/EditProjectModal/EditProjectModal';
 
 const ProjectDetails = () => {
   const project = useProjectStore((s) => s.project);
@@ -118,9 +119,9 @@ const ProjectDetails = () => {
           )}
         </div>
       </div>
-      {backIsOpen && <ProjectModal variant="back" project={project} />}
+      {backIsOpen && <BackProjectModal project={project} />}
       {editIsOpen && <EditProjectModal project={project} />}
-      {deleteIsOpen && <ProjectModal variant="delete" project={project} />}
+      {deleteIsOpen && <DeleteProjectModal project={project} />}
     </section>
   );
 };
