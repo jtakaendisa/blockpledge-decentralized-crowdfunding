@@ -8,7 +8,6 @@ import { FaTimes } from 'react-icons/fa';
 import { Project, useModalStore } from '@/app/store';
 import usePinata from '@/app/hooks/usePinata';
 import useBlockchain from '@/app/hooks/useBlockchain';
-import { convertToTimestamp, getTomorrowsDate } from '@/app/utils';
 import Button from '../../Button/Button';
 
 import styles from '../modal.module.scss';
