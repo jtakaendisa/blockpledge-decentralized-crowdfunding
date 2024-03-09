@@ -10,12 +10,12 @@ import { FaTimes } from 'react-icons/fa';
 
 import { ModalVariant, Project, useModalStore } from '@/app/store';
 import useBlockchain from '@/app/hooks/useBlockchain';
-import { convertToTimestamp } from '@/app/utils';
+import usePinata from '@/app/hooks/usePinata';
+import { convertToTimestamp, getTomorrowsDate } from '@/app/utils';
 import Button from '../Button/Button';
 import newProject from '@/public/images/new-project.jpg';
 
 import styles from './ProjectModal.module.scss';
-import usePinata from '@/app/hooks/usePinata';
 
 interface Props {
   variant: ModalVariant;
@@ -42,13 +42,16 @@ const ProjectModal = ({ variant, project }: Props) => {
   const modalTitleMap = {
     add: 'Add Project',
     back: project?.title,
-    edit: 'Edit Project',
+    edit: project?.title,
     delete: project?.title,
   };
 
   const router = useRouter();
   const closeModal = useModalStore((s) => s.setIsOpen);
   const [files, setFiles] = useState<File[]>([]);
+  const [existingImageURLs, setExistingImageURLs] = useState(
+    project ? project.imageURLs : []
+  );
   const [uploading, setUploading] = useState(false);
   const [fileError, setFileError] = useState(false);
   const { createProject, updateProject, deleteProject, backProject } = useBlockchain();
@@ -78,17 +81,44 @@ const ProjectModal = ({ variant, project }: Props) => {
     formState: { isSubmitSuccessful },
   } = useForm<FormInputs>({ defaultValues: defaultValues });
 
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    const selectedFiles = Array.from(e.target.files);
+    let newFiles: File[] = [];
+
+    if (variant === 'add') {
+      newFiles = [...files, ...selectedFiles].slice(0, 3); // Limit to three files
+    }
+    if (variant === 'edit') {
+      const remainingSlots = Math.max(0, 3 - existingImageURLs.length);
+      newFiles = [...files, ...selectedFiles].slice(0, remainingSlots); // Limit to remaining slots
+    }
+
+    setFiles(newFiles);
+  };
+
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     data.expiresAt = convertToTimestamp(data.expiresAt as string);
 
-    if ((variant === 'add' || variant === 'edit') && !files.length) {
+    if (variant === 'add' && !files.length) {
+      setFileError(true);
+      return;
+    }
+
+    if (variant === 'edit' && !files.length && !existingImageURLs.length) {
       setFileError(true);
       return;
     }
 
     if (files.length) {
       const { uploadedCids } = await uploadFiles(files);
-      data.imageURLs = uploadedCids;
+
+      if (variant === 'edit') {
+        const combinedCids = [...uploadedCids, ...existingImageURLs];
+        data.imageURLs = combinedCids;
+      } else {
+        data.imageURLs = uploadedCids;
+      }
     }
 
     switch (variant) {
@@ -97,18 +127,21 @@ const ProjectModal = ({ variant, project }: Props) => {
         toast.success(
           'Project created successfully, changes will reflect momentarily.'
         );
+        break;
       case 'back':
         if (!project) return;
         await backProject(project.id, data.cost);
         toast.success(
           'Thank you! Project backing has been received, changes will reflect momentarily.'
         );
+        break;
       case 'edit':
         if (!project) return;
         await updateProject({ ...data, id: project.id });
         toast.success(
           'Project updated successfully, changes will reflect momentarily.'
         );
+        break;
       case 'delete':
         if (!project) return;
         await deleteProject(project.id);
@@ -116,16 +149,10 @@ const ProjectModal = ({ variant, project }: Props) => {
           'Project deleted successfully, changes will reflect momentarily.'
         );
         router.push('/');
+        break;
     }
 
     closeModal(variant);
-  };
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
-    const selectedFiles = Array.from(e.target.files);
-    const newFiles = [...files, ...selectedFiles].slice(0, 3); // Limit to three files
-    setFiles(newFiles);
   };
 
   useEffect(() => {
@@ -155,7 +182,7 @@ const ProjectModal = ({ variant, project }: Props) => {
               className={styles.input}
               type="date"
               placeholder="Expires"
-              {...register('expiresAt', { required: true })}
+              {...register('expiresAt', { required: true, min: getTomorrowsDate() })}
             />
             <input
               type="file"
@@ -211,23 +238,57 @@ const ProjectModal = ({ variant, project }: Props) => {
         return (
           <>
             <input
-              className={styles.input}
-              type="text"
-              placeholder="Title"
-              {...register('title', { required: true })}
+              type="file"
+              accept="image/*"
+              multiple
+              {...register('imageURLs', {
+                onChange: handleChange,
+              })}
             />
-            <input
-              className={styles.input}
-              type="date"
-              placeholder="Expires"
-              {...register('expiresAt', { required: true })}
-            />
-            <input
-              className={styles.input}
-              type="url"
-              placeholder="Image URL"
-              {...register('imageURLs', { required: true })}
-            />
+            <div>
+              <h3>Selected Files:</h3>
+              <ul>
+                {files.map((file, index) => (
+                  <li key={index}>
+                    <Image
+                      src={URL.createObjectURL(file)}
+                      alt={file.name}
+                      width={100}
+                      height={100}
+                    />
+                    {file.name}
+                    <button
+                      onClick={() =>
+                        setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index))
+                      }
+                    >
+                      Remove
+                    </button>
+                  </li>
+                ))}
+                {existingImageURLs.map((image, index) => (
+                  <li key={index}>
+                    <Image
+                      src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${image}`}
+                      alt={image}
+                      width={100}
+                      height={100}
+                    />
+                    image {index + 1}
+                    <button
+                      onClick={() =>
+                        setExistingImageURLs((prevFiles) =>
+                          prevFiles.filter((_, i) => i !== index)
+                        )
+                      }
+                    >
+                      Remove
+                    </button>
+                  </li>
+                ))}
+              </ul>
+              {fileError && <span>Select at least 1 image to proceed</span>}
+            </div>
             <textarea
               className={classNames(styles.input, styles.textArea)}
               placeholder="Description"
@@ -271,7 +332,7 @@ const ProjectModal = ({ variant, project }: Props) => {
             ) : (
               project && (
                 <Image
-                  src={project.imageURLs[0]}
+                  src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${project.imageURLs[0]}`}
                   alt={project.title}
                   fill
                   sizes="20vw"

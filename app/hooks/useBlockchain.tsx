@@ -74,13 +74,7 @@ const useBlockchain = () => {
     }
   };
 
-  const updateProject = async ({
-    id,
-    title,
-    description,
-    imageURLs,
-    expiresAt,
-  }: FormInputs) => {
+  const updateProject = async ({ id, description, imageURLs }: FormInputs) => {
     try {
       if (!window.ethereum) return alert('Please install Metamask');
 
@@ -88,13 +82,7 @@ const useBlockchain = () => {
 
       if (!contract) return;
 
-      const tx = await contract.updateProject(
-        id,
-        title,
-        description,
-        imageURLs,
-        expiresAt
-      );
+      const tx = await contract.updateProject(id, description, imageURLs);
 
       await tx.wait();
       await loadProject(id!);
@@ -104,6 +92,7 @@ const useBlockchain = () => {
   };
 
   const deleteProject = async (id: number) => {
+    console.log('delete triggered!!!');
     try {
       if (!window.ethereum) return alert('Please install Metamask');
 

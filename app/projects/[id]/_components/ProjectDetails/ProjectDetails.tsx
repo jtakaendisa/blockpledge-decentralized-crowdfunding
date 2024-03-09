@@ -53,6 +53,7 @@ const ProjectDetails = () => {
               alt={title}
               fill
               sizes="70vw"
+              priority
             />
           </div>
           {imageURLs.length > 1 && (
@@ -71,6 +72,7 @@ const ProjectDetails = () => {
                     alt={title}
                     fill
                     sizes="10vw"
+                    priority
                   />
                 </div>
               ))}

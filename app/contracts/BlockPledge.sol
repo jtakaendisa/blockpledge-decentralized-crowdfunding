@@ -132,30 +132,23 @@ contract BlockPledge {
     /**
      * @dev Updates an existing project.
      * @param _id ID of the project to be updated.
-     * @param _title New title for the project.
      * @param _description New description for the project.
      * @param _imageURLs New imageURLs for the project.
-     * @param _expiresAt New expiration timestamp for the project.
      * @return bool Success status.
      */
     function updateProject(
         uint256 _id,
-        string memory _title,
         string memory _description,
-        string[] memory _imageURLs, // Changed to string array
-        uint256 _expiresAt
+        string[] memory _imageURLs // Changed to string array
     ) public returns (bool) {
         require(msg.sender == projects[_id].owner, "Unauthorized Entity");
-        require(bytes(_title).length > 0, "Title cannot be empty");
         require(bytes(_description).length > 0, "Description cannot be empty");
         require(_imageURLs.length > 0, "ImageURLs cannot be empty"); // Ensure imageURLs array is not empty
 
-        projects[_id].title = _title;
         projects[_id].description = _description;
         projects[_id].imageURLs = _imageURLs; // Assign imageURLs
-        projects[_id].expiresAt = _expiresAt;
 
-        emit ProjectUpdated(_id, _title, block.timestamp);
+        emit ProjectUpdated(_id, projects[_id].title, block.timestamp);
 
         return true;
     }
