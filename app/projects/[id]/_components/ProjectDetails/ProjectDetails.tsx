@@ -19,6 +19,7 @@ import { statusColorMap } from '@/app/components/Projects/Projects';
 
 import styles from './ProjectDetails.module.scss';
 import classNames from 'classnames';
+import EditProjectModal from '@/app/components/modals/EditProjectModal/EditProjectModal';
 
 const ProjectDetails = () => {
   const project = useProjectStore((s) => s.project);
@@ -118,7 +119,7 @@ const ProjectDetails = () => {
         </div>
       </div>
       {backIsOpen && <ProjectModal variant="back" project={project} />}
-      {editIsOpen && <ProjectModal variant="edit" project={project} />}
+      {editIsOpen && <EditProjectModal project={project} />}
       {deleteIsOpen && <ProjectModal variant="delete" project={project} />}
     </section>
   );

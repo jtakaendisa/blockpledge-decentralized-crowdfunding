@@ -8,6 +8,8 @@ import { truncateAccount } from '../utils';
 import contractAddress from '../abis/contractAddress.json';
 import contractAbi from '../abis/app/contracts/BlockPledge.sol/BlockPledge.json';
 import { FormInputs } from '../components/ProjectModal/ProjectModal';
+import { AddFormInputs } from '../components/modals/AddProjectModal/AddProjectModal';
+import { EditFormInputs } from '../components/modals/EditProjectModal/EditProjectModal';
 
 const address = contractAddress.address;
 const abi = contractAbi.abi;
@@ -49,7 +51,7 @@ const useBlockchain = () => {
     imageURLs,
     cost,
     expiresAt,
-  }: FormInputs) => {
+  }: AddFormInputs) => {
     try {
       if (!window.ethereum) return alert('Please install Metamask');
 
@@ -74,7 +76,11 @@ const useBlockchain = () => {
     }
   };
 
-  const updateProject = async ({ id, description, imageURLs }: FormInputs) => {
+  const updateProject = async ({
+    id,
+    description,
+    imageURLs,
+  }: EditFormInputs & { id: number }) => {
     try {
       if (!window.ethereum) return alert('Please install Metamask');
 

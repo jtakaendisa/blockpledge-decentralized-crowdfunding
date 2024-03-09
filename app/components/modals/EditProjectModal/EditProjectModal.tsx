@@ -5,43 +5,41 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { FaTimes } from 'react-icons/fa';
 
-import { useModalStore } from '@/app/store';
+import { Project, useModalStore } from '@/app/store';
 import usePinata from '@/app/hooks/usePinata';
 import useBlockchain from '@/app/hooks/useBlockchain';
 import { convertToTimestamp, getTomorrowsDate } from '@/app/utils';
 import Button from '../../Button/Button';
-import newProject from '@/public/images/new-project.jpg';
 
 import styles from '../modal.module.scss';
 
-export interface AddFormInputs {
-  title: string;
-  cost: string;
-  expiresAt: Date | string | number;
+interface Props {
+  project: Project;
+}
+
+export interface EditFormInputs {
   imageURLs: File[] | string[];
   description: string;
 }
 
-const AddProjectModal = () => {
+const EditProjectModal = ({ project }: Props) => {
   const closeModal = useModalStore((s) => s.setIsOpen);
   const [files, setFiles] = useState<File[]>([]);
+  const [existingImageURLs, setExistingImageURLs] = useState(project.imageURLs);
   const [fileError, setFileError] = useState(false);
   const [uploading, setUploading] = useState(false);
   const { uploadFiles } = usePinata(setUploading);
-  const { createProject } = useBlockchain();
+  const { updateProject } = useBlockchain();
 
   const {
     register,
     handleSubmit,
     reset,
     formState: { isSubmitSuccessful },
-  } = useForm<AddFormInputs>({
+  } = useForm<EditFormInputs>({
     defaultValues: {
-      title: '',
-      cost: '',
-      expiresAt: '',
-      imageURLs: [],
-      description: '',
+      imageURLs: project.imageURLs,
+      description: project.description,
     },
   });
 
@@ -49,72 +47,65 @@ const AddProjectModal = () => {
     if (!e.target.files) return;
 
     const selectedFiles = Array.from(e.target.files);
-    const newFiles = [...files, ...selectedFiles].slice(0, 3); // Limit to three files
+    const remainingSlots = Math.max(0, 3 - existingImageURLs.length);
+    const newFiles = [...files, ...selectedFiles].slice(0, remainingSlots); // Limit to remaining slots
 
     setFiles(newFiles);
   };
 
-  const onSubmit: SubmitHandler<AddFormInputs> = async (data) => {
-    if (!files.length) {
+  const onSubmit: SubmitHandler<EditFormInputs> = async (data) => {
+    if (!files.length && !existingImageURLs.length) {
       setFileError(true);
       return;
     }
 
-    const { uploadedCids } = await uploadFiles(files);
+    if (files.length) {
+      const { uploadedCids } = await uploadFiles(files);
+      const combinedCids = [...uploadedCids, ...existingImageURLs];
 
-    data.imageURLs = uploadedCids;
-    data.expiresAt = convertToTimestamp(data.expiresAt as string);
+      data.imageURLs = combinedCids;
+    } else {
+      data.imageURLs = existingImageURLs;
+    }
 
-    await createProject(data);
-    toast.success('Project created successfully, changes will reflect momentarily.');
-    closeModal('add');
+    await updateProject({ ...data, id: project.id });
+    toast.success('Project updated successfully, changes will reflect momentarily.');
+
+    closeModal('edit');
   };
 
   useEffect(() => {
     reset();
   }, [isSubmitSuccessful, reset]);
 
+  if (!project) return null;
+
   return (
     <div className={styles.backdrop}>
       <div className={styles.modal}>
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.row}>
-            <p>Add Project</p>
+            <p>{project.title}</p>
             <button
               className={classNames({
                 [styles.close]: true,
                 [styles.disabled]: uploading,
               })}
               type="button"
-              onClick={() => closeModal('add')}
+              onClick={() => closeModal('edit')}
               disabled={uploading}
             >
               <FaTimes size={20} />
             </button>
           </div>
           <div className={styles.image}>
-            <Image src={newProject} alt="Create a Project" />
+            <Image
+              src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${project.imageURLs[0]}`}
+              alt={project.title}
+              fill
+              sizes="20vw"
+            />
           </div>
-          <input
-            className={styles.input}
-            type="text"
-            placeholder="Title"
-            {...register('title', { required: true })}
-          />
-          <input
-            className={styles.input}
-            type="number"
-            step={0.01}
-            min={0.01}
-            placeholder="Amount (ETH)"
-            {...register('cost', { required: true })}
-          />
-          <input
-            className={styles.input}
-            type="date"
-            placeholder="Expires"
-            {...register('expiresAt', { required: true, min: getTomorrowsDate() })}
-          />
           <input
             type="file"
             accept="image/*"
@@ -144,6 +135,26 @@ const AddProjectModal = () => {
                   </button>
                 </li>
               ))}
+              {existingImageURLs.map((image, index) => (
+                <li key={index}>
+                  <Image
+                    src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${image}`}
+                    alt={image}
+                    width={100}
+                    height={100}
+                  />
+                  image {index + 1}
+                  <button
+                    onClick={() =>
+                      setExistingImageURLs((prevFiles) =>
+                        prevFiles.filter((_, i) => i !== index)
+                      )
+                    }
+                  >
+                    Remove
+                  </button>
+                </li>
+              ))}
             </ul>
             {fileError && <span>Select at least 1 image to proceed</span>}
           </div>
@@ -153,7 +164,7 @@ const AddProjectModal = () => {
             {...register('description', { required: true })}
           />
           <Button disabled={uploading}>
-            {uploading ? 'Uploading Images...' : 'Submit Project'}
+            {uploading ? 'Uploading Images...' : 'Update Project'}
           </Button>
         </form>
       </div>
@@ -161,4 +172,4 @@ const AddProjectModal = () => {
   );
 };
 
-export default AddProjectModal;
+export default EditProjectModal;
