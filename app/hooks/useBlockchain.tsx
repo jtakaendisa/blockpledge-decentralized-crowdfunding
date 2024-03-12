@@ -7,7 +7,6 @@ import { Project, useAccountStore, useProjectStore } from '../store';
 import { truncateAccount } from '../utils';
 import contractAddress from '../abis/contractAddress.json';
 import contractAbi from '../abis/app/contracts/BlockPledge.sol/BlockPledge.json';
-import { FormInputs } from '../components/ProjectModal/ProjectModal';
 import { AddFormInputs } from '../components/modals/AddProjectModal/AddProjectModal';
 import { EditFormInputs } from '../components/modals/EditProjectModal/EditProjectModal';
 
@@ -201,6 +200,26 @@ const useBlockchain = () => {
     }
   };
 
+  const getCategories = async () => {
+    try {
+      if (!window.ethereum) return alert('Please install Metamask');
+
+      const contract = await getContract();
+
+      if (!contract) return alert("Can't connect to smart contract");
+
+      const categories = await contract.getCategories();
+
+      const formattedCategories = formatCategories(categories);
+
+      if (formattedCategories.length) {
+        console.log(formattedCategories);
+      }
+    } catch (error) {
+      console.log((error as Error).message);
+    }
+  };
+
   const formatDate = (timestamp: number) => {
     const date = new Date(timestamp);
     const day = date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`;
@@ -252,6 +271,15 @@ const useBlockchain = () => {
       .reverse();
   };
 
+  const formatCategories = (categories: any[]) => {
+    return categories
+      .map((category) => ({
+        id: Number(category[0]),
+        name: category[1],
+      }))
+      .reverse();
+  };
+
   return {
     connectWallet,
     getContract,
@@ -262,6 +290,7 @@ const useBlockchain = () => {
     loadProjects,
     loadProject,
     getBackers,
+    getCategories,
   };
 };
 
