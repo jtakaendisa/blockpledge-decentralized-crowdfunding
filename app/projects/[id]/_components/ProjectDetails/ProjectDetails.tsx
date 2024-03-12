@@ -23,12 +23,13 @@ import { statusColorMap } from '@/app/components/Projects/Projects';
 import styles from './ProjectDetails.module.scss';
 
 const ProjectDetails = () => {
+  const connectedAccount = useAccountStore((s) => s.connectedAccount);
   const project = useProjectStore((s) => s.project);
+  const categories = useProjectStore((s) => s.categories);
   const backIsOpen = useModalStore((s) => s.backIsOpen);
   const editIsOpen = useModalStore((s) => s.editIsOpen);
   const deleteIsOpen = useModalStore((s) => s.deleteIsOpen);
   const setIsOpen = useModalStore((s) => s.setIsOpen);
-  const connectedAccount = useAccountStore((s) => s.connectedAccount);
   const [selectedImage, setSelectedImage] = useState(0);
 
   const {
@@ -41,6 +42,7 @@ const ProjectDetails = () => {
     description,
     raised,
     cost,
+    categoryId,
   } = project;
 
   if (!project) return null;
@@ -85,6 +87,7 @@ const ProjectDetails = () => {
       <div className={styles.info}>
         <h5>{title}</h5>
         <small>{findDaysRemaining(expiresAt)}</small>
+        <small>{categories.find((category) => category.id === categoryId)?.name}</small>
         <div className={styles.row}>
           <div className={styles.backings}>
             <Identicon string={owner} size={15} />

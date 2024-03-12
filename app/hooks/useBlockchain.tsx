@@ -20,6 +20,7 @@ const useBlockchain = () => {
   const setProject = useProjectStore((s) => s.setProject);
   const setStats = useProjectStore((s) => s.setStats);
   const setBackers = useProjectStore((s) => s.setBackers);
+  const setCategories = useProjectStore((s) => s.setCategories);
 
   const connectWallet = async () => {
     try {
@@ -49,6 +50,7 @@ const useBlockchain = () => {
     description,
     imageURLs,
     cost,
+    category,
     expiresAt,
   }: AddFormInputs) => {
     try {
@@ -64,6 +66,7 @@ const useBlockchain = () => {
         title,
         description,
         imageURLs,
+        category,
         convertedCost,
         expiresAt
       );
@@ -114,7 +117,7 @@ const useBlockchain = () => {
     }
   };
 
-  const backProject = async (id: number, amount: string) => {
+  const backProject = async (id: number, amount: string, comment: string) => {
     try {
       if (!window.ethereum) return alert('Please install Metamask');
 
@@ -124,7 +127,7 @@ const useBlockchain = () => {
 
       const convertedAmount = ethers.parseEther(amount);
 
-      const tx = await contract.backProject(id, {
+      const tx = await contract.backProject(id, comment, {
         from: connectedAccount,
         value: convertedAmount,
       });
@@ -154,6 +157,20 @@ const useBlockchain = () => {
       }
     } catch (error) {
       console.log((error as Error).message);
+    }
+  };
+
+  const getCategories = async () => {
+    const contract = await getContract();
+
+    if (!contract) return;
+
+    const categories = await contract.getCategories();
+
+    const formattedCategories = formatCategories(categories);
+
+    if (formattedCategories.length) {
+      setCategories(formattedCategories);
     }
   };
 
@@ -200,26 +217,6 @@ const useBlockchain = () => {
     }
   };
 
-  const getCategories = async () => {
-    try {
-      if (!window.ethereum) return alert('Please install Metamask');
-
-      const contract = await getContract();
-
-      if (!contract) return alert("Can't connect to smart contract");
-
-      const categories = await contract.getCategories();
-
-      const formattedCategories = formatCategories(categories);
-
-      if (formattedCategories.length) {
-        console.log(formattedCategories);
-      }
-    } catch (error) {
-      console.log((error as Error).message);
-    }
-  };
-
   const formatDate = (timestamp: number) => {
     const date = new Date(timestamp);
     const day = date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`;
@@ -241,7 +238,8 @@ const useBlockchain = () => {
       timestamp: new Date(Number(project[7])).getTime(),
       expiresAt: new Date(Number(project[8])).getTime(),
       backers: Number(project[9]),
-      status: Number(project[10]) as Project['status'],
+      categoryId: Number(project[10]),
+      status: Number(project[11]) as Project['status'],
       date: formatDate(Number(project[8]) * 1000),
     };
   };
@@ -253,7 +251,7 @@ const useBlockchain = () => {
   const formatStats = (stats: any) => {
     return {
       totalProjects: Number(stats[0]),
-      totalBacking: Number(stats[1]),
+      totalBackings: Number(stats[1]),
       totalDonations: Number(ethers.formatEther(stats[2])),
     };
   };
@@ -266,18 +264,17 @@ const useBlockchain = () => {
         timestamp: formatDistance(new Date(Number(backer[2]) * 1000), Date.now(), {
           addSuffix: true,
         }),
-        refunded: backer[3],
+        comment: backer[3],
+        refunded: backer[4],
       }))
       .reverse();
   };
 
   const formatCategories = (categories: any[]) => {
-    return categories
-      .map((category) => ({
-        id: Number(category[0]),
-        name: category[1],
-      }))
-      .reverse();
+    return categories.map((category) => ({
+      id: Number(category[0]),
+      name: category[1],
+    }));
   };
 
   return {

@@ -31,13 +31,12 @@ const Projects = () => {
   const allProjects = useProjectStore((s) => s.projects);
   const end = useProjectStore((s) => s.end);
   const setEnd = useProjectStore((s) => s.setEnd);
-  const { loadProjects, getCategories } = useBlockchain();
+  const { loadProjects } = useBlockchain();
   const count = 1;
 
   useEffect(() => {
     const fetchData = async () => {
       await loadProjects();
-      await getCategories();
     };
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps

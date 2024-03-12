@@ -11,7 +11,7 @@ const Hero = () => {
   const openModal = useModalStore((s) => s.setIsOpen);
   const stats = useProjectStore((s) => s.stats);
 
-  const { totalBacking, totalDonations, totalProjects } = stats;
+  const { totalBackings, totalDonations, totalProjects } = stats;
 
   return (
     <section className={styles.hero}>
@@ -27,11 +27,11 @@ const Hero = () => {
       <div className={styles.stats}>
         <div className={styles.stat}>
           <span className={styles.sum}>{totalProjects}</span>
-          <span>Projects</span>
+          <span>{totalProjects === 1 ? 'Project' : 'Projects'}</span>
         </div>
         <div className={styles.stat}>
-          <span className={styles.sum}>{totalBacking}</span>
-          <span>Backings</span>
+          <span className={styles.sum}>{totalBackings}</span>
+          <span>{totalBackings === 1 ? 'Backing' : 'Backings'}</span>
         </div>
         <div className={styles.stat}>
           <span className={styles.sum}>{totalDonations} ETH</span>

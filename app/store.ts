@@ -21,6 +21,7 @@ export interface Project {
   title: string;
   description: string;
   imageURLs: string[];
+  categoryId: number;
   cost: number;
   raised: number;
   timestamp: number;
@@ -32,7 +33,7 @@ export interface Project {
 
 export interface Stats {
   totalProjects: number;
-  totalBacking: number;
+  totalBackings: number;
   totalDonations: number;
 }
 
@@ -40,7 +41,13 @@ interface Backer {
   backer: string;
   contribution: number;
   timestamp: string;
+  comment: string;
   refunded: boolean;
+}
+
+interface Category {
+  id: number;
+  name: string;
 }
 
 interface ProjectStore {
@@ -49,11 +56,13 @@ interface ProjectStore {
   stats: Stats;
   end: number;
   backers: Backer[];
+  categories: Category[];
   setProject: (project: Project) => void;
   setProjects: (projects: Project[]) => void;
   setStats: (stats: Stats) => void;
   setEnd: (count: number) => void;
   setBackers: (backers: Backer[]) => void;
+  setCategories: (categories: Category[]) => void;
 }
 
 const variantMap = {
@@ -89,17 +98,19 @@ const useProjectStore = create<ProjectStore>((set) => ({
   project: {} as Project,
   projects: [],
   stats: {
-    totalBacking: 0,
+    totalBackings: 0,
     totalDonations: 0,
     totalProjects: 0,
   },
   end: 3,
   backers: [],
+  categories: [],
   setProject: (project) => set((state) => ({ ...state, project })),
   setProjects: (projects) => set((state) => ({ ...state, projects })),
   setStats: (stats) => set((state) => ({ ...state, stats })),
   setEnd: (count) => set((state) => ({ ...state, end: state.end + count })),
   setBackers: (backers) => set((state) => ({ ...state, backers })),
+  setCategories: (categories) => set((state) => ({ ...state, categories })),
 }));
 
 export { useModalStore, useAccountStore, useProjectStore };

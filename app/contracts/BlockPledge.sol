@@ -31,12 +31,12 @@ contract BlockPledge {
     // Structs
     struct StatsStruct {
         uint256 totalProjects;
-        uint256 totalBacking;
+        uint256 totalBackings;
         uint256 totalDonations;
     }
 
     struct CategoryStruct {
-        uint256 categoryId;
+        uint256 id;
         string name;
     }
 
@@ -60,7 +60,6 @@ contract BlockPledge {
         uint256 expiresAt;
         uint256 backers;
         uint256 categoryId;
-        string[] comments;
         StatusEnum status;
     }
 
@@ -125,6 +124,7 @@ contract BlockPledge {
      * @param _title Title of the project.
      * @param _description Description of the project.
      * @param _imageURLs URLs of the project's images.
+     * @param _category Category of the project.
      * @param _cost Cost of the project.
      * @param _expiresAt Expiration timestamp of the project.
      * @return bool Success status.
@@ -133,6 +133,7 @@ contract BlockPledge {
         string memory _title,
         string memory _description,
         string[] memory _imageURLs, // Changed to string array
+        uint256 _category,
         uint256 _cost,
         uint256 _expiresAt
     ) public returns (bool) {
@@ -141,6 +142,7 @@ contract BlockPledge {
         require(bytes(_description).length > 0, "Description cannot be empty");
         require(_imageURLs.length > 0, "ImageURLs cannot be empty"); // Ensure imageURLs array is not empty
         require(_cost > 0 ether, "Cost cannot be zero");
+        require(_category < categories.length, "Invalid category ID");
 
         // Create a new project
         ProjectStruct memory project;
@@ -149,6 +151,7 @@ contract BlockPledge {
         project.title = _title;
         project.description = _description;
         project.imageURLs = _imageURLs; // Assign imageURLs
+        project.categoryId = _category;
         project.cost = _cost;
         project.timestamp = block.timestamp;
         project.expiresAt = _expiresAt;
@@ -232,7 +235,7 @@ contract BlockPledge {
             backersOf[_id][i].timestamp = block.timestamp;
             payTo(backer, contribution);
 
-            stats.totalBacking -= 1;
+            stats.totalBackings -= 1;
             stats.totalDonations -= contribution;
         }
     }
@@ -254,7 +257,7 @@ contract BlockPledge {
             "Project no longer opened"
         );
 
-        stats.totalBacking += 1;
+        stats.totalBackings += 1;
         stats.totalDonations += msg.value;
         projects[_id].raised += msg.value;
         projects[_id].backers += 1;

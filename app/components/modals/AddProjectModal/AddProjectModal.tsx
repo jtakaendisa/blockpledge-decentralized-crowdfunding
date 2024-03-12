@@ -5,7 +5,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { FaTimes } from 'react-icons/fa';
 
-import { useModalStore } from '@/app/store';
+import { useModalStore, useProjectStore } from '@/app/store';
 import usePinata from '@/app/hooks/usePinata';
 import useBlockchain from '@/app/hooks/useBlockchain';
 import { convertToTimestamp, getTomorrowsDate } from '@/app/utils';
@@ -19,11 +19,13 @@ export interface AddFormInputs {
   cost: string;
   expiresAt: Date | string | number;
   imageURLs: File[] | string[];
+  category: number;
   description: string;
 }
 
 const AddProjectModal = () => {
   const closeModal = useModalStore((s) => s.setIsOpen);
+  const categories = useProjectStore((s) => s.categories);
   const [files, setFiles] = useState<File[]>([]);
   const [fileError, setFileError] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -41,6 +43,7 @@ const AddProjectModal = () => {
       cost: '',
       expiresAt: '',
       imageURLs: [],
+      category: 0,
       description: '',
     },
   });
@@ -64,6 +67,7 @@ const AddProjectModal = () => {
 
     data.imageURLs = uploadedCids;
     data.expiresAt = convertToTimestamp(data.expiresAt as string);
+    data.category = +data.category;
 
     await createProject(data);
     toast.success('Project created successfully, changes will reflect momentarily.');
@@ -147,6 +151,13 @@ const AddProjectModal = () => {
             </ul>
             {fileError && <span>Select at least 1 image to proceed</span>}
           </div>
+          <select {...register('category', { required: true })}>
+            {categories.map(({ id, name }) => (
+              <option key={id} value={id}>
+                {name}
+              </option>
+            ))}
+          </select>
           <textarea
             className={classNames(styles.input, styles.textArea)}
             placeholder="Description"

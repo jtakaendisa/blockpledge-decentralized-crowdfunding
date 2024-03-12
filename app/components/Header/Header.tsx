@@ -12,7 +12,7 @@ import Button from '../Button/Button';
 import styles from './Header.module.scss';
 
 const Header = () => {
-  const { connectWallet } = useBlockchain();
+  const { connectWallet, getCategories } = useBlockchain();
   const connectedAccount = useAccountStore((s) => s.connectedAccount);
   const setConnectedAccount = useAccountStore((s) => s.setConnectedAccount);
 
@@ -47,6 +47,15 @@ const Header = () => {
       window.ethereum.removeListener('accountsChanged', handleAccountChange);
     };
   }, [setConnectedAccount]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await getCategories();
+    };
+
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <header className={styles.header}>

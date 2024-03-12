@@ -16,6 +16,7 @@ interface Props {
 
 export interface BackFormInputs {
   cost: string;
+  comment: string;
 }
 
 const BackProjectModal = ({ project }: Props) => {
@@ -30,11 +31,12 @@ const BackProjectModal = ({ project }: Props) => {
   } = useForm<BackFormInputs>({
     defaultValues: {
       cost: '',
+      comment: '',
     },
   });
 
   const onSubmit: SubmitHandler<BackFormInputs> = async (data) => {
-    await backProject(project.id, data.cost);
+    await backProject(project.id, data.cost, data.comment);
     toast.success(
       'Thank you! Project backing has been received, changes will reflect momentarily.'
     );
@@ -78,6 +80,13 @@ const BackProjectModal = ({ project }: Props) => {
             placeholder="Amount (ETH)"
             {...register('cost', { required: true })}
           />
+          <input
+            className={styles.input}
+            type="text"
+            placeholder="Comment (Optional)"
+            {...register('comment')}
+          />
+
           <Button>Back Project</Button>
         </form>
       </div>
