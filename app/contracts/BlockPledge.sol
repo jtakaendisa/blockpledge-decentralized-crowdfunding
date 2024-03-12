@@ -12,6 +12,7 @@ contract BlockPledge {
     uint256 public projectCount;
     StatsStruct public stats;
     ProjectStruct[] public projects;
+    CategoryStruct[] public categories;
 
     // Mappings
     mapping(address => ProjectStruct[]) public projectsOf;
@@ -34,10 +35,16 @@ contract BlockPledge {
         uint256 totalDonations;
     }
 
+    struct CategoryStruct {
+        uint256 categoryId;
+        string name;
+    }
+
     struct BackerStruct {
         address backer;
         uint256 contribution;
         uint256 timestamp;
+        string comment;
         bool refunded;
     }
 
@@ -52,6 +59,8 @@ contract BlockPledge {
         uint256 timestamp;
         uint256 expiresAt;
         uint256 backers;
+        uint256 categoryId;
+        string[] comments;
         StatusEnum status;
     }
 
@@ -70,7 +79,12 @@ contract BlockPledge {
     );
     event ProjectUpdated(uint256 id, string title, uint256 timestamp);
     event ProjectDeleted(uint256 id, uint256 timestamp);
-    event ProjectBacked(uint256 id, address backer, uint256 timestamp);
+    event ProjectBacked(
+        uint256 id,
+        address backer,
+        string comment,
+        uint256 timestamp
+    );
     event ProjectPaidOut(
         uint256 id,
         address recipient,
@@ -82,6 +96,28 @@ contract BlockPledge {
     constructor(uint256 _projectTax) {
         owner = msg.sender;
         projectTax = _projectTax;
+
+        /**
+         * @dev Populates the categories array upon contract deployment.
+         */
+        string[] memory categoryNames = new string[](12); // Define dynamic array
+
+        categoryNames[0] = "Art & Creativity";
+        categoryNames[1] = "Technology & Innovation";
+        categoryNames[2] = "Community & Social Impact";
+        categoryNames[3] = "Fashion & Design";
+        categoryNames[4] = "Food & Beverage";
+        categoryNames[5] = "Gaming & Entertainment";
+        categoryNames[6] = "Travel & Exploration";
+        categoryNames[7] = "Education & Learning";
+        categoryNames[8] = "Health & Fitness";
+        categoryNames[9] = "Crafts & DIY";
+        categoryNames[10] = "Finance & Investment";
+        categoryNames[11] = "Pets & Animals";
+
+        for (uint256 i = 0; i < categoryNames.length; i++) {
+            categories.push(CategoryStruct(i, categoryNames[i]));
+        }
     }
 
     /**
@@ -204,9 +240,13 @@ contract BlockPledge {
     /**
      * @dev Backs a project by providing a contribution.
      * @param _id ID of the project to be backed.
+     * @param _comment Comment left by the backer.
      * @return bool Success status.
      */
-    function backProject(uint256 _id) public payable returns (bool) {
+    function backProject(
+        uint256 _id,
+        string memory _comment
+    ) public payable returns (bool) {
         require(msg.value > 0 ether, "Ether must be greater than zero");
         require(projectExists[_id], "Project not found");
         require(
@@ -220,10 +260,16 @@ contract BlockPledge {
         projects[_id].backers += 1;
 
         backersOf[_id].push(
-            BackerStruct(msg.sender, msg.value, block.timestamp, false)
+            BackerStruct(
+                msg.sender,
+                msg.value,
+                block.timestamp,
+                _comment,
+                false
+            )
         );
 
-        emit ProjectBacked(_id, msg.sender, block.timestamp);
+        emit ProjectBacked(_id, msg.sender, _comment, block.timestamp);
 
         if (projects[_id].raised >= projects[_id].cost) {
             projects[_id].status = StatusEnum.APPROVED;
@@ -335,5 +381,13 @@ contract BlockPledge {
         uint256 _id
     ) public view returns (BackerStruct[] memory) {
         return backersOf[_id];
+    }
+
+    /**
+     * @dev Retrieves all projects.
+     * @return ProjectStruct[] Array of projects.
+     */
+    function getCategories() public view returns (CategoryStruct[] memory) {
+        return categories;
     }
 }
