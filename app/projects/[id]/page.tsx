@@ -19,8 +19,12 @@ const ProjectPage = ({ params: { id } }: Props) => {
   const { loadProject, getBackers } = useBlockchain();
 
   useEffect(() => {
-    loadProject(+id);
-    getBackers(+id);
+    const fetchData = async () => {
+      await loadProject(+id);
+      await getBackers(+id);
+    };
+
+    fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 

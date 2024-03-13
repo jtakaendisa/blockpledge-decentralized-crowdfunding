@@ -25,11 +25,10 @@ const ProjectBackers = () => {
           </tr>
         </thead>
         <tbody>
-          {backers.map((backerInfo) => {
+          {backers.map((backerInfo, idx) => {
             const { backer, contribution, timestamp, comment, refunded } = backerInfo;
-            console.log(timestamp);
             return (
-              <tr key={backer}>
+              <tr key={idx + backer}>
                 <td>
                   <div className={styles.backerInfo}>
                     <Identicon string={backer} size={25} />

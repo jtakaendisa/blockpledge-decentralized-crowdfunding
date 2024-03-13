@@ -77,7 +77,7 @@ export const statusMap = {
   1: 'APPROVED',
   2: 'REVERTED',
   3: 'DELETED',
-  4: 'PAIDOUT',
+  4: 'PAID OUT',
 } as const;
 
 const useModalStore = create<ModalStore>((set) => ({

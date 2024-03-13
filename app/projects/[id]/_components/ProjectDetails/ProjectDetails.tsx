@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames';
 import Identicon from 'react-hooks-identicons';
@@ -34,10 +34,12 @@ import { statusColorMap } from '@/app/components/Projects/Projects';
 import linkSVG from '@/public/icons/link.svg';
 
 import styles from './ProjectDetails.module.scss';
+import useBlockchain from '@/app/hooks/useBlockchain';
 
 const TEST_URL = 'udemy.com';
 
 const ProjectDetails = () => {
+  const { listenForProjectPayOut } = useBlockchain();
   const connectedAccount = useAccountStore((s) => s.connectedAccount);
   const project = useProjectStore((s) => s.project);
   const categories = useProjectStore((s) => s.categories);
@@ -70,6 +72,15 @@ const ProjectDetails = () => {
       console.error('Failed to copy:', error);
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await listenForProjectPayOut();
+    };
+
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!project) return null;
 
@@ -150,16 +161,14 @@ const ProjectDetails = () => {
         <div className={styles.socials}>
           <button className={styles.linkButton} onClick={copyToClipboard}>
             <Image src={linkSVG} alt="link icon" width={28} height={28} />
-            {urlCopied && (
-              <span
-                className={classNames({
-                  [styles.tooltip]: true,
-                  [styles.show]: urlCopied,
-                })}
-              >
-                link copied
-              </span>
-            )}
+            <span
+              className={classNames({
+                [styles.tooltip]: true,
+                [styles.show]: urlCopied,
+              })}
+            >
+              link copied
+            </span>
           </button>
           <EmailShareButton url={TEST_URL}>
             <EmailIcon round size={48} />

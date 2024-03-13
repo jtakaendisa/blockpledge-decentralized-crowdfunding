@@ -9,11 +9,13 @@ import contractAddress from '../abis/contractAddress.json';
 import contractAbi from '../abis/app/contracts/BlockPledge.sol/BlockPledge.json';
 import { AddFormInputs } from '../components/modals/AddProjectModal/AddProjectModal';
 import { EditFormInputs } from '../components/modals/EditProjectModal/EditProjectModal';
+import useEmail from './useEmail';
 
 const address = contractAddress.address;
 const abi = contractAbi.abi;
 
 const useBlockchain = () => {
+  const { sendPaymentNotification } = useEmail();
   const connectedAccount = useAccountStore((s) => s.connectedAccount);
   const setConnectedAccount = useAccountStore((s) => s.setConnectedAccount);
   const setProjects = useProjectStore((s) => s.setProjects);
@@ -217,6 +219,18 @@ const useBlockchain = () => {
     }
   };
 
+  const listenForProjectPayOut = async () => {
+    const contract = await getContract();
+
+    if (!contract) return;
+
+    contract.once('ProjectPaidOut', async (id, recipient, amount, timestamp) => {
+      const payoutInfo = formatPayoutInfo(id, recipient, amount, timestamp);
+
+      sendPaymentNotification(payoutInfo);
+    });
+  };
+
   const formatDate = (timestamp: number) => {
     const date = new Date(timestamp);
     const day = date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`;
@@ -277,6 +291,15 @@ const useBlockchain = () => {
     }));
   };
 
+  const formatPayoutInfo = (id: any, recipient: any, amount: any, timestamp: any) => {
+    return {
+      id: Number(id),
+      recipient,
+      amount: Number(ethers.formatEther(amount)),
+      timestamp: new Date(Number(timestamp) * 1000).toString(),
+    };
+  };
+
   return {
     connectWallet,
     getContract,
@@ -288,6 +311,7 @@ const useBlockchain = () => {
     loadProject,
     getBackers,
     getCategories,
+    listenForProjectPayOut,
   };
 };
 
