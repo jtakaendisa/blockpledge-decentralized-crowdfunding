@@ -5,6 +5,18 @@ import Image from 'next/image';
 import classNames from 'classnames';
 import Identicon from 'react-hooks-identicons';
 import { FaEthereum } from 'react-icons/fa';
+import {
+  EmailShareButton,
+  FacebookShareButton,
+  TelegramShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+  EmailIcon,
+  FacebookIcon,
+  TelegramIcon,
+  XIcon,
+  WhatsappIcon,
+} from 'react-share';
 
 import {
   statusMap,
@@ -19,8 +31,11 @@ import BackProjectModal from '@/app/components/modals/BackProjectModal/BackProje
 import ProgressBar from '@/app/components/ProgressBar/ProgressBar';
 import Button from '@/app/components/Button/Button';
 import { statusColorMap } from '@/app/components/Projects/Projects';
+import linkSVG from '@/public/icons/link.svg';
 
 import styles from './ProjectDetails.module.scss';
+
+const TEST_URL = 'udemy.com';
 
 const ProjectDetails = () => {
   const connectedAccount = useAccountStore((s) => s.connectedAccount);
@@ -31,6 +46,7 @@ const ProjectDetails = () => {
   const deleteIsOpen = useModalStore((s) => s.deleteIsOpen);
   const setIsOpen = useModalStore((s) => s.setIsOpen);
   const [selectedImage, setSelectedImage] = useState(0);
+  const [urlCopied, setUrlCopied] = useState(false);
 
   const {
     imageURLs,
@@ -44,6 +60,16 @@ const ProjectDetails = () => {
     cost,
     categoryId,
   } = project;
+
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setUrlCopied(true);
+      setTimeout(() => setUrlCopied(false), 2000);
+    } catch (error) {
+      console.error('Failed to copy:', error);
+    }
+  };
 
   if (!project) return null;
 
@@ -120,6 +146,36 @@ const ProjectDetails = () => {
               <Button color="orange">Payout</Button>
             </>
           )}
+        </div>
+        <div className={styles.socials}>
+          <button className={styles.linkButton} onClick={copyToClipboard}>
+            <Image src={linkSVG} alt="link icon" width={28} height={28} />
+            {urlCopied && (
+              <span
+                className={classNames({
+                  [styles.tooltip]: true,
+                  [styles.show]: urlCopied,
+                })}
+              >
+                link copied
+              </span>
+            )}
+          </button>
+          <EmailShareButton url={TEST_URL}>
+            <EmailIcon round size={48} />
+          </EmailShareButton>
+          <FacebookShareButton url={TEST_URL}>
+            <FacebookIcon round size={48} />
+          </FacebookShareButton>
+          <TelegramShareButton url={TEST_URL}>
+            <TelegramIcon round size={48} />
+          </TelegramShareButton>
+          <TwitterShareButton url={TEST_URL}>
+            <XIcon round size={48} />
+          </TwitterShareButton>
+          <WhatsappShareButton url={TEST_URL}>
+            <WhatsappIcon round size={48} />
+          </WhatsappShareButton>
         </div>
       </div>
       {backIsOpen && <BackProjectModal project={project} />}

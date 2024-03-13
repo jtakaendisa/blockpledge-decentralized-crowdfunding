@@ -35,10 +35,7 @@ const Projects = () => {
   const count = 1;
 
   useEffect(() => {
-    const fetchData = async () => {
-      await loadProjects();
-    };
-    fetchData();
+    loadProjects();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -49,11 +49,7 @@ const Header = () => {
   }, [setConnectedAccount]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      await getCategories();
-    };
-
-    fetchData();
+    getCategories();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

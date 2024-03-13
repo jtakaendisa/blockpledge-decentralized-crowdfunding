@@ -101,6 +101,56 @@ $light-orange: rgb(216, 96, 41);
       gap: 1rem;
     }
 
+    .socials {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      .linkButton {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        width: 48px;
+        height: 48px;
+        background-color: #7f7f7f;
+        border: none;
+        border-radius: 50%;
+
+        .tooltip {
+          visibility: hidden;
+          background-color: rgba(0, 0, 0, 0.8);
+          color: #fff;
+          text-align: center;
+          padding: 5px;
+          border-radius: 5px;
+          position: absolute;
+          z-index: 1;
+          bottom: 125%;
+          left: 50%;
+          transform: translateX(-50%);
+          opacity: 0;
+          transition: opacity 0.3s;
+        }
+
+        .tooltip::after {
+          content: '';
+          position: absolute;
+          top: 100%;
+          left: 50%;
+          margin-left: -5px;
+          border-width: 5px;
+          border-style: solid;
+          border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+        }
+
+        .tooltip.show {
+          visibility: visible;
+          opacity: 1;
+        }
+      }
+    }
+
     .progressOut {
       background-color: rgba(116, 116, 116, 0.25);
       height: 0.25rem;
