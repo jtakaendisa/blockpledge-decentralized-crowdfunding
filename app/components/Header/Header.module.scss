@@ -35,4 +35,10 @@ $dark-gray: rgb(53, 53, 53);
       color: $dark-gray;
     }
   }
+
+  .buttonContainer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
 }

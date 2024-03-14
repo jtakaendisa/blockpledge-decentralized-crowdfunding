@@ -224,11 +224,11 @@ const useBlockchain = () => {
 
     if (!contract) return;
 
-    contract.once('ProjectPaidOut', async (id, recipient, amount, timestamp) => {
-      const payoutInfo = formatPayoutInfo(id, recipient, amount, timestamp);
+    // contract.once('ProjectPaidOut', async (id, recipient, amount, timestamp) => {
+    //   const formattedPayoutInfo = formatPayoutInfo(id, recipient, amount, timestamp);
 
-      sendPaymentNotification(payoutInfo);
-    });
+    //   sendPaymentNotification(formattedPayoutInfo);
+    // });
   };
 
   const formatDate = (timestamp: number) => {

@@ -1,0 +1,24 @@
+.signupPage {
+  padding: 0 1.5rem;
+
+  & > section {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 7rem;
+    width: 100%;
+    height: calc(100vh - 7rem);
+
+    .card {
+      width: 30%;
+      margin-top: 6rem;
+      padding: 1rem;
+      border-radius: 16px;
+      box-shadow: 0 0.25rem 0.5rem rgba(116, 116, 116, 0.25);
+
+      .heading {
+        text-align: center;
+      }
+    }
+  }
+}

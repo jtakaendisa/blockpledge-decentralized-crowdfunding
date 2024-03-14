@@ -10,8 +10,10 @@ import useBlockchain from '@/app/hooks/useBlockchain';
 import Button from '../Button/Button';
 
 import styles from './Header.module.scss';
+import { useRouter } from 'next/navigation';
 
 const Header = () => {
+  const router = useRouter();
   const { connectWallet, getCategories } = useBlockchain();
   const connectedAccount = useAccountStore((s) => s.connectedAccount);
   const setConnectedAccount = useAccountStore((s) => s.setConnectedAccount);
@@ -63,9 +65,16 @@ const Header = () => {
         <span>BlockPledge</span>
         <TbBusinessplan />
       </Link>
-      <Button onClick={connectWallet} disabled={connectedAccount.length > 0}>
-        {connectedAccount ? truncateAccount(connectedAccount, 4, 4) : 'Connect Wallet'}
-      </Button>
+      <div className={styles.buttonContainer}>
+        <Button inverted onClick={() => router.push('/auth')}>
+          Sign In
+        </Button>
+        <Button onClick={connectWallet} disabled={connectedAccount.length > 0}>
+          {connectedAccount
+            ? truncateAccount(connectedAccount, 4, 4)
+            : 'Connect Wallet'}
+        </Button>
+      </div>
     </header>
   );
 };
