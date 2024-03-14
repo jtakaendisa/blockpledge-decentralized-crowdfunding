@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect } from 'react';
-import Link from 'next/link';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
+import { createAuthUser, createUserDocument } from '@/app/services/authService';
 import Header from '../../components/Header/Header';
 import Button from '../../components/Button/Button';
 
@@ -12,6 +12,7 @@ import styles from './page.module.scss';
 interface SigninFormInputs {
   email: string;
   password: string;
+  confirmPassword: string;
   accountType: string;
   wallet: string;
 }
@@ -27,6 +28,7 @@ const SignupPage = () => {
     defaultValues: {
       email: '',
       password: '',
+      confirmPassword: '',
       accountType: 'funder',
       wallet: '',
     },
@@ -34,8 +36,22 @@ const SignupPage = () => {
 
   const watchShowWallet = watch('accountType');
 
-  const onSubmit: SubmitHandler<SigninFormInputs> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<SigninFormInputs> = async (data) => {
+    const { email, password, confirmPassword, accountType, wallet } = data;
+
+    if (password !== confirmPassword) {
+      alert('Passwords do not match!');
+      return;
+    }
+
+    try {
+      const response = await createAuthUser(email, password);
+      if (response) {
+        createUserDocument(response.user, accountType, wallet);
+      }
+    } catch (error) {
+      console.log('user creation encountered an error', (error as Error).message);
+    }
   };
 
   useEffect(() => {
@@ -63,6 +79,14 @@ const SignupPage = () => {
                 id="password"
                 type="password"
                 {...register('password', { required: true })}
+              />
+            </div>
+            <div>
+              <label htmlFor="confirmPassword">Confirm Password</label>
+              <input
+                id="confirmPassword"
+                type="password"
+                {...register('confirmPassword', { required: true })}
               />
             </div>
             <fieldset>
