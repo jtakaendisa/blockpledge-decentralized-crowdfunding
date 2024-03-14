@@ -5,8 +5,11 @@ import {
   createUserWithEmailAndPassword,
   User,
   signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
 } from 'firebase/auth';
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
+import { AuthUser } from '../store';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -17,7 +20,8 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-const app = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
+
 const db = getFirestore();
 const auth = getAuth();
 const provider = new GoogleAuthProvider();
@@ -62,4 +66,48 @@ const createUserDocument = async (
   return userDocRef;
 };
 
-export { createAuthUser, createUserDocument };
+const signInAuthUser = async (email: string, password: string) => {
+  if (!email || !password) return;
+
+  try {
+    const { user } = await signInWithEmailAndPassword(auth, email, password);
+
+    return user;
+  } catch (error) {
+    console.log('Error during sign-in:', (error as Error).message);
+  }
+};
+
+const signOutAuthUser = async () => await signOut(auth);
+
+const authStateChangeListener = (callback: any) => onAuthStateChanged(auth, callback);
+
+const formatAuthUserData = async (user: User) => {
+  if (!user) return null;
+
+  // Fetch additional user data
+  const userDocRef = doc(db, 'users', user.uid);
+  const userSnapshot = await getDoc(userDocRef);
+
+  if (userSnapshot.exists()) {
+    // Merge additional user data with userCredential.user object
+    const userData = userSnapshot.data();
+    const completeUser = {
+      ...user,
+      ...userData,
+    } as AuthUser;
+
+    return completeUser;
+  }
+
+  return null;
+};
+
+export {
+  createAuthUser,
+  createUserDocument,
+  signInAuthUser,
+  signOutAuthUser,
+  authStateChangeListener,
+  formatAuthUserData,
+};

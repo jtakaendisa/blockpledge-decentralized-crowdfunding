@@ -1,3 +1,4 @@
+import { User } from 'firebase/auth';
 import { create } from 'zustand';
 
 export type ModalVariant = 'add' | 'back' | 'edit' | 'delete';
@@ -10,9 +11,13 @@ interface ModalStore {
   setIsOpen: (variant: ModalVariant) => void;
 }
 
+export type AuthUser = User & { accountType: string; wallet: string };
+
 interface AccountStore {
+  authUser: AuthUser | null;
   connectedAccount: string;
   setConnectedAccount: (account: string) => void;
+  setAuthUser: (user: AuthUser | null) => void;
 }
 
 export interface Project {
@@ -90,8 +95,11 @@ const useModalStore = create<ModalStore>((set) => ({
 }));
 
 const useAccountStore = create<AccountStore>((set) => ({
+  authUser: null,
   connectedAccount: '',
-  setConnectedAccount: (account) => set(() => ({ connectedAccount: account })),
+  setAuthUser: (user) => set((state) => ({ ...state, authUser: user })),
+  setConnectedAccount: (account) =>
+    set((state) => ({ ...state, connectedAccount: account })),
 }));
 
 const useProjectStore = create<ProjectStore>((set) => ({

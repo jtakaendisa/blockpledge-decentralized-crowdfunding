@@ -47,7 +47,7 @@ const SignupPage = () => {
     try {
       const response = await createAuthUser(email, password);
       if (response) {
-        createUserDocument(response.user, accountType, wallet);
+        await createUserDocument(response.user, accountType, wallet);
       }
     } catch (error) {
       console.log('user creation encountered an error', (error as Error).message);

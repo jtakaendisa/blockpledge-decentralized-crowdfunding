@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { createUserDocument, signInWithGooglePopup } from '../services/authService';
+import { signInAuthUser } from '../services/authService';
 import Header from '../components/Header/Header';
 import Button from '../components/Button/Button';
 
@@ -28,13 +28,14 @@ const AuthPage = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<SigninFormInputs> = (data) => {
-    console.log(data);
-  };
+  const onSubmit: SubmitHandler<SigninFormInputs> = async (data) => {
+    const { email, password } = data;
 
-  const logGoogleUser = async () => {
-    const { user } = await signInWithGooglePopup();
-    const userDocRef = await createUserDocument(user);
+    try {
+      await signInAuthUser(email, password);
+    } catch (error) {
+      console.log('error encountered during sign in', (error as Error).message);
+    }
   };
 
   useEffect(() => {
@@ -66,11 +67,6 @@ const AuthPage = () => {
             </div>
             <Button>Sign In</Button>
           </form>
-          <div>
-            <Button inverted onClick={logGoogleUser}>
-              Sign in with Google
-            </Button>
-          </div>
           <span>
             Don&apos;t have an account? <Link href="/auth/signup">Sign up</Link>
           </span>
