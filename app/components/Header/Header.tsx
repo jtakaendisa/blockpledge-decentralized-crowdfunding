@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { User } from 'firebase/auth';
 import { TbBusinessplan } from 'react-icons/tb';
 
 import { useAccountStore } from '@/app/store';
@@ -16,7 +17,6 @@ import useBlockchain from '@/app/hooks/useBlockchain';
 import Button from '../Button/Button';
 
 import styles from './Header.module.scss';
-import { User } from 'firebase/auth';
 
 const Header = () => {
   const router = useRouter();
@@ -25,6 +25,9 @@ const Header = () => {
   const setConnectedAccount = useAccountStore((s) => s.setConnectedAccount);
   const authUser = useAccountStore((s) => s.authUser);
   const setAuthUser = useAccountStore((s) => s.setAuthUser);
+  const isAdmin =
+    authUser?.uid === process.env.NEXT_PUBLIC_ADMIN_UID &&
+    connectedAccount === process.env.NEXT_PUBLIC_ADMIN_CRYPTO_ACCOUNT;
 
   useEffect(() => {
     const fetchConnectedAccount = async () => {
@@ -83,6 +86,11 @@ const Header = () => {
         <TbBusinessplan />
       </Link>
       <div className={styles.buttonContainer}>
+        {isAdmin && (
+          <Button inverted onClick={() => router.push('/dashboard')}>
+            Admin Dashboard
+          </Button>
+        )}
         {authUser ? (
           <Button inverted onClick={signOutAuthUser}>
             Sign out

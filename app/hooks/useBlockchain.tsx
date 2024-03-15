@@ -20,6 +20,7 @@ const useBlockchain = () => {
   const setConnectedAccount = useAccountStore((s) => s.setConnectedAccount);
   const setProjects = useProjectStore((s) => s.setProjects);
   const setProject = useProjectStore((s) => s.setProject);
+  const setUserProjects = useProjectStore((s) => s.setUserProjects);
   const setStats = useProjectStore((s) => s.setStats);
   const setBackers = useProjectStore((s) => s.setBackers);
   const setCategories = useProjectStore((s) => s.setCategories);
@@ -142,6 +143,40 @@ const useBlockchain = () => {
     }
   };
 
+  const acceptProject = async (id: number) => {
+    try {
+      if (!window.ethereum) return alert('Please install Metamask');
+
+      const contract = await getContract();
+
+      if (!contract) return;
+
+      const tx = await contract.acceptProject(id);
+
+      await tx.wait();
+      await loadProject(id);
+    } catch (error) {
+      console.log((error as Error).message);
+    }
+  };
+
+  const rejectProject = async (id: number) => {
+    try {
+      if (!window.ethereum) return alert('Please install Metamask');
+
+      const contract = await getContract();
+
+      if (!contract) return;
+
+      const tx = await contract.rejectProject(id);
+
+      await tx.wait();
+      await loadProject(id);
+    } catch (error) {
+      console.log((error as Error).message);
+    }
+  };
+
   const getBackers = async (id: number) => {
     try {
       if (!window.ethereum) return alert('Please install Metamask');
@@ -173,6 +208,26 @@ const useBlockchain = () => {
 
     if (formattedCategories.length) {
       setCategories(formattedCategories);
+    }
+  };
+
+  const getUserProjects = async (user: string) => {
+    try {
+      if (!window.ethereum) return alert('Please install Metamask');
+
+      const contract = await getContract();
+
+      if (!contract) return alert("Can't connect to smart contract");
+
+      const userProjects = await contract.getUserProjects(user);
+
+      const formattedUserProjects = formatProjects(userProjects);
+
+      if (userProjects.length) {
+        setUserProjects(formattedUserProjects);
+      }
+    } catch (error) {
+      console.log((error as Error).message);
     }
   };
 
@@ -254,6 +309,7 @@ const useBlockchain = () => {
       backers: Number(project[9]),
       categoryId: Number(project[10]),
       status: Number(project[11]) as Project['status'],
+      deletionReason: project[12],
       date: formatDate(Number(project[8]) * 1000),
     };
   };
@@ -307,8 +363,11 @@ const useBlockchain = () => {
     updateProject,
     deleteProject,
     backProject,
+    acceptProject,
+    rejectProject,
     loadProjects,
     loadProject,
+    getUserProjects,
     getBackers,
     getCategories,
     listenForProjectPayOut,

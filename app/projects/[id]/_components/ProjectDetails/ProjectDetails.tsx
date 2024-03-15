@@ -28,6 +28,7 @@ import { findDaysRemaining, truncateAccount } from '@/app/utils';
 import EditProjectModal from '@/app/components/modals/EditProjectModal/EditProjectModal';
 import DeleteProjectModal from '@/app/components/modals/DeleteProjectModal/DeleteProjectModal';
 import BackProjectModal from '@/app/components/modals/BackProjectModal/BackProjectModal';
+import AuthorizeProjectModal from '@/app/components/modals/AuthorizeProjectModal/AuthorizeProjectModal';
 import ProgressBar from '@/app/components/ProgressBar/ProgressBar';
 import Button from '@/app/components/Button/Button';
 import { statusColorMap } from '@/app/components/Projects/Projects';
@@ -41,14 +42,20 @@ const TEST_URL = 'udemy.com';
 const ProjectDetails = () => {
   const { listenForProjectPayOut } = useBlockchain();
   const connectedAccount = useAccountStore((s) => s.connectedAccount);
+  const authUser = useAccountStore((s) => s.authUser);
   const project = useProjectStore((s) => s.project);
   const categories = useProjectStore((s) => s.categories);
   const backIsOpen = useModalStore((s) => s.backIsOpen);
   const editIsOpen = useModalStore((s) => s.editIsOpen);
   const deleteIsOpen = useModalStore((s) => s.deleteIsOpen);
+  const authorizeIsOpen = useModalStore((s) => s.authorizeIsOpen);
   const setIsOpen = useModalStore((s) => s.setIsOpen);
   const [selectedImage, setSelectedImage] = useState(0);
   const [urlCopied, setUrlCopied] = useState(false);
+  const isAdmin =
+    authUser?.uid === process.env.NEXT_PUBLIC_ADMIN_UID &&
+    connectedAccount === process.env.NEXT_PUBLIC_ADMIN_CRYPTO_ACCOUNT;
+  const isOpen = project.status === 0;
 
   const {
     imageURLs,
@@ -143,7 +150,14 @@ const ProjectDetails = () => {
           </div>
         </div>
         <div className={styles.buttons}>
-          <Button onClick={() => setIsOpen('back')}>Back Project</Button>
+          {isAdmin && !isOpen && (
+            <Button color="orange" onClick={() => setIsOpen('authorize')}>
+              Accept / Reject
+            </Button>
+          )}
+          {!isAdmin && !owner && (
+            <Button onClick={() => setIsOpen('back')}>Back Project</Button>
+          )}
           {connectedAccount === owner && (
             <>
               {status === 0 && (
@@ -154,7 +168,6 @@ const ProjectDetails = () => {
               <Button color="red" onClick={() => setIsOpen('delete')}>
                 Delete
               </Button>
-              <Button color="orange">Payout</Button>
             </>
           )}
         </div>
@@ -190,6 +203,7 @@ const ProjectDetails = () => {
       {backIsOpen && <BackProjectModal project={project} />}
       {editIsOpen && <EditProjectModal project={project} />}
       {deleteIsOpen && <DeleteProjectModal project={project} />}
+      {authorizeIsOpen && <AuthorizeProjectModal project={project} />}
     </section>
   );
 };

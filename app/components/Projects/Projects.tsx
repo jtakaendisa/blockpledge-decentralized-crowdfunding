@@ -14,6 +14,10 @@ import ProgressBar from '../ProgressBar/ProgressBar';
 
 import styles from './Projects.module.scss';
 
+interface ProjectsProps {
+  pendingApproval?: boolean;
+}
+
 interface ProjectCardProps {
   project: Project;
 }
@@ -24,9 +28,10 @@ export const statusColorMap = {
   2: 'gray',
   3: 'red',
   4: 'orange',
+  5: 'orange',
 };
 
-const Projects = () => {
+const Projects = ({ pendingApproval }: ProjectsProps) => {
   const [displayedProjects, setDisplayedProjects] = useState<Project[]>([]);
   const allProjects = useProjectStore((s) => s.projects);
   const end = useProjectStore((s) => s.end);
@@ -44,8 +49,14 @@ const Projects = () => {
   }, []);
 
   useEffect(() => {
-    setDisplayedProjects(allProjects.slice(0, end));
-  }, [allProjects, end]);
+    if (pendingApproval) {
+      setDisplayedProjects(allProjects.filter((project) => project.status === 5));
+    } else {
+      setDisplayedProjects(allProjects.slice(0, end));
+    }
+  }, [allProjects, end, pendingApproval]);
+
+  if (!allProjects) return null;
 
   return (
     <section className={styles.projects}>
@@ -54,11 +65,13 @@ const Projects = () => {
           <ProjectCard key={project.id} project={project} />
         ))}
       </div>
-      <div className={styles.buttonContainer}>
-        {end < allProjects.length && (
-          <Button onClick={() => setEnd(count)}>Load More</Button>
-        )}
-      </div>
+      {!pendingApproval && (
+        <div className={styles.buttonContainer}>
+          {end < allProjects.length && (
+            <Button onClick={() => setEnd(count)}>Load More</Button>
+          )}
+        </div>
+      )}
     </section>
   );
 };

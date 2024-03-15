@@ -25,7 +25,8 @@ contract BlockPledge {
         APPROVED,
         REVERTED,
         DELETED,
-        PAIDOUT
+        PAIDOUT,
+        PENDING_APPROVAL
     }
 
     // Structs
@@ -61,6 +62,7 @@ contract BlockPledge {
         uint256 backers;
         uint256 categoryId;
         StatusEnum status;
+        string deletionReason; // Added a deletion reason property
     }
 
     // Modifier to restrict access to contract owner
@@ -90,6 +92,8 @@ contract BlockPledge {
         uint256 amount,
         uint256 timestamp
     );
+    event ProjectApproved(uint256 id, uint256 timestamp);
+    event ProjectRejected(uint256 id, uint256 timestamp);
 
     // Constructor
     constructor(uint256 _projectTax) {
@@ -155,6 +159,7 @@ contract BlockPledge {
         project.cost = _cost;
         project.timestamp = block.timestamp;
         project.expiresAt = _expiresAt;
+        project.status = StatusEnum.PENDING_APPROVAL;
 
         // Update state variables and mappings
         projects.push(project);
@@ -220,6 +225,40 @@ contract BlockPledge {
     function payTo(address _recipient, uint256 _amount) private {
         (bool success, ) = payable(_recipient).call{value: _amount}("");
         require(success, "Payment failed");
+    }
+
+    /**
+     * @dev Allows the contract owner to accept the project.
+     * @param _id ID of the project under review.
+     */
+    function acceptProject(uint256 _id) public onlyOwner returns (bool) {
+        require(projectExists[_id], "Project not found");
+        require(
+            projects[_id].status == StatusEnum.PENDING_APPROVAL,
+            "Project not pending approval"
+        );
+
+        projects[_id].status = StatusEnum.OPEN;
+
+        emit ProjectApproved(_id, block.timestamp);
+        return true;
+    }
+
+    /**
+     * @dev Allows the contract owner to reject the project.
+     * @param _id ID of the project under review.
+     */
+    function rejectProject(uint256 _id) public onlyOwner returns (bool) {
+        require(projectExists[_id], "Project not found");
+        require(
+            projects[_id].status == StatusEnum.PENDING_APPROVAL,
+            "Project not pending approval"
+        );
+
+        projects[_id].status = StatusEnum.DELETED;
+
+        emit ProjectRejected(_id, block.timestamp);
+        return true;
     }
 
     /**
@@ -373,6 +412,17 @@ contract BlockPledge {
      */
     function getProjects() public view returns (ProjectStruct[] memory) {
         return projects;
+    }
+
+    /**
+     * @dev Retrieves all projects created by a user.
+     * @param _user Address of the user.
+     * @return ProjectStruct[] Array of user projects.
+     */
+    function getUserProjects(
+        address _user
+    ) public view returns (ProjectStruct[] memory) {
+        return projectsOf[_user];
     }
 
     /**
