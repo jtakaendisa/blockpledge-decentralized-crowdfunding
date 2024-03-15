@@ -1,5 +1,8 @@
+import { useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import classNames from 'classnames';
 import { toast } from 'react-toastify';
 import { FaTimes } from 'react-icons/fa';
 
@@ -13,24 +16,43 @@ interface Props {
   project: Project;
 }
 
+interface DeleteFormInputs {
+  reason: string;
+}
+
 const DeleteProjectModal = ({ project }: Props) => {
   const router = useRouter();
   const closeModal = useModalStore((s) => s.setIsOpen);
   const { deleteProject } = useBlockchain();
 
-  const handleSubmit = async () => {
-    await deleteProject(project.id);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isSubmitSuccessful },
+  } = useForm<DeleteFormInputs>({
+    defaultValues: {
+      reason: '',
+    },
+  });
+
+  const onSubmit: SubmitHandler<DeleteFormInputs> = async (data) => {
+    await deleteProject(project.id, data.reason);
     toast.success('Project deleted successfully, changes will reflect momentarily.');
     closeModal('delete');
     router.push('/');
   };
+
+  useEffect(() => {
+    reset();
+  }, [isSubmitSuccessful, reset]);
 
   if (!project) return null;
 
   return (
     <div className={styles.backdrop}>
       <div className={styles.modal}>
-        <form className={styles.form} onSubmit={handleSubmit}>
+        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.row}>
             <p>{project.title}</p>
             <button
@@ -49,6 +71,11 @@ const DeleteProjectModal = ({ project }: Props) => {
               sizes="20vw"
             />
           </div>
+          <textarea
+            className={classNames(styles.input, styles.textArea)}
+            placeholder="Reason for deletion"
+            {...register('reason', { required: true })}
+          />
           <div className={styles.warning}>
             <p>Are you sure you wish to delete this project?</p>
             <span>This action is irreversable.</span>

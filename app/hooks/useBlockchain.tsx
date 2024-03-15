@@ -102,7 +102,7 @@ const useBlockchain = () => {
     }
   };
 
-  const deleteProject = async (id: number) => {
+  const deleteProject = async (id: number, reason: string) => {
     try {
       if (!window.ethereum) return alert('Please install Metamask');
 
@@ -110,7 +110,7 @@ const useBlockchain = () => {
 
       if (!contract) return;
 
-      const tx = await contract.deleteProject(id);
+      const tx = await contract.deleteProject(id, reason);
 
       await tx.wait();
       await loadProject(id);
@@ -160,7 +160,7 @@ const useBlockchain = () => {
     }
   };
 
-  const rejectProject = async (id: number) => {
+  const rejectProject = async (id: number, reason: string) => {
     try {
       if (!window.ethereum) return alert('Please install Metamask');
 
@@ -168,7 +168,7 @@ const useBlockchain = () => {
 
       if (!contract) return;
 
-      const tx = await contract.rejectProject(id);
+      const tx = await contract.rejectProject(id, reason);
 
       await tx.wait();
       await loadProject(id);

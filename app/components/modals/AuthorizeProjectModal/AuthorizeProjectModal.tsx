@@ -44,7 +44,7 @@ const AuthorizeProjectModal = ({ project }: Props) => {
     if (decision === 'accept') {
       await acceptProject(project.id);
     } else {
-      await rejectProject(project.id);
+      await rejectProject(project.id, reason);
     }
 
     closeModal('authorize');

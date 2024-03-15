@@ -200,9 +200,13 @@ contract BlockPledge {
     /**
      * @dev Deletes an existing project.
      * @param _id ID of the project to be deleted.
+     * @param _reason Reason for project deletion.
      * @return bool Success status.
      */
-    function deleteProject(uint256 _id) public returns (bool) {
+    function deleteProject(
+        uint256 _id,
+        string memory _reason
+    ) public returns (bool) {
         require(
             projects[_id].status == StatusEnum.OPEN,
             "Project no longer opened"
@@ -210,6 +214,8 @@ contract BlockPledge {
         require(msg.sender == projects[_id].owner, "Unauthorized Entity");
 
         projects[_id].status = StatusEnum.DELETED;
+        projects[_id].deletionReason = _reason;
+
         performRefund(_id);
 
         emit ProjectDeleted(_id, block.timestamp);
@@ -247,8 +253,12 @@ contract BlockPledge {
     /**
      * @dev Allows the contract owner to reject the project.
      * @param _id ID of the project under review.
+     * @param _reason Reason for project rejection.
      */
-    function rejectProject(uint256 _id) public onlyOwner returns (bool) {
+    function rejectProject(
+        uint256 _id,
+        string memory _reason
+    ) public onlyOwner returns (bool) {
         require(projectExists[_id], "Project not found");
         require(
             projects[_id].status == StatusEnum.PENDING_APPROVAL,
@@ -256,6 +266,7 @@ contract BlockPledge {
         );
 
         projects[_id].status = StatusEnum.DELETED;
+        projects[_id].deletionReason = _reason;
 
         emit ProjectRejected(_id, block.timestamp);
         return true;
