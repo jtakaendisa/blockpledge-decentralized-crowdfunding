@@ -24,6 +24,7 @@ import {
   useModalStore,
   useProjectStore,
 } from '@/app/store';
+import useBlockchain from '@/app/hooks/useBlockchain';
 import { findDaysRemaining, truncateAccount } from '@/app/utils';
 import EditProjectModal from '@/app/components/modals/EditProjectModal/EditProjectModal';
 import DeleteProjectModal from '@/app/components/modals/DeleteProjectModal/DeleteProjectModal';
@@ -35,7 +36,6 @@ import { statusColorMap } from '@/app/components/Projects/Projects';
 import linkSVG from '@/public/icons/link.svg';
 
 import styles from './ProjectDetails.module.scss';
-import useBlockchain from '@/app/hooks/useBlockchain';
 
 const TEST_URL = 'udemy.com';
 
@@ -108,7 +108,7 @@ const ProjectDetails = () => {
             <div className={styles.imageRow}>
               {imageURLs.map((image, idx) => (
                 <div
-                  key={image}
+                  key={image + idx}
                   className={classNames({
                     [styles.imageSmall]: true,
                     [styles.selected]: idx === selectedImage,

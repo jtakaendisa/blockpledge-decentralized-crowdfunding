@@ -37,7 +37,7 @@ const Projects = ({ pendingApproval }: ProjectsProps) => {
   const end = useProjectStore((s) => s.end);
   const setEnd = useProjectStore((s) => s.setEnd);
   const { loadProjects } = useBlockchain();
-  const count = 1;
+  const count = 12;
 
   useEffect(() => {
     const fetchData = async () => {

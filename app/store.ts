@@ -118,7 +118,7 @@ const useProjectStore = create<ProjectStore>((set) => ({
     totalDonations: 0,
     totalProjects: 0,
   },
-  end: 3,
+  end: 12,
   backers: [],
   categories: [],
   setProject: (project) => set((state) => ({ ...state, project })),
