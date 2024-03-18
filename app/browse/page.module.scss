@@ -1,0 +1,19 @@
+.browseProjectsPage {
+  padding: 0 1.5rem;
+
+  .mainContent {
+    display: flex;
+
+    & > section {
+      margin-top: 7rem;
+    }
+
+    & > aside {
+      padding-top: 7.9rem;
+    }
+  }
+
+  & > section:nth-child(2) {
+    margin-top: 9rem;
+  }
+}

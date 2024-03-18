@@ -1,30 +1,15 @@
 'use client';
 
 import Image from 'next/image';
-import { StaticImport } from 'next/dist/shared/lib/get-img-props';
+import { useRouter } from 'next/navigation';
 
-import { Category, useProjectStore } from '@/app/store';
+import { Category, categoryImageMap, useProjectStore } from '@/app/store';
 
 import styles from './CategoriesGrid.module.scss';
 
 interface CategoryCardProps {
   category: Category;
 }
-
-const categoryImageMap: { [key: number]: StaticImport } = {
-  0: require('@/public/icons/art.svg'),
-  1: require('@/public/icons/tech.svg'),
-  2: require('@/public/icons/community.svg'),
-  3: require('@/public/icons/fashion.svg'),
-  4: require('@/public/icons/food.svg'),
-  5: require('@/public/icons/gaming.svg'),
-  6: require('@/public/icons/travel.svg'),
-  7: require('@/public/icons/education.svg'),
-  8: require('@/public/icons/health.svg'),
-  9: require('@/public/icons/crafts.svg'),
-  10: require('@/public/icons/finance.svg'),
-  11: require('@/public/icons/pets.svg'),
-};
 
 const CategoriesGrid = () => {
   const categories = useProjectStore((s) => s.categories);
@@ -43,11 +28,16 @@ const CategoriesGrid = () => {
 
 const CategoryCard = ({ category }: CategoryCardProps) => {
   const { id, name } = category;
+  const router = useRouter();
+
+  const handleSelectCategory = () => {
+    router.push('/browse');
+  };
 
   const splitName = (name: string) => name.split(' & ');
 
   return (
-    <div className={styles.categoryCard}>
+    <div className={styles.categoryCard} onClick={handleSelectCategory}>
       <Image src={categoryImageMap[id]} alt={name} width={64} height={64} />
       <div className={styles.categoryName}>
         {splitName(name).map((part, idx) => (

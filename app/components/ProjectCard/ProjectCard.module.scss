@@ -1,3 +1,9 @@
+$light-green: rgb(83, 167, 83);
+$dark-green: rgb(67, 136, 67);
+$light-gray: rgb(76, 84, 95);
+$light-red: rgb(202, 57, 49);
+$light-orange: rgb(216, 96, 41);
+
 .card {
   align-self: flex-start;
   background-color: white;
@@ -65,5 +71,21 @@
         }
       }
     }
+  }
+
+  .green {
+    color: $light-green;
+  }
+
+  .gray {
+    color: $light-gray;
+  }
+
+  .red {
+    color: $light-red;
+  }
+
+  .orange {
+    color: $light-orange;
   }
 }

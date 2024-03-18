@@ -25,6 +25,7 @@ const ProjectsGrid = ({ pendingApproval }: ProjectsProps) => {
   const [displayedProjects, setDisplayedProjects] = useState<Project[]>([]);
   const allProjects = useProjectStore((s) => s.projects);
   const end = useProjectStore((s) => s.end);
+  const selectedCategory = useProjectStore((s) => s.selectedCategory);
   const setEnd = useProjectStore((s) => s.setEnd);
   const count = 12;
 
@@ -35,6 +36,18 @@ const ProjectsGrid = ({ pendingApproval }: ProjectsProps) => {
       setDisplayedProjects(allProjects.slice(0, end));
     }
   }, [allProjects, end, pendingApproval]);
+
+  useEffect(() => {
+    if (selectedCategory) {
+      setDisplayedProjects(
+        allProjects
+          .filter((project) => project.categoryId === selectedCategory.id)
+          .slice(0, end)
+      );
+    } else {
+      setDisplayedProjects(allProjects.slice(0, end));
+    }
+  }, [allProjects, selectedCategory, end]);
 
   if (!allProjects) return null;
 
