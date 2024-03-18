@@ -1,5 +1,5 @@
 import Header from '../components/Header/Header';
-import Projects from '../components/Projects/Projects';
+import ProjectsGrid from '../components/ProjectsGrid/ProjectsGrid';
 import styles from './page.module.scss';
 
 const AdminDashboardPage = () => {
@@ -8,7 +8,7 @@ const AdminDashboardPage = () => {
       <Header />
       <section>
         <h2>Projects Pending Approval</h2>
-        <Projects pendingApproval />
+        <ProjectsGrid pendingApproval />
       </section>
     </div>
   );
