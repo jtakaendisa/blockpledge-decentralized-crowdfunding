@@ -52,7 +52,7 @@ interface Backer {
   refunded: boolean;
 }
 
-interface Category {
+export interface Category {
   id: number;
   name: string;
 }

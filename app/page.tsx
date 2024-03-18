@@ -7,7 +7,7 @@ import useBlockchain from './hooks/useBlockchain';
 import Header from './components/Header/Header';
 import Hero from './components/Hero/Hero';
 import ProjectsRow from './components/ProjectsRow/ProjectsRow';
-import ProjectsGrid from './components/ProjectsGrid/ProjectsGrid';
+import CategoriesGrid from './components/CategoriesGrid/CategoriesGrid';
 
 import styles from './page.module.scss';
 
@@ -27,17 +27,13 @@ const HomePage = () => {
       <Header />
       <Hero />
       <ProjectsRow />
-      {/* <ProjectsGrid /> */}
+      <CategoriesGrid />
       <ToastContainer
         position="bottom-center"
         autoClose={5000}
-        hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
         rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
         theme="dark"
       />
     </div>

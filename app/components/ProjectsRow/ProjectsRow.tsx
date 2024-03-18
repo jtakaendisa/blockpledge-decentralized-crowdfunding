@@ -32,7 +32,7 @@ const ProjectsRow = () => {
 
   return (
     <section className={styles.projectsRow}>
-      <h2>Featured Projects</h2>
+      <h2 className={styles.heading}>Featured Projects</h2>
       <div className={styles.carouselContainer}>
         <Carousel responsive={responsive}>
           {projects.slice(0, 18).map((project) => (
