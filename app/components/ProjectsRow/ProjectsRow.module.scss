@@ -1,4 +1,6 @@
 .projectsRow {
-  display: flex;
-  align-items: center;
+  .carouselContainer {
+    width: 90%;
+    margin: auto;
+  }
 }

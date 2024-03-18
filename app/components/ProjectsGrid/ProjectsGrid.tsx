@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 
 import { Project, useProjectStore } from '@/app/store';
-import useBlockchain from '@/app/hooks/useBlockchain';
 import Button from '../Button/Button';
 import ProjectCard from '../ProjectCard/ProjectCard';
 
@@ -27,17 +26,7 @@ const ProjectsGrid = ({ pendingApproval }: ProjectsProps) => {
   const allProjects = useProjectStore((s) => s.projects);
   const end = useProjectStore((s) => s.end);
   const setEnd = useProjectStore((s) => s.setEnd);
-  const { loadProjects } = useBlockchain();
   const count = 12;
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await loadProjects();
-    };
-
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     if (pendingApproval) {

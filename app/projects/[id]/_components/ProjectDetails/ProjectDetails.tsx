@@ -32,7 +32,7 @@ import BackProjectModal from '@/app/components/modals/BackProjectModal/BackProje
 import AuthorizeProjectModal from '@/app/components/modals/AuthorizeProjectModal/AuthorizeProjectModal';
 import ProgressBar from '@/app/components/ProgressBar/ProgressBar';
 import Button from '@/app/components/Button/Button';
-import { statusColorMap } from '@/app/components/ProjectsGrid/Projects';
+import { statusColorMap } from '@/app/components/ProjectsGrid/ProjectsGrid';
 import linkSVG from '@/public/icons/link.svg';
 
 import styles from './ProjectDetails.module.scss';
