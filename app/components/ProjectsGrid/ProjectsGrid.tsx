@@ -22,21 +22,19 @@ export const statusColorMap = {
 };
 
 const ProjectsGrid = ({ pendingApproval }: ProjectsProps) => {
-  const [displayedProjects, setDisplayedProjects] = useState<Project[]>([]);
   const allProjects = useProjectStore((s) => s.projects);
   const end = useProjectStore((s) => s.end);
   const selectedCategory = useProjectStore((s) => s.selectedCategory);
   const searchText = useProjectStore((s) => s.searchText);
   const setEnd = useProjectStore((s) => s.setEnd);
+  const [displayedProjects, setDisplayedProjects] = useState<Project[]>(allProjects);
   const count = 12;
 
   useEffect(() => {
     if (pendingApproval) {
       setDisplayedProjects(allProjects.filter((project) => project.status === 5));
-    } else {
-      setDisplayedProjects(allProjects.slice(0, end));
     }
-  }, [allProjects, end, pendingApproval]);
+  }, [allProjects, pendingApproval]);
 
   useEffect(() => {
     if (selectedCategory) {
@@ -45,8 +43,6 @@ const ProjectsGrid = ({ pendingApproval }: ProjectsProps) => {
           .filter((project) => project.categoryId === selectedCategory.id)
           .slice(0, end)
       );
-    } else {
-      setDisplayedProjects(allProjects.slice(0, end));
     }
   }, [allProjects, selectedCategory, end]);
 
@@ -61,6 +57,12 @@ const ProjectsGrid = ({ pendingApproval }: ProjectsProps) => {
       setDisplayedProjects(allProjects.slice(0, end));
     }
   }, [allProjects, searchText, end]);
+
+  useEffect(() => {
+    if (!selectedCategory && !searchText.length) {
+      setDisplayedProjects(allProjects.slice(0, end));
+    }
+  }, [allProjects, selectedCategory, searchText, end]);
 
   if (!allProjects) return null;
 

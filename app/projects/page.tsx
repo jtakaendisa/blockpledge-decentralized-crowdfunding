@@ -10,7 +10,7 @@ import SearchInput from './_components/SearchInput/SearchInput';
 
 import styles from './page.module.scss';
 
-const BrowseProjectsPage = () => {
+const ProjectsPage = () => {
   const { loadProjects } = useBlockchain();
 
   useEffect(() => {
@@ -36,4 +36,4 @@ const BrowseProjectsPage = () => {
   );
 };
 
-export default BrowseProjectsPage;
+export default ProjectsPage;

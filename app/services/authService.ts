@@ -8,7 +8,7 @@ import {
   signOut,
   onAuthStateChanged,
 } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { AuthUser } from '../store';
 
 const firebaseConfig = {
@@ -39,7 +39,8 @@ const createAuthUser = async (email: string, password: string) => {
 const createUserDocument = async (
   userAuth: User,
   accountType: string,
-  wallet: string = ''
+  wallet: string = '',
+  following: number[] = []
 ) => {
   if (!userAuth) return;
 
@@ -57,7 +58,42 @@ const createUserDocument = async (
         createdAt,
         accountType,
         wallet,
+        following,
       });
+    } catch (error) {
+      console.log('error creating the user', (error as Error).message);
+    }
+  }
+
+  return userDocRef;
+};
+
+const followProject = async (
+  userAuth: AuthUser,
+  projectId: number,
+  isFollowing?: boolean
+) => {
+  if (!userAuth) return;
+
+  const userDocRef = doc(db, 'users', userAuth.uid);
+  const userSnapshot = await getDoc(userDocRef);
+
+  if (userSnapshot.exists()) {
+    const { following } = userAuth;
+    let newFollowing;
+
+    if (isFollowing) {
+      newFollowing = following.filter((follow) => follow !== projectId);
+    } else {
+      newFollowing = [...following, projectId];
+    }
+
+    const data = {
+      following: newFollowing,
+    };
+
+    try {
+      await updateDoc(userDocRef, data);
     } catch (error) {
       console.log('error creating the user', (error as Error).message);
     }
@@ -106,6 +142,7 @@ const formatAuthUserData = async (user: User) => {
 export {
   createAuthUser,
   createUserDocument,
+  followProject,
   signInAuthUser,
   signOutAuthUser,
   authStateChangeListener,

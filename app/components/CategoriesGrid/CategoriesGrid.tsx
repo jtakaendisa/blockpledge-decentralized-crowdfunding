@@ -33,7 +33,7 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
 
   const handleSelectCategory = (category: Category) => {
     setSelectedCategory(category);
-    router.push('/browse');
+    router.push('/projects');
   };
 
   const splitName = (name: string) => name.split(' & ');

@@ -25,6 +25,7 @@ import {
   useProjectStore,
 } from '@/app/store';
 import useBlockchain from '@/app/hooks/useBlockchain';
+import { followProject } from '@/app/services/authService';
 import { findDaysRemaining, truncateAccount } from '@/app/utils';
 import EditProjectModal from '@/app/components/modals/EditProjectModal/EditProjectModal';
 import DeleteProjectModal from '@/app/components/modals/DeleteProjectModal/DeleteProjectModal';
@@ -34,6 +35,8 @@ import ProgressBar from '@/app/components/ProgressBar/ProgressBar';
 import Button from '@/app/components/Button/Button';
 import { statusColorMap } from '@/app/components/ProjectsGrid/ProjectsGrid';
 import linkSVG from '@/public/icons/link.svg';
+import followSVG from '@/public/icons/follow.svg';
+import followingSVG from '@/public/icons/following.svg';
 
 import styles from './ProjectDetails.module.scss';
 
@@ -52,10 +55,9 @@ const ProjectDetails = () => {
   const setIsOpen = useModalStore((s) => s.setIsOpen);
   const [selectedImage, setSelectedImage] = useState(0);
   const [urlCopied, setUrlCopied] = useState(false);
-  const isAdmin =
-    authUser?.uid === process.env.NEXT_PUBLIC_ADMIN_UID &&
-    connectedAccount === process.env.NEXT_PUBLIC_ADMIN_CRYPTO_ACCOUNT;
+  const isAdmin = authUser?.uid === process.env.NEXT_PUBLIC_ADMIN_UID;
   const isOpen = project.status === 0;
+  const isFollowing = authUser?.following.includes(project.id);
 
   const {
     imageURLs,
@@ -78,6 +80,12 @@ const ProjectDetails = () => {
     } catch (error) {
       console.error('Failed to copy:', error);
     }
+  };
+
+  const handleFollowProject = async () => {
+    if (!authUser) return;
+
+    await followProject(authUser, project.id, isFollowing);
   };
 
   useEffect(() => {
@@ -201,6 +209,15 @@ const ProjectDetails = () => {
             <WhatsappIcon round size={48} />
           </WhatsappShareButton>
         </div>
+        <button className={styles.followProject} onClick={handleFollowProject}>
+          <Image
+            src={isFollowing ? followingSVG : followSVG}
+            alt="Follow Project"
+            width={24}
+            height={24}
+          />
+          <span>{isFollowing ? 'Following' : 'Follow this Project'}</span>
+        </button>
       </div>
       {backIsOpen && <BackProjectModal project={project} />}
       {editIsOpen && <EditProjectModal project={project} />}

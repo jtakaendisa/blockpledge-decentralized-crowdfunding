@@ -13,7 +13,11 @@ interface ModalStore {
   setIsOpen: (variant: ModalVariant) => void;
 }
 
-export type AuthUser = User & { accountType: string; wallet: string };
+export type AuthUser = User & {
+  accountType: string;
+  wallet: string;
+  following: number[];
+};
 
 interface AccountStore {
   authUser: AuthUser | null;

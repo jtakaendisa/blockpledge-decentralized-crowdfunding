@@ -153,6 +153,17 @@ $light-orange: rgb(216, 96, 41);
       }
     }
 
+    .followProject {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      width: fit-content;
+      padding: 0.5rem 0.8rem;
+      border: 1px solid gray;
+      border-radius: 50px;
+      cursor: pointer;
+    }
+
     .progressOut {
       background-color: rgba(116, 116, 116, 0.25);
       height: 0.25rem;

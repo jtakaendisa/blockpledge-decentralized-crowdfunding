@@ -27,9 +27,7 @@ const Header = () => {
   const setAuthUser = useAccountStore((s) => s.setAuthUser);
   const setSelectedCategory = useProjectStore((s) => s.setSelectedCategory);
 
-  const isAdmin =
-    authUser?.uid === process.env.NEXT_PUBLIC_ADMIN_UID &&
-    connectedAccount === process.env.NEXT_PUBLIC_ADMIN_CRYPTO_ACCOUNT;
+  const isAdmin = authUser?.uid === process.env.NEXT_PUBLIC_ADMIN_UID;
 
   useEffect(() => {
     const fetchConnectedAccount = async () => {
@@ -88,8 +86,8 @@ const Header = () => {
         <TbBusinessplan />
       </Link>
       <div className={styles.buttonContainer}>
-        <Link href="/browse" onClick={() => setSelectedCategory(null)}>
-          Browse Projects
+        <Link href="/projects" onClick={() => setSelectedCategory(null)}>
+          Explore Projects
         </Link>
         {isAdmin && (
           <Button inverted onClick={() => router.push('/dashboard')}>
