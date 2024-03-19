@@ -89,8 +89,13 @@ const Header = () => {
         <Link href="/projects" onClick={() => setSelectedCategory(null)}>
           Explore Projects
         </Link>
+        {authUser && !isAdmin && (
+          <Link href="/user_dashboard" onClick={() => setSelectedCategory(null)}>
+            My Dashboard
+          </Link>
+        )}
         {isAdmin && (
-          <Button inverted onClick={() => router.push('/dashboard')}>
+          <Button inverted onClick={() => router.push('/admin_dashboard')}>
             Admin Dashboard
           </Button>
         )}

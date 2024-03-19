@@ -17,6 +17,7 @@ export type AuthUser = User & {
   accountType: string;
   wallet: string;
   following: number[];
+  backed: number[];
 };
 
 interface AccountStore {

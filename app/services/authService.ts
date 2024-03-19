@@ -40,7 +40,8 @@ const createUserDocument = async (
   userAuth: User,
   accountType: string,
   wallet: string = '',
-  following: number[] = []
+  following: number[] = [],
+  backed: number[] = []
 ) => {
   if (!userAuth) return;
 
@@ -59,6 +60,7 @@ const createUserDocument = async (
         accountType,
         wallet,
         following,
+        backed,
       });
     } catch (error) {
       console.log('error creating the user', (error as Error).message);
@@ -95,7 +97,34 @@ const followProject = async (
     try {
       await updateDoc(userDocRef, data);
     } catch (error) {
-      console.log('error creating the user', (error as Error).message);
+      console.log('error updating following list', (error as Error).message);
+    }
+  }
+
+  return userDocRef;
+};
+
+const backProjectFirebase = async (userAuth: AuthUser, projectId: number) => {
+  if (!userAuth) return;
+
+  const userDocRef = doc(db, 'users', userAuth.uid);
+  const userSnapshot = await getDoc(userDocRef);
+
+  if (userSnapshot.exists()) {
+    const { backed } = userAuth;
+
+    if (backed.includes(projectId)) return;
+
+    const newBacked = [...backed, projectId];
+
+    const data = {
+      backed: newBacked,
+    };
+
+    try {
+      await updateDoc(userDocRef, data);
+    } catch (error) {
+      console.log('error updating backed list', (error as Error).message);
     }
   }
 
@@ -143,6 +172,7 @@ export {
   createAuthUser,
   createUserDocument,
   followProject,
+  backProjectFirebase,
   signInAuthUser,
   signOutAuthUser,
   authStateChangeListener,

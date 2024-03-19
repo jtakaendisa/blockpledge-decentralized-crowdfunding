@@ -163,7 +163,7 @@ const ProjectDetails = () => {
               Accept / Reject
             </Button>
           )}
-          {!isAdmin && !owner && (
+          {!isAdmin && connectedAccount !== owner && (
             <Button onClick={() => setIsOpen('back')}>Back Project</Button>
           )}
           {connectedAccount === owner && (

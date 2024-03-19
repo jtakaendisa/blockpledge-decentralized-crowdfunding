@@ -1,14 +1,17 @@
+'use client';
+
 import { useEffect } from 'react';
 import Image from 'next/image';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { FaTimes } from 'react-icons/fa';
 
-import { Project, useModalStore } from '@/app/store';
+import { Project, useAccountStore, useModalStore } from '@/app/store';
 import useBlockchain from '@/app/hooks/useBlockchain';
 import Button from '../../Button/Button';
 
 import styles from '../modal.module.scss';
+import { backProjectFirebase } from '@/app/services/authService';
 
 interface Props {
   project: Project;
@@ -21,6 +24,7 @@ export interface BackFormInputs {
 
 const BackProjectModal = ({ project }: Props) => {
   const closeModal = useModalStore((s) => s.setIsOpen);
+  const authUser = useAccountStore((s) => s.authUser);
   const { backProject } = useBlockchain();
 
   const {
@@ -35,8 +39,13 @@ const BackProjectModal = ({ project }: Props) => {
     },
   });
 
-  const onSubmit: SubmitHandler<BackFormInputs> = async (data) => {
-    await backProject(project.id, data.cost, data.comment);
+  const onSubmit: SubmitHandler<BackFormInputs> = async ({ cost, comment }) => {
+    await backProject(project.id, cost, comment);
+
+    if (authUser) {
+      await backProjectFirebase(authUser, project.id);
+    }
+
     toast.success(
       'Thank you! Project backing has been received, changes will reflect momentarily.'
     );
