@@ -67,6 +67,7 @@ interface ProjectStore {
   backers: Backer[];
   categories: Category[];
   selectedCategory: Category | null;
+  searchText: string;
   setProject: (project: Project) => void;
   setProjects: (projects: Project[]) => void;
   setUserProjects: (userProjects: Project[]) => void;
@@ -75,6 +76,7 @@ interface ProjectStore {
   setBackers: (backers: Backer[]) => void;
   setCategories: (categories: Category[]) => void;
   setSelectedCategory: (selectedCategory: Category | null) => void;
+  setSearchText: (searchText: string) => void;
 }
 
 const variantMap = {
@@ -140,6 +142,7 @@ const useProjectStore = create<ProjectStore>((set) => ({
   backers: [],
   categories: [],
   selectedCategory: null,
+  searchText: '',
   setProject: (project) => set((state) => ({ ...state, project })),
   setProjects: (projects) => set((state) => ({ ...state, projects })),
   setUserProjects: (userProjects) => set((state) => ({ ...state, userProjects })),
@@ -149,6 +152,7 @@ const useProjectStore = create<ProjectStore>((set) => ({
   setCategories: (categories) => set((state) => ({ ...state, categories })),
   setSelectedCategory: (selectedCategory) =>
     set((state) => ({ ...state, selectedCategory })),
+  setSearchText: (searchText) => set((state) => ({ ...state, searchText })),
 }));
 
 export { useModalStore, useAccountStore, useProjectStore };

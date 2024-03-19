@@ -4,12 +4,33 @@
   .mainContent {
     display: flex;
 
-    & > section {
-      margin-top: 7rem;
-    }
-
     & > aside {
       padding-top: 7.9rem;
+    }
+
+    .projectsSection {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-top: 7rem;
+
+      .searchForm {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 1rem;
+        margin: 0 4rem;
+        border: 1px solid gray;
+        border-radius: 50px;
+        overflow: hidden;
+
+        .searchInput {
+          width: 100%;
+          border: none;
+          outline: none;
+        }
+      }
     }
   }
 

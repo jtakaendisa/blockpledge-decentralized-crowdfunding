@@ -26,6 +26,7 @@ const ProjectsGrid = ({ pendingApproval }: ProjectsProps) => {
   const allProjects = useProjectStore((s) => s.projects);
   const end = useProjectStore((s) => s.end);
   const selectedCategory = useProjectStore((s) => s.selectedCategory);
+  const searchText = useProjectStore((s) => s.searchText);
   const setEnd = useProjectStore((s) => s.setEnd);
   const count = 12;
 
@@ -48,6 +49,16 @@ const ProjectsGrid = ({ pendingApproval }: ProjectsProps) => {
       setDisplayedProjects(allProjects.slice(0, end));
     }
   }, [allProjects, selectedCategory, end]);
+
+  useEffect(() => {
+    if (searchText.length) {
+      setDisplayedProjects(
+        allProjects.filter((project) =>
+          project.title.toLowerCase().includes(searchText)
+        )
+      );
+    }
+  }, [allProjects, searchText]);
 
   if (!allProjects) return null;
 
