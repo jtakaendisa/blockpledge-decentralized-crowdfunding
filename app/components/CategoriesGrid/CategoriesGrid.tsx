@@ -29,15 +29,17 @@ const CategoriesGrid = () => {
 const CategoryCard = ({ category }: CategoryCardProps) => {
   const { id, name } = category;
   const router = useRouter();
+  const setSelectedCategory = useProjectStore((s) => s.setSelectedCategory);
 
-  const handleSelectCategory = () => {
+  const handleSelectCategory = (category: Category) => {
+    setSelectedCategory(category);
     router.push('/browse');
   };
 
   const splitName = (name: string) => name.split(' & ');
 
   return (
-    <div className={styles.categoryCard} onClick={handleSelectCategory}>
+    <div className={styles.categoryCard} onClick={() => handleSelectCategory(category)}>
       <Image src={categoryImageMap[id]} alt={name} width={64} height={64} />
       <div className={styles.categoryName}>
         {splitName(name).map((part, idx) => (

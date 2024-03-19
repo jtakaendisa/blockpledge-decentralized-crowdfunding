@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { User } from 'firebase/auth';
 import { TbBusinessplan } from 'react-icons/tb';
 
-import { useAccountStore } from '@/app/store';
+import { useAccountStore, useProjectStore } from '@/app/store';
 import {
   authStateChangeListener,
   formatAuthUserData,
@@ -25,6 +25,8 @@ const Header = () => {
   const setConnectedAccount = useAccountStore((s) => s.setConnectedAccount);
   const authUser = useAccountStore((s) => s.authUser);
   const setAuthUser = useAccountStore((s) => s.setAuthUser);
+  const setSelectedCategory = useProjectStore((s) => s.setSelectedCategory);
+
   const isAdmin =
     authUser?.uid === process.env.NEXT_PUBLIC_ADMIN_UID &&
     connectedAccount === process.env.NEXT_PUBLIC_ADMIN_CRYPTO_ACCOUNT;
@@ -86,6 +88,9 @@ const Header = () => {
         <TbBusinessplan />
       </Link>
       <div className={styles.buttonContainer}>
+        <Link href="/browse" onClick={() => setSelectedCategory(null)}>
+          Browse Projects
+        </Link>
         {isAdmin && (
           <Button inverted onClick={() => router.push('/dashboard')}>
             Admin Dashboard

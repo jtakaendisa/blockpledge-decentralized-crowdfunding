@@ -1,12 +1,12 @@
 'use client';
 
 import Image from 'next/image';
+import classNames from 'classnames';
 
 import { categoryImageMap, useProjectStore } from '@/app/store';
 import categoriesSVG from '@/public/icons/categories.svg';
 
 import styles from './CategorySidebar.module.scss';
-import classNames from 'classnames';
 
 const CategorySidebar = () => {
   const categories = useProjectStore((s) => s.categories);
