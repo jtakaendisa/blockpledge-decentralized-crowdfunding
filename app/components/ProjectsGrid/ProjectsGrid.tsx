@@ -57,8 +57,10 @@ const ProjectsGrid = ({ pendingApproval }: ProjectsProps) => {
           project.title.toLowerCase().includes(searchText)
         )
       );
+    } else {
+      setDisplayedProjects(allProjects.slice(0, end));
     }
-  }, [allProjects, searchText]);
+  }, [allProjects, searchText, end]);
 
   if (!allProjects) return null;
 
