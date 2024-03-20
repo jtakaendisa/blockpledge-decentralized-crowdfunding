@@ -1,17 +1,20 @@
 'use client';
 
-import { useModalStore, useProjectStore } from '@/app/store';
+import { Stats, useModalStore } from '@/app/store';
 import Button from '../Button/Button';
 import AddProjectModal from '../modals/AddProjectModal/AddProjectModal';
 
 import styles from './Hero.module.scss';
 
-const Hero = () => {
+interface Props {
+  stats: Stats;
+}
+
+const Hero = ({ stats }: Props) => {
+  const { totalBackings, totalDonations, totalProjects } = stats;
+
   const addIsOpen = useModalStore((s) => s.addIsOpen);
   const openModal = useModalStore((s) => s.setIsOpen);
-  const stats = useProjectStore((s) => s.stats);
-
-  const { totalBackings, totalDonations, totalProjects } = stats;
 
   return (
     <section className={styles.hero}>

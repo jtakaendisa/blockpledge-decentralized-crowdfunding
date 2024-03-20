@@ -76,7 +76,7 @@ const useBlockchain = () => {
       );
 
       await tx.wait();
-      await loadProjects();
+      await getProjects();
     } catch (error) {
       console.log((error as Error).message);
     }
@@ -97,7 +97,7 @@ const useBlockchain = () => {
       const tx = await contract.updateProject(id, description, imageURLs);
 
       await tx.wait();
-      await loadProject(id!);
+      await getProject(id!);
     } catch (error) {
       console.log((error as Error).message);
     }
@@ -114,7 +114,7 @@ const useBlockchain = () => {
       const tx = await contract.deleteProject(id, reason);
 
       await tx.wait();
-      await loadProject(id);
+      await getProject(id);
       await getBackers(id);
     } catch (error) {
       console.log((error as Error).message);
@@ -137,7 +137,7 @@ const useBlockchain = () => {
       });
 
       await tx.wait();
-      await loadProject(id);
+      await getProject(id);
       await getBackers(id);
     } catch (error) {
       console.log((error as Error).message);
@@ -155,7 +155,7 @@ const useBlockchain = () => {
       const tx = await contract.acceptProject(id);
 
       await tx.wait();
-      await loadProject(id);
+      await getProject(id);
     } catch (error) {
       console.log((error as Error).message);
     }
@@ -172,7 +172,7 @@ const useBlockchain = () => {
       const tx = await contract.rejectProject(id, reason);
 
       await tx.wait();
-      await loadProject(id);
+      await getProject(id);
     } catch (error) {
       console.log((error as Error).message);
     }
@@ -198,19 +198,23 @@ const useBlockchain = () => {
     }
   };
 
-  const getCategories = async () => {
-    const contract = await getContract();
+  const getCategories = useCallback(async () => {
+    try {
+      const contract = await getContract();
 
-    if (!contract) return;
+      if (!contract) {
+        throw new Error("Can't connect to smart contract");
+      }
 
-    const categories = await contract.getCategories();
+      const fetchedCategories = await contract.getCategories();
+      const categories = formatCategories(fetchedCategories);
 
-    const formattedCategories = formatCategories(categories);
-
-    if (formattedCategories.length) {
-      setCategories(formattedCategories);
+      return { categories };
+    } catch (error) {
+      console.error('Error loading categories:', (error as Error).message);
+      throw error;
     }
-  };
+  }, []);
 
   const getUserProjects = async (user: string) => {
     try {
@@ -222,7 +226,9 @@ const useBlockchain = () => {
 
       const userProjects = await contract.getUserProjects(user);
 
-      const formattedUserProjects = formatProjects(userProjects);
+      const formattedUserProjects = userProjects
+        .map((userProject: any) => formatProject(userProject))
+        .reverse();
 
       if (userProjects.length) {
         setUserProjects(formattedUserProjects);
@@ -251,25 +257,20 @@ const useBlockchain = () => {
     };
   }, []);
 
-  const formatProjects = useCallback(
-    (projects: any) => {
-      return projects.map((project: any) => formatProject(project)).reverse();
-    },
-    [formatProject]
-  );
-
-  const loadProjects = useCallback(async () => {
-    const contract = await getContract();
-
-    if (!contract) {
-      throw new Error("Can't connect to smart contract");
-    }
-
+  const getProjects = useCallback(async () => {
     try {
+      const contract = await getContract();
+
+      if (!contract) {
+        throw new Error("Can't connect to smart contract");
+      }
+
       const fetchedProjects = await contract.getProjects();
       const fetchedStats = await contract.stats();
 
-      const projects = formatProjects(fetchedProjects);
+      const projects = fetchedProjects
+        .map((project: any) => formatProject(project))
+        .reverse();
       const stats = formatStats(fetchedStats);
 
       return { projects, stats };
@@ -277,9 +278,9 @@ const useBlockchain = () => {
       console.error('Error loading projects:', (error as Error).message);
       throw error;
     }
-  }, [formatProjects]);
+  }, [formatProject]);
 
-  const loadProject = async (id: number) => {
+  const getProject = async (id: number) => {
     try {
       if (!window.ethereum) return alert('Please install Metamask');
 
@@ -367,8 +368,8 @@ const useBlockchain = () => {
     backProject,
     acceptProject,
     rejectProject,
-    loadProjects,
-    loadProject,
+    getProjects,
+    getProject,
     getUserProjects,
     getBackers,
     getCategories,

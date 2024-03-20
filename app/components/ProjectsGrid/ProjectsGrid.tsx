@@ -21,23 +21,34 @@ export const statusColorMap = {
   5: 'orange',
 };
 
+const COUNT = 12;
+
 const ProjectsGrid = ({ projects }: Props) => {
-  const end = useProjectStore((s) => s.end);
   const selectedCategory = useProjectStore((s) => s.selectedCategory);
   const searchText = useProjectStore((s) => s.searchText);
-  const setEnd = useProjectStore((s) => s.setEnd);
   const authUser = useAccountStore((s) => s.authUser);
-  const count = 12;
+  const [filteredProjects, setFilteredProjects] = useState(projects);
+  const [end, setEnd] = useState(12);
 
-  // useEffect(() => {
-  //   if (selectedCategory) {
-  //     setDisplayedProjects(
-  //       allProjects
-  //         .filter((project) => project.categoryId === selectedCategory.id)
-  //         .slice(0, end)
-  //     );
-  //   }
-  // }, [allProjects, selectedCategory, end]);
+  useEffect(() => {
+    if (projects.length) {
+      setFilteredProjects(projects.slice(0, end));
+    }
+  }, [projects, end]);
+
+  useEffect(() => {
+    if (selectedCategory && projects.length) {
+      setFilteredProjects(
+        projects
+          .filter((project) => project.categoryId === selectedCategory.id)
+          .slice(0, end)
+      );
+    }
+
+    if (!selectedCategory && projects.length) {
+      setFilteredProjects(projects.slice(0, end));
+    }
+  }, [selectedCategory, projects, end]);
 
   // useEffect(() => {
   //   if (searchText.length) {
@@ -51,24 +62,18 @@ const ProjectsGrid = ({ projects }: Props) => {
   //   }
   // }, [allProjects, searchText, end]);
 
-  // useEffect(() => {
-  //   if (!selectedCategory && !searchText.length) {
-  //     setDisplayedProjects(allProjects.slice(0, end));
-  //   }
-  // }, [allProjects, selectedCategory, searchText, end]);
-
   if (!projects) return null;
 
   return (
     <section className={styles.projects}>
       <div className={styles.cards}>
-        {projects.map((project) => (
+        {filteredProjects.map((project) => (
           <ProjectCard key={project.id} project={project} />
         ))}
       </div>
       <div className={styles.buttonContainer}>
         {end < projects.length && (
-          <Button onClick={() => setEnd(count)}>Load More</Button>
+          <Button onClick={() => setEnd((prev) => prev + COUNT)}>Load More</Button>
         )}
       </div>
     </section>

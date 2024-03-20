@@ -2,11 +2,15 @@
 
 import Carousel from 'react-multi-carousel';
 
-import { useProjectStore } from '@/app/store';
+import { Project } from '@/app/store';
 import ProjectCard from '../ProjectCard/ProjectCard';
 
 import styles from './ProjectsRow.module.scss';
 import 'react-multi-carousel/lib/styles.css';
+
+interface Props {
+  projects: Project[];
+}
 
 const responsive = {
   superLargeDesktop: {
@@ -27,9 +31,7 @@ const responsive = {
   },
 };
 
-const ProjectsRow = () => {
-  const projects = useProjectStore((s) => s.projects);
-
+const ProjectsRow = ({ projects }: Props) => {
   return (
     <section className={styles.projectsRow}>
       <h2 className={styles.heading}>Featured Projects</h2>

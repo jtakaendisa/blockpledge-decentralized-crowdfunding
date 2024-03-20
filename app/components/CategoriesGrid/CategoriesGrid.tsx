@@ -7,13 +7,15 @@ import { Category, categoryImageMap, useProjectStore } from '@/app/store';
 
 import styles from './CategoriesGrid.module.scss';
 
+interface CategoriesGridProps {
+  categories: Category[];
+}
+
 interface CategoryCardProps {
   category: Category;
 }
 
-const CategoriesGrid = () => {
-  const categories = useProjectStore((s) => s.categories);
-
+const CategoriesGrid = ({ categories }: CategoriesGridProps) => {
   return (
     <section className={styles.categoriesGrid}>
       <h2 className={styles.heading}>Browse Projects by Category</h2>
