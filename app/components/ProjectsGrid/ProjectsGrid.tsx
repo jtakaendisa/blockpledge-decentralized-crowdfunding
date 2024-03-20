@@ -10,9 +10,6 @@ import styles from './ProjectsGrid.module.scss';
 
 interface Props {
   projects: Project[];
-  pendingApproval?: boolean;
-  following?: boolean;
-  backed?: boolean;
 }
 
 export const statusColorMap = {
@@ -24,7 +21,7 @@ export const statusColorMap = {
   5: 'orange',
 };
 
-const ProjectsGrid = ({ projects, pendingApproval, following, backed }: Props) => {
+const ProjectsGrid = ({ projects }: Props) => {
   const end = useProjectStore((s) => s.end);
   const selectedCategory = useProjectStore((s) => s.selectedCategory);
   const searchText = useProjectStore((s) => s.searchText);
@@ -60,42 +57,6 @@ const ProjectsGrid = ({ projects, pendingApproval, following, backed }: Props) =
   //   }
   // }, [allProjects, selectedCategory, searchText, end]);
 
-  // useEffect(() => {
-  //   if (following && authUser) {
-  //     const projectsBeingFollowed = [];
-
-  //     for (let i = 0; i < authUser.following.length; i++) {
-  //       const followedProject = allProjects.find(
-  //         (project) => project.id === authUser.following[i]
-  //       );
-
-  //       if (followedProject) {
-  //         projectsBeingFollowed.push(followedProject);
-  //       }
-  //     }
-
-  //     setDisplayedProjects(projectsBeingFollowed);
-  //   }
-  // }, [allProjects, following, authUser]);
-
-  // useEffect(() => {
-  //   if (backed && authUser) {
-  //     const projectsBeingBacked = [];
-
-  //     for (let i = 0; i < authUser.backed.length; i++) {
-  //       const backedProject = allProjects.find(
-  //         (project) => project.id === authUser.backed[i]
-  //       );
-
-  //       if (backedProject) {
-  //         projectsBeingBacked.push(backedProject);
-  //       }
-  //     }
-
-  //     setDisplayedProjects(projectsBeingBacked);
-  //   }
-  // }, [allProjects, backed, authUser]);
-
   if (!projects) return null;
 
   return (
@@ -105,13 +66,11 @@ const ProjectsGrid = ({ projects, pendingApproval, following, backed }: Props) =
           <ProjectCard key={project.id} project={project} />
         ))}
       </div>
-      {!pendingApproval && (
-        <div className={styles.buttonContainer}>
-          {end < projects.length && (
-            <Button onClick={() => setEnd(count)}>Load More</Button>
-          )}
-        </div>
-      )}
+      <div className={styles.buttonContainer}>
+        {end < projects.length && (
+          <Button onClick={() => setEnd(count)}>Load More</Button>
+        )}
+      </div>
     </section>
   );
 };
