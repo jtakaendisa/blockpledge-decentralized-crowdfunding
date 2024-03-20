@@ -1,4 +1,5 @@
 import emailjs from '@emailjs/browser';
+
 import { useProjectStore } from '../store';
 
 interface PaymentNotificationProps {

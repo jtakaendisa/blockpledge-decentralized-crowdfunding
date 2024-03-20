@@ -10,7 +10,7 @@ import styles from './ProjectsGrid.module.scss';
 
 interface Props {
   projects: Project[];
-  selectedCategory: Category | null;
+  selectedCategory?: Category | null;
 }
 
 export const statusColorMap = {

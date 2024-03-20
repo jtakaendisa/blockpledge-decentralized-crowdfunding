@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { useRouter } from 'next/navigation';
 import { createAuthUser, createUserDocument } from '@/app/services/authService';
 import Header from '../../components/Header/Header';
 import Button from '../../components/Button/Button';

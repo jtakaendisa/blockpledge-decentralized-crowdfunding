@@ -10,12 +10,15 @@ const usePinata = (setUploading: SetUploading) => {
       setUploading(true);
       const promises = filesToUpload.map(async (file) => {
         const data = new FormData();
+
         data.set('file', file);
+
         const res = await fetch('/api/files', {
           method: 'POST',
           body: data,
         });
         const resData = await res.json();
+
         return resData.IpfsHash;
       });
 

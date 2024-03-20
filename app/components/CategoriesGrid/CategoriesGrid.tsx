@@ -1,21 +1,13 @@
-'use client';
-
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-
-import { Category, categoryImageMap, useProjectStore } from '@/app/store';
+import { Category } from '@/app/store';
+import CategoryCard from '../CategoryCard/CategoryCard';
 
 import styles from './CategoriesGrid.module.scss';
 
-interface CategoriesGridProps {
+interface Props {
   categories: Category[];
 }
 
-interface CategoryCardProps {
-  category: Category;
-}
-
-const CategoriesGrid = ({ categories }: CategoriesGridProps) => {
+const CategoriesGrid = ({ categories }: Props) => {
   return (
     <section className={styles.categoriesGrid}>
       <h2 className={styles.heading}>Browse Projects by Category</h2>
@@ -25,32 +17,6 @@ const CategoriesGrid = ({ categories }: CategoriesGridProps) => {
         ))}
       </div>
     </section>
-  );
-};
-
-const CategoryCard = ({ category }: CategoryCardProps) => {
-  const { id, name } = category;
-  const router = useRouter();
-  const setSelectedCategory = useProjectStore((s) => s.setSelectedCategory);
-
-  const handleSelectCategory = (category: Category) => {
-    setSelectedCategory(category);
-    router.push('/projects');
-  };
-
-  const splitName = (name: string) => name.split(' & ');
-
-  return (
-    <div className={styles.categoryCard} onClick={() => handleSelectCategory(category)}>
-      <Image src={categoryImageMap[id]} alt={name} width={64} height={64} />
-      <div className={styles.categoryName}>
-        {splitName(name).map((part, idx) => (
-          <span key={part}>
-            {part} {idx === 0 && '&'}
-          </span>
-        ))}
-      </div>
-    </div>
   );
 };
 

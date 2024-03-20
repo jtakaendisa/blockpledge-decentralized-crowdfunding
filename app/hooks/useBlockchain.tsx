@@ -1,16 +1,16 @@
 'use client';
 
+import { useCallback } from 'react';
 import { ethers } from 'ethers';
 import { formatDistance } from 'date-fns';
 
 import { Project, useAccountStore, useProjectStore } from '../store';
 import { truncateAccount } from '../utils';
-import contractAddress from '../abis/contractAddress.json';
-import contractAbi from '../abis/app/contracts/BlockPledge.sol/BlockPledge.json';
+import useEmail from './useEmail';
 import { AddFormInputs } from '../components/modals/AddProjectModal/AddProjectModal';
 import { EditFormInputs } from '../components/modals/EditProjectModal/EditProjectModal';
-import useEmail from './useEmail';
-import { useCallback } from 'react';
+import contractAddress from '../abis/contractAddress.json';
+import contractAbi from '../abis/app/contracts/BlockPledge.sol/BlockPledge.json';
 
 const address = contractAddress.address;
 const abi = contractAbi.abi;
@@ -19,11 +19,7 @@ const useBlockchain = () => {
   const { sendPaymentNotification } = useEmail();
   const connectedAccount = useAccountStore((s) => s.connectedAccount);
   const setConnectedAccount = useAccountStore((s) => s.setConnectedAccount);
-  const setProjects = useProjectStore((s) => s.setProjects);
-  const setProject = useProjectStore((s) => s.setProject);
   const setUserProjects = useProjectStore((s) => s.setUserProjects);
-  const setStats = useProjectStore((s) => s.setStats);
-  const setCategories = useProjectStore((s) => s.setCategories);
 
   const connectWallet = async () => {
     try {
@@ -57,11 +53,15 @@ const useBlockchain = () => {
     expiresAt,
   }: AddFormInputs) => {
     try {
-      if (!window.ethereum) return alert('Please install Metamask');
+      if (!window.ethereum) {
+        throw new Error('Please install Metamask');
+      }
 
       const contract = await getContract();
 
-      if (!contract) return;
+      if (!contract) {
+        throw new Error("Can't connect to smart contract");
+      }
 
       const convertedCost = ethers.parseEther(cost);
 
@@ -87,11 +87,15 @@ const useBlockchain = () => {
     imageURLs,
   }: EditFormInputs & { id: number }) => {
     try {
-      if (!window.ethereum) return alert('Please install Metamask');
+      if (!window.ethereum) {
+        throw new Error('Please install Metamask');
+      }
 
       const contract = await getContract();
 
-      if (!contract) return;
+      if (!contract) {
+        throw new Error("Can't connect to smart contract");
+      }
 
       const tx = await contract.updateProject(id, description, imageURLs);
 
@@ -104,11 +108,15 @@ const useBlockchain = () => {
 
   const deleteProject = async (id: number, reason: string) => {
     try {
-      if (!window.ethereum) return alert('Please install Metamask');
+      if (!window.ethereum) {
+        throw new Error('Please install Metamask');
+      }
 
       const contract = await getContract();
 
-      if (!contract) return;
+      if (!contract) {
+        throw new Error("Can't connect to smart contract");
+      }
 
       const tx = await contract.deleteProject(id, reason);
 
@@ -122,11 +130,15 @@ const useBlockchain = () => {
 
   const backProject = async (id: number, amount: string, comment: string) => {
     try {
-      if (!window.ethereum) return alert('Please install Metamask');
+      if (!window.ethereum) {
+        throw new Error('Please install Metamask');
+      }
 
       const contract = await getContract();
 
-      if (!contract) return;
+      if (!contract) {
+        throw new Error("Can't connect to smart contract");
+      }
 
       const convertedAmount = ethers.parseEther(amount);
 
@@ -145,11 +157,15 @@ const useBlockchain = () => {
 
   const acceptProject = async (id: number) => {
     try {
-      if (!window.ethereum) return alert('Please install Metamask');
+      if (!window.ethereum) {
+        throw new Error('Please install Metamask');
+      }
 
       const contract = await getContract();
 
-      if (!contract) return;
+      if (!contract) {
+        throw new Error("Can't connect to smart contract");
+      }
 
       const tx = await contract.acceptProject(id);
 
@@ -162,11 +178,15 @@ const useBlockchain = () => {
 
   const rejectProject = async (id: number, reason: string) => {
     try {
-      if (!window.ethereum) return alert('Please install Metamask');
+      if (!window.ethereum) {
+        throw new Error('Please install Metamask');
+      }
 
       const contract = await getContract();
 
-      if (!contract) return;
+      if (!contract) {
+        throw new Error("Can't connect to smart contract");
+      }
 
       const tx = await contract.rejectProject(id, reason);
 
@@ -179,6 +199,10 @@ const useBlockchain = () => {
 
   const getBackers = useCallback(async (id: number) => {
     try {
+      if (!window.ethereum) {
+        throw new Error('Please install Metamask');
+      }
+
       const contract = await getContract();
 
       if (!contract) {
@@ -197,6 +221,10 @@ const useBlockchain = () => {
 
   const getCategories = useCallback(async () => {
     try {
+      if (!window.ethereum) {
+        throw new Error('Please install Metamask');
+      }
+
       const contract = await getContract();
 
       if (!contract) {
@@ -215,11 +243,15 @@ const useBlockchain = () => {
 
   const getUserProjects = async (user: string) => {
     try {
-      if (!window.ethereum) return alert('Please install Metamask');
+      if (!window.ethereum) {
+        throw new Error('Please install Metamask');
+      }
 
       const contract = await getContract();
 
-      if (!contract) return alert("Can't connect to smart contract");
+      if (!contract) {
+        throw new Error("Can't connect to smart contract");
+      }
 
       const userProjects = await contract.getUserProjects(user);
 
@@ -256,6 +288,10 @@ const useBlockchain = () => {
 
   const getProjects = useCallback(async () => {
     try {
+      if (!window.ethereum) {
+        throw new Error('Please install Metamask');
+      }
+
       const contract = await getContract();
 
       if (!contract) {
@@ -280,6 +316,10 @@ const useBlockchain = () => {
   const getProject = useCallback(
     async (id: number) => {
       try {
+        if (!window.ethereum) {
+          throw new Error('Please install Metamask');
+        }
+
         const contract = await getContract();
 
         if (!contract) {
@@ -299,15 +339,26 @@ const useBlockchain = () => {
   );
 
   const listenForProjectPayOut = async () => {
-    const contract = await getContract();
+    try {
+      if (!window.ethereum) {
+        throw new Error('Please install Metamask');
+      }
 
-    if (!contract) return;
+      const contract = await getContract();
 
-    // contract.once('ProjectPaidOut', async (id, recipient, amount, timestamp) => {
-    //   const formattedPayoutInfo = formatPayoutInfo(id, recipient, amount, timestamp);
+      if (!contract) {
+        throw new Error("Can't connect to smart contract");
+      }
 
-    //   sendPaymentNotification(formattedPayoutInfo);
-    // });
+      // contract.once('ProjectPaidOut', async (id, recipient, amount, timestamp) => {
+      //   const formattedPayoutInfo = formatPayoutInfo(id, recipient, amount, timestamp);
+
+      //   sendPaymentNotification(formattedPayoutInfo);
+      // });
+    } catch (error) {
+      console.error('Error listening for payout:', (error as Error).message);
+      throw error;
+    }
   };
 
   const formatDate = (timestamp: number) => {
