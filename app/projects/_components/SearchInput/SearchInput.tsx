@@ -5,6 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { useProjectStore } from '@/app/store';
 import searchSVG from '@/public/icons/search.svg';
+import xmarkSVG from '@/public/icons/xmark.svg';
 
 import styles from './SearchInput.module.scss';
 
@@ -14,11 +15,13 @@ interface SearchFormInput {
 
 const SearchInput = () => {
   const setSearchText = useProjectStore((s) => s.setSearchText);
-  const { register, handleSubmit } = useForm<SearchFormInput>({
+  const { register, handleSubmit, watch, reset } = useForm<SearchFormInput>({
     defaultValues: {
       query: '',
     },
   });
+
+  const watchShowClearInput = watch('query');
 
   const onSubmit: SubmitHandler<SearchFormInput> = ({ query }) => {
     setSearchText(query.toLowerCase());
@@ -33,6 +36,15 @@ const SearchInput = () => {
         placeholder="Search for projects..."
         {...register('query')}
       />
+      {watchShowClearInput.length > 0 && (
+        <Image
+          onClick={() => reset()}
+          src={xmarkSVG}
+          alt="Clear Input"
+          width={18}
+          height={18}
+        />
+      )}
     </form>
   );
 };

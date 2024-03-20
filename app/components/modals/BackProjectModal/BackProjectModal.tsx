@@ -7,11 +7,11 @@ import { toast } from 'react-toastify';
 import { FaTimes } from 'react-icons/fa';
 
 import { Project, useAccountStore, useModalStore } from '@/app/store';
+import { backProjectFirebase } from '@/app/services/authService';
 import useBlockchain from '@/app/hooks/useBlockchain';
 import Button from '../../Button/Button';
 
 import styles from '../modal.module.scss';
-import { backProjectFirebase } from '@/app/services/authService';
 
 interface Props {
   project: Project;

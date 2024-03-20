@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { Project, useAccountStore, useProjectStore } from '@/app/store';
+import { Project, useProjectStore } from '@/app/store';
 import Button from '../Button/Button';
 import ProjectCard from '../ProjectCard/ProjectCard';
 
@@ -26,7 +26,6 @@ const COUNT = 12;
 const ProjectsGrid = ({ projects }: Props) => {
   const selectedCategory = useProjectStore((s) => s.selectedCategory);
   const searchText = useProjectStore((s) => s.searchText);
-  const authUser = useAccountStore((s) => s.authUser);
   const [filteredProjects, setFilteredProjects] = useState(projects);
   const [end, setEnd] = useState(12);
 
@@ -50,17 +49,17 @@ const ProjectsGrid = ({ projects }: Props) => {
     }
   }, [selectedCategory, projects, end]);
 
-  // useEffect(() => {
-  //   if (searchText.length) {
-  //     setDisplayedProjects(
-  //       allProjects.filter((project) =>
-  //         project.title.toLowerCase().includes(searchText)
-  //       )
-  //     );
-  //   } else {
-  //     setDisplayedProjects(allProjects.slice(0, end));
-  //   }
-  // }, [allProjects, searchText, end]);
+  useEffect(() => {
+    if (searchText.length && projects.length) {
+      setFilteredProjects(
+        projects.filter((project) => project.title.toLowerCase().includes(searchText))
+      );
+    }
+
+    if (!searchText.length && projects.length) {
+      setFilteredProjects(projects.slice(0, end));
+    }
+  }, [searchText, projects, end]);
 
   if (!projects) return null;
 

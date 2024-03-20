@@ -68,7 +68,6 @@ interface ProjectStore {
   projects: Project[];
   userProjects: Project[];
   stats: Stats;
-  end: number;
   backers: Backer[];
   categories: Category[];
   selectedCategory: Category | null;
@@ -77,7 +76,6 @@ interface ProjectStore {
   setProjects: (projects: Project[]) => void;
   setUserProjects: (userProjects: Project[]) => void;
   setStats: (stats: Stats) => void;
-  setEnd: (count: number) => void;
   setBackers: (backers: Backer[]) => void;
   setCategories: (categories: Category[]) => void;
   setSelectedCategory: (selectedCategory: Category | null) => void;
@@ -143,7 +141,6 @@ const useProjectStore = create<ProjectStore>((set) => ({
     totalDonations: 0,
     totalProjects: 0,
   },
-  end: 12,
   backers: [],
   categories: [],
   selectedCategory: null,
@@ -152,7 +149,6 @@ const useProjectStore = create<ProjectStore>((set) => ({
   setProjects: (projects) => set((state) => ({ ...state, projects })),
   setUserProjects: (userProjects) => set((state) => ({ ...state, userProjects })),
   setStats: (stats) => set((state) => ({ ...state, stats })),
-  setEnd: (count) => set((state) => ({ ...state, end: state.end + count })),
   setBackers: (backers) => set((state) => ({ ...state, backers })),
   setCategories: (categories) => set((state) => ({ ...state, categories })),
   setSelectedCategory: (selectedCategory) =>
