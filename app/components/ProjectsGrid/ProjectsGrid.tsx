@@ -8,7 +8,8 @@ import ProjectCard from '../ProjectCard/ProjectCard';
 
 import styles from './ProjectsGrid.module.scss';
 
-interface ProjectsProps {
+interface Props {
+  projects: Project[];
   pendingApproval?: boolean;
   following?: boolean;
   backed?: boolean;
@@ -23,98 +24,90 @@ export const statusColorMap = {
   5: 'orange',
 };
 
-const ProjectsGrid = ({ pendingApproval, following, backed }: ProjectsProps) => {
-  const allProjects = useProjectStore((s) => s.projects);
+const ProjectsGrid = ({ projects, pendingApproval, following, backed }: Props) => {
   const end = useProjectStore((s) => s.end);
   const selectedCategory = useProjectStore((s) => s.selectedCategory);
   const searchText = useProjectStore((s) => s.searchText);
   const setEnd = useProjectStore((s) => s.setEnd);
   const authUser = useAccountStore((s) => s.authUser);
-  const [displayedProjects, setDisplayedProjects] = useState<Project[]>(allProjects);
   const count = 12;
 
-  useEffect(() => {
-    if (selectedCategory) {
-      setDisplayedProjects(
-        allProjects
-          .filter((project) => project.categoryId === selectedCategory.id)
-          .slice(0, end)
-      );
-    }
-  }, [allProjects, selectedCategory, end]);
+  // useEffect(() => {
+  //   if (selectedCategory) {
+  //     setDisplayedProjects(
+  //       allProjects
+  //         .filter((project) => project.categoryId === selectedCategory.id)
+  //         .slice(0, end)
+  //     );
+  //   }
+  // }, [allProjects, selectedCategory, end]);
 
-  useEffect(() => {
-    if (searchText.length) {
-      setDisplayedProjects(
-        allProjects.filter((project) =>
-          project.title.toLowerCase().includes(searchText)
-        )
-      );
-    } else {
-      setDisplayedProjects(allProjects.slice(0, end));
-    }
-  }, [allProjects, searchText, end]);
+  // useEffect(() => {
+  //   if (searchText.length) {
+  //     setDisplayedProjects(
+  //       allProjects.filter((project) =>
+  //         project.title.toLowerCase().includes(searchText)
+  //       )
+  //     );
+  //   } else {
+  //     setDisplayedProjects(allProjects.slice(0, end));
+  //   }
+  // }, [allProjects, searchText, end]);
 
-  useEffect(() => {
-    if (!selectedCategory && !searchText.length) {
-      setDisplayedProjects(allProjects.slice(0, end));
-    }
-  }, [allProjects, selectedCategory, searchText, end]);
+  // useEffect(() => {
+  //   if (!selectedCategory && !searchText.length) {
+  //     setDisplayedProjects(allProjects.slice(0, end));
+  //   }
+  // }, [allProjects, selectedCategory, searchText, end]);
 
-  useEffect(() => {
-    if (pendingApproval) {
-      setDisplayedProjects(allProjects.filter((project) => project.status === 5));
-    }
-  }, [allProjects, pendingApproval]);
+  // useEffect(() => {
+  //   if (following && authUser) {
+  //     const projectsBeingFollowed = [];
 
-  useEffect(() => {
-    if (following && authUser) {
-      const projectsBeingFollowed = [];
+  //     for (let i = 0; i < authUser.following.length; i++) {
+  //       const followedProject = allProjects.find(
+  //         (project) => project.id === authUser.following[i]
+  //       );
 
-      for (let i = 0; i < authUser.following.length; i++) {
-        const followedProject = allProjects.find(
-          (project) => project.id === authUser.following[i]
-        );
+  //       if (followedProject) {
+  //         projectsBeingFollowed.push(followedProject);
+  //       }
+  //     }
 
-        if (followedProject) {
-          projectsBeingFollowed.push(followedProject);
-        }
-      }
+  //     setDisplayedProjects(projectsBeingFollowed);
+  //   }
+  // }, [allProjects, following, authUser]);
 
-      setDisplayedProjects(projectsBeingFollowed);
-    }
-  }, [allProjects, following, authUser]);
+  // useEffect(() => {
+  //   if (backed && authUser) {
+  //     const projectsBeingBacked = [];
 
-  useEffect(() => {
-    if (backed && authUser) {
-      const projectsBeingBacked = [];
+  //     for (let i = 0; i < authUser.backed.length; i++) {
+  //       const backedProject = allProjects.find(
+  //         (project) => project.id === authUser.backed[i]
+  //       );
 
-      for (let i = 0; i < authUser.backed.length; i++) {
-        const backedProject = allProjects.find(
-          (project) => project.id === authUser.backed[i]
-        );
+  //       if (backedProject) {
+  //         projectsBeingBacked.push(backedProject);
+  //       }
+  //     }
 
-        if (backedProject) {
-          projectsBeingBacked.push(backedProject);
-        }
-      }
+  //     setDisplayedProjects(projectsBeingBacked);
+  //   }
+  // }, [allProjects, backed, authUser]);
 
-      setDisplayedProjects(projectsBeingBacked);
-    }
-  }, [allProjects, backed, authUser]);
-
-  if (!allProjects) return null;
+  if (!projects) return null;
 
   return (
     <section className={styles.projects}>
       <div className={styles.cards}>
-        {displayedProjects.map((project) => (
+        {projects.map((project) => (
           <ProjectCard key={project.id} project={project} />
         ))}
       </div>
       {!pendingApproval && (
         <div className={styles.buttonContainer}>
-          {end < allProjects.length && (
+          {end < projects.length && (
             <Button onClick={() => setEnd(count)}>Load More</Button>
           )}
         </div>

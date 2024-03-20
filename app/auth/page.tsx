@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
+import { useRouter } from 'next/navigation';
 import { signInAuthUser } from '../services/authService';
 import Header from '../components/Header/Header';
 import Button from '../components/Button/Button';
@@ -16,6 +17,7 @@ interface SigninFormInputs {
 }
 
 const AuthPage = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -33,6 +35,7 @@ const AuthPage = () => {
 
     try {
       await signInAuthUser(email, password);
+      router.push('/');
     } catch (error) {
       console.log('error encountered during sign in', (error as Error).message);
     }

@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
+import { useRouter } from 'next/navigation';
 import { createAuthUser, createUserDocument } from '@/app/services/authService';
 import Header from '../../components/Header/Header';
 import Button from '../../components/Button/Button';
@@ -18,6 +19,7 @@ interface SigninFormInputs {
 }
 
 const SignupPage = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -48,6 +50,7 @@ const SignupPage = () => {
       const response = await createAuthUser(email, password);
       if (response) {
         await createUserDocument(response.user, accountType, wallet);
+        router.push('/');
       }
     } catch (error) {
       console.log('user creation encountered an error', (error as Error).message);
