@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import useBlockchain from '../hooks/useBlockchain';
 import Header from '../components/Header/Header';
@@ -12,15 +12,23 @@ import styles from './page.module.scss';
 
 const ProjectsPage = () => {
   const { loadProjects } = useBlockchain();
+  const [projects, setProjects] = useState([]);
+  const [error, setError] = useState<Error | null>(null);
+
+  const fetchData = useCallback(async () => {
+    try {
+      const { projects } = await loadProjects();
+      setProjects(projects);
+    } catch (error) {
+      setError(error as Error);
+    }
+  }, [loadProjects]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      await loadProjects();
-    };
-
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [fetchData]);
+
+  if (error) return <div>{error.message}</div>;
 
   return (
     <div className={styles.browseProjectsPage}>
@@ -29,7 +37,7 @@ const ProjectsPage = () => {
         <CategorySidebar />
         <div className={styles.projectsSection}>
           <SearchInput />
-          <ProjectsGrid />
+          <ProjectsGrid projects={projects} />
         </div>
       </div>
     </div>

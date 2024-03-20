@@ -10,6 +10,7 @@ import contractAbi from '../abis/app/contracts/BlockPledge.sol/BlockPledge.json'
 import { AddFormInputs } from '../components/modals/AddProjectModal/AddProjectModal';
 import { EditFormInputs } from '../components/modals/EditProjectModal/EditProjectModal';
 import useEmail from './useEmail';
+import { useCallback } from 'react';
 
 const address = contractAddress.address;
 const abi = contractAbi.abi;
@@ -231,28 +232,52 @@ const useBlockchain = () => {
     }
   };
 
-  const loadProjects = async () => {
-    try {
-      if (!window.ethereum) return alert('Please install Metamask');
+  const formatProject = useCallback((project: any): Project => {
+    return {
+      id: Number(project[0]),
+      owner: project[1].toLowerCase(),
+      title: project[2],
+      description: project[3],
+      imageURLs: Array.from(project[4]) as string[],
+      cost: Number(project[5]) / 10 ** 18,
+      raised: Number(ethers.formatEther(project[6])),
+      timestamp: new Date(Number(project[7])).getTime(),
+      expiresAt: new Date(Number(project[8])).getTime(),
+      backers: Number(project[9]),
+      categoryId: Number(project[10]),
+      status: Number(project[11]) as Project['status'],
+      deletionReason: project[12],
+      date: formatDate(Number(project[8]) * 1000),
+    };
+  }, []);
 
-      const contract = await getContract();
+  const formatProjects = useCallback(
+    (projects: any) => {
+      return projects.map((project: any) => formatProject(project)).reverse();
+    },
+    [formatProject]
+  );
 
-      if (!contract) return alert("Can't connect to smart contract");
+  const loadProjects = useCallback(async () => {
+    const contract = await getContract();
 
-      const projects = await contract.getProjects();
-      const stats = await contract.stats();
-
-      const formattedProjects = formatProjects(projects);
-      const formattedStats = formatStats(stats);
-
-      if (projects.length) {
-        setProjects(formattedProjects);
-        setStats(formattedStats);
-      }
-    } catch (error) {
-      console.log((error as Error).message);
+    if (!contract) {
+      throw new Error("Can't connect to smart contract");
     }
-  };
+
+    try {
+      const fetchedProjects = await contract.getProjects();
+      const fetchedStats = await contract.stats();
+
+      const projects = formatProjects(fetchedProjects);
+      const stats = formatStats(fetchedStats);
+
+      return { projects, stats };
+    } catch (error) {
+      console.error('Error loading projects:', (error as Error).message);
+      throw error;
+    }
+  }, [formatProjects]);
 
   const loadProject = async (id: number) => {
     try {
@@ -293,29 +318,6 @@ const useBlockchain = () => {
       date.getMonth() + 1 > 9 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`;
     const year = date.getFullYear();
     return `${year}-${month}-${day}`;
-  };
-
-  const formatProject = (project: any): Project => {
-    return {
-      id: Number(project[0]),
-      owner: project[1].toLowerCase(),
-      title: project[2],
-      description: project[3],
-      imageURLs: Array.from(project[4]) as string[],
-      cost: Number(project[5]) / 10 ** 18,
-      raised: Number(ethers.formatEther(project[6])),
-      timestamp: new Date(Number(project[7])).getTime(),
-      expiresAt: new Date(Number(project[8])).getTime(),
-      backers: Number(project[9]),
-      categoryId: Number(project[10]),
-      status: Number(project[11]) as Project['status'],
-      deletionReason: project[12],
-      date: formatDate(Number(project[8]) * 1000),
-    };
-  };
-
-  const formatProjects = (projects: any) => {
-    return projects.map((project: any) => formatProject(project)).reverse();
   };
 
   const formatStats = (stats: any) => {
