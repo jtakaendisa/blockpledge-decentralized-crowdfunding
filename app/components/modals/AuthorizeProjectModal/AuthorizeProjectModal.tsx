@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import classNames from 'classnames';
 import { FaTimes } from 'react-icons/fa';
 
-import { Project, useModalStore } from '@/app/store';
+import { Project } from '@/app/store';
 import useBlockchain from '@/app/hooks/useBlockchain';
 import Button from '../../Button/Button';
 
@@ -12,6 +12,7 @@ import styles from '../modal.module.scss';
 
 interface Props {
   project: Project;
+  closeModal: () => void;
 }
 
 interface AuthorizeFormInputs {
@@ -19,8 +20,7 @@ interface AuthorizeFormInputs {
   reason: string;
 }
 
-const AuthorizeProjectModal = ({ project }: Props) => {
-  const closeModal = useModalStore((s) => s.setIsOpen);
+const AuthorizeProjectModal = ({ project, closeModal }: Props) => {
   const { acceptProject, rejectProject } = useBlockchain();
 
   const {
@@ -47,7 +47,7 @@ const AuthorizeProjectModal = ({ project }: Props) => {
       await rejectProject(project.id, reason);
     }
 
-    closeModal('authorize');
+    closeModal();
   };
 
   useEffect(() => {
@@ -62,11 +62,7 @@ const AuthorizeProjectModal = ({ project }: Props) => {
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.row}>
             <p>{project.title}</p>
-            <button
-              className={styles.close}
-              type="button"
-              onClick={() => closeModal('authorize')}
-            >
+            <button className={styles.close} type="button" onClick={() => closeModal()}>
               <FaTimes size={20} />
             </button>
           </div>

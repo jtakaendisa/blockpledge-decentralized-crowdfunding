@@ -18,12 +18,7 @@ import {
   WhatsappIcon,
 } from 'react-share';
 
-import {
-  statusMap,
-  useAccountStore,
-  useModalStore,
-  useProjectStore,
-} from '@/app/store';
+import { Project, statusMap, useAccountStore, useProjectStore } from '@/app/store';
 import useBlockchain from '@/app/hooks/useBlockchain';
 import { followProject } from '@/app/services/authService';
 import { findDaysRemaining, truncateAccount } from '@/app/utils';
@@ -40,21 +35,26 @@ import followingSVG from '@/public/icons/following.svg';
 
 import styles from './ProjectDetails.module.scss';
 
+interface Props {
+  project: Project;
+}
+
 const TEST_URL = 'udemy.com';
 
-const ProjectDetails = () => {
-  const { listenForProjectPayOut } = useBlockchain();
+const ProjectDetails = ({ project }: Props) => {
   const connectedAccount = useAccountStore((s) => s.connectedAccount);
   const authUser = useAccountStore((s) => s.authUser);
-  const project = useProjectStore((s) => s.project);
   const categories = useProjectStore((s) => s.categories);
-  const backIsOpen = useModalStore((s) => s.backIsOpen);
-  const editIsOpen = useModalStore((s) => s.editIsOpen);
-  const deleteIsOpen = useModalStore((s) => s.deleteIsOpen);
-  const authorizeIsOpen = useModalStore((s) => s.authorizeIsOpen);
-  const setIsOpen = useModalStore((s) => s.setIsOpen);
   const [selectedImage, setSelectedImage] = useState(0);
   const [urlCopied, setUrlCopied] = useState(false);
+  const [modalState, setModalState] = useState({
+    backIsOpen: false,
+    editIsOpen: false,
+    deleteIsOpen: false,
+    authorizeIsOpen: false,
+  });
+  const { listenForProjectPayOut } = useBlockchain();
+
   const isAdmin = authUser?.uid === process.env.NEXT_PUBLIC_ADMIN_UID;
   const isOpen = project.status === 0;
   const isFollowing = authUser?.following.includes(project.id);
@@ -72,13 +72,15 @@ const ProjectDetails = () => {
     categoryId,
   } = project;
 
+  const { backIsOpen, editIsOpen, deleteIsOpen, authorizeIsOpen } = modalState;
+
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
       setUrlCopied(true);
-      setTimeout(() => setUrlCopied(false), 2000);
+      setTimeout(() => setUrlCopied(false), 1500);
     } catch (error) {
-      console.error('Failed to copy:', error);
+      console.error('Failed to copy:', (error as Error).message);
     }
   };
 
@@ -97,8 +99,6 @@ const ProjectDetails = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!project) return null;
-
   return (
     <section className={styles.mainContainer}>
       {imageURLs?.length && (
@@ -108,7 +108,7 @@ const ProjectDetails = () => {
               src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageURLs[selectedImage]}`}
               alt={title}
               fill
-              sizes="70vw"
+              sizes="30vw"
               priority
             />
           </div>
@@ -159,22 +159,33 @@ const ProjectDetails = () => {
         </div>
         <div className={styles.buttons}>
           {isAdmin && !isOpen && (
-            <Button color="orange" onClick={() => setIsOpen('authorize')}>
+            <Button
+              color="orange"
+              onClick={() => setModalState({ ...modalState, authorizeIsOpen: true })}
+            >
               Accept / Reject
             </Button>
           )}
           {!isAdmin && connectedAccount !== owner && (
-            <Button onClick={() => setIsOpen('back')}>Back Project</Button>
+            <Button onClick={() => setModalState({ ...modalState, backIsOpen: true })}>
+              Back Project
+            </Button>
           )}
           {connectedAccount === owner && (
             <>
               {status === 0 && (
-                <Button color="gray" onClick={() => setIsOpen('edit')}>
+                <Button
+                  color="gray"
+                  onClick={() => setModalState({ ...modalState, editIsOpen: true })}
+                >
                   Edit
                 </Button>
               )}
               {status !== 5 && (
-                <Button color="red" onClick={() => setIsOpen('delete')}>
+                <Button
+                  color="red"
+                  onClick={() => setModalState({ ...modalState, deleteIsOpen: true })}
+                >
                   Delete
                 </Button>
               )}
@@ -209,20 +220,42 @@ const ProjectDetails = () => {
             <WhatsappIcon round size={48} />
           </WhatsappShareButton>
         </div>
-        <button className={styles.followProject} onClick={handleFollowProject}>
-          <Image
-            src={isFollowing ? followingSVG : followSVG}
-            alt="Follow Project"
-            width={24}
-            height={24}
-          />
-          <span>{isFollowing ? 'Following' : 'Follow this Project'}</span>
-        </button>
+        {authUser && (
+          <button className={styles.followProject} onClick={handleFollowProject}>
+            <Image
+              src={isFollowing ? followingSVG : followSVG}
+              alt="Follow Project"
+              width={24}
+              height={24}
+            />
+            <span>{isFollowing ? 'Following' : 'Follow this Project'}</span>
+          </button>
+        )}
       </div>
-      {backIsOpen && <BackProjectModal project={project} />}
-      {editIsOpen && <EditProjectModal project={project} />}
-      {deleteIsOpen && <DeleteProjectModal project={project} />}
-      {authorizeIsOpen && <AuthorizeProjectModal project={project} />}
+      {backIsOpen && (
+        <BackProjectModal
+          project={project}
+          closeModal={() => setModalState({ ...modalState, backIsOpen: false })}
+        />
+      )}
+      {editIsOpen && (
+        <EditProjectModal
+          project={project}
+          closeModal={() => setModalState({ ...modalState, editIsOpen: false })}
+        />
+      )}
+      {deleteIsOpen && (
+        <DeleteProjectModal
+          project={project}
+          closeModal={() => setModalState({ ...modalState, deleteIsOpen: false })}
+        />
+      )}
+      {authorizeIsOpen && (
+        <AuthorizeProjectModal
+          project={project}
+          closeModal={() => setModalState({ ...modalState, authorizeIsOpen: false })}
+        />
+      )}
     </section>
   );
 };

@@ -5,7 +5,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { FaTimes } from 'react-icons/fa';
 
-import { Project, useModalStore } from '@/app/store';
+import { Project } from '@/app/store';
 import usePinata from '@/app/hooks/usePinata';
 import useBlockchain from '@/app/hooks/useBlockchain';
 import Button from '../../Button/Button';
@@ -14,6 +14,7 @@ import styles from '../modal.module.scss';
 
 interface Props {
   project: Project;
+  closeModal: () => void;
 }
 
 export interface EditFormInputs {
@@ -21,8 +22,7 @@ export interface EditFormInputs {
   description: string;
 }
 
-const EditProjectModal = ({ project }: Props) => {
-  const closeModal = useModalStore((s) => s.setIsOpen);
+const EditProjectModal = ({ project, closeModal }: Props) => {
   const [files, setFiles] = useState<File[]>([]);
   const [existingImageURLs, setExistingImageURLs] = useState(project.imageURLs);
   const [fileError, setFileError] = useState(false);
@@ -70,7 +70,7 @@ const EditProjectModal = ({ project }: Props) => {
     await updateProject({ ...data, id: project.id });
     toast.success('Project updated successfully, changes will reflect momentarily.');
 
-    closeModal('edit');
+    closeModal();
   };
 
   useEffect(() => {
@@ -91,7 +91,7 @@ const EditProjectModal = ({ project }: Props) => {
                 [styles.disabled]: uploading,
               })}
               type="button"
-              onClick={() => closeModal('edit')}
+              onClick={() => closeModal()}
               disabled={uploading}
             >
               <FaTimes size={20} />

@@ -1,6 +1,8 @@
 'use client';
 
-import { Stats, useModalStore } from '@/app/store';
+import { useState } from 'react';
+
+import { Stats } from '@/app/store';
 import Button from '../Button/Button';
 import AddProjectModal from '../modals/AddProjectModal/AddProjectModal';
 
@@ -13,8 +15,7 @@ interface Props {
 const Hero = ({ stats }: Props) => {
   const { totalBackings, totalDonations, totalProjects } = stats;
 
-  const addIsOpen = useModalStore((s) => s.addIsOpen);
-  const openModal = useModalStore((s) => s.setIsOpen);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   return (
     <section className={styles.hero}>
@@ -24,7 +25,7 @@ const Hero = ({ stats }: Props) => {
         <span>BlockPledge.</span>
       </h1>
       <div className={styles.buttons}>
-        <Button onClick={() => openModal('add')}>Add Project</Button>
+        <Button onClick={() => setModalIsOpen(true)}>Add Project</Button>
         <Button inverted>Back Projects</Button>
       </div>
       <div className={styles.stats}>
@@ -41,7 +42,7 @@ const Hero = ({ stats }: Props) => {
           <span>Donated</span>
         </div>
       </div>
-      {addIsOpen && <AddProjectModal />}
+      {modalIsOpen && <AddProjectModal closeModal={() => setModalIsOpen(false)} />}
     </section>
   );
 };

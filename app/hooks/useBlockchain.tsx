@@ -23,7 +23,6 @@ const useBlockchain = () => {
   const setProject = useProjectStore((s) => s.setProject);
   const setUserProjects = useProjectStore((s) => s.setUserProjects);
   const setStats = useProjectStore((s) => s.setStats);
-  const setBackers = useProjectStore((s) => s.setBackers);
   const setCategories = useProjectStore((s) => s.setCategories);
 
   const connectWallet = async () => {
@@ -178,25 +177,23 @@ const useBlockchain = () => {
     }
   };
 
-  const getBackers = async (id: number) => {
+  const getBackers = useCallback(async (id: number) => {
     try {
-      if (!window.ethereum) return alert('Please install Metamask');
-
       const contract = await getContract();
 
-      if (!contract) return;
-
-      const backers = await contract.getBackers(id);
-
-      const formattedBackers = formatBackers(backers);
-
-      if (backers.length) {
-        setBackers(formattedBackers);
+      if (!contract) {
+        throw new Error("Can't connect to smart contract");
       }
+
+      const fetchedBackers = await contract.getBackers(id);
+      const backers = formatBackers(fetchedBackers);
+
+      return { backers };
     } catch (error) {
-      console.log((error as Error).message);
+      console.error('Error loading backers:', (error as Error).message);
+      throw error;
     }
-  };
+  }, []);
 
   const getCategories = useCallback(async () => {
     try {
@@ -280,25 +277,26 @@ const useBlockchain = () => {
     }
   }, [formatProject]);
 
-  const getProject = async (id: number) => {
-    try {
-      if (!window.ethereum) return alert('Please install Metamask');
+  const getProject = useCallback(
+    async (id: number) => {
+      try {
+        const contract = await getContract();
 
-      const contract = await getContract();
+        if (!contract) {
+          throw new Error("Can't connect to smart contract");
+        }
 
-      if (!contract) return alert("Can't connect to smart contract");
+        const fetchedProject = await contract.getProject(id);
+        const project = formatProject(fetchedProject);
 
-      const project = await contract.getProject(id);
-
-      const formattedProject = formatProject(project);
-
-      if (formattedProject) {
-        setProject(formattedProject);
+        return { project };
+      } catch (error) {
+        console.error('Error loading project:', (error as Error).message);
+        throw error;
       }
-    } catch (error) {
-      console.log((error as Error).message);
-    }
-  };
+    },
+    [formatProject]
+  );
 
   const listenForProjectPayOut = async () => {
     const contract = await getContract();

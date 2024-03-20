@@ -3,15 +3,15 @@
 import { FaEthereum } from 'react-icons/fa';
 import Identicon from 'react-hooks-identicons';
 
-import { useProjectStore } from '@/app/store';
+import { Backer } from '@/app/store';
 
 import styles from './ProjectBackers.module.scss';
 
-const ProjectBackers = () => {
-  const backers = useProjectStore((s) => s.backers);
+interface Props {
+  backers: Backer[];
+}
 
-  if (!backers) return null;
-
+const ProjectBackers = ({ backers }: Props) => {
   return (
     <section className={styles.backers}>
       <table>

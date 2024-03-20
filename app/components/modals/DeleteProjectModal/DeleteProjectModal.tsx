@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import { toast } from 'react-toastify';
 import { FaTimes } from 'react-icons/fa';
 
-import { Project, useModalStore } from '@/app/store';
+import { Project } from '@/app/store';
 import useBlockchain from '@/app/hooks/useBlockchain';
 import Button from '../../Button/Button';
 
@@ -14,15 +14,15 @@ import styles from '../modal.module.scss';
 
 interface Props {
   project: Project;
+  closeModal: () => void;
 }
 
 interface DeleteFormInputs {
   reason: string;
 }
 
-const DeleteProjectModal = ({ project }: Props) => {
+const DeleteProjectModal = ({ project, closeModal }: Props) => {
   const router = useRouter();
-  const closeModal = useModalStore((s) => s.setIsOpen);
   const { deleteProject } = useBlockchain();
 
   const {
@@ -39,7 +39,7 @@ const DeleteProjectModal = ({ project }: Props) => {
   const onSubmit: SubmitHandler<DeleteFormInputs> = async (data) => {
     await deleteProject(project.id, data.reason);
     toast.success('Project deleted successfully, changes will reflect momentarily.');
-    closeModal('delete');
+    closeModal();
     router.push('/');
   };
 
@@ -55,11 +55,7 @@ const DeleteProjectModal = ({ project }: Props) => {
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.row}>
             <p>{project.title}</p>
-            <button
-              className={styles.close}
-              type="button"
-              onClick={() => closeModal('delete')}
-            >
+            <button className={styles.close} type="button" onClick={() => closeModal()}>
               <FaTimes size={20} />
             </button>
           </div>

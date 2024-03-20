@@ -49,7 +49,7 @@ const ProjectsPage = () => {
         <CategorySidebar categories={categories} selectedCategory={selectedCategory} />
         <div className={styles.projectsSection}>
           <SearchInput />
-          <ProjectsGrid projects={projects} />
+          <ProjectsGrid projects={projects} selectedCategory={selectedCategory} />
         </div>
       </div>
     </div>

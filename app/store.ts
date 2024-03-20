@@ -2,17 +2,6 @@ import { create } from 'zustand';
 import { User } from 'firebase/auth';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 
-export type ModalVariant = 'add' | 'back' | 'edit' | 'delete' | 'authorize';
-
-interface ModalStore {
-  addIsOpen: boolean;
-  backIsOpen: boolean;
-  editIsOpen: boolean;
-  deleteIsOpen: boolean;
-  authorizeIsOpen: boolean;
-  setIsOpen: (variant: ModalVariant) => void;
-}
-
 export type AuthUser = User & {
   accountType: string;
   wallet: string;
@@ -50,7 +39,7 @@ export interface Stats {
   totalDonations: number;
 }
 
-interface Backer {
+export interface Backer {
   backer: string;
   contribution: number;
   timestamp: string;
@@ -64,31 +53,19 @@ export interface Category {
 }
 
 interface ProjectStore {
-  project: Project;
   projects: Project[];
   userProjects: Project[];
   stats: Stats;
-  backers: Backer[];
   categories: Category[];
   selectedCategory: Category | null;
   searchText: string;
-  setProject: (project: Project) => void;
   setProjects: (projects: Project[]) => void;
   setUserProjects: (userProjects: Project[]) => void;
   setStats: (stats: Stats) => void;
-  setBackers: (backers: Backer[]) => void;
   setCategories: (categories: Category[]) => void;
   setSelectedCategory: (selectedCategory: Category | null) => void;
   setSearchText: (searchText: string) => void;
 }
-
-const variantMap = {
-  add: 'addIsOpen',
-  back: 'backIsOpen',
-  edit: 'editIsOpen',
-  delete: 'deleteIsOpen',
-  authorize: 'authorizeIsOpen',
-} as const;
 
 export const statusMap = {
   0: 'OPEN',
@@ -114,16 +91,6 @@ export const categoryImageMap: { [key: number]: StaticImport } = {
   11: require('@/public/icons/pets.svg'),
 } as const;
 
-const useModalStore = create<ModalStore>((set) => ({
-  addIsOpen: false,
-  backIsOpen: false,
-  editIsOpen: false,
-  deleteIsOpen: false,
-  authorizeIsOpen: false,
-  setIsOpen: (variant) =>
-    set((state) => ({ [variantMap[variant]]: !state[variantMap[variant]] })),
-}));
-
 const useAccountStore = create<AccountStore>((set) => ({
   authUser: null,
   connectedAccount: '',
@@ -133,7 +100,6 @@ const useAccountStore = create<AccountStore>((set) => ({
 }));
 
 const useProjectStore = create<ProjectStore>((set) => ({
-  project: {} as Project,
   projects: [],
   userProjects: [],
   stats: {
@@ -141,19 +107,16 @@ const useProjectStore = create<ProjectStore>((set) => ({
     totalDonations: 0,
     totalProjects: 0,
   },
-  backers: [],
   categories: [],
   selectedCategory: null,
   searchText: '',
-  setProject: (project) => set((state) => ({ ...state, project })),
   setProjects: (projects) => set((state) => ({ ...state, projects })),
   setUserProjects: (userProjects) => set((state) => ({ ...state, userProjects })),
   setStats: (stats) => set((state) => ({ ...state, stats })),
-  setBackers: (backers) => set((state) => ({ ...state, backers })),
   setCategories: (categories) => set((state) => ({ ...state, categories })),
   setSelectedCategory: (selectedCategory) =>
     set((state) => ({ ...state, selectedCategory })),
   setSearchText: (searchText) => set((state) => ({ ...state, searchText })),
 }));
 
-export { useModalStore, useAccountStore, useProjectStore };
+export { useAccountStore, useProjectStore };

@@ -5,7 +5,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { FaTimes } from 'react-icons/fa';
 
-import { useModalStore, useProjectStore } from '@/app/store';
+import { useProjectStore } from '@/app/store';
 import usePinata from '@/app/hooks/usePinata';
 import useBlockchain from '@/app/hooks/useBlockchain';
 import { convertToTimestamp, getTomorrowsDate } from '@/app/utils';
@@ -13,6 +13,10 @@ import Button from '../../Button/Button';
 import newProject from '@/public/images/new-project.jpg';
 
 import styles from '../modal.module.scss';
+
+interface Props {
+  closeModal: () => void;
+}
 
 export interface AddFormInputs {
   title: string;
@@ -23,14 +27,13 @@ export interface AddFormInputs {
   description: string;
 }
 
-const AddProjectModal = () => {
-  const closeModal = useModalStore((s) => s.setIsOpen);
+const AddProjectModal = ({ closeModal }: Props) => {
   const categories = useProjectStore((s) => s.categories);
   const [files, setFiles] = useState<File[]>([]);
   const [fileError, setFileError] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const { uploadFiles } = usePinata(setUploading);
   const { createProject } = useBlockchain();
+  const { uploadFiles } = usePinata(setUploading);
 
   const {
     register,
@@ -71,7 +74,7 @@ const AddProjectModal = () => {
 
     await createProject(data);
     toast.success('Project created successfully, changes will reflect momentarily.');
-    closeModal('add');
+    closeModal();
   };
 
   useEffect(() => {
@@ -90,7 +93,7 @@ const AddProjectModal = () => {
                 [styles.disabled]: uploading,
               })}
               type="button"
-              onClick={() => closeModal('add')}
+              onClick={() => closeModal()}
               disabled={uploading}
             >
               <FaTimes size={20} />

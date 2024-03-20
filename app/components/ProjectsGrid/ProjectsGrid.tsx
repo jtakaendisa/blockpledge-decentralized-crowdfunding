@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { Project, useProjectStore } from '@/app/store';
+import { Category, Project, useProjectStore } from '@/app/store';
 import Button from '../Button/Button';
 import ProjectCard from '../ProjectCard/ProjectCard';
 
@@ -10,6 +10,7 @@ import styles from './ProjectsGrid.module.scss';
 
 interface Props {
   projects: Project[];
+  selectedCategory: Category | null;
 }
 
 export const statusColorMap = {
@@ -23,8 +24,7 @@ export const statusColorMap = {
 
 const COUNT = 12;
 
-const ProjectsGrid = ({ projects }: Props) => {
-  const selectedCategory = useProjectStore((s) => s.selectedCategory);
+const ProjectsGrid = ({ projects, selectedCategory }: Props) => {
   const searchText = useProjectStore((s) => s.searchText);
   const [filteredProjects, setFilteredProjects] = useState(projects);
   const [end, setEnd] = useState(12);
@@ -34,6 +34,18 @@ const ProjectsGrid = ({ projects }: Props) => {
       setFilteredProjects(projects.slice(0, end));
     }
   }, [projects, end]);
+
+  useEffect(() => {
+    if (searchText.length && projects.length) {
+      setFilteredProjects(
+        projects.filter((project) => project.title.toLowerCase().includes(searchText))
+      );
+    }
+
+    if (!searchText.length && projects.length) {
+      setFilteredProjects(projects.slice(0, end));
+    }
+  }, [searchText, projects, end]);
 
   useEffect(() => {
     if (selectedCategory && projects.length) {
@@ -48,18 +60,6 @@ const ProjectsGrid = ({ projects }: Props) => {
       setFilteredProjects(projects.slice(0, end));
     }
   }, [selectedCategory, projects, end]);
-
-  useEffect(() => {
-    if (searchText.length && projects.length) {
-      setFilteredProjects(
-        projects.filter((project) => project.title.toLowerCase().includes(searchText))
-      );
-    }
-
-    if (!searchText.length && projects.length) {
-      setFilteredProjects(projects.slice(0, end));
-    }
-  }, [searchText, projects, end]);
 
   if (!projects) return null;
 

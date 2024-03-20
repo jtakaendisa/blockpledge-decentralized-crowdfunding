@@ -6,7 +6,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { FaTimes } from 'react-icons/fa';
 
-import { Project, useAccountStore, useModalStore } from '@/app/store';
+import { Project, useAccountStore } from '@/app/store';
 import { backProjectFirebase } from '@/app/services/authService';
 import useBlockchain from '@/app/hooks/useBlockchain';
 import Button from '../../Button/Button';
@@ -15,6 +15,7 @@ import styles from '../modal.module.scss';
 
 interface Props {
   project: Project;
+  closeModal: () => void;
 }
 
 export interface BackFormInputs {
@@ -22,8 +23,7 @@ export interface BackFormInputs {
   comment: string;
 }
 
-const BackProjectModal = ({ project }: Props) => {
-  const closeModal = useModalStore((s) => s.setIsOpen);
+const BackProjectModal = ({ project, closeModal }: Props) => {
   const authUser = useAccountStore((s) => s.authUser);
   const { backProject } = useBlockchain();
 
@@ -50,7 +50,7 @@ const BackProjectModal = ({ project }: Props) => {
       'Thank you! Project backing has been received, changes will reflect momentarily.'
     );
 
-    closeModal('back');
+    closeModal();
   };
 
   useEffect(() => {
@@ -65,11 +65,7 @@ const BackProjectModal = ({ project }: Props) => {
         <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.row}>
             <p>{project.title}</p>
-            <button
-              className={styles.close}
-              type="button"
-              onClick={() => closeModal('back')}
-            >
+            <button className={styles.close} type="button" onClick={() => closeModal()}>
               <FaTimes size={20} />
             </button>
           </div>
