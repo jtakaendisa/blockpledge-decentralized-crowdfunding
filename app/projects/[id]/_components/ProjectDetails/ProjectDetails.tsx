@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames';
 import Identicon from 'react-hooks-identicons';
@@ -90,14 +90,13 @@ const ProjectDetails = ({ project }: Props) => {
     await followProject(authUser, project.id, isFollowing);
   };
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     await listenForProjectPayOut();
-  //   };
+  const payoutListener = useCallback(async () => {
+    await listenForProjectPayOut();
+  }, [listenForProjectPayOut]);
 
-  //   fetchData();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+  useEffect(() => {
+    payoutListener();
+  }, [payoutListener]);
 
   return (
     <section className={styles.mainContainer}>

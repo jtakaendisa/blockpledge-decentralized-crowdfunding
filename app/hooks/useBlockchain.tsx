@@ -6,7 +6,7 @@ import { formatDistance } from 'date-fns';
 
 import { Project } from '../store';
 import { truncateAccount } from '../utils';
-// import useEmail from './useEmail';
+import useEmail from './useEmail';
 import { AddFormInputs } from '../components/modals/AddProjectModal/AddProjectModal';
 import { EditFormInputs } from '../components/modals/EditProjectModal/EditProjectModal';
 import contractAddress from '../abis/contractAddress.json';
@@ -16,7 +16,7 @@ const address = contractAddress.address;
 const abi = contractAbi.abi;
 
 const useBlockchain = () => {
-  // const { sendPaymentNotification } = useEmail();
+  const { sendPaymentNotification } = useEmail();
 
   const formatProject = useCallback((project: any): Project => {
     return {
@@ -421,16 +421,16 @@ const useBlockchain = () => {
         throw new Error("Can't connect to smart contract");
       }
 
-      // contract.once('ProjectPaidOut', async (id, recipient, amount, timestamp) => {
-      //   const formattedPayoutInfo = formatPayoutInfo(id, recipient, amount, timestamp);
+      contract.once('ProjectPaidOut', async (id, recipient, amount, timestamp) => {
+        const formattedPayoutInfo = formatPayoutInfo(id, recipient, amount, timestamp);
 
-      //   sendPaymentNotification(formattedPayoutInfo);
-      // });
+        sendPaymentNotification(formattedPayoutInfo);
+      });
     } catch (error) {
       console.error('Error listening for payout:', (error as Error).message);
       throw error;
     }
-  }, [getContract]);
+  }, [getContract, sendPaymentNotification]);
 
   return {
     connectWallet,

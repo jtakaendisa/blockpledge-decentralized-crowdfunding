@@ -1,6 +1,7 @@
 import emailjs from '@emailjs/browser';
 
 import { useProjectStore } from '../store';
+import { useCallback } from 'react';
 
 interface PaymentNotificationProps {
   id: number;
@@ -22,20 +23,24 @@ const useEmail = () => {
     },
   });
 
-  const sendPaymentNotification = async (payoutInfo: PaymentNotificationProps) => {
-    const title = projects.find((project) => project.id === payoutInfo.id)?.title || '';
-    payoutInfo.title = title;
+  const sendPaymentNotification = useCallback(
+    async (payoutInfo: PaymentNotificationProps) => {
+      const title =
+        projects.find((project) => project.id === payoutInfo.id)?.title || '';
+      payoutInfo.title = title;
 
-    try {
-      await emailjs.send(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
-        payoutInfo as any
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
+      try {
+        await emailjs.send(
+          process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+          process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+          payoutInfo as any
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [projects]
+  );
 
   return { sendPaymentNotification };
 };
