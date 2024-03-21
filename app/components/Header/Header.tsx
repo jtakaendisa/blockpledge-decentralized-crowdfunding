@@ -1,7 +1,8 @@
 'use client';
 
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import Link from 'next/link';
 import { User } from 'firebase/auth';
 import { TbBusinessplan } from 'react-icons/tb';
@@ -15,17 +16,20 @@ import {
 import { truncateAccount } from '@/app/utils/index';
 import useBlockchain from '@/app/hooks/useBlockchain';
 import Button from '../Button/Button';
+import userSVG from '@/public/icons/user.svg';
+import walletSVG from '@/public/icons/wallet.svg';
 
 import styles from './Header.module.scss';
 
 const Header = () => {
   const router = useRouter();
-  const { connectWallet } = useBlockchain();
   const connectedAccount = useAccountStore((s) => s.connectedAccount);
   const setConnectedAccount = useAccountStore((s) => s.setConnectedAccount);
   const authUser = useAccountStore((s) => s.authUser);
   const setAuthUser = useAccountStore((s) => s.setAuthUser);
   const setSelectedCategory = useProjectStore((s) => s.setSelectedCategory);
+  const { connectWallet } = useBlockchain();
+  const [isOpen, setIsOpen] = useState(false);
 
   const isAdmin = authUser?.uid === process.env.NEXT_PUBLIC_ADMIN_UID;
 
@@ -66,39 +70,66 @@ const Header = () => {
 
   return (
     <header className={styles.header}>
-      <Link href="/" className={styles.home}>
+      <Link href="/" className={styles.homeIcon}>
         <span>BlockPledge</span>
         <TbBusinessplan />
       </Link>
-      <div className={styles.buttonContainer}>
-        <Link href="/projects" onClick={() => setSelectedCategory(null)}>
-          Explore Projects
-        </Link>
-        {authUser && !isAdmin && (
-          <Link href="/user_dashboard" onClick={() => setSelectedCategory(null)}>
-            My Dashboard
+      <li className={styles.navLinks}>
+        <ul className={styles.navLink}>
+          <Link href="/projects" onClick={() => setSelectedCategory(null)}>
+            Explore Projects
           </Link>
+        </ul>
+        {authUser && !isAdmin && (
+          <ul className={styles.navLink}>
+            <Link href="/user_dashboard" onClick={() => setSelectedCategory(null)}>
+              My Dashboard
+            </Link>
+          </ul>
         )}
         {isAdmin && (
-          <Button inverted onClick={() => router.push('/admin_dashboard')}>
-            Admin Dashboard
-          </Button>
+          <ul className={styles.navLink}>
+            <Button inverted onClick={() => router.push('/admin_dashboard')}>
+              Admin Dashboard
+            </Button>
+          </ul>
         )}
         {authUser ? (
-          <Button inverted onClick={signOutAuthUser}>
-            Sign out
-          </Button>
+          <ul
+            className={styles.profileContainer}
+            onClick={() => setIsOpen((prev) => !prev)}
+          >
+            <div className={styles.iconContainer}>
+              <Image src={userSVG} alt="User Profile" width={24} height={24} />
+            </div>
+            {isOpen && (
+              <div className={styles.dropDownMenu}>
+                <div className={styles.row}>
+                  <div className={styles.iconContainer}>
+                    <Image src={userSVG} alt="User Profile" width={24} height={24} />
+                  </div>
+                  <span>{authUser?.email}</span>
+                </div>
+                <div className={styles.row}>
+                  <div className={styles.iconContainer}>
+                    <Image src={walletSVG} alt="Crypto Wallet" width={24} height={24} />
+                  </div>
+                  <span>{truncateAccount(connectedAccount, 4, 4)}</span>
+                </div>
+                <div className={styles.signOutButtonContainer}>
+                  <Button onClick={signOutAuthUser}>Sign out</Button>
+                </div>
+              </div>
+            )}
+          </ul>
         ) : (
-          <Button inverted onClick={() => router.push('/auth')}>
-            Sign In
-          </Button>
+          <ul>
+            <Button inverted onClick={() => router.push('/auth')}>
+              Sign In
+            </Button>
+          </ul>
         )}
-        <Button onClick={handleWalletConnection} disabled={connectedAccount.length > 0}>
-          {connectedAccount
-            ? truncateAccount(connectedAccount, 4, 4)
-            : 'Connect Wallet'}
-        </Button>
-      </div>
+      </li>
     </header>
   );
 };
