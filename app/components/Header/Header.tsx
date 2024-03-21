@@ -38,14 +38,6 @@ const Header = () => {
   }, [connectWallet, setConnectedAccount]);
 
   useEffect(() => {
-    const handleAccountChange = async () => {
-      const { accounts } = await connectWallet();
-
-      if (accounts.length) {
-        setConnectedAccount(accounts[0]);
-      }
-    };
-
     const handleChainChange = () => {
       window.location.reload();
     };
@@ -54,11 +46,11 @@ const Header = () => {
       handleWalletConnection();
     }
 
-    window.ethereum.on('accountsChanged', handleAccountChange);
+    window.ethereum.on('accountsChanged', handleWalletConnection);
     window.ethereum.on('chainChanged', handleChainChange);
 
     return () => {
-      window.ethereum.removeListener('accountsChanged', handleAccountChange);
+      window.ethereum.removeListener('accountsChanged', handleWalletConnection);
       window.ethereum.removeListener('chainChanged', handleChainChange);
     };
   }, [handleWalletConnection, connectWallet, setConnectedAccount]);

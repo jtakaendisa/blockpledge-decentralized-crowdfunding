@@ -3,7 +3,7 @@ import { User } from 'firebase/auth';
 import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 
 export type AuthUser = User & {
-  accountType: string;
+  accountType: 'owner' | 'funder';
   wallet: string;
   following: number[];
   backed: number[];

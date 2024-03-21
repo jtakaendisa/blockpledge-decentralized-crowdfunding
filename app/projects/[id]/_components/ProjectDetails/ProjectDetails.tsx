@@ -90,14 +90,14 @@ const ProjectDetails = ({ project }: Props) => {
     await followProject(authUser, project.id, isFollowing);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      await listenForProjectPayOut();
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     await listenForProjectPayOut();
+  //   };
 
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  //   fetchData();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   return (
     <section className={styles.mainContainer}>
@@ -166,7 +166,7 @@ const ProjectDetails = ({ project }: Props) => {
               Accept / Reject
             </Button>
           )}
-          {!isAdmin && connectedAccount !== owner && (
+          {!isAdmin && connectedAccount !== owner && authUser && (
             <Button onClick={() => setModalState({ ...modalState, backIsOpen: true })}>
               Back Project
             </Button>
