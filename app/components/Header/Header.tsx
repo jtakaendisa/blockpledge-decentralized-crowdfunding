@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { User } from 'firebase/auth';
@@ -20,7 +20,7 @@ import styles from './Header.module.scss';
 
 const Header = () => {
   const router = useRouter();
-  const { connectWallet, getCategories } = useBlockchain();
+  const { connectWallet } = useBlockchain();
   const connectedAccount = useAccountStore((s) => s.connectedAccount);
   const setConnectedAccount = useAccountStore((s) => s.setConnectedAccount);
   const authUser = useAccountStore((s) => s.authUser);
@@ -29,9 +29,18 @@ const Header = () => {
 
   const isAdmin = authUser?.uid === process.env.NEXT_PUBLIC_ADMIN_UID;
 
+  const handleWalletConnection = useCallback(async () => {
+    const { accounts } = await connectWallet();
+
+    if (accounts.length) {
+      setConnectedAccount(accounts[0]);
+    }
+  }, [connectWallet, setConnectedAccount]);
+
   useEffect(() => {
-    const fetchConnectedAccount = async () => {
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    const handleAccountChange = async () => {
+      const { accounts } = await connectWallet();
+
       if (accounts.length) {
         setConnectedAccount(accounts[0]);
       }
@@ -41,34 +50,18 @@ const Header = () => {
       window.location.reload();
     };
 
-    const handleAccountChange = async () => {
-      const accounts = await window.ethereum.request({
-        method: 'eth_requestAccounts',
-      });
-      setConnectedAccount(accounts[0]);
-    };
-
     if (window.ethereum) {
-      fetchConnectedAccount();
+      handleWalletConnection();
     }
 
     window.ethereum.on('accountsChanged', handleAccountChange);
     window.ethereum.on('chainChanged', handleChainChange);
 
     return () => {
-      window.ethereum.removeListener('chainChanged', handleChainChange);
       window.ethereum.removeListener('accountsChanged', handleAccountChange);
+      window.ethereum.removeListener('chainChanged', handleChainChange);
     };
-  }, [setConnectedAccount]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await getCategories();
-    };
-
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [handleWalletConnection, connectWallet, setConnectedAccount]);
 
   useEffect(() => {
     const unsubscribe = authStateChangeListener(async (user: User) => {
@@ -108,7 +101,7 @@ const Header = () => {
             Sign In
           </Button>
         )}
-        <Button onClick={connectWallet} disabled={connectedAccount.length > 0}>
+        <Button onClick={handleWalletConnection} disabled={connectedAccount.length > 0}>
           {connectedAccount
             ? truncateAccount(connectedAccount, 4, 4)
             : 'Connect Wallet'}

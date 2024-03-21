@@ -32,13 +32,15 @@ const ProjectPage = ({ params: { id } }: Props) => {
     } catch (error) {
       setError(error as Error);
     }
-  }, [getProject, getBackers, id]);
+  }, [id, getProject, getBackers]);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
   if (error) return <div>{error.message}</div>;
+
+  console.log('render: project');
 
   return (
     <div className={styles.projectPage}>

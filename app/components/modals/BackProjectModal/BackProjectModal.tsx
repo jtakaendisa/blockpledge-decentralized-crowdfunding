@@ -25,6 +25,7 @@ export interface BackFormInputs {
 
 const BackProjectModal = ({ project, closeModal }: Props) => {
   const authUser = useAccountStore((s) => s.authUser);
+  const connectedAcount = useAccountStore((s) => s.connectedAccount);
   const { backProject } = useBlockchain();
 
   const {
@@ -40,9 +41,8 @@ const BackProjectModal = ({ project, closeModal }: Props) => {
   });
 
   const onSubmit: SubmitHandler<BackFormInputs> = async ({ cost, comment }) => {
-    await backProject(project.id, cost, comment);
-
-    if (authUser) {
+    if (connectedAcount && authUser) {
+      await backProject(project.id, cost, comment, connectedAcount);
       await backProjectFirebase(authUser, project.id);
     }
 

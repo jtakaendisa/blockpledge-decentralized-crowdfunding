@@ -39,9 +39,11 @@ const HomePage = () => {
     if (!projects.length) {
       fetchData();
     }
-  }, [fetchData, projects]);
+  }, [projects.length, fetchData]);
 
   if (error) return <div>{error.message}</div>;
+
+  console.log('render: home');
 
   return (
     <div className={styles.homePage}>

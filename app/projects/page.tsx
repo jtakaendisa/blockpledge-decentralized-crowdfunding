@@ -38,9 +38,11 @@ const ProjectsPage = () => {
     if (!projects.length) {
       fetchData();
     }
-  }, [fetchData, projects]);
+  }, [projects.length, fetchData]);
 
   if (error) return <div>{error.message}</div>;
+
+  console.log('render: projects');
 
   return (
     <div className={styles.browseProjectsPage}>
