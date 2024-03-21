@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { User } from 'firebase/auth';
@@ -20,9 +20,18 @@ import userSVG from '@/public/icons/user.svg';
 import walletSVG from '@/public/icons/wallet.svg';
 
 import styles from './Header.module.scss';
+import classNames from 'classnames';
+
+const PATHS = {
+  home: '/',
+  projects: '/projects',
+  userDashboard: '/user_dashboard',
+  adminDashboard: '/admin_dashboard',
+};
 
 const Header = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const connectedAccount = useAccountStore((s) => s.connectedAccount);
   const setConnectedAccount = useAccountStore((s) => s.setConnectedAccount);
   const authUser = useAccountStore((s) => s.authUser);
@@ -70,28 +79,43 @@ const Header = () => {
 
   return (
     <header className={styles.header}>
-      <Link href="/" className={styles.homeIcon}>
+      <Link href={PATHS.home} className={styles.homeIcon}>
         <span>BlockPledge</span>
         <TbBusinessplan />
       </Link>
       <li className={styles.navLinks}>
-        <ul className={styles.navLink}>
-          <Link href="/projects" onClick={() => setSelectedCategory(null)}>
+        <ul
+          className={classNames({
+            [styles.navLink]: true,
+            [styles.selected]: PATHS.projects === pathname,
+          })}
+        >
+          <Link href={PATHS.projects} onClick={() => setSelectedCategory(null)}>
             Explore Projects
           </Link>
         </ul>
         {authUser && !isAdmin && (
-          <ul className={styles.navLink}>
-            <Link href="/user_dashboard" onClick={() => setSelectedCategory(null)}>
+          <ul
+            className={classNames({
+              [styles.navLink]: true,
+              [styles.selected]: PATHS.userDashboard === pathname,
+            })}
+          >
+            <Link href={PATHS.userDashboard} onClick={() => setSelectedCategory(null)}>
               My Dashboard
             </Link>
           </ul>
         )}
         {isAdmin && (
-          <ul className={styles.navLink}>
-            <Button inverted onClick={() => router.push('/admin_dashboard')}>
+          <ul
+            className={classNames({
+              [styles.navLink]: true,
+              [styles.selected]: PATHS.adminDashboard === pathname,
+            })}
+          >
+            <Link href={PATHS.adminDashboard} onClick={() => setSelectedCategory(null)}>
               Admin Dashboard
-            </Button>
+            </Link>
           </ul>
         )}
         {authUser ? (
@@ -108,7 +132,7 @@ const Header = () => {
                   <div className={styles.iconContainer}>
                     <Image src={userSVG} alt="User Profile" width={24} height={24} />
                   </div>
-                  <span>{authUser?.email}</span>
+                  <span>{authUser.email}</span>
                 </div>
                 <div className={styles.row}>
                   <div className={styles.iconContainer}>
