@@ -85,7 +85,7 @@ const followProject = async (
     let newFollowing;
 
     if (isFollowing) {
-      newFollowing = following.filter((follow) => follow !== projectId);
+      newFollowing = following.filter((followId) => followId !== projectId);
     } else {
       newFollowing = [...following, projectId];
     }

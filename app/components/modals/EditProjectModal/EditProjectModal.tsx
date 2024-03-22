@@ -23,12 +23,12 @@ export interface EditFormInputs {
 }
 
 const EditProjectModal = ({ project, closeModal }: Props) => {
+  const { updateProject } = useBlockchain();
+  const { uploadFiles } = usePinata((uploading) => setUploading(uploading));
   const [files, setFiles] = useState<File[]>([]);
   const [existingImageURLs, setExistingImageURLs] = useState(project.imageURLs);
   const [fileError, setFileError] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const { uploadFiles } = usePinata(setUploading);
-  const { updateProject } = useBlockchain();
 
   const {
     register,

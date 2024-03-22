@@ -440,6 +440,7 @@ const useBlockchain = () => {
           refreshUi();
         });
 
+        contract.on('ProjectCreated', refreshUi);
         contract.on('ProjectUpdated', refreshUi);
         contract.on('ProjectDeleted', refreshUi);
         contract.on('ProjectBacked', refreshUi);

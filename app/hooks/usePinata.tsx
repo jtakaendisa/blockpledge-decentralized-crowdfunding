@@ -1,8 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
-
-type SetUploading = Dispatch<SetStateAction<boolean>>;
-
-const usePinata = (setUploading: SetUploading) => {
+const usePinata = (setUploading: (uploading: boolean) => void) => {
   const uploadFiles = async (filesToUpload: File[]) => {
     let uploadedCids: string[] = [];
 

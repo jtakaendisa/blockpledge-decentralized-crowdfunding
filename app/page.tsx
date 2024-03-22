@@ -20,7 +20,8 @@ const HomePage = () => {
     totalProjects: 0,
   });
   const [categories, setCategories] = useState<Category[]>([]);
-  const { getProjects, getCategories } = useBlockchain();
+  const [refreshUi, setRefreshUi] = useState(false);
+  const { getProjects, getCategories, listenForEvents } = useBlockchain();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,7 +38,15 @@ const HomePage = () => {
     };
 
     fetchData();
-  }, [getProjects, getCategories]);
+  }, [refreshUi, getProjects, getCategories]);
+
+  useEffect(() => {
+    const unsubscribe = listenForEvents(() => setRefreshUi((prev) => !prev));
+
+    return () => {
+      unsubscribe.then((cleanup) => cleanup());
+    };
+  }, [listenForEvents]);
 
   console.log('home');
 
@@ -49,7 +58,7 @@ const HomePage = () => {
       <CategoriesGrid categories={categories} />
       <ToastContainer
         position="bottom-center"
-        autoClose={5000}
+        autoClose={2000}
         newestOnTop={false}
         closeOnClick
         rtl={false}

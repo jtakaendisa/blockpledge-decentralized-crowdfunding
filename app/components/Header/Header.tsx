@@ -22,6 +22,10 @@ import walletSVG from '@/public/icons/wallet.svg';
 
 import styles from './Header.module.scss';
 
+interface Props {
+  refreshUi?: boolean;
+}
+
 const PATHS = {
   home: '/',
   projects: '/projects',
@@ -29,7 +33,7 @@ const PATHS = {
   adminDashboard: '/admin_dashboard',
 };
 
-const Header = () => {
+const Header = ({ refreshUi }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
   const connectedAccount = useAccountStore((s) => s.connectedAccount);
@@ -75,7 +79,9 @@ const Header = () => {
     });
 
     return unsubscribe;
-  }, [setAuthUser]);
+  }, [refreshUi, setAuthUser]);
+
+  console.log('header');
 
   return (
     <header className={styles.header}>

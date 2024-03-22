@@ -18,7 +18,7 @@ import {
   WhatsappIcon,
 } from 'react-share';
 
-import { Project, statusMap, useAccountStore, useProjectStore } from '@/app/store';
+import { Category, Project, statusMap, useAccountStore } from '@/app/store';
 import { followProject } from '@/app/services/authService';
 import { findDaysRemaining, truncateAccount } from '@/app/utils';
 import EditProjectModal from '@/app/components/modals/EditProjectModal/EditProjectModal';
@@ -36,11 +36,13 @@ import styles from './ProjectDetails.module.scss';
 
 interface Props {
   project: Project;
+  categories: Category[];
+  updateFollowingStatus: () => void;
 }
 
 const TEST_URL = 'udemy.com';
 
-const ProjectDetails = ({ project }: Props) => {
+const ProjectDetails = ({ project, categories, updateFollowingStatus }: Props) => {
   const {
     imageURLs,
     title,
@@ -56,7 +58,6 @@ const ProjectDetails = ({ project }: Props) => {
 
   const connectedAccount = useAccountStore((s) => s.connectedAccount);
   const authUser = useAccountStore((s) => s.authUser);
-  const categories = useProjectStore((s) => s.categories);
   const [selectedImage, setSelectedImage] = useState(0);
   const [urlCopied, setUrlCopied] = useState(false);
   const [modalState, setModalState] = useState({
@@ -88,6 +89,7 @@ const ProjectDetails = ({ project }: Props) => {
     if (!authUser) return;
 
     await followProject(authUser, project.id, isFollowing);
+    updateFollowingStatus();
   };
 
   return (

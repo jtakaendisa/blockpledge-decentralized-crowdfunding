@@ -1,3 +1,5 @@
+'use client';
+
 import { ChangeEvent, useEffect, useState } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames';
@@ -5,7 +7,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { FaTimes } from 'react-icons/fa';
 
-import { useProjectStore } from '@/app/store';
+import { Category } from '@/app/store';
 import usePinata from '@/app/hooks/usePinata';
 import useBlockchain from '@/app/hooks/useBlockchain';
 import { convertToTimestamp, getTomorrowsDate } from '@/app/utils';
@@ -28,12 +30,12 @@ export interface AddFormInputs {
 }
 
 const AddProjectModal = ({ closeModal }: Props) => {
-  const categories = useProjectStore((s) => s.categories);
+  const { createProject, getCategories } = useBlockchain();
+  const { uploadFiles } = usePinata((uploading) => setUploading(uploading));
+  const [categories, setCategories] = useState<Category[]>([]);
   const [files, setFiles] = useState<File[]>([]);
   const [fileError, setFileError] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const { createProject } = useBlockchain();
-  const { uploadFiles } = usePinata(setUploading);
 
   const {
     register,
@@ -76,6 +78,16 @@ const AddProjectModal = ({ closeModal }: Props) => {
     toast.success('Project created successfully, changes will reflect momentarily.');
     closeModal();
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { categories } = await getCategories();
+
+      setCategories(categories);
+    };
+
+    fetchData();
+  }, [getCategories]);
 
   useEffect(() => {
     reset();
