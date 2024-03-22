@@ -126,6 +126,7 @@ const EditProjectModal = ({ project, closeModal }: Props) => {
                   />
                   {file.name}
                   <button
+                    type="button"
                     onClick={() =>
                       setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index))
                     }
@@ -144,6 +145,7 @@ const EditProjectModal = ({ project, closeModal }: Props) => {
                   />
                   image {index + 1}
                   <button
+                    type="button"
                     onClick={() =>
                       setExistingImageURLs((prevFiles) =>
                         prevFiles.filter((_, i) => i !== index)

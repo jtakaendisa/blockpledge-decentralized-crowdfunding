@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback } from 'react';
+import { Dispatch, SetStateAction, useCallback } from 'react';
 import { ethers } from 'ethers';
 import { formatDistance } from 'date-fns';
 
@@ -18,43 +18,46 @@ const abi = contractAbi.abi;
 const useBlockchain = () => {
   const { sendPaymentNotification } = useEmail();
 
-  const formatProject = useCallback((project: any): Project => {
-    return {
-      id: Number(project[0]),
-      owner: project[1].toLowerCase(),
-      title: project[2],
-      description: project[3],
-      imageURLs: Array.from(project[4]) as string[],
-      cost: Number(project[5]) / 10 ** 18,
-      raised: Number(ethers.formatEther(project[6])),
-      timestamp: new Date(Number(project[7])).getTime(),
-      expiresAt: new Date(Number(project[8])).getTime(),
-      backers: Number(project[9]),
-      categoryId: Number(project[10]),
-      status: Number(project[11]) as Project['status'],
-      deletionReason: project[12],
-      date: formatDate(Number(project[8]) * 1000),
-    };
-  }, []);
-
-  const formatStats = (stats: any) => {
-    return {
-      totalProjects: Number(stats[0]),
-      totalBackings: Number(stats[1]),
-      totalDonations: Number(ethers.formatEther(stats[2])),
-    };
-  };
-
-  const formatDate = (timestamp: number) => {
+  const formatDate = useCallback((timestamp: number) => {
     const date = new Date(timestamp);
     const day = date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`;
     const month =
       date.getMonth() + 1 > 9 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`;
     const year = date.getFullYear();
     return `${year}-${month}-${day}`;
-  };
+  }, []);
 
-  const formatBackers = (backers: any[]) => {
+  const formatProject = useCallback(
+    (project: any): Project => {
+      return {
+        id: Number(project[0]),
+        owner: project[1].toLowerCase(),
+        title: project[2],
+        description: project[3],
+        imageURLs: Array.from(project[4]) as string[],
+        cost: Number(project[5]) / 10 ** 18,
+        raised: Number(ethers.formatEther(project[6])),
+        timestamp: new Date(Number(project[7])).getTime(),
+        expiresAt: new Date(Number(project[8])).getTime(),
+        backers: Number(project[9]),
+        categoryId: Number(project[10]),
+        status: Number(project[11]) as Project['status'],
+        deletionReason: project[12],
+        date: formatDate(Number(project[8]) * 1000),
+      };
+    },
+    [formatDate]
+  );
+
+  const formatStats = useCallback((stats: any) => {
+    return {
+      totalProjects: Number(stats[0]),
+      totalBackings: Number(stats[1]),
+      totalDonations: Number(ethers.formatEther(stats[2])),
+    };
+  }, []);
+
+  const formatBackers = useCallback((backers: any[]) => {
     return backers
       .map((backer) => ({
         backer: truncateAccount(backer[0], 4, 4),
@@ -66,23 +69,26 @@ const useBlockchain = () => {
         refunded: backer[4],
       }))
       .reverse();
-  };
+  }, []);
 
-  const formatCategories = (categories: any[]) => {
+  const formatCategories = useCallback((categories: any[]) => {
     return categories.map((category) => ({
       id: Number(category[0]),
       name: category[1],
     }));
-  };
+  }, []);
 
-  const formatPayoutInfo = (id: any, recipient: any, amount: any, timestamp: any) => {
-    return {
-      id: Number(id),
-      recipient,
-      amount: Number(ethers.formatEther(amount)),
-      timestamp: new Date(Number(timestamp) * 1000).toString(),
-    };
-  };
+  const formatPayoutInfo = useCallback(
+    (id: any, recipient: any, amount: any, timestamp: any) => {
+      return {
+        id: Number(id),
+        recipient,
+        amount: Number(ethers.formatEther(amount)),
+        timestamp: new Date(Number(timestamp) * 1000).toString(),
+      };
+    },
+    []
+  );
 
   const connectWallet = useCallback(async () => {
     try {
@@ -124,7 +130,7 @@ const useBlockchain = () => {
       const fetchedProjects = await contract.getProjects();
       const fetchedStats = await contract.stats();
 
-      const projects = fetchedProjects
+      const projects: Project[] = fetchedProjects
         .map((project: any) => formatProject(project))
         .reverse();
       const stats = formatStats(fetchedStats);
@@ -134,7 +140,7 @@ const useBlockchain = () => {
       console.error('Error loading projects:', (error as Error).message);
       throw error;
     }
-  }, [getContract, formatProject]);
+  }, [formatProject, formatStats, getContract]);
 
   const getProject = useCallback(
     async (id: number) => {
@@ -158,7 +164,7 @@ const useBlockchain = () => {
         throw error;
       }
     },
-    [getContract, formatProject]
+    [formatProject, getContract]
   );
 
   const getUserProjects = useCallback(
@@ -186,7 +192,7 @@ const useBlockchain = () => {
         throw error;
       }
     },
-    [getContract, formatProject]
+    [formatProject, getContract]
   );
 
   const getBackers = useCallback(
@@ -211,7 +217,7 @@ const useBlockchain = () => {
         throw error;
       }
     },
-    [getContract]
+    [formatBackers, getContract]
   );
 
   const getCategories = useCallback(async () => {
@@ -234,7 +240,7 @@ const useBlockchain = () => {
       console.error('Error loading categories:', (error as Error).message);
       throw error;
     }
-  }, [getContract]);
+  }, [formatCategories, getContract]);
 
   const createProject = useCallback(
     async ({
@@ -274,7 +280,7 @@ const useBlockchain = () => {
         throw error;
       }
     },
-    [getContract, getProjects]
+    [getProjects, getContract]
   );
 
   const updateProject = useCallback(
@@ -299,7 +305,7 @@ const useBlockchain = () => {
         throw error;
       }
     },
-    [getContract, getProject]
+    [getProject, getContract]
   );
 
   const deleteProject = useCallback(
@@ -325,7 +331,7 @@ const useBlockchain = () => {
         throw error;
       }
     },
-    [getContract, getProject, getBackers]
+    [getBackers, getProject, getContract]
   );
 
   const backProject = useCallback(
@@ -356,7 +362,7 @@ const useBlockchain = () => {
         throw error;
       }
     },
-    [getContract, getProject, getBackers]
+    [getBackers, getProject, getContract]
   );
 
   const acceptProject = useCallback(
@@ -381,7 +387,7 @@ const useBlockchain = () => {
         throw error;
       }
     },
-    [getContract, getProject]
+    [getProject, getContract]
   );
 
   const rejectProject = useCallback(
@@ -406,31 +412,50 @@ const useBlockchain = () => {
         throw error;
       }
     },
-    [getContract, getProject]
+    [getProject, getContract]
   );
 
-  const listenForProjectPayOut = useCallback(async () => {
-    try {
-      if (!window.ethereum) {
-        throw new Error('Please install Metamask');
+  const listenForEvents = useCallback(
+    async (refreshUi: () => void) => {
+      try {
+        if (!window.ethereum) {
+          throw new Error('Please install Metamask');
+        }
+
+        const contract = await getContract();
+
+        if (!contract) {
+          throw new Error("Can't connect to smart contract");
+        }
+
+        contract.on('ProjectPaidOut', async (id, recipient, amount, timestamp) => {
+          const formattedPayoutInfo = formatPayoutInfo(
+            id,
+            recipient,
+            amount,
+            timestamp
+          );
+
+          // await sendPaymentNotification(formattedPayoutInfo);
+          refreshUi();
+        });
+
+        contract.on('ProjectUpdated', refreshUi);
+        contract.on('ProjectDeleted', refreshUi);
+        contract.on('ProjectBacked', refreshUi);
+        contract.on('ProjectApproved', refreshUi);
+        contract.on('ProjectRejected', refreshUi);
+
+        return () => {
+          contract.removeAllListeners();
+        };
+      } catch (error) {
+        console.error('Error listening for payout:', (error as Error).message);
+        throw error;
       }
-
-      const contract = await getContract();
-
-      if (!contract) {
-        throw new Error("Can't connect to smart contract");
-      }
-
-      contract.once('ProjectPaidOut', async (id, recipient, amount, timestamp) => {
-        const formattedPayoutInfo = formatPayoutInfo(id, recipient, amount, timestamp);
-
-        sendPaymentNotification(formattedPayoutInfo);
-      });
-    } catch (error) {
-      console.error('Error listening for payout:', (error as Error).message);
-      throw error;
-    }
-  }, [getContract, sendPaymentNotification]);
+    },
+    [formatPayoutInfo, getContract]
+  );
 
   return {
     connectWallet,
@@ -446,7 +471,7 @@ const useBlockchain = () => {
     getUserProjects,
     getBackers,
     getCategories,
-    listenForProjectPayOut,
+    listenForEvents,
   };
 };
 

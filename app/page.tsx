@@ -1,9 +1,9 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 
-import { useProjectStore } from './store';
+import { Category, Project } from './store';
 import useBlockchain from './hooks/useBlockchain';
 import Header from './components/Header/Header';
 import Hero from './components/Hero/Hero';
@@ -13,37 +13,33 @@ import CategoriesGrid from './components/CategoriesGrid/CategoriesGrid';
 import styles from './page.module.scss';
 
 const HomePage = () => {
-  const projects = useProjectStore((s) => s.projects);
-  const stats = useProjectStore((s) => s.stats);
-  const categories = useProjectStore((s) => s.categories);
-  const setProjects = useProjectStore((s) => s.setProjects);
-  const setStats = useProjectStore((s) => s.setStats);
-  const setCategories = useProjectStore((s) => s.setCategories);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [stats, setStats] = useState({
+    totalBackings: 0,
+    totalDonations: 0,
+    totalProjects: 0,
+  });
+  const [categories, setCategories] = useState<Category[]>([]);
   const { getProjects, getCategories } = useBlockchain();
-  const [error, setError] = useState<Error | null>(null);
-
-  const fetchData = useCallback(async () => {
-    try {
-      const { projects, stats } = await getProjects();
-      const { categories } = await getCategories();
-
-      setProjects(projects);
-      setStats(stats);
-      setCategories(categories);
-    } catch (error) {
-      setError(error as Error);
-    }
-  }, [getProjects, getCategories, setProjects, setStats, setCategories]);
 
   useEffect(() => {
-    if (!projects.length) {
-      fetchData();
-    }
-  }, [projects.length, fetchData]);
+    const fetchData = async () => {
+      try {
+        const { projects, stats } = await getProjects();
+        const { categories } = await getCategories();
 
-  if (error) return <div>{error.message}</div>;
+        setProjects(projects);
+        setStats(stats);
+        setCategories(categories);
+      } catch (error) {
+        console.log((error as Error).message);
+      }
+    };
 
-  console.log('render: home');
+    fetchData();
+  }, [getProjects, getCategories]);
+
+  console.log('home');
 
   return (
     <div className={styles.homePage}>

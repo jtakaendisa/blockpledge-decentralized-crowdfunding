@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames';
 import Identicon from 'react-hooks-identicons';
@@ -19,7 +19,6 @@ import {
 } from 'react-share';
 
 import { Project, statusMap, useAccountStore, useProjectStore } from '@/app/store';
-import useBlockchain from '@/app/hooks/useBlockchain';
 import { followProject } from '@/app/services/authService';
 import { findDaysRemaining, truncateAccount } from '@/app/utils';
 import EditProjectModal from '@/app/components/modals/EditProjectModal/EditProjectModal';
@@ -42,23 +41,6 @@ interface Props {
 const TEST_URL = 'udemy.com';
 
 const ProjectDetails = ({ project }: Props) => {
-  const connectedAccount = useAccountStore((s) => s.connectedAccount);
-  const authUser = useAccountStore((s) => s.authUser);
-  const categories = useProjectStore((s) => s.categories);
-  const [selectedImage, setSelectedImage] = useState(0);
-  const [urlCopied, setUrlCopied] = useState(false);
-  const [modalState, setModalState] = useState({
-    backIsOpen: false,
-    editIsOpen: false,
-    deleteIsOpen: false,
-    authorizeIsOpen: false,
-  });
-  const { listenForProjectPayOut } = useBlockchain();
-
-  const isAdmin = authUser?.uid === process.env.NEXT_PUBLIC_ADMIN_UID;
-  const isOpen = project.status === 0;
-  const isFollowing = authUser?.following.includes(project.id);
-
   const {
     imageURLs,
     title,
@@ -71,6 +53,24 @@ const ProjectDetails = ({ project }: Props) => {
     cost,
     categoryId,
   } = project;
+
+  const connectedAccount = useAccountStore((s) => s.connectedAccount);
+  const authUser = useAccountStore((s) => s.authUser);
+  const categories = useProjectStore((s) => s.categories);
+  const [selectedImage, setSelectedImage] = useState(0);
+  const [urlCopied, setUrlCopied] = useState(false);
+  const [modalState, setModalState] = useState({
+    backIsOpen: false,
+    editIsOpen: false,
+    deleteIsOpen: false,
+    authorizeIsOpen: false,
+  });
+
+  const isAdmin = authUser?.uid === process.env.NEXT_PUBLIC_ADMIN_UID;
+  const isOwner = connectedAccount === owner;
+  const isOpen = project.status === 0;
+  const isPendingApproval = project.status === 5;
+  const isFollowing = authUser?.following.includes(project.id);
 
   const { backIsOpen, editIsOpen, deleteIsOpen, authorizeIsOpen } = modalState;
 
@@ -89,14 +89,6 @@ const ProjectDetails = ({ project }: Props) => {
 
     await followProject(authUser, project.id, isFollowing);
   };
-
-  const payoutListener = useCallback(async () => {
-    await listenForProjectPayOut();
-  }, [listenForProjectPayOut]);
-
-  useEffect(() => {
-    payoutListener();
-  }, [payoutListener]);
 
   return (
     <section className={styles.mainContainer}>
@@ -157,7 +149,7 @@ const ProjectDetails = ({ project }: Props) => {
           </div>
         </div>
         <div className={styles.buttons}>
-          {isAdmin && !isOpen && (
+          {isPendingApproval && isAdmin && (
             <Button
               color="orange"
               onClick={() => setModalState({ ...modalState, authorizeIsOpen: true })}
@@ -165,29 +157,25 @@ const ProjectDetails = ({ project }: Props) => {
               Accept / Reject
             </Button>
           )}
-          {!isAdmin && connectedAccount !== owner && authUser && (
+          {isOpen && authUser && !isAdmin && !isOwner && (
             <Button onClick={() => setModalState({ ...modalState, backIsOpen: true })}>
               Back Project
             </Button>
           )}
-          {connectedAccount === owner && (
+          {isOpen && isOwner && (
             <>
-              {status === 0 && (
-                <Button
-                  color="gray"
-                  onClick={() => setModalState({ ...modalState, editIsOpen: true })}
-                >
-                  Edit
-                </Button>
-              )}
-              {status !== 5 && (
-                <Button
-                  color="red"
-                  onClick={() => setModalState({ ...modalState, deleteIsOpen: true })}
-                >
-                  Delete
-                </Button>
-              )}
+              <Button
+                color="gray"
+                onClick={() => setModalState({ ...modalState, editIsOpen: true })}
+              >
+                Edit
+              </Button>
+              <Button
+                color="red"
+                onClick={() => setModalState({ ...modalState, deleteIsOpen: true })}
+              >
+                Delete
+              </Button>
             </>
           )}
         </div>

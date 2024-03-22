@@ -1,10 +1,11 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { User } from 'firebase/auth';
+import classNames from 'classnames';
 import { TbBusinessplan } from 'react-icons/tb';
 
 import { useAccountStore, useProjectStore } from '@/app/store';
@@ -20,7 +21,6 @@ import userSVG from '@/public/icons/user.svg';
 import walletSVG from '@/public/icons/wallet.svg';
 
 import styles from './Header.module.scss';
-import classNames from 'classnames';
 
 const PATHS = {
   home: '/',
@@ -33,8 +33,8 @@ const Header = () => {
   const router = useRouter();
   const pathname = usePathname();
   const connectedAccount = useAccountStore((s) => s.connectedAccount);
-  const setConnectedAccount = useAccountStore((s) => s.setConnectedAccount);
   const authUser = useAccountStore((s) => s.authUser);
+  const setConnectedAccount = useAccountStore((s) => s.setConnectedAccount);
   const setAuthUser = useAccountStore((s) => s.setAuthUser);
   const setSelectedCategory = useProjectStore((s) => s.setSelectedCategory);
   const { connectWallet } = useBlockchain();
@@ -42,15 +42,15 @@ const Header = () => {
 
   const isAdmin = authUser?.uid === process.env.NEXT_PUBLIC_ADMIN_UID;
 
-  const handleWalletConnection = useCallback(async () => {
-    const { accounts } = await connectWallet();
-
-    if (accounts.length) {
-      setConnectedAccount(accounts[0]);
-    }
-  }, [connectWallet, setConnectedAccount]);
-
   useEffect(() => {
+    const handleWalletConnection = async () => {
+      const { accounts } = await connectWallet();
+
+      if (accounts.length) {
+        setConnectedAccount(accounts[0]);
+      }
+    };
+
     const handleChainChange = () => {
       window.location.reload();
     };
@@ -66,7 +66,7 @@ const Header = () => {
       window.ethereum.removeListener('accountsChanged', handleWalletConnection);
       window.ethereum.removeListener('chainChanged', handleChainChange);
     };
-  }, [handleWalletConnection, connectWallet, setConnectedAccount]);
+  }, [connectWallet, setConnectedAccount]);
 
   useEffect(() => {
     const unsubscribe = authStateChangeListener(async (user: User) => {

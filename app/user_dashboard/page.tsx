@@ -1,57 +1,50 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { Project, useAccountStore, useProjectStore } from '../store';
+import { Project, useAccountStore } from '../store';
+import useBlockchain from '../hooks/useBlockchain';
 import Header from '../components/Header/Header';
 import ProjectsGrid from '../components/ProjectsGrid/ProjectsGrid';
 
 import styles from './page.module.scss';
-import useBlockchain from '../hooks/useBlockchain';
 
 const UserDashBoardPage = () => {
-  const projects = useProjectStore((s) => s.projects);
   const authUser = useAccountStore((s) => s.authUser);
-  const { getUserProjects } = useBlockchain();
+  const { getProjects, getUserProjects } = useBlockchain();
   const [projectsFollowed, setProjectsFollowed] = useState<Project[]>([]);
   const [projectsBacked, setProjectsBacked] = useState<Project[]>([]);
   const [userProjects, setUserProjects] = useState<Project[]>([]);
 
   useEffect(() => {
-    if (!authUser) return;
+    const fetchData = async () => {
+      try {
+        if (!authUser) return;
 
-    const projectsBeingFollowed = projects.filter((project) =>
-      authUser.following.includes(project.id)
-    );
+        const { projects } = await getProjects();
 
-    setProjectsFollowed(projectsBeingFollowed);
-  }, [projects, authUser]);
+        const projectsBeingFollowed = projects.filter((project) =>
+          authUser.following.includes(project.id)
+        );
 
-  useEffect(() => {
-    if (!authUser) return;
+        const projectsBeingBacked = projects.filter((project) =>
+          authUser.backed.includes(project.id)
+        );
 
-    const projectsBeingBacked = projects.filter((project) =>
-      authUser.backed.includes(project.id)
-    );
+        setProjectsFollowed(projectsBeingFollowed);
+        setProjectsBacked(projectsBeingBacked);
 
-    setProjectsBacked(projectsBeingBacked);
-  }, [projects, authUser]);
+        if (authUser.accountType === 'owner') {
+          const { userProjects } = await getUserProjects(authUser.wallet);
+          setUserProjects(userProjects);
+        }
+      } catch (error) {
+        console.log((error as Error).message);
+      }
+    };
 
-  const fetchData = useCallback(async () => {
-    if (!authUser) return;
-
-    const { userProjects } = await getUserProjects(authUser.wallet);
-
-    if (userProjects.length) {
-      setUserProjects(userProjects);
-    }
-  }, [authUser, getUserProjects]);
-
-  useEffect(() => {
-    if (authUser && authUser.accountType === 'owner') {
-      fetchData();
-    }
-  }, [authUser, fetchData]);
+    fetchData();
+  }, [authUser, getProjects, getUserProjects]);
 
   if (!authUser) return null;
 

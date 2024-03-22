@@ -1,7 +1,9 @@
+'use client';
+
+import { useCallback } from 'react';
 import emailjs from '@emailjs/browser';
 
 import { useProjectStore } from '../store';
-import { useCallback } from 'react';
 
 interface PaymentNotificationProps {
   id: number;
