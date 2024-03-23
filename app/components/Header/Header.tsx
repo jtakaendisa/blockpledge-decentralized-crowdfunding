@@ -1,8 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import Image from 'next/image';
 import Link from 'next/link';
 import { User } from 'firebase/auth';
 import classNames from 'classnames';
@@ -14,11 +13,9 @@ import {
   formatAuthUserData,
   signOutAuthUser,
 } from '@/app/services/authService';
-import { truncateAccount } from '@/app/utils/index';
 import useBlockchain from '@/app/hooks/useBlockchain';
+import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import Button from '../Button/Button';
-import userSVG from '@/public/icons/user.svg';
-import walletSVG from '@/public/icons/wallet.svg';
 
 import styles from './Header.module.scss';
 
@@ -42,26 +39,23 @@ const Header = ({ refreshUi }: Props) => {
   const setAuthUser = useAccountStore((s) => s.setAuthUser);
   const setSelectedCategory = useProjectStore((s) => s.setSelectedCategory);
   const { connectWallet } = useBlockchain();
-  const [isOpen, setIsOpen] = useState(false);
 
   const isAdmin = authUser?.uid === process.env.NEXT_PUBLIC_ADMIN_UID;
 
+  const handleWalletConnection = useCallback(async () => {
+    if (!window?.ethereum) return;
+
+    const { accounts } = await connectWallet();
+
+    if (accounts.length) {
+      setConnectedAccount(accounts[0]);
+    }
+  }, [connectWallet, setConnectedAccount]);
+
   useEffect(() => {
-    const handleWalletConnection = async () => {
-      const { accounts } = await connectWallet();
-
-      if (accounts.length) {
-        setConnectedAccount(accounts[0]);
-      }
-    };
-
     const handleChainChange = () => {
       window.location.reload();
     };
-
-    if (window.ethereum) {
-      handleWalletConnection();
-    }
 
     window.ethereum.on('accountsChanged', handleWalletConnection);
     window.ethereum.on('chainChanged', handleChainChange);
@@ -70,7 +64,7 @@ const Header = ({ refreshUi }: Props) => {
       window.ethereum.removeListener('accountsChanged', handleWalletConnection);
       window.ethereum.removeListener('chainChanged', handleChainChange);
     };
-  }, [connectWallet, setConnectedAccount]);
+  }, [handleWalletConnection]);
 
   useEffect(() => {
     const unsubscribe = authStateChangeListener(async (user: User) => {
@@ -125,32 +119,13 @@ const Header = ({ refreshUi }: Props) => {
           </ul>
         )}
         {authUser ? (
-          <ul
-            className={styles.profileContainer}
-            onClick={() => setIsOpen((prev) => !prev)}
-          >
-            <div className={styles.iconContainer}>
-              <Image src={userSVG} alt="User Profile" width={24} height={24} />
-            </div>
-            {isOpen && (
-              <div className={styles.dropDownMenu}>
-                <div className={styles.row}>
-                  <div className={styles.iconContainer}>
-                    <Image src={userSVG} alt="User Profile" width={24} height={24} />
-                  </div>
-                  <span>{authUser.email}</span>
-                </div>
-                <div className={styles.row}>
-                  <div className={styles.iconContainer}>
-                    <Image src={walletSVG} alt="Crypto Wallet" width={24} height={24} />
-                  </div>
-                  <span>{truncateAccount(connectedAccount, 4, 4)}</span>
-                </div>
-                <div className={styles.signOutButtonContainer}>
-                  <Button onClick={signOutAuthUser}>Sign out</Button>
-                </div>
-              </div>
-            )}
+          <ul className={styles.profileContainer}>
+            <DropdownMenu
+              authUser={authUser}
+              connectedAccount={connectedAccount}
+              onConnectWallet={handleWalletConnection}
+              onSignOut={signOutAuthUser}
+            />
           </ul>
         ) : (
           <ul>
