@@ -31,7 +31,7 @@ const ProjectsGrid = ({ projects, selectedCategory }: Props) => {
 
   useEffect(() => {
     if (projects.length) {
-      setFilteredProjects(projects.slice(0, end));
+      setFilteredProjects(projects);
     }
   }, [projects, end]);
 
@@ -43,35 +43,37 @@ const ProjectsGrid = ({ projects, selectedCategory }: Props) => {
     }
 
     if (!searchText.length && projects.length) {
-      setFilteredProjects(projects.slice(0, end));
+      setFilteredProjects(projects);
     }
   }, [searchText, projects, end]);
 
   useEffect(() => {
     if (selectedCategory && projects.length) {
       setFilteredProjects(
-        projects
-          .filter((project) => project.categoryId === selectedCategory.id)
-          .slice(0, end)
+        projects.filter((project) => project.categoryId === selectedCategory.id)
       );
     }
 
     if (!selectedCategory && projects.length) {
-      setFilteredProjects(projects.slice(0, end));
+      setFilteredProjects(projects);
     }
   }, [selectedCategory, projects, end]);
+
+  useEffect(() => {
+    setEnd(12);
+  }, [selectedCategory]);
 
   if (!projects) return null;
 
   return (
     <section className={styles.projects}>
       <div className={styles.cards}>
-        {filteredProjects.map((project) => (
-          <ProjectCard key={project.id} project={project} />
-        ))}
+        {filteredProjects
+          .map((project) => <ProjectCard key={project.id} project={project} />)
+          .slice(0, end)}
       </div>
       <div className={styles.buttonContainer}>
-        {end < projects.length && (
+        {end < filteredProjects.length && (
           <Button onClick={() => setEnd((prev) => prev + COUNT)}>Load More</Button>
         )}
       </div>
