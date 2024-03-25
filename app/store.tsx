@@ -1,6 +1,18 @@
 import { create } from 'zustand';
 import { User } from 'firebase/auth';
-import { StaticImport } from 'next/dist/shared/lib/get-img-props';
+import Art from './components/categories/icons/Art';
+import Tech from './components/categories/icons/Tech';
+import Community from './components/categories/icons/Community';
+import Fashion from './components/categories/icons/Fashion';
+import Food from './components/categories/icons/Food';
+import Gaming from './components/categories/icons/Gaming';
+import Travel from './components/categories/icons/Travel';
+import Education from './components/categories/icons/Education';
+import Health from './components/categories/icons/Health';
+import Crafts from './components/categories/icons/Crafts';
+import Finance from './components/categories/icons/Finance';
+import Pets from './components/categories/icons/Pets';
+import { ReactNode } from 'react';
 
 export type AuthUser = User & {
   accountType: 'owner' | 'funder';
@@ -68,19 +80,19 @@ export const statusMap = {
   5: 'PENDING APPROVAL',
 } as const;
 
-export const categoryImageMap: { [key: number]: StaticImport } = {
-  0: require('@/public/icons/art.svg'),
-  1: require('@/public/icons/tech.svg'),
-  2: require('@/public/icons/community.svg'),
-  3: require('@/public/icons/fashion.svg'),
-  4: require('@/public/icons/food.svg'),
-  5: require('@/public/icons/gaming.svg'),
-  6: require('@/public/icons/travel.svg'),
-  7: require('@/public/icons/education.svg'),
-  8: require('@/public/icons/health.svg'),
-  9: require('@/public/icons/crafts.svg'),
-  10: require('@/public/icons/finance.svg'),
-  11: require('@/public/icons/pets.svg'),
+export const categoryImageMap: { [key: number]: ReactNode } = {
+  0: <Art />,
+  1: <Tech />,
+  2: <Community />,
+  3: <Fashion />,
+  4: <Food />,
+  5: <Gaming />,
+  6: <Travel />,
+  7: <Education />,
+  8: <Health />,
+  9: <Crafts />,
+  10: <Finance />,
+  11: <Pets />,
 } as const;
 
 const useAccountStore = create<AccountStore>((set) => ({

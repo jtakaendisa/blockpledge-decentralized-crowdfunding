@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import { Category, categoryImageMap, useProjectStore } from '@/app/store';
@@ -25,7 +24,7 @@ const CategoryCard = ({ category }: Props) => {
 
   return (
     <div className={styles.categoryCard} onClick={() => handleSelectCategory(category)}>
-      <Image src={categoryImageMap[id]} alt={name} width={64} height={64} />
+      <div className={styles.categoryIcon}>{categoryImageMap[id]}</div>
       <div className={styles.categoryName}>
         {splitName(name).map((part, idx) => (
           <span key={part}>

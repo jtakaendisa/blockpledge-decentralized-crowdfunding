@@ -7,6 +7,7 @@ import { Category, categoryImageMap, useProjectStore } from '@/app/store';
 import categoriesSVG from '@/public/icons/categories.svg';
 
 import styles from './CategorySidebar.module.scss';
+import Categories from '@/app/components/categories/icons/Categories';
 
 interface Props {
   categories: Category[];
@@ -20,31 +21,31 @@ const CategorySidebar = ({ categories, selectedCategory }: Props) => {
     <aside className={styles.sidebar}>
       <h2>Browse by Category</h2>
       <div>
-        <div className={styles.categoryRow}>
-          <Image src={categoriesSVG} alt="All Categories" width={40} height={40} />
+        <div
+          className={classNames({
+            [styles.categoryRow]: true,
+            [styles.selected]: !selectedCategory,
+          })}
+        >
+          <Categories />
           <span
-            className={classNames({
-              [styles.categoryName]: true,
-              [styles.selected]: !selectedCategory,
-            })}
+            className={styles.categoryName}
             onClick={() => setSelectedCategory(null)}
           >
             All Categories
           </span>
         </div>
         {categories.map((category) => (
-          <div key={category.id} className={styles.categoryRow}>
-            <Image
-              src={categoryImageMap[category.id]}
-              alt={category.name}
-              width={40}
-              height={40}
-            />
+          <div
+            key={category.id}
+            className={classNames({
+              [styles.categoryRow]: true,
+              [styles.selected]: selectedCategory?.id === category.id,
+            })}
+          >
+            {categoryImageMap[category.id]}
             <span
-              className={classNames({
-                [styles.categoryName]: true,
-                [styles.selected]: selectedCategory?.id === category.id,
-              })}
+              className={styles.categoryName}
               onClick={() => setSelectedCategory(category)}
             >
               {category.name}
