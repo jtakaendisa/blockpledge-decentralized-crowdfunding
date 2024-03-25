@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaEthereum } from 'react-icons/fa';
 import Identicon from 'react-hooks-identicons';
 
 import { Project, statusMap } from '@/app/store';
 import { truncateAccount, findDaysRemaining } from '@/app/utils';
 import { statusColorMap } from '../ProjectsGrid/ProjectsGrid';
 import ProgressBar from '../ProgressBar/ProgressBar';
+import ethereumSVG from '@/public/icons/ethereum.svg';
 
 import styles from './ProjectCard.module.scss';
 
@@ -40,7 +40,7 @@ const ProjectCard = ({ project }: Props) => {
           <div className={styles.row}>
             <small>{raised} ETH Raised</small>
             <small className={styles.cost}>
-              <FaEthereum />
+              <Image src={ethereumSVG} alt="ethereum" width={18} height={18} />
               <span>{cost} ETH</span>
             </small>
           </div>

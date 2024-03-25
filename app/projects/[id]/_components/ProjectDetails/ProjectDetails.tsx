@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames';
 import Identicon from 'react-hooks-identicons';
-import { FaEthereum } from 'react-icons/fa';
 import {
   EmailShareButton,
   FacebookShareButton,
@@ -31,6 +30,7 @@ import { statusColorMap } from '@/app/components/ProjectsGrid/ProjectsGrid';
 import linkSVG from '@/public/icons/link.svg';
 import followSVG from '@/public/icons/follow.svg';
 import followingSVG from '@/public/icons/following.svg';
+import ethereumSVG from '@/public/icons/ethereum.svg';
 
 import styles from './ProjectDetails.module.scss';
 
@@ -146,7 +146,7 @@ const ProjectDetails = ({ project, categories, updateFollowingStatus }: Props) =
         <div className={styles.row}>
           <small>{raised} ETH Raised</small>
           <div className={styles.etherTarget}>
-            <FaEthereum />
+            <Image src={ethereumSVG} alt="ethereum" width={18} height={18} />
             <small>{cost} ETH</small>
           </div>
         </div>

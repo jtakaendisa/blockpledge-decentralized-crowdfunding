@@ -3,9 +3,9 @@
 import { useCallback, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { User } from 'firebase/auth';
 import classNames from 'classnames';
-import { TbBusinessplan } from 'react-icons/tb';
 
 import { useAccountStore, useProjectStore } from '@/app/store';
 import {
@@ -16,6 +16,7 @@ import {
 import useBlockchain from '@/app/hooks/useBlockchain';
 import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import Button from '../Button/Button';
+import coinSVG from '@/public/icons/coin.svg';
 
 import styles from './Header.module.scss';
 
@@ -75,13 +76,11 @@ const Header = ({ refreshUi }: Props) => {
     return unsubscribe;
   }, [refreshUi, setAuthUser]);
 
-  console.log('header');
-
   return (
     <header className={styles.header}>
       <Link href={PATHS.home} className={styles.homeIcon}>
         <span>BlockPledge</span>
-        <TbBusinessplan />
+        <Image src={coinSVG} alt="coin logo" width={22} height={22} />
       </Link>
       <li className={styles.navLinks}>
         <ul

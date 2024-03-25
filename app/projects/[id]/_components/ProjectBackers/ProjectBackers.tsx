@@ -1,9 +1,10 @@
 'use client';
 
-import { FaEthereum } from 'react-icons/fa';
+import Image from 'next/image';
 import Identicon from 'react-hooks-identicons';
 
 import { Backer } from '@/app/store';
+import ethereumSVG from '@/public/icons/ethereum.svg';
 
 import styles from './ProjectBackers.module.scss';
 
@@ -37,7 +38,7 @@ const ProjectBackers = ({ backers }: Props) => {
                 </td>
                 <td>
                   <div className={styles.donations}>
-                    <FaEthereum />
+                    <Image src={ethereumSVG} alt="ethereum" width={18} height={18} />
                     <span>{contribution}</span>
                   </div>
                 </td>

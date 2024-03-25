@@ -4,11 +4,11 @@ import { useRouter } from 'next/navigation';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import classNames from 'classnames';
 import { toast } from 'react-toastify';
-import { FaTimes } from 'react-icons/fa';
 
 import { Project } from '@/app/store';
 import useBlockchain from '@/app/hooks/useBlockchain';
 import Button from '../../Button/Button';
+import xmarkSVG from '@/public/icons/xmark.svg';
 
 import styles from '../modal.module.scss';
 
@@ -56,7 +56,7 @@ const DeleteProjectModal = ({ project, closeModal }: Props) => {
           <div className={styles.row}>
             <p>{project.title}</p>
             <button className={styles.close} type="button" onClick={() => closeModal()}>
-              <FaTimes size={20} />
+              <Image src={xmarkSVG} alt="close" width={22} height={22} />
             </button>
           </div>
           <div className={styles.image}>

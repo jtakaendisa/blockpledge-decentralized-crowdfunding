@@ -5,7 +5,6 @@ import Image from 'next/image';
 import classNames from 'classnames';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { FaTimes } from 'react-icons/fa';
 
 import { Category } from '@/app/store';
 import usePinata from '@/app/hooks/usePinata';
@@ -13,6 +12,7 @@ import useBlockchain from '@/app/hooks/useBlockchain';
 import { convertToTimestamp, getTomorrowsDate } from '@/app/utils';
 import Button from '../../Button/Button';
 import newProject from '@/public/images/new-project.jpg';
+import xmarkSVG from '@/public/icons/xmark.svg';
 
 import styles from '../modal.module.scss';
 
@@ -108,7 +108,7 @@ const AddProjectModal = ({ closeModal }: Props) => {
               onClick={() => closeModal()}
               disabled={uploading}
             >
-              <FaTimes size={20} />
+              <Image src={xmarkSVG} alt="close" width={22} height={22} />
             </button>
           </div>
           <div className={styles.image}>
