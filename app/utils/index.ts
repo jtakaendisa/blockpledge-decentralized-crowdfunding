@@ -28,13 +28,13 @@ const findDaysRemaining = (expiresAt: number) => {
   // Calculate the difference in days
   const differenceInDays = Math.floor(differenceInMilliseconds / millisecondsInADay);
 
-  if (expired) return 'Expired';
+  if (expired) return ['-', 'expired'];
 
   return differenceInDays === 1
-    ? '1 day left'
+    ? [1, 'day left']
     : differenceInDays === 0
-    ? 'A few hours left'
-    : differenceInDays + ' days left';
+    ? ['-', 'a few hours left']
+    : [differenceInDays, ' days left'];
 };
 
 const getTomorrowsDate = () => {

@@ -6,8 +6,8 @@ interface Props {
 
 const ProgressBar = ({ progress }: Props) => {
   return (
-    <div className={styles.progressOut}>
-      <div className={styles.progressIn} style={{ width: `${progress}%` }} />
+    <div className={styles.progressBackground}>
+      <div className={styles.progressForeground} style={{ width: `${progress}%` }} />
     </div>
   );
 };

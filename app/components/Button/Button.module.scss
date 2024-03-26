@@ -9,7 +9,7 @@ $dark-orange: rgb(185, 83, 35);
 
 .button {
   font-size: 0.8125rem;
-  font-weight: 300;
+  font-weight: 700;
   text-transform: uppercase;
   color: white;
   padding: 0.625rem 1.5rem;
@@ -66,14 +66,45 @@ $dark-orange: rgb(185, 83, 35);
   }
 }
 
+.green.inverted {
+  color: $light-green;
+
+  svg {
+    fill: $light-green;
+  }
+
+  &:hover {
+    background-color: $dark-green;
+    border-color: $dark-green;
+
+    svg {
+      fill: white;
+    }
+  }
+}
+
+.orange.inverted {
+  color: $light-orange;
+
+  svg {
+    fill: $light-orange;
+  }
+
+  &:hover {
+    background-color: $light-orange;
+    border-color: $light-orange;
+
+    svg {
+      fill: white;
+    }
+  }
+}
+
 .inverted {
   background-color: transparent;
-  color: $light-green;
   transition: all 0.2s;
 
   &:hover {
     color: white;
-    background-color: $dark-green;
-    border-color: $dark-green;
   }
 }

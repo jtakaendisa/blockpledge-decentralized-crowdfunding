@@ -21,13 +21,12 @@ const ProjectBackers = ({ backers }: Props) => {
             <th>Backer</th>
             <th>Donation (ETH)</th>
             <th>Time</th>
-            <th>Comment</th>
             <th>Refunded</th>
           </tr>
         </thead>
         <tbody>
           {backers.map((backerInfo, idx) => {
-            const { backer, contribution, timestamp, comment, refunded } = backerInfo;
+            const { backer, contribution, timestamp, refunded } = backerInfo;
             return (
               <tr key={idx + backer}>
                 <td>
@@ -43,7 +42,6 @@ const ProjectBackers = ({ backers }: Props) => {
                   </div>
                 </td>
                 <td>{timestamp}</td>
-                <td>{comment}</td>
                 <td>{refunded ? 'Yes' : 'No'}</td>
               </tr>
             );

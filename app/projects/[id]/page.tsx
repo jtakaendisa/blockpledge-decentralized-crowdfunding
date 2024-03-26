@@ -63,7 +63,7 @@ const ProjectPage = ({ params: { id } }: Props) => {
           updateFollowingStatus={() => setRefreshAuthUserData((prev) => !prev)}
         />
       )}
-      {backers.length > 0 && <ProjectBackers backers={backers} />}
+      {/* {backers.length > 0 && <ProjectBackers backers={backers} />} */}
     </div>
   );
 };

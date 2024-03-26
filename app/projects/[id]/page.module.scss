@@ -1,7 +1,6 @@
 .projectPage {
-  padding: 0 1.5rem;
-
-  & > section {
-    margin-top: 6rem;
-  }
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 75%;
 }

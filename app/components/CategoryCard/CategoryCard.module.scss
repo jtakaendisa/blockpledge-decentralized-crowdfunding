@@ -11,11 +11,6 @@
       height: 64px;
       fill: rgb(116, 116, 116);
       transition: all 0.2s;
-
-      &:hover {
-        fill: rgb(67, 136, 67);
-        transform: scale(1.05);
-      }
     }
   }
 
@@ -23,5 +18,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  &:hover {
+    .categoryIcon {
+      & > svg {
+        fill: rgb(67, 136, 67);
+        transform: scale(1.05);
+      }
+    }
   }
 }

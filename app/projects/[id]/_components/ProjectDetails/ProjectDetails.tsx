@@ -4,18 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames';
 import Identicon from 'react-hooks-identicons';
-import {
-  EmailShareButton,
-  FacebookShareButton,
-  TelegramShareButton,
-  TwitterShareButton,
-  WhatsappShareButton,
-  EmailIcon,
-  FacebookIcon,
-  TelegramIcon,
-  XIcon,
-  WhatsappIcon,
-} from 'react-share';
+import { EmailShareButton, FacebookShareButton, TwitterShareButton } from 'react-share';
 
 import { Category, Project, statusMap, useAccountStore } from '@/app/store';
 import { followProject } from '@/app/services/authService';
@@ -27,12 +16,15 @@ import AuthorizeProjectModal from '@/app/components/modals/AuthorizeProjectModal
 import ProgressBar from '@/app/components/ProgressBar/ProgressBar';
 import Button from '@/app/components/Button/Button';
 import { statusColorMap } from '@/app/components/ProjectsGrid/ProjectsGrid';
-import linkSVG from '@/public/icons/link.svg';
-import followSVG from '@/public/icons/follow.svg';
-import followingSVG from '@/public/icons/following.svg';
 import ethereumSVG from '@/public/icons/ethereum.svg';
 
 import styles from './ProjectDetails.module.scss';
+import Following from '@/app/components/categories/icons/Following';
+import Follow from '@/app/components/categories/icons/Follow';
+import Link from '@/app/components/categories/icons/Link';
+import Facebook from '@/app/components/categories/icons/Facebook';
+import Twitter from '@/app/components/categories/icons/Twitter';
+import Email from '@/app/components/categories/icons/Email';
 
 interface Props {
   project: Project;
@@ -92,162 +84,194 @@ const ProjectDetails = ({ project, categories, updateFollowingStatus }: Props) =
     updateFollowingStatus();
   };
 
+  const [length, unit] = findDaysRemaining(expiresAt);
+
   return (
-    <section className={styles.mainContainer}>
-      {imageURLs?.length && (
-        <div className={styles.imageGallery}>
-          <div className={styles.imageLarge}>
-            <Image
-              src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageURLs[selectedImage]}`}
-              alt={title}
-              fill
-              sizes="30vw"
-              priority
-            />
-          </div>
-          {imageURLs.length > 1 && (
-            <div className={styles.imageRow}>
-              {imageURLs.map((image, idx) => (
-                <div
-                  key={image + idx}
-                  className={classNames({
-                    [styles.imageSmall]: true,
-                    [styles.selected]: idx === selectedImage,
-                  })}
-                  onClick={() => setSelectedImage(idx)}
-                >
-                  <Image
-                    src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${image}`}
-                    alt={title}
-                    fill
-                    sizes="10vw"
-                    priority
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-      <div className={styles.info}>
-        <h5>{title}</h5>
-        <small>{findDaysRemaining(expiresAt)}</small>
-        <small>{categories.find((category) => category.id === categoryId)?.name}</small>
-        <div className={styles.row}>
-          <div className={styles.backings}>
-            <Identicon string={owner} size={15} />
-            <small>{truncateAccount(owner, 4, 4)}</small>
-            <small>{backers} Backings</small>
-          </div>
-          <small className={styles[statusColorMap[status]]}>{statusMap[status]}</small>
-        </div>
-        <p>{description}</p>
-        <ProgressBar progress={(raised / cost) * 100} />
-        <div className={styles.row}>
-          <small>{raised} ETH Raised</small>
-          <div className={styles.etherTarget}>
-            <Image src={ethereumSVG} alt="ethereum" width={18} height={18} />
-            <small>{cost} ETH</small>
-          </div>
-        </div>
-        <div className={styles.buttons}>
-          {isPendingApproval && isAdmin && (
-            <Button
-              color="orange"
-              onClick={() => setModalState({ ...modalState, authorizeIsOpen: true })}
-            >
-              Accept / Reject
-            </Button>
-          )}
-          {isOpen && authUser && !isAdmin && !isOwner && (
-            <Button onClick={() => setModalState({ ...modalState, backIsOpen: true })}>
-              Back Project
-            </Button>
-          )}
-          {isOpen && isOwner && (
-            <>
-              <Button
-                color="gray"
-                onClick={() => setModalState({ ...modalState, editIsOpen: true })}
-              >
-                Edit
-              </Button>
-              <Button
-                color="red"
-                onClick={() => setModalState({ ...modalState, deleteIsOpen: true })}
-              >
-                Delete
-              </Button>
-            </>
-          )}
-        </div>
-        <div className={styles.socials}>
-          <div className={styles.share}>
-            <button className={styles.linkButton} onClick={copyToClipboard}>
-              <Image src={linkSVG} alt="link icon" width={28} height={28} />
-              <span
-                className={classNames({
-                  [styles.tooltip]: true,
-                  [styles.show]: urlCopied,
-                })}
-              >
-                link copied
-              </span>
-            </button>
-            <EmailShareButton url={TEST_URL}>
-              <EmailIcon round size={48} />
-            </EmailShareButton>
-            <FacebookShareButton url={TEST_URL}>
-              <FacebookIcon round size={48} />
-            </FacebookShareButton>
-            <TelegramShareButton url={TEST_URL}>
-              <TelegramIcon round size={48} />
-            </TelegramShareButton>
-            <TwitterShareButton url={TEST_URL}>
-              <XIcon round size={48} />
-            </TwitterShareButton>
-            <WhatsappShareButton url={TEST_URL}>
-              <WhatsappIcon round size={48} />
-            </WhatsappShareButton>
-          </div>
-          {authUser && (
-            <button className={styles.followProject} onClick={handleFollowProject}>
+    <>
+      <section className={styles.mainContainer}>
+        {imageURLs?.length && (
+          <div className={styles.imageGallery}>
+            <div className={styles.imageLarge}>
               <Image
-                src={isFollowing ? followingSVG : followSVG}
-                alt="Follow Project"
-                width={24}
-                height={24}
+                src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageURLs[selectedImage]}`}
+                alt={title}
+                fill
+                sizes="40vw"
+                priority
               />
-              <span>{isFollowing ? 'Following' : 'Follow this Project'}</span>
-            </button>
-          )}
+            </div>
+            {imageURLs.length > 1 && (
+              <div className={styles.imageRow}>
+                {imageURLs.map((image, idx) => (
+                  <div
+                    key={image + idx}
+                    className={classNames({
+                      [styles.imageSmall]: true,
+                      [styles.selected]: idx === selectedImage,
+                    })}
+                    onClick={() => setSelectedImage(idx)}
+                  >
+                    <Image
+                      src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${image}`}
+                      alt={title}
+                      fill
+                      sizes="10vw"
+                      priority
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+        <div className={styles.info}>
+          <h2 className={styles.title}>{title}</h2>
+          <span className={styles.category}>
+            {categories.find((category) => category.id === categoryId)?.name}
+          </span>
+          <div className={styles.row}>
+            <div className={styles.account}>
+              <Identicon string={owner} size={20} />
+              <span>{truncateAccount(owner, 4, 4)}</span>
+            </div>
+            <span className={classNames(styles[statusColorMap[status]], styles.status)}>
+              {statusMap[status]}
+            </span>
+          </div>
+          <p className={styles.description}>{description}</p>
+          <div className={styles.row}>
+            <div className={styles.stats}>
+              <div className={styles.stat}>
+                <span>{backers}</span>
+                <span>backers</span>
+              </div>
+              <div className={styles.stat}>
+                <span>{length}</span>
+                <span>{unit}</span>
+              </div>
+            </div>
+            <div className={styles.policy}>
+              <span>ALL OR NOTHING</span>
+              <p>This project will only be funded if it reaches its goal.</p>
+            </div>
+          </div>
+          <ProgressBar progress={(raised / cost) * 100} />
+          <div className={styles.row}>
+            <span>{raised} ETH Raised</span>
+            <div className={styles.etherTarget}>
+              <Image src={ethereumSVG} alt="ethereum" width={18} height={18} />
+              <span>{cost} ETH</span>
+            </div>
+          </div>
+          <div className={classNames(styles.row, styles.spacer)}>
+            <div className={styles.buttons}>
+              {isPendingApproval && isAdmin && (
+                <Button
+                  color="orange"
+                  onClick={() =>
+                    setModalState({ ...modalState, authorizeIsOpen: true })
+                  }
+                >
+                  Accept / Reject
+                </Button>
+              )}
+              {isOpen && authUser && !isAdmin && !isOwner && (
+                <Button
+                  onClick={() => setModalState({ ...modalState, backIsOpen: true })}
+                >
+                  Back Project
+                </Button>
+              )}
+              {isOpen && isOwner && (
+                <>
+                  <Button
+                    color="gray"
+                    onClick={() => setModalState({ ...modalState, editIsOpen: true })}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    color="red"
+                    onClick={() => setModalState({ ...modalState, deleteIsOpen: true })}
+                  >
+                    Delete
+                  </Button>
+                </>
+              )}
+              {authUser && (
+                <Button
+                  color={isFollowing ? 'green' : 'orange'}
+                  inverted
+                  onClick={handleFollowProject}
+                >
+                  <div className={styles.follow}>
+                    {isFollowing ? <Following /> : <Follow />}
+                    <span>{isFollowing ? 'Following' : 'Follow'}</span>
+                  </div>
+                </Button>
+              )}
+            </div>
+            <div className={styles.socials}>
+              <FacebookShareButton url={TEST_URL}>
+                <div className={styles.socialButton}>
+                  <Facebook />
+                </div>
+              </FacebookShareButton>
+              <TwitterShareButton url={TEST_URL}>
+                <div className={styles.socialButton}>
+                  <Twitter />
+                </div>
+              </TwitterShareButton>
+              <EmailShareButton url={TEST_URL}>
+                <div className={styles.socialButton}>
+                  <Email />
+                </div>
+              </EmailShareButton>
+              <button
+                className={classNames(styles.socialButton, styles.linkButton)}
+                onClick={copyToClipboard}
+              >
+                <Link />
+                <span
+                  className={classNames({
+                    [styles.tooltip]: true,
+                    [styles.show]: urlCopied,
+                  })}
+                >
+                  link copied
+                </span>
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
-      {backIsOpen && (
-        <BackProjectModal
-          project={project}
-          closeModal={() => setModalState({ ...modalState, backIsOpen: false })}
-        />
-      )}
-      {editIsOpen && (
-        <EditProjectModal
-          project={project}
-          closeModal={() => setModalState({ ...modalState, editIsOpen: false })}
-        />
-      )}
-      {deleteIsOpen && (
-        <DeleteProjectModal
-          project={project}
-          closeModal={() => setModalState({ ...modalState, deleteIsOpen: false })}
-        />
-      )}
-      {authorizeIsOpen && (
-        <AuthorizeProjectModal
-          project={project}
-          closeModal={() => setModalState({ ...modalState, authorizeIsOpen: false })}
-        />
-      )}
-    </section>
+        {backIsOpen && (
+          <BackProjectModal
+            project={project}
+            closeModal={() => setModalState({ ...modalState, backIsOpen: false })}
+          />
+        )}
+        {editIsOpen && (
+          <EditProjectModal
+            project={project}
+            closeModal={() => setModalState({ ...modalState, editIsOpen: false })}
+          />
+        )}
+        {deleteIsOpen && (
+          <DeleteProjectModal
+            project={project}
+            closeModal={() => setModalState({ ...modalState, deleteIsOpen: false })}
+          />
+        )}
+        {authorizeIsOpen && (
+          <AuthorizeProjectModal
+            project={project}
+            closeModal={() => setModalState({ ...modalState, authorizeIsOpen: false })}
+          />
+        )}
+      </section>
+      <div className={styles.divider} />
+      <section></section>
+    </>
   );
 };
 

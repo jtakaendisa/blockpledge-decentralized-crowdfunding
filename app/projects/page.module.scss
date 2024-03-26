@@ -4,12 +4,9 @@
   .mainContent {
     display: flex;
 
-    & > aside {
-      padding-top: 7.9rem;
-    }
-
     .projectsSection {
       display: flex;
+      width: 100%;
       flex-direction: column;
       gap: 2rem;
       margin-top: 7rem;

@@ -78,12 +78,12 @@ interface ProjectStore {
 }
 
 export const statusMap = {
-  0: 'OPEN',
-  1: 'APPROVED',
-  2: 'REVERTED',
-  3: 'DELETED',
-  4: 'PAID OUT',
-  5: 'PENDING APPROVAL',
+  0: 'Open',
+  1: 'Approved',
+  2: 'Reverted',
+  3: 'Deleted',
+  4: 'Paid out',
+  5: 'Pending approval',
 } as const;
 
 export const categoryImageMap: { [key: number]: ReactNode } = {
