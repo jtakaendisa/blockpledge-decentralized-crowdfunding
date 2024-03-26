@@ -11,7 +11,6 @@ import usePinata from '@/app/hooks/usePinata';
 import useBlockchain from '@/app/hooks/useBlockchain';
 import { convertToTimestamp, getTomorrowsDate } from '@/app/utils';
 import Button from '../../Button/Button';
-import newProject from '@/public/images/new-project.jpg';
 import xmarkSVG from '@/public/icons/xmark.svg';
 
 import styles from '../modal.module.scss';
@@ -111,9 +110,6 @@ const AddProjectModal = ({ closeModal }: Props) => {
               <Image src={xmarkSVG} alt="close" width={22} height={22} />
             </button>
           </div>
-          <div className={styles.image}>
-            <Image src={newProject} alt="Create a Project" />
-          </div>
           <input
             className={styles.input}
             type="text"
@@ -134,22 +130,24 @@ const AddProjectModal = ({ closeModal }: Props) => {
             placeholder="Expires"
             {...register('expiresAt', { required: true, min: getTomorrowsDate() })}
           />
-          <input
-            type="file"
-            accept="image/*"
-            multiple
-            {...register('imageURLs', {
-              onChange: handleChange,
-            })}
-          />
-          <div>
-            <h3>Selected Files:</h3>
-            <ul>
+          <div className={styles.imagesContainer}>
+            <label htmlFor="images">Project Images</label>
+            <input
+              id="images"
+              type="file"
+              accept="image/*"
+              multiple
+              {...register('imageURLs', {
+                onChange: handleChange,
+              })}
+            />
+            <ul className={styles.imageList}>
               {files.map((file, index) => (
-                <li key={index}>
+                <li key={index} className={styles.listItem}>
                   <Image
                     src={URL.createObjectURL(file)}
                     alt={file.name}
+                    className={styles.projectImage}
                     width={100}
                     height={100}
                   />
@@ -158,6 +156,7 @@ const AddProjectModal = ({ closeModal }: Props) => {
                     onClick={() =>
                       setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index))
                     }
+                    className={styles.removeButton}
                   >
                     Remove
                   </button>

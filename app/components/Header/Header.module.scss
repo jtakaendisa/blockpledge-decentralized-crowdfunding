@@ -31,8 +31,19 @@ $dark-gray: rgb(53, 53, 53);
     color: $light-gray;
     transition: color 0.2s;
 
+    & > svg {
+      width: 22px;
+      height: 22px;
+      fill: $light-gray;
+      transition: fill 0.2s;
+    }
+
     &:hover {
       color: $dark-gray;
+
+      & > svg {
+        fill: $dark-gray;
+      }
     }
   }
 

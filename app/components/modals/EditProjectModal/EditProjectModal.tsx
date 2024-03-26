@@ -97,30 +97,24 @@ const EditProjectModal = ({ project, closeModal }: Props) => {
               <Image src={xmarkSVG} alt="close" width={22} height={22} />
             </button>
           </div>
-          <div className={styles.image}>
-            <Image
-              src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${project.imageURLs[0]}`}
-              alt={project.title}
-              fill
-              sizes="20vw"
+          <div className={styles.imagesContainer}>
+            <label htmlFor="images">Project Images</label>
+            <input
+              id="images"
+              type="file"
+              accept="image/*"
+              multiple
+              {...register('imageURLs', {
+                onChange: handleChange,
+              })}
             />
-          </div>
-          <input
-            type="file"
-            accept="image/*"
-            multiple
-            {...register('imageURLs', {
-              onChange: handleChange,
-            })}
-          />
-          <div>
-            <h3>Selected Files:</h3>
-            <ul>
+            <ul className={styles.imageList}>
               {files.map((file, index) => (
-                <li key={index}>
+                <li key={index} className={styles.listItem}>
                   <Image
                     src={URL.createObjectURL(file)}
                     alt={file.name}
+                    className={styles.projectImage}
                     width={100}
                     height={100}
                   />
@@ -130,16 +124,18 @@ const EditProjectModal = ({ project, closeModal }: Props) => {
                     onClick={() =>
                       setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index))
                     }
+                    className={styles.removeButton}
                   >
                     Remove
                   </button>
                 </li>
               ))}
               {existingImageURLs.map((image, index) => (
-                <li key={index}>
+                <li key={index} className={styles.listItem}>
                   <Image
                     src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${image}`}
                     alt={image}
+                    className={styles.projectImage}
                     width={100}
                     height={100}
                   />
@@ -151,6 +147,7 @@ const EditProjectModal = ({ project, closeModal }: Props) => {
                         prevFiles.filter((_, i) => i !== index)
                       )
                     }
+                    className={styles.removeButton}
                   >
                     Remove
                   </button>

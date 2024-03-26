@@ -74,10 +74,10 @@ const AuthorizeProjectModal = ({ project, closeModal }: Props) => {
               sizes="20vw"
             />
           </div>
-          <fieldset>
+          <fieldset className={styles.formFieldset}>
             <legend>Accept or Reject the Project</legend>
 
-            <div>
+            <div className={styles.formOption}>
               <label htmlFor="accept">Accept Project</label>
               <input
                 id="accept"
@@ -87,7 +87,7 @@ const AuthorizeProjectModal = ({ project, closeModal }: Props) => {
               />
             </div>
 
-            <div>
+            <div className={styles.formOption}>
               <label htmlFor="reject">Reject Project</label>
               <input
                 id="reject"

@@ -59,14 +59,6 @@ const DeleteProjectModal = ({ project, closeModal }: Props) => {
               <Image src={xmarkSVG} alt="close" width={22} height={22} />
             </button>
           </div>
-          <div className={styles.image}>
-            <Image
-              src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${project.imageURLs[0]}`}
-              alt={project.title}
-              fill
-              sizes="20vw"
-            />
-          </div>
           <textarea
             className={classNames(styles.input, styles.textArea)}
             placeholder="Reason for deletion"

@@ -103,52 +103,58 @@ $light-orange: rgb(216, 96, 41);
 
     .socials {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 0.5rem;
 
-      .linkButton {
+      .share {
         display: flex;
-        justify-content: center;
         align-items: center;
-        position: relative;
-        width: 48px;
-        height: 48px;
-        background-color: #7f7f7f;
-        border: none;
-        border-radius: 50%;
-        cursor: pointer;
+        gap: 0.5rem;
 
-        .tooltip {
-          visibility: hidden;
-          background-color: rgba(0, 0, 0, 0.8);
-          color: #fff;
-          text-align: center;
-          text-wrap: nowrap;
-          padding: 5px;
-          border-radius: 5px;
-          position: absolute;
-          z-index: 1;
-          bottom: 125%;
-          left: 50%;
-          transform: translateX(-50%);
-          opacity: 0;
-          transition: opacity 0.3s;
-        }
+        .linkButton {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: relative;
+          width: 48px;
+          height: 48px;
+          background-color: #7f7f7f;
+          border: none;
+          border-radius: 50%;
+          cursor: pointer;
 
-        .tooltip::after {
-          content: '';
-          position: absolute;
-          top: 100%;
-          left: 50%;
-          margin-left: -5px;
-          border-width: 5px;
-          border-style: solid;
-          border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
-        }
+          .tooltip {
+            visibility: hidden;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            text-align: center;
+            text-wrap: nowrap;
+            padding: 5px;
+            border-radius: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+          }
 
-        .tooltip.show {
-          visibility: visible;
-          opacity: 1;
+          .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+          }
+
+          .tooltip.show {
+            visibility: visible;
+            opacity: 1;
+          }
         }
       }
     }
@@ -159,6 +165,7 @@ $light-orange: rgb(216, 96, 41);
       gap: 0.5rem;
       width: fit-content;
       padding: 0.5rem 0.8rem;
+      background-color: white;
       border: 1px solid gray;
       border-radius: 50px;
       cursor: pointer;

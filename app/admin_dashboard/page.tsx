@@ -32,7 +32,7 @@ const AdminDashboardPage = () => {
   return (
     <div className={styles.dashboardPage}>
       <Header />
-      <section>
+      <section className={styles.projectsSection}>
         <h2>Projects Pending Approval</h2>
         <ProjectsGrid projects={filteredProjects} />
       </section>

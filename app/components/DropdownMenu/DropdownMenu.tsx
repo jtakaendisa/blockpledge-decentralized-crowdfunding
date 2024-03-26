@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { AuthUser } from '@/app/store';
 import { truncateAccount } from '@/app/utils';
 import Button from '../Button/Button';
+import User from '../categories/icons/User';
 import userSVG from '@/public/icons/user.svg';
 import walletSVG from '@/public/icons/wallet.svg';
 
@@ -54,7 +55,7 @@ const DropdownMenu = ({
         className={styles.iconContainer}
         onClick={() => setIsOpen((prev) => !prev)}
       >
-        <Image src={userSVG} alt="User Profile" width={24} height={24} />
+        <User />
       </div>
       {isOpen && (
         <div ref={dropdownRef} className={styles.dropDownMenu}>

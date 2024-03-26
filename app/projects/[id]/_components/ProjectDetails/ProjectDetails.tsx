@@ -182,44 +182,46 @@ const ProjectDetails = ({ project, categories, updateFollowingStatus }: Props) =
           )}
         </div>
         <div className={styles.socials}>
-          <button className={styles.linkButton} onClick={copyToClipboard}>
-            <Image src={linkSVG} alt="link icon" width={28} height={28} />
-            <span
-              className={classNames({
-                [styles.tooltip]: true,
-                [styles.show]: urlCopied,
-              })}
-            >
-              link copied
-            </span>
-          </button>
-          <EmailShareButton url={TEST_URL}>
-            <EmailIcon round size={48} />
-          </EmailShareButton>
-          <FacebookShareButton url={TEST_URL}>
-            <FacebookIcon round size={48} />
-          </FacebookShareButton>
-          <TelegramShareButton url={TEST_URL}>
-            <TelegramIcon round size={48} />
-          </TelegramShareButton>
-          <TwitterShareButton url={TEST_URL}>
-            <XIcon round size={48} />
-          </TwitterShareButton>
-          <WhatsappShareButton url={TEST_URL}>
-            <WhatsappIcon round size={48} />
-          </WhatsappShareButton>
+          <div className={styles.share}>
+            <button className={styles.linkButton} onClick={copyToClipboard}>
+              <Image src={linkSVG} alt="link icon" width={28} height={28} />
+              <span
+                className={classNames({
+                  [styles.tooltip]: true,
+                  [styles.show]: urlCopied,
+                })}
+              >
+                link copied
+              </span>
+            </button>
+            <EmailShareButton url={TEST_URL}>
+              <EmailIcon round size={48} />
+            </EmailShareButton>
+            <FacebookShareButton url={TEST_URL}>
+              <FacebookIcon round size={48} />
+            </FacebookShareButton>
+            <TelegramShareButton url={TEST_URL}>
+              <TelegramIcon round size={48} />
+            </TelegramShareButton>
+            <TwitterShareButton url={TEST_URL}>
+              <XIcon round size={48} />
+            </TwitterShareButton>
+            <WhatsappShareButton url={TEST_URL}>
+              <WhatsappIcon round size={48} />
+            </WhatsappShareButton>
+          </div>
+          {authUser && (
+            <button className={styles.followProject} onClick={handleFollowProject}>
+              <Image
+                src={isFollowing ? followingSVG : followSVG}
+                alt="Follow Project"
+                width={24}
+                height={24}
+              />
+              <span>{isFollowing ? 'Following' : 'Follow this Project'}</span>
+            </button>
+          )}
         </div>
-        {authUser && (
-          <button className={styles.followProject} onClick={handleFollowProject}>
-            <Image
-              src={isFollowing ? followingSVG : followSVG}
-              alt="Follow Project"
-              width={24}
-              height={24}
-            />
-            <span>{isFollowing ? 'Following' : 'Follow this Project'}</span>
-          </button>
-        )}
       </div>
       {backIsOpen && (
         <BackProjectModal

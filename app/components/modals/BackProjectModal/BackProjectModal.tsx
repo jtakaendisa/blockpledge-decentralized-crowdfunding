@@ -69,14 +69,6 @@ const BackProjectModal = ({ project, closeModal }: Props) => {
               <Image src={xmarkSVG} alt="close" width={22} height={22} />
             </button>
           </div>
-          <div className={styles.image}>
-            <Image
-              src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${project.imageURLs[0]}`}
-              alt={project.title}
-              fill
-              sizes="20vw"
-            />
-          </div>
           <input
             className={styles.input}
             type="number"

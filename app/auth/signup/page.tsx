@@ -68,7 +68,7 @@ const SignupPage = () => {
         <div className={styles.card}>
           <h2 className={styles.heading}>Create Your Account</h2>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
+            <div className={styles.formInput}>
               <label htmlFor="email">Email</label>
               <input
                 id="email"
@@ -76,7 +76,7 @@ const SignupPage = () => {
                 {...register('email', { required: true })}
               />
             </div>
-            <div>
+            <div className={styles.formInput}>
               <label htmlFor="password">Password</label>
               <input
                 id="password"
@@ -84,7 +84,7 @@ const SignupPage = () => {
                 {...register('password', { required: true })}
               />
             </div>
-            <div>
+            <div className={styles.formInput}>
               <label htmlFor="confirmPassword">Confirm Password</label>
               <input
                 id="confirmPassword"
@@ -92,10 +92,10 @@ const SignupPage = () => {
                 {...register('confirmPassword', { required: true })}
               />
             </div>
-            <fieldset>
+            <fieldset className={styles.formFieldset}>
               <legend>Select an account type:</legend>
 
-              <div>
+              <div className={styles.formOption}>
                 <label htmlFor="funder">Project Funder</label>
                 <input
                   id="funder"
@@ -105,7 +105,7 @@ const SignupPage = () => {
                 />
               </div>
 
-              <div>
+              <div className={styles.formOption}>
                 <label htmlFor="owner">Project Owner</label>
                 <input
                   id="owner"
@@ -116,7 +116,7 @@ const SignupPage = () => {
               </div>
             </fieldset>
             {watchShowWallet === 'owner' && (
-              <div>
+              <div className={styles.formInput}>
                 <label htmlFor="wallet">Crypto Wallet</label>
                 <input
                   id="wallet"
@@ -125,7 +125,9 @@ const SignupPage = () => {
                 />
               </div>
             )}
-            <Button>Sign Up</Button>
+            <div className={styles.buttonContainer}>
+              <Button>Sign Up</Button>
+            </div>
           </form>
         </div>
       </section>

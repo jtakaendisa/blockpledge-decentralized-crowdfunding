@@ -3,7 +3,6 @@
 import { useCallback, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
 import { User } from 'firebase/auth';
 import classNames from 'classnames';
 
@@ -16,7 +15,7 @@ import {
 import useBlockchain from '@/app/hooks/useBlockchain';
 import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import Button from '../Button/Button';
-import coinSVG from '@/public/icons/coin.svg';
+import Coin from '../categories/icons/Coin';
 
 import styles from './Header.module.scss';
 
@@ -58,6 +57,8 @@ const Header = ({ refreshUi }: Props) => {
       window.location.reload();
     };
 
+    handleWalletConnection();
+
     window.ethereum.on('accountsChanged', handleWalletConnection);
     window.ethereum.on('chainChanged', handleChainChange);
 
@@ -80,7 +81,7 @@ const Header = ({ refreshUi }: Props) => {
     <header className={styles.header}>
       <Link href={PATHS.home} className={styles.homeIcon}>
         <span>BlockPledge</span>
-        <Image src={coinSVG} alt="coin logo" width={22} height={22} />
+        <Coin />
       </Link>
       <li className={styles.navLinks}>
         <ul

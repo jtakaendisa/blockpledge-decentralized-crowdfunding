@@ -52,7 +52,7 @@ const AuthPage = () => {
         <div className={styles.card}>
           <h2 className={styles.heading}>Sign In</h2>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
+            <div className={styles.formInput}>
               <label htmlFor="email">Email</label>
               <input
                 id="email"
@@ -60,7 +60,7 @@ const AuthPage = () => {
                 {...register('email', { required: true })}
               />
             </div>
-            <div>
+            <div className={styles.formInput}>
               <label htmlFor="password">Password</label>
               <input
                 id="password"
@@ -68,9 +68,11 @@ const AuthPage = () => {
                 {...register('password', { required: true })}
               />
             </div>
-            <Button>Sign In</Button>
+            <div className={styles.buttonContainer}>
+              <Button>Sign In</Button>
+            </div>
           </form>
-          <span>
+          <span className={styles.signup}>
             Don&apos;t have an account? <Link href="/auth/signup">Sign up</Link>
           </span>
         </div>

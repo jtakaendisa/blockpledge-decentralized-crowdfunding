@@ -7,6 +7,7 @@ import Button from '../Button/Button';
 import AddProjectModal from '../modals/AddProjectModal/AddProjectModal';
 
 import styles from './Hero.module.scss';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   stats: Stats;
@@ -15,6 +16,7 @@ interface Props {
 const Hero = ({ stats }: Props) => {
   const { totalBackings, totalDonations, totalProjects } = stats;
 
+  const router = useRouter();
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   return (
@@ -26,7 +28,9 @@ const Hero = ({ stats }: Props) => {
       </h1>
       <div className={styles.buttons}>
         <Button onClick={() => setModalIsOpen(true)}>Add Project</Button>
-        <Button inverted>Back Projects</Button>
+        <Button inverted onClick={() => router.push('/projects')}>
+          Back Projects
+        </Button>
       </div>
       <div className={styles.stats}>
         <div className={styles.stat}>
