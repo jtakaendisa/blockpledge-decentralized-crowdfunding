@@ -65,8 +65,14 @@ export interface Category {
 }
 
 interface ProjectStore {
+  projects: Project[];
+  stats: Stats;
+  categories: Category[];
   selectedCategory: Category | null;
   searchText: string;
+  setProjects: (projects: Project[]) => void;
+  setStats: (stats: Stats) => void;
+  setCategories: (categories: Category[]) => void;
   setSelectedCategory: (selectedCategory: Category | null) => void;
   setSearchText: (searchText: string) => void;
 }
@@ -104,8 +110,18 @@ const useAccountStore = create<AccountStore>((set) => ({
 }));
 
 const useProjectStore = create<ProjectStore>((set) => ({
+  projects: [],
+  stats: {
+    totalBackings: 0,
+    totalDonations: 0,
+    totalProjects: 0,
+  },
+  categories: [],
   selectedCategory: null,
   searchText: '',
+  setProjects: (projects) => set((state) => ({ ...state, projects })),
+  setStats: (stats) => set((state) => ({ ...state, stats })),
+  setCategories: (categories) => set((state) => ({ ...state, categories })),
   setSelectedCategory: (selectedCategory) =>
     set((state) => ({ ...state, selectedCategory })),
   setSearchText: (searchText) => set((state) => ({ ...state, searchText })),

@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { User } from 'firebase/auth';
@@ -20,7 +20,7 @@ import Coin from '../categories/icons/Coin';
 import styles from './Header.module.scss';
 
 interface Props {
-  refreshUi?: boolean;
+  refreshAuthUserData?: boolean;
 }
 
 const PATHS = {
@@ -30,15 +30,20 @@ const PATHS = {
   adminDashboard: '/admin_dashboard',
 };
 
-const Header = ({ refreshUi }: Props) => {
+const Header = ({ refreshAuthUserData }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
   const connectedAccount = useAccountStore((s) => s.connectedAccount);
   const authUser = useAccountStore((s) => s.authUser);
   const setConnectedAccount = useAccountStore((s) => s.setConnectedAccount);
   const setAuthUser = useAccountStore((s) => s.setAuthUser);
+  const setProjects = useProjectStore((s) => s.setProjects);
+  const setStats = useProjectStore((s) => s.setStats);
+  const setCategories = useProjectStore((s) => s.setCategories);
   const setSelectedCategory = useProjectStore((s) => s.setSelectedCategory);
-  const { connectWallet } = useBlockchain();
+  const { connectWallet, getProjects, getCategories, listenForEvents } =
+    useBlockchain();
+  const [refreshUi, setRefreshUi] = useState(false);
 
   const isAdmin = authUser?.uid === process.env.NEXT_PUBLIC_ADMIN_UID;
 
@@ -69,13 +74,40 @@ const Header = ({ refreshUi }: Props) => {
   }, [handleWalletConnection]);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { projects, stats } = await getProjects();
+        const { categories } = await getCategories();
+
+        setProjects(projects);
+        setStats(stats);
+        setCategories(categories);
+      } catch (error) {
+        console.log((error as Error).message);
+      }
+    };
+
+    fetchData();
+  }, [refreshUi, getProjects, getCategories, setProjects, setStats, setCategories]);
+
+  useEffect(() => {
     const unsubscribe = authStateChangeListener(async (user: User) => {
       const formattedAuthUser = await formatAuthUserData(user);
       setAuthUser(formattedAuthUser);
     });
 
     return unsubscribe;
-  }, [refreshUi, setAuthUser]);
+  }, [refreshAuthUserData, setAuthUser]);
+
+  useEffect(() => {
+    const unsubscribe = listenForEvents(() => setRefreshUi((prev) => !prev));
+
+    return () => {
+      unsubscribe.then((cleanup) => cleanup());
+    };
+  }, [listenForEvents]);
+
+  console.log('header');
 
   return (
     <header className={styles.header}>

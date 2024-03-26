@@ -1,13 +1,11 @@
 'use client';
 
-import Image from 'next/image';
 import classNames from 'classnames';
 
 import { Category, categoryImageMap, useProjectStore } from '@/app/store';
-import categoriesSVG from '@/public/icons/categories.svg';
+import Categories from '@/app/components/categories/icons/Categories';
 
 import styles from './CategorySidebar.module.scss';
-import Categories from '@/app/components/categories/icons/Categories';
 
 interface Props {
   categories: Category[];

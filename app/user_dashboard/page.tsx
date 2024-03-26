@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { Project, useAccountStore } from '../store';
+import { Project, useAccountStore, useProjectStore } from '../store';
 import useBlockchain from '../hooks/useBlockchain';
 import Header from '../components/Header/Header';
 import ProjectsGrid from '../components/ProjectsGrid/ProjectsGrid';
@@ -11,7 +11,8 @@ import styles from './page.module.scss';
 
 const UserDashBoardPage = () => {
   const authUser = useAccountStore((s) => s.authUser);
-  const { getProjects, getUserProjects } = useBlockchain();
+  const projects = useProjectStore((s) => s.projects);
+  const { getUserProjects } = useBlockchain();
   const [projectsFollowed, setProjectsFollowed] = useState<Project[]>([]);
   const [projectsBacked, setProjectsBacked] = useState<Project[]>([]);
   const [userProjects, setUserProjects] = useState<Project[]>([]);
@@ -19,9 +20,7 @@ const UserDashBoardPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (!authUser) return;
-
-        const { projects } = await getProjects();
+        if (!authUser || !projects) return;
 
         const projectsBeingFollowed = projects.filter((project) =>
           authUser.following.includes(project.id)
@@ -44,7 +43,7 @@ const UserDashBoardPage = () => {
     };
 
     fetchData();
-  }, [authUser, getProjects, getUserProjects]);
+  }, [authUser, projects, getUserProjects]);
 
   if (!authUser) return null;
 
