@@ -19,6 +19,7 @@
     "react-dom": "^18",
     "react-hook-form": "^7.51.0",
     "react-hooks-identicons": "^1.0.4",
+    "react-loading-skeleton": "^3.4.0",
     "react-multi-carousel": "^2.8.4",
     "react-share": "^5.1.0",
     "react-toastify": "^10.0.4",

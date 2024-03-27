@@ -4,6 +4,7 @@ import Carousel from 'react-multi-carousel';
 
 import { Project } from '@/app/store';
 import ProjectCard from '../ProjectCard/ProjectCard';
+import ProjectCardSkeleton from '../ProjectCardSkeleton/ProjectCardSkeleton';
 
 import styles from './ProjectsRow.module.scss';
 import 'react-multi-carousel/lib/styles.css';
@@ -31,16 +32,27 @@ const responsive = {
   },
 };
 
+const skeletons = [1, 2, 3, 4, 5, 6];
+
 const ProjectsRow = ({ projects }: Props) => {
   return (
     <section className={styles.projectsRow}>
       <h2 className={styles.heading}>Featured Projects</h2>
       <div className={styles.carouselContainer}>
-        <Carousel responsive={responsive}>
-          {projects.slice(0, 18).map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
-        </Carousel>
+        {!projects.length && (
+          <Carousel responsive={responsive}>
+            {skeletons.map((skeleton) => (
+              <ProjectCardSkeleton key={skeleton} />
+            ))}
+          </Carousel>
+        )}
+        {projects.length > 0 && (
+          <Carousel responsive={responsive}>
+            {projects.slice(0, 12).map((project) => (
+              <ProjectCard key={project.id} project={project} />
+            ))}
+          </Carousel>
+        )}
       </div>
     </section>
   );
