@@ -5,9 +5,9 @@ import { useEffect, useState } from 'react';
 import { Category, Project, useProjectStore } from '@/app/store';
 import Button from '../Button/Button';
 import ProjectCard from '../ProjectCard/ProjectCard';
+import ProjectCardSkeleton from '../ProjectCardSkeleton/ProjectCardSkeleton';
 
 import styles from './ProjectsGrid.module.scss';
-import ProjectCardSkeleton from '../ProjectCardSkeleton/ProjectCardSkeleton';
 
 interface Props {
   projects: Project[];

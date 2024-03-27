@@ -32,6 +32,11 @@ const SearchInput = ({ projects }: Props) => {
     setSearchText(query.toLowerCase());
   };
 
+  const handleClearInput = () => {
+    reset();
+    handleSubmit(onSubmit)();
+  };
+
   if (!projects.length) {
     return <SearchInputSkeleton />;
   }
@@ -47,7 +52,7 @@ const SearchInput = ({ projects }: Props) => {
       />
       {watchShowClearInput.length > 0 && (
         <Image
-          onClick={() => reset()}
+          onClick={handleClearInput}
           src={xmarkSVG}
           alt="Clear Input"
           width={18}

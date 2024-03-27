@@ -16,26 +16,27 @@ const UserDashBoardPage = () => {
   const [projectsFollowed, setProjectsFollowed] = useState<Project[]>([]);
   const [projectsBacked, setProjectsBacked] = useState<Project[]>([]);
   const [userProjects, setUserProjects] = useState<Project[]>([]);
+  const [loadingUserProjects, setLoadingUserProjects] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (!authUser || !projects) return;
-
         const projectsBeingFollowed = projects.filter((project) =>
-          authUser.following.includes(project.id)
+          authUser?.following.includes(project.id)
         );
 
         const projectsBeingBacked = projects.filter((project) =>
-          authUser.backed.includes(project.id)
+          authUser?.backed.includes(project.id)
         );
 
         setProjectsFollowed(projectsBeingFollowed);
         setProjectsBacked(projectsBeingBacked);
 
-        if (authUser.accountType === 'owner') {
+        if (authUser?.accountType === 'owner') {
+          setLoadingUserProjects(true);
           const { userProjects } = await getUserProjects(authUser.wallet);
           setUserProjects(userProjects);
+          setLoadingUserProjects(false);
         }
       } catch (error) {
         console.log((error as Error).message);
@@ -45,30 +46,40 @@ const UserDashBoardPage = () => {
     fetchData();
   }, [authUser, projects, getUserProjects]);
 
-  if (!authUser) return null;
-
   return (
     <div className={styles.dashboardPage}>
       <Header />
       {authUser?.accountType === 'owner' && (
         <section>
           <h2>You&apos;re Projects</h2>
-          {!userProjects.length && <p>No projects yet.</p>}
-          <ProjectsGrid projects={userProjects} />
+          {loadingUserProjects ? (
+            <ProjectsGrid projects={[]} />
+          ) : (
+            <>
+              {!userProjects.length && <p>No projects yet.</p>}
+              <ProjectsGrid projects={userProjects} />
+            </>
+          )}
         </section>
       )}
-      {projectsFollowed.length > 0 && (
-        <section>
-          <h2>Projects You&apos;re Following</h2>
+      <section>
+        <h2>Projects You&apos;re Following</h2>
+        {!projects.length && <ProjectsGrid projects={[]} />}
+        {!projectsFollowed.length ? (
+          <p>No projects yet.</p>
+        ) : (
           <ProjectsGrid projects={projectsFollowed} />
-        </section>
-      )}
-      {projectsBacked.length > 0 && (
-        <section>
-          <h2>Projects You&apos;ve Backed</h2>
+        )}
+      </section>
+      <section>
+        <h2>Projects You&apos;ve Backed</h2>
+        {!projects.length && <ProjectsGrid projects={[]} />}
+        {!projectsBacked.length ? (
+          <p>No projects yet.</p>
+        ) : (
           <ProjectsGrid projects={projectsBacked} />
-        </section>
-      )}
+        )}
+      </section>
     </div>
   );
 };
