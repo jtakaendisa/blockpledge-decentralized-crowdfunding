@@ -3,17 +3,22 @@
 import Image from 'next/image';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { useProjectStore } from '@/app/store';
+import { Project, useProjectStore } from '@/app/store';
+import SearchInputSkeleton from '../SearchInputSkeleton/SearchInputSkeleton';
 import searchSVG from '@/public/icons/search.svg';
 import xmarkSVG from '@/public/icons/xmark.svg';
 
 import styles from './SearchInput.module.scss';
 
+interface Props {
+  projects: Project[];
+}
+
 interface SearchFormInput {
   query: string;
 }
 
-const SearchInput = () => {
+const SearchInput = ({ projects }: Props) => {
   const setSearchText = useProjectStore((s) => s.setSearchText);
   const { register, handleSubmit, watch, reset } = useForm<SearchFormInput>({
     defaultValues: {
@@ -26,6 +31,10 @@ const SearchInput = () => {
   const onSubmit: SubmitHandler<SearchFormInput> = ({ query }) => {
     setSearchText(query.toLowerCase());
   };
+
+  if (!projects.length) {
+    return <SearchInputSkeleton />;
+  }
 
   return (
     <form className={styles.searchForm} onSubmit={handleSubmit(onSubmit)}>

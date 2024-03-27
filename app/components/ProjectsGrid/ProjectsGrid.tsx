@@ -7,6 +7,7 @@ import Button from '../Button/Button';
 import ProjectCard from '../ProjectCard/ProjectCard';
 
 import styles from './ProjectsGrid.module.scss';
+import ProjectCardSkeleton from '../ProjectCardSkeleton/ProjectCardSkeleton';
 
 interface Props {
   projects: Project[];
@@ -23,6 +24,8 @@ export const statusColorMap = {
 };
 
 const COUNT = 12;
+
+const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 const ProjectsGrid = ({ projects, selectedCategory }: Props) => {
   const searchText = useProjectStore((s) => s.searchText);
@@ -63,14 +66,14 @@ const ProjectsGrid = ({ projects, selectedCategory }: Props) => {
     setEnd(12);
   }, [selectedCategory]);
 
-  if (!projects) return null;
-
   return (
     <section className={styles.projects}>
       <div className={styles.cards}>
-        {filteredProjects
-          .map((project) => <ProjectCard key={project.id} project={project} />)
-          .slice(0, end)}
+        {!projects.length
+          ? skeletons.map((skeleton) => <ProjectCardSkeleton key={skeleton} />)
+          : filteredProjects
+              .map((project) => <ProjectCard key={project.id} project={project} />)
+              .slice(0, end)}
       </div>
       <div className={styles.buttonContainer}>
         {end < filteredProjects.length && (

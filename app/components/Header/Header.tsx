@@ -131,7 +131,7 @@ const Header = ({ refreshAuthUserData }: Props) => {
             Explore Projects
           </Link>
         </ul>
-        {loadingAuth && <Skeleton width={110} height={16} />}
+        {loadingAuth && !authUser && <Skeleton width={110} height={16} />}
         {authUser && !isAdmin && (
           <ul
             className={classNames({
@@ -144,7 +144,7 @@ const Header = ({ refreshAuthUserData }: Props) => {
             </Link>
           </ul>
         )}
-        {loadingAuth && <Skeleton circle width={42} height={42} />}
+        {loadingAuth && !authUser && <Skeleton circle width={40} height={40} />}
         {isAdmin && (
           <ul
             className={classNames({

@@ -5,14 +5,14 @@ import classNames from 'classnames';
 import { Category, categoryImageMap, useProjectStore } from '@/app/store';
 import Categories from '@/app/components/categories/icons/Categories';
 
-import styles from './CategorySidebar.module.scss';
+import styles from './CategoriesSidebar.module.scss';
 
 interface Props {
   categories: Category[];
   selectedCategory: Category | null;
 }
 
-const CategorySidebar = ({ categories, selectedCategory }: Props) => {
+const CategoriesSidebar = ({ categories, selectedCategory }: Props) => {
   const setSelectedCategory = useProjectStore((s) => s.setSelectedCategory);
 
   return (
@@ -55,4 +55,4 @@ const CategorySidebar = ({ categories, selectedCategory }: Props) => {
   );
 };
 
-export default CategorySidebar;
+export default CategoriesSidebar;
