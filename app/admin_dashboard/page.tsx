@@ -26,15 +26,19 @@ const AdminDashboardPage = () => {
     fetchData();
   }, [projects]);
 
-  if (!filteredProjects) return null;
-
   return (
     <div className={styles.dashboardPage}>
       <Header />
       <section className={styles.projectsSection}>
         <h2>Projects Pending Approval</h2>
-        {!filteredProjects.length && <p>No projects to approve.</p>}
-        <ProjectsGrid projects={filteredProjects} />
+        {!projects.length ? (
+          <ProjectsGrid projects={[]} />
+        ) : (
+          <>
+            {!filteredProjects.length && <p>No projects to approve.</p>}
+            <ProjectsGrid projects={filteredProjects} />
+          </>
+        )}
       </section>
     </div>
   );
