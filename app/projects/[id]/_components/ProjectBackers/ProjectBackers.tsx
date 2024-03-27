@@ -3,16 +3,22 @@
 import Image from 'next/image';
 import Identicon from 'react-hooks-identicons';
 
-import { Backer } from '@/app/store';
+import { Backer, Project } from '@/app/store';
 import ethereumSVG from '@/public/icons/ethereum.svg';
 
 import styles from './ProjectBackers.module.scss';
 
 interface Props {
   backers: Backer[];
+  project: Project | null;
 }
 
-const ProjectBackers = ({ backers }: Props) => {
+const ProjectBackers = ({ backers, project }: Props) => {
+  const isReverted = project?.status === 2;
+  const isDeleted = project?.status === 3;
+
+  if (!backers.length) return <span>No donations received yet.</span>;
+
   return (
     <section className={styles.backers}>
       <table>
@@ -21,7 +27,7 @@ const ProjectBackers = ({ backers }: Props) => {
             <th>Backer</th>
             <th>Donation (ETH)</th>
             <th>Time</th>
-            <th>Refunded</th>
+            {(isReverted || isDeleted) && <th>Refunded</th>}
           </tr>
         </thead>
         <tbody>
@@ -42,7 +48,7 @@ const ProjectBackers = ({ backers }: Props) => {
                   </div>
                 </td>
                 <td>{timestamp}</td>
-                <td>{refunded ? 'Yes' : 'No'}</td>
+                {(isReverted || isDeleted) && <td>{refunded ? 'Yes' : 'No'}</td>}
               </tr>
             );
           })}

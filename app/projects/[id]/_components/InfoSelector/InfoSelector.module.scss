@@ -1,0 +1,32 @@
+.infoSelector {
+  display: flex;
+  flex-direction: column;
+
+  .options {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    list-style: none;
+    color: rgb(76, 84, 95);
+    font-weight: 600;
+
+    .option {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .selected {
+      color: black;
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 28px;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background-color: black;
+      }
+    }
+  }
+}

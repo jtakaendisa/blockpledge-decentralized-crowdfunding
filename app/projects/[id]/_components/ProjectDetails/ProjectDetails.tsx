@@ -2,29 +2,29 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import classNames from 'classnames';
 import Identicon from 'react-hooks-identicons';
 import { EmailShareButton, FacebookShareButton, TwitterShareButton } from 'react-share';
+import classNames from 'classnames';
 
 import { Category, Project, statusMap, useAccountStore } from '@/app/store';
 import { followProject } from '@/app/services/authService';
 import { findDaysRemaining, truncateAccount } from '@/app/utils';
+import { statusColorMap } from '@/app/components/ProjectsGrid/ProjectsGrid';
+import ProgressBar from '@/app/components/ProgressBar/ProgressBar';
+import Button from '@/app/components/Button/Button';
 import EditProjectModal from '@/app/components/modals/EditProjectModal/EditProjectModal';
 import DeleteProjectModal from '@/app/components/modals/DeleteProjectModal/DeleteProjectModal';
 import BackProjectModal from '@/app/components/modals/BackProjectModal/BackProjectModal';
 import AuthorizeProjectModal from '@/app/components/modals/AuthorizeProjectModal/AuthorizeProjectModal';
-import ProgressBar from '@/app/components/ProgressBar/ProgressBar';
-import Button from '@/app/components/Button/Button';
-import { statusColorMap } from '@/app/components/ProjectsGrid/ProjectsGrid';
-import ethereumSVG from '@/public/icons/ethereum.svg';
-
-import styles from './ProjectDetails.module.scss';
 import Following from '@/app/components/categories/icons/Following';
 import Follow from '@/app/components/categories/icons/Follow';
 import Link from '@/app/components/categories/icons/Link';
 import Facebook from '@/app/components/categories/icons/Facebook';
 import Twitter from '@/app/components/categories/icons/Twitter';
 import Email from '@/app/components/categories/icons/Email';
+import ethereumSVG from '@/public/icons/ethereum.svg';
+
+import styles from './ProjectDetails.module.scss';
 
 interface Props {
   project: Project;
@@ -198,7 +198,7 @@ const ProjectDetails = ({ project, categories, updateFollowingStatus }: Props) =
                   </Button>
                 </>
               )}
-              {authUser && (
+              {authUser && !isOwner && (
                 <Button
                   color={isFollowing ? 'green' : 'orange'}
                   inverted
@@ -244,6 +244,12 @@ const ProjectDetails = ({ project, categories, updateFollowingStatus }: Props) =
             </div>
           </div>
         </div>
+        {authorizeIsOpen && (
+          <AuthorizeProjectModal
+            project={project}
+            closeModal={() => setModalState({ ...modalState, authorizeIsOpen: false })}
+          />
+        )}
         {backIsOpen && (
           <BackProjectModal
             project={project}
@@ -262,15 +268,8 @@ const ProjectDetails = ({ project, categories, updateFollowingStatus }: Props) =
             closeModal={() => setModalState({ ...modalState, deleteIsOpen: false })}
           />
         )}
-        {authorizeIsOpen && (
-          <AuthorizeProjectModal
-            project={project}
-            closeModal={() => setModalState({ ...modalState, authorizeIsOpen: false })}
-          />
-        )}
       </section>
       <div className={styles.divider} />
-      <section></section>
     </>
   );
 };

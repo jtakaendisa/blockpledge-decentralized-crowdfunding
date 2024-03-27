@@ -53,7 +53,7 @@ $light-orange: rgb(216, 96, 41);
       }
 
       .selected {
-        border: 2px solid red;
+        border: 2px solid $light-red;
       }
     }
   }
@@ -107,6 +107,22 @@ $light-orange: rgb(216, 96, 41);
       & > span {
         color: rgb(116, 116, 116);
         font-weight: 500;
+      }
+
+      .green {
+        color: $light-green;
+      }
+
+      .gray {
+        color: $light-gray;
+      }
+
+      .red {
+        color: $light-red;
+      }
+
+      .orange {
+        color: $light-orange;
       }
     }
 
@@ -250,27 +266,11 @@ $light-orange: rgb(216, 96, 41);
       }
     }
   }
-
-  .green {
-    color: $light-green;
-  }
-
-  .gray {
-    color: $light-gray;
-  }
-
-  .red {
-    color: $light-red;
-  }
-
-  .orange {
-    color: $light-orange;
-  }
 }
 
 .divider {
   height: 1px;
   background-color: rgba($color: rgb(116, 116, 116), $alpha: 0.4);
-  margin-top: 6rem;
+  margin-top: 4rem;
   margin-bottom: 2rem;
 }
