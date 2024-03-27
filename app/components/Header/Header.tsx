@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { User } from 'firebase/auth';
 import classNames from 'classnames';
+import Skeleton from 'react-loading-skeleton';
 
 import { useAccountStore, useProjectStore } from '@/app/store';
 import {
@@ -18,6 +19,7 @@ import Button from '../Button/Button';
 import Coin from '../categories/icons/Coin';
 
 import styles from './Header.module.scss';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 interface Props {
   refreshAuthUserData?: boolean;
@@ -43,6 +45,7 @@ const Header = ({ refreshAuthUserData }: Props) => {
   const setSelectedCategory = useProjectStore((s) => s.setSelectedCategory);
   const { connectWallet, getProjects, getCategories, listenForEvents } =
     useBlockchain();
+  const [loadingAuth, setLoadingAuth] = useState(false);
   const [refreshUi, setRefreshUi] = useState(false);
 
   const isAdmin = authUser?.uid === process.env.NEXT_PUBLIC_ADMIN_UID;
@@ -91,9 +94,11 @@ const Header = ({ refreshAuthUserData }: Props) => {
   }, [refreshUi, getProjects, getCategories, setProjects, setStats, setCategories]);
 
   useEffect(() => {
+    setLoadingAuth(true);
     const unsubscribe = authStateChangeListener(async (user: User) => {
       const formattedAuthUser = await formatAuthUserData(user);
       setAuthUser(formattedAuthUser);
+      setLoadingAuth(false);
     });
 
     return unsubscribe;
@@ -126,6 +131,7 @@ const Header = ({ refreshAuthUserData }: Props) => {
             Explore Projects
           </Link>
         </ul>
+        {loadingAuth && <Skeleton width={110} height={16} />}
         {authUser && !isAdmin && (
           <ul
             className={classNames({
@@ -138,6 +144,7 @@ const Header = ({ refreshAuthUserData }: Props) => {
             </Link>
           </ul>
         )}
+        {loadingAuth && <Skeleton circle width={42} height={42} />}
         {isAdmin && (
           <ul
             className={classNames({
@@ -160,11 +167,13 @@ const Header = ({ refreshAuthUserData }: Props) => {
             />
           </ul>
         ) : (
-          <ul>
-            <Button inverted onClick={() => router.push('/auth')}>
-              Sign In
-            </Button>
-          </ul>
+          !loadingAuth && (
+            <ul>
+              <Button inverted onClick={() => router.push('/auth')}>
+                Sign In
+              </Button>
+            </ul>
+          )
         )}
       </li>
     </header>
