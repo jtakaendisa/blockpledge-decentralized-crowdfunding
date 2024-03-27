@@ -39,14 +39,13 @@ const ProjectsRow = ({ projects }: Props) => {
     <section className={styles.projectsRow}>
       <h2 className={styles.heading}>Featured Projects</h2>
       <div className={styles.carouselContainer}>
-        {!projects.length && (
+        {!projects.length ? (
           <Carousel responsive={responsive}>
             {skeletons.map((skeleton) => (
               <ProjectCardSkeleton key={skeleton} />
             ))}
           </Carousel>
-        )}
-        {projects.length > 0 && (
+        ) : (
           <Carousel responsive={responsive}>
             {projects.slice(0, 12).map((project) => (
               <ProjectCard key={project.id} project={project} />
