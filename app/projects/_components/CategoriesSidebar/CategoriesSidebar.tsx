@@ -1,9 +1,8 @@
 'use client';
 
-import classNames from 'classnames';
-
-import { Category, categoryImageMap, useProjectStore } from '@/app/store';
-import Categories from '@/app/components/categories/icons/Categories';
+import { Category, useProjectStore } from '@/app/store';
+import CategoryRow from '../CategoryRow/CategoryRow';
+import CategoryRowSkeleton from '../CategoryRowSkeleton/CategoryRowSkeleton';
 
 import styles from './CategoriesSidebar.module.scss';
 
@@ -12,45 +11,40 @@ interface Props {
   selectedCategory: Category | null;
 }
 
+const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+
 const CategoriesSidebar = ({ categories, selectedCategory }: Props) => {
   const setSelectedCategory = useProjectStore((s) => s.setSelectedCategory);
+
+  const handleCategorySelection = (category: Category | null) => {
+    setSelectedCategory(category);
+  };
 
   return (
     <aside className={styles.sidebar}>
       <h2>Browse by Category</h2>
-      <div>
-        <div
-          className={classNames({
-            [styles.categoryRow]: true,
-            [styles.selected]: !selectedCategory,
-          })}
-        >
-          <Categories />
-          <span
-            className={styles.categoryName}
-            onClick={() => setSelectedCategory(null)}
-          >
-            All Categories
-          </span>
+      {!categories.length ? (
+        <div>
+          {skeletons.map((skeleton) => (
+            <CategoryRowSkeleton key={skeleton} />
+          ))}
         </div>
-        {categories.map((category) => (
-          <div
-            key={category.id}
-            className={classNames({
-              [styles.categoryRow]: true,
-              [styles.selected]: selectedCategory?.id === category.id,
-            })}
-          >
-            {categoryImageMap[category.id]}
-            <span
-              className={styles.categoryName}
-              onClick={() => setSelectedCategory(category)}
-            >
-              {category.name}
-            </span>
-          </div>
-        ))}
-      </div>
+      ) : (
+        <div>
+          <CategoryRow
+            selectedCategory={selectedCategory}
+            onSelectCategory={handleCategorySelection}
+          />
+          {categories.map((category) => (
+            <CategoryRow
+              key={category.id}
+              category={category}
+              selectedCategory={selectedCategory}
+              onSelectCategory={handleCategorySelection}
+            />
+          ))}
+        </div>
+      )}
     </aside>
   );
 };

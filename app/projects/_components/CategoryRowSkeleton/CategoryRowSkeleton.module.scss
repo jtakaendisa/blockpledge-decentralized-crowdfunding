@@ -1,0 +1,10 @@
+.categoryRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.45rem 0;
+
+  .categoryName {
+    width: 65%;
+  }
+}
