@@ -25,11 +25,9 @@ const HomePage = () => {
       <CategoriesGrid categories={categories} />
       <ToastContainer
         position="bottom-center"
-        autoClose={2000}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
+        autoClose={3000}
         theme="dark"
+        hideProgressBar
       />
     </div>
   );

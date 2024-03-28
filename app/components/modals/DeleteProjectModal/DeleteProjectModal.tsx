@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import classNames from 'classnames';
 import { toast } from 'react-toastify';
@@ -22,7 +21,6 @@ interface DeleteFormInputs {
 }
 
 const DeleteProjectModal = ({ project, closeModal }: Props) => {
-  const router = useRouter();
   const { deleteProject } = useBlockchain();
 
   const {
@@ -38,9 +36,8 @@ const DeleteProjectModal = ({ project, closeModal }: Props) => {
 
   const onSubmit: SubmitHandler<DeleteFormInputs> = async (data) => {
     await deleteProject(project.id, data.reason);
-    toast.success('Project deleted successfully, changes will reflect momentarily.');
+    toast.success('Project has been deleted, changes will reflect momentarily.');
     closeModal();
-    router.push('/');
   };
 
   useEffect(() => {

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { ToastContainer } from 'react-toastify';
 
 import { Backer, Project, useProjectStore } from '@/app/store';
 import useBlockchain from '@/app/hooks/useBlockchain';
@@ -78,6 +79,12 @@ const ProjectPage = ({ params: { id } }: Props) => {
         )}
         {selectedInfo === 'comments' && <ProjectComments backers={backers} />}
       </InfoSelector>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={3000}
+        theme="dark"
+        hideProgressBar
+      />
     </div>
   );
 };

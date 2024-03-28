@@ -47,7 +47,7 @@ const BackProjectModal = ({ project, closeModal }: Props) => {
     }
 
     toast.success(
-      'Thank you! Project backing has been received, changes will reflect momentarily.'
+      'Thank you! Your donation has been received, changes will reflect momentarily.'
     );
 
     closeModal();

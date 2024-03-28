@@ -96,7 +96,7 @@ const ProjectDetails = ({ project, categories, updateFollowingStatus }: Props) =
                 src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageURLs[selectedImage]}`}
                 alt={title}
                 fill
-                sizes="40vw"
+                sizes="25vw"
                 priority
               />
             </div>
@@ -115,7 +115,7 @@ const ProjectDetails = ({ project, categories, updateFollowingStatus }: Props) =
                       src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${image}`}
                       alt={title}
                       fill
-                      sizes="10vw"
+                      sizes="5vw"
                       priority
                     />
                   </div>

@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import Image from 'next/image';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import classNames from 'classnames';
 
 import { Project } from '@/app/store';
@@ -43,10 +44,11 @@ const AuthorizeProjectModal = ({ project, closeModal }: Props) => {
 
     if (decision === 'accept') {
       await acceptProject(project.id);
+      toast.success('Project has been accepted, changes will reflect momentarily.');
     } else {
       await rejectProject(project.id, reason);
+      toast.success('Project has been rejected, changes will reflect momentarily.');
     }
-
     closeModal();
   };
 

@@ -68,7 +68,7 @@ const EditProjectModal = ({ project, closeModal }: Props) => {
     }
 
     await updateProject({ ...data, id: project.id });
-    toast.success('Project updated successfully, changes will reflect momentarily.');
+    toast.success('Project has been updated, changes will reflect momentarily.');
 
     closeModal();
   };
