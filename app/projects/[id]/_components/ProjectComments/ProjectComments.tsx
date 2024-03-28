@@ -10,6 +10,8 @@ interface Props {
 const ProjectComments = ({ backers }: Props) => {
   if (!backers.length) return <span>No comments posted yet.</span>;
 
+  const filteredBackers = backers.filter((backer) => backer.comment.length);
+
   return (
     <section className={styles.comments}>
       <table>
@@ -21,7 +23,7 @@ const ProjectComments = ({ backers }: Props) => {
           </tr>
         </thead>
         <tbody>
-          {backers.map((backerInfo, idx) => {
+          {filteredBackers.map((backerInfo, idx) => {
             const { backer, comment, timestamp } = backerInfo;
             return (
               <tr key={idx + backer}>
