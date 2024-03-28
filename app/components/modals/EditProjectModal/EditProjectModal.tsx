@@ -13,7 +13,7 @@ import xmarkSVG from '@/public/icons/xmark.svg';
 import styles from '../modal.module.scss';
 
 interface Props {
-  project: Project;
+  project: Project | null;
   closeModal: () => void;
 }
 
@@ -26,7 +26,9 @@ const EditProjectModal = ({ project, closeModal }: Props) => {
   const { updateProject } = useBlockchain();
   const { uploadFiles } = usePinata((uploading) => setUploading(uploading));
   const [files, setFiles] = useState<File[]>([]);
-  const [existingImageURLs, setExistingImageURLs] = useState(project.imageURLs);
+  const [existingImageURLs, setExistingImageURLs] = useState(
+    project ? project.imageURLs : []
+  );
   const [fileError, setFileError] = useState(false);
   const [uploading, setUploading] = useState(false);
 
@@ -37,8 +39,8 @@ const EditProjectModal = ({ project, closeModal }: Props) => {
     formState: { isSubmitSuccessful },
   } = useForm<EditFormInputs>({
     defaultValues: {
-      imageURLs: project.imageURLs,
-      description: project.description,
+      imageURLs: project?.imageURLs,
+      description: project?.description,
     },
   });
 
@@ -53,6 +55,8 @@ const EditProjectModal = ({ project, closeModal }: Props) => {
   };
 
   const onSubmit: SubmitHandler<EditFormInputs> = async (data) => {
+    if (!project) return;
+
     if (!files.length && !existingImageURLs.length) {
       setFileError(true);
       return;

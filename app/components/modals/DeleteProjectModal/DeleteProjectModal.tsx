@@ -12,7 +12,7 @@ import xmarkSVG from '@/public/icons/xmark.svg';
 import styles from '../modal.module.scss';
 
 interface Props {
-  project: Project;
+  project: Project | null;
   closeModal: () => void;
 }
 
@@ -35,6 +35,8 @@ const DeleteProjectModal = ({ project, closeModal }: Props) => {
   });
 
   const onSubmit: SubmitHandler<DeleteFormInputs> = async (data) => {
+    if (!project) return;
+
     await deleteProject(project.id, data.reason);
     toast.success('Project has been deleted, changes will reflect momentarily.');
     closeModal();

@@ -14,7 +14,7 @@ import xmarkSVG from '@/public/icons/xmark.svg';
 import styles from '../modal.module.scss';
 
 interface Props {
-  project: Project;
+  project: Project | null;
   closeModal: () => void;
 }
 
@@ -41,6 +41,8 @@ const BackProjectModal = ({ project, closeModal }: Props) => {
   });
 
   const onSubmit: SubmitHandler<BackFormInputs> = async ({ cost, comment }) => {
+    if (!project) return;
+
     if (connectedAcount && authUser) {
       await backProject(project.id, cost, comment, connectedAcount);
       await backProjectFirebase(authUser, project.id);

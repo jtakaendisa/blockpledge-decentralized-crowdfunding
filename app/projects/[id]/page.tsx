@@ -12,6 +12,7 @@ import ProjectBackers from './_components/ProjectBackers/ProjectBackers';
 import ProjectComments from './_components/ProjectComments/ProjectComments';
 
 import styles from './page.module.scss';
+import ProjectDetailsSkeleton from './_components/ProjectDetailsSkeleton/ProjectDetailsSkeleton';
 
 interface Props {
   params: {
@@ -65,21 +66,25 @@ const ProjectPage = ({ params: { id } }: Props) => {
   return (
     <div className={styles.projectPage}>
       <Header />
-      {project && categories && (
-        <ProjectDetails project={project} categories={categories} />
+      {!project ? (
+        <ProjectDetailsSkeleton />
+      ) : (
+        <>
+          <ProjectDetails project={project} categories={categories} />
+          <InfoSelector onSelectInfo={handleSelectInfo} selectedInfo={selectedInfo}>
+            {selectedInfo === 'donations' && (
+              <ProjectBackers backers={backers} project={project} />
+            )}
+            {selectedInfo === 'comments' && <ProjectComments backers={backers} />}
+          </InfoSelector>
+          <ToastContainer
+            position="bottom-center"
+            autoClose={3000}
+            theme="dark"
+            hideProgressBar
+          />
+        </>
       )}
-      <InfoSelector onSelectInfo={handleSelectInfo} selectedInfo={selectedInfo}>
-        {selectedInfo === 'donations' && (
-          <ProjectBackers backers={backers} project={project} />
-        )}
-        {selectedInfo === 'comments' && <ProjectComments backers={backers} />}
-      </InfoSelector>
-      <ToastContainer
-        position="bottom-center"
-        autoClose={3000}
-        theme="dark"
-        hideProgressBar
-      />
     </div>
   );
 };

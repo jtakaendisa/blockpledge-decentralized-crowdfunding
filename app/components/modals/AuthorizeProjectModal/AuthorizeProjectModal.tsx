@@ -12,7 +12,7 @@ import xmarkSVG from '@/public/icons/xmark.svg';
 import styles from '../modal.module.scss';
 
 interface Props {
-  project: Project;
+  project: Project | null;
   closeModal: () => void;
 }
 
@@ -39,8 +39,8 @@ const AuthorizeProjectModal = ({ project, closeModal }: Props) => {
 
   const watchShowReason = watch('decision');
 
-  const onSubmit: SubmitHandler<AuthorizeFormInputs> = async (data) => {
-    const { decision, reason } = data;
+  const onSubmit: SubmitHandler<AuthorizeFormInputs> = async ({ decision, reason }) => {
+    if (!project) return;
 
     if (decision === 'accept') {
       await acceptProject(project.id);
