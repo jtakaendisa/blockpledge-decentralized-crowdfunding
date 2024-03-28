@@ -29,7 +29,6 @@ const ProjectPage = ({ params: { id } }: Props) => {
   const [error, setError] = useState<Error | null>(null);
   const [selectedInfo, setSelectedInfo] = useState<Info>('donations');
   const [refreshUi, setRefreshUi] = useState(false);
-  const [refreshAuthUserData, setRefreshAuthUserData] = useState(false);
 
   const handleSelectInfo = (selection: Info) => {
     setSelectedInfo(selection);
@@ -65,13 +64,9 @@ const ProjectPage = ({ params: { id } }: Props) => {
 
   return (
     <div className={styles.projectPage}>
-      <Header refreshAuthUserData={refreshAuthUserData} />
+      <Header />
       {project && categories && (
-        <ProjectDetails
-          project={project}
-          categories={categories}
-          updateFollowingStatus={() => setRefreshAuthUserData((prev) => !prev)}
-        />
+        <ProjectDetails project={project} categories={categories} />
       )}
       <InfoSelector onSelectInfo={handleSelectInfo} selectedInfo={selectedInfo}>
         {selectedInfo === 'donations' && (

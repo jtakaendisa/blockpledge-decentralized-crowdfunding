@@ -21,10 +21,6 @@ import Coin from '../categories/icons/Coin';
 import styles from './Header.module.scss';
 import 'react-loading-skeleton/dist/skeleton.css';
 
-interface Props {
-  refreshAuthUserData?: boolean;
-}
-
 const PATHS = {
   home: '/',
   projects: '/projects',
@@ -32,17 +28,19 @@ const PATHS = {
   adminDashboard: '/admin_dashboard',
 };
 
-const Header = ({ refreshAuthUserData }: Props) => {
+const Header = () => {
   const router = useRouter();
   const pathname = usePathname();
   const connectedAccount = useAccountStore((s) => s.connectedAccount);
   const authUser = useAccountStore((s) => s.authUser);
+  const updatingAuthUserData = useAccountStore((s) => s.updatingAuthUserData);
   const setConnectedAccount = useAccountStore((s) => s.setConnectedAccount);
   const setAuthUser = useAccountStore((s) => s.setAuthUser);
   const setProjects = useProjectStore((s) => s.setProjects);
   const setStats = useProjectStore((s) => s.setStats);
   const setCategories = useProjectStore((s) => s.setCategories);
   const setSelectedCategory = useProjectStore((s) => s.setSelectedCategory);
+  const setUpdatingFollowStatus = useProjectStore((s) => s.setUpdatingFollowStatus);
   const { connectWallet, getProjects, getCategories, listenForEvents } =
     useBlockchain();
   const [loadingAuth, setLoadingAuth] = useState(false);
@@ -99,10 +97,11 @@ const Header = ({ refreshAuthUserData }: Props) => {
       const formattedAuthUser = await formatAuthUserData(user);
       setAuthUser(formattedAuthUser);
       setLoadingAuth(false);
+      setUpdatingFollowStatus(false);
     });
 
     return unsubscribe;
-  }, [refreshAuthUserData, setAuthUser]);
+  }, [updatingAuthUserData, setAuthUser, setUpdatingFollowStatus]);
 
   useEffect(() => {
     const unsubscribe = listenForEvents(() => setRefreshUi((prev) => !prev));

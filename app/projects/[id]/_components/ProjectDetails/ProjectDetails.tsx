@@ -6,7 +6,13 @@ import Identicon from 'react-hooks-identicons';
 import { EmailShareButton, FacebookShareButton, TwitterShareButton } from 'react-share';
 import classNames from 'classnames';
 
-import { Category, Project, statusMap, useAccountStore } from '@/app/store';
+import {
+  Category,
+  Project,
+  statusMap,
+  useAccountStore,
+  useProjectStore,
+} from '@/app/store';
 import { followProject } from '@/app/services/authService';
 import { findDaysRemaining, truncateAccount } from '@/app/utils';
 import { statusColorMap } from '@/app/components/ProjectsGrid/ProjectsGrid';
@@ -29,12 +35,11 @@ import styles from './ProjectDetails.module.scss';
 interface Props {
   project: Project;
   categories: Category[];
-  updateFollowingStatus: () => void;
 }
 
 const TEST_URL = 'udemy.com';
 
-const ProjectDetails = ({ project, categories, updateFollowingStatus }: Props) => {
+const ProjectDetails = ({ project, categories }: Props) => {
   const {
     imageURLs,
     title,
@@ -50,6 +55,9 @@ const ProjectDetails = ({ project, categories, updateFollowingStatus }: Props) =
 
   const connectedAccount = useAccountStore((s) => s.connectedAccount);
   const authUser = useAccountStore((s) => s.authUser);
+  const setUpdatingAuthUserData = useAccountStore((s) => s.setUpdatingAuthUserData);
+  const updatingFollowStatus = useProjectStore((s) => s.updatingFollowStatus);
+  const setUpdatingFollowStatus = useProjectStore((s) => s.setUpdatingFollowStatus);
   const [selectedImage, setSelectedImage] = useState(0);
   const [urlCopied, setUrlCopied] = useState(false);
   const [modalState, setModalState] = useState({
@@ -80,8 +88,9 @@ const ProjectDetails = ({ project, categories, updateFollowingStatus }: Props) =
   const handleFollowProject = async () => {
     if (!authUser) return;
 
+    setUpdatingFollowStatus(true);
     await followProject(authUser, project.id, isFollowing);
-    updateFollowingStatus();
+    setUpdatingAuthUserData();
   };
 
   const [length, unit] = findDaysRemaining(expiresAt);
@@ -203,10 +212,15 @@ const ProjectDetails = ({ project, categories, updateFollowingStatus }: Props) =
                   color={isFollowing ? 'green' : 'orange'}
                   inverted
                   onClick={handleFollowProject}
+                  disabled={updatingFollowStatus}
                 >
                   <div className={styles.follow}>
                     {isFollowing ? <Following /> : <Follow />}
-                    <span>{isFollowing ? 'Following' : 'Follow'}</span>
+                    {updatingFollowStatus ? (
+                      'Loading...'
+                    ) : (
+                      <span>{isFollowing ? 'Following' : 'Follow'}</span>
+                    )}
                   </div>
                 </Button>
               )}
