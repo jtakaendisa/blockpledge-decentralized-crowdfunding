@@ -1,3 +1,5 @@
+@import '../../breakpoints.scss';
+
 .projectsRow {
   display: flex;
   flex-direction: column;
@@ -6,6 +8,10 @@
 
   .heading {
     font-size: 2rem;
+
+    @include media('<526px') {
+      font-size: 1.5rem;
+    }
   }
 
   .carouselContainer {
