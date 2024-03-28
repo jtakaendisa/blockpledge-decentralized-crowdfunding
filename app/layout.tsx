@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
-import 'react-toastify/dist/ReactToastify.css';
+import { mediaStyles } from './media';
+
 import './globals.scss';
+import 'react-toastify/dist/ReactToastify.css';
 
 const inter = localFont({ src: '../public/fonts/inter-variable.ttf' });
 
@@ -18,6 +20,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <style type="text/css" dangerouslySetInnerHTML={{ __html: mediaStyles }} />
+      </head>
       <body className={inter.className}>{children}</body>
     </html>
   );

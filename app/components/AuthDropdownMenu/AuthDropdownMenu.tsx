@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect, MouseEvent } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 
 import { AuthUser } from '@/app/store';
@@ -10,7 +10,7 @@ import User from '../categories/icons/User';
 import userSVG from '@/public/icons/user.svg';
 import walletSVG from '@/public/icons/wallet.svg';
 
-import styles from './DropdownMenu.module.scss';
+import styles from './AuthDropdownMenu.module.scss';
 
 interface Props {
   authUser: AuthUser;
@@ -19,7 +19,7 @@ interface Props {
   onSignOut: () => void;
 }
 
-const DropdownMenu = ({
+const AuthDropdownMenu = ({
   authUser,
   connectedAccount,
   onConnectWallet,
@@ -86,4 +86,4 @@ const DropdownMenu = ({
   );
 };
 
-export default DropdownMenu;
+export default AuthDropdownMenu;

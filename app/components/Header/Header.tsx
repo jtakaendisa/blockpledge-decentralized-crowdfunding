@@ -14,7 +14,9 @@ import {
   signOutAuthUser,
 } from '@/app/services/authService';
 import useBlockchain from '@/app/hooks/useBlockchain';
-import DropdownMenu from '../DropdownMenu/DropdownMenu';
+import { Media, MediaContextProvider } from '@/app/media';
+import AuthDropdownMenu from '../AuthDropdownMenu/AuthDropdownMenu';
+import MobileDropdownMenu from '../MobileDropdownMenu/MobileDropdownMenu';
 import Button from '../Button/Button';
 import Coin from '../categories/icons/Coin';
 
@@ -111,71 +113,84 @@ const Header = () => {
     };
   }, [listenForEvents]);
 
-  console.log('header');
-
   return (
-    <header className={styles.header}>
-      <Link href={PATHS.home} className={styles.homeIcon}>
-        <span>BlockPledge</span>
-        <Coin />
-      </Link>
-      <li className={styles.navLinks}>
-        <ul
-          className={classNames({
-            [styles.navLink]: true,
-            [styles.selected]: PATHS.projects === pathname,
-          })}
-        >
-          <Link href={PATHS.projects} onClick={() => setSelectedCategory(null)}>
-            Explore Projects
-          </Link>
-        </ul>
-        {loadingAuth && !authUser && <Skeleton width={110} height={16} />}
-        {authUser && !isAdmin && (
-          <ul
-            className={classNames({
-              [styles.navLink]: true,
-              [styles.selected]: PATHS.userDashboard === pathname,
-            })}
-          >
-            <Link href={PATHS.userDashboard} onClick={() => setSelectedCategory(null)}>
-              My Dashboard
-            </Link>
-          </ul>
-        )}
-        {loadingAuth && !authUser && <Skeleton circle width={40} height={40} />}
-        {isAdmin && (
-          <ul
-            className={classNames({
-              [styles.navLink]: true,
-              [styles.selected]: PATHS.adminDashboard === pathname,
-            })}
-          >
-            <Link href={PATHS.adminDashboard} onClick={() => setSelectedCategory(null)}>
-              Admin Dashboard
-            </Link>
-          </ul>
-        )}
-        {authUser ? (
-          <ul className={styles.profileContainer}>
-            <DropdownMenu
-              authUser={authUser}
-              connectedAccount={connectedAccount}
-              onConnectWallet={handleWalletConnection}
-              onSignOut={signOutAuthUser}
-            />
-          </ul>
-        ) : (
-          !loadingAuth && (
-            <ul>
-              <Button inverted onClick={() => router.push('/auth')}>
-                Sign In
-              </Button>
+    <MediaContextProvider>
+      <header className={styles.header}>
+        <Link href={PATHS.home} className={styles.homeIcon}>
+          <span>BlockPledge</span>
+          <Coin />
+        </Link>
+        <div className={styles.navActions}>
+          <Media greaterThanOrEqual="sm">
+            <ul className={styles.navLinks}>
+              <li
+                className={classNames({
+                  [styles.navLink]: true,
+                  [styles.selected]: PATHS.projects === pathname,
+                })}
+              >
+                <Link href={PATHS.projects} onClick={() => setSelectedCategory(null)}>
+                  Explore Projects
+                </Link>
+              </li>
+              {loadingAuth && !authUser && <Skeleton width={110} height={16} />}
+              {authUser && !isAdmin && (
+                <li
+                  className={classNames({
+                    [styles.navLink]: true,
+                    [styles.selected]: PATHS.userDashboard === pathname,
+                  })}
+                >
+                  <Link
+                    href={PATHS.userDashboard}
+                    onClick={() => setSelectedCategory(null)}
+                  >
+                    My Dashboard
+                  </Link>
+                </li>
+              )}
+              {loadingAuth && !authUser && <Skeleton circle width={40} height={40} />}
+              {isAdmin && (
+                <li
+                  className={classNames({
+                    [styles.navLink]: true,
+                    [styles.selected]: PATHS.adminDashboard === pathname,
+                  })}
+                >
+                  <Link
+                    href={PATHS.adminDashboard}
+                    onClick={() => setSelectedCategory(null)}
+                  >
+                    Admin Dashboard
+                  </Link>
+                </li>
+              )}
             </ul>
-          )
-        )}
-      </li>
-    </header>
+          </Media>
+          <Media lessThan="sm">
+            <div className={styles.dropdownMenuContainer}>
+              <MobileDropdownMenu authUser={authUser} isAdmin={isAdmin} />
+            </div>
+          </Media>
+          <div className={styles.dropdownMenuContainer}>
+            {authUser ? (
+              <AuthDropdownMenu
+                authUser={authUser}
+                connectedAccount={connectedAccount}
+                onConnectWallet={handleWalletConnection}
+                onSignOut={signOutAuthUser}
+              />
+            ) : (
+              !loadingAuth && (
+                <Button inverted onClick={() => router.push('/auth')}>
+                  Sign In
+                </Button>
+              )
+            )}
+          </div>
+        </div>
+      </header>
+    </MediaContextProvider>
   );
 };
 

@@ -47,32 +47,38 @@ $dark-gray: rgb(53, 53, 53);
     }
   }
 
-  .navLinks {
+  .navActions {
     display: flex;
     align-items: center;
     gap: 1rem;
-    list-style: none;
 
-    .navLink {
-      & > a {
-        text-decoration: none;
-        color: $light-gray;
-        transition: color 0.2s;
+    .navLinks {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      list-style: none;
 
-        &:hover {
+      .navLink {
+        & > a {
+          text-decoration: none;
+          color: $light-gray;
+          transition: color 0.2s;
+
+          &:hover {
+            color: $dark-gray;
+          }
+        }
+      }
+
+      .selected {
+        & > a {
           color: $dark-gray;
+          font-weight: 500;
         }
       }
     }
 
-    .selected {
-      & > a {
-        color: $dark-gray;
-        font-weight: 500;
-      }
-    }
-
-    .profileContainer {
+    .dropdownMenuContainer {
       position: relative;
     }
   }

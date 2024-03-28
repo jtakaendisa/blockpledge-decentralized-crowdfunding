@@ -5,10 +5,12 @@ $dark-green: rgb(67, 136, 67);
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
   padding: 0.5rem;
   border: 1px solid $light-gray;
   border-radius: 50%;
   transition: border-color 0.2s;
+  cursor: pointer;
 
   & > svg {
     width: 24px;
@@ -24,10 +26,6 @@ $dark-green: rgb(67, 136, 67);
       fill: $dark-green;
     }
   }
-}
-
-.iconContainer:first-of-type {
-  cursor: pointer;
 }
 
 .dropDownMenu {
