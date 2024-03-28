@@ -165,7 +165,10 @@ const AddProjectModal = ({ closeModal }: Props) => {
             </ul>
             {fileError && <span>Select at least 1 image to proceed</span>}
           </div>
-          <select {...register('category', { required: true })}>
+          <select
+            {...register('category', { required: true })}
+            className={styles.categories}
+          >
             {categories.map(({ id, name }) => (
               <option key={id} value={id}>
                 {name}
