@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+
+import { AuthUser } from '@/app/store';
 
 import styles from './MobileDropdownMenu.module.scss';
-import { AuthUser } from '@/app/store';
-import { useRouter } from 'next/navigation';
 
 interface Props {
   authUser: AuthUser | null;

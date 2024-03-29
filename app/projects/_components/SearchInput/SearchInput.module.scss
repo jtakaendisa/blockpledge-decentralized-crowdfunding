@@ -1,4 +1,7 @@
+@import '../../../breakpoints.scss';
+
 .searchForm {
+  flex: 1;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -23,5 +26,9 @@
     padding: 1rem 1rem;
     border: none;
     outline: none;
+  }
+
+  @include media('<tablet') {
+    margin: 0;
   }
 }

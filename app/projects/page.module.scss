@@ -10,6 +10,17 @@
       flex-direction: column;
       gap: 2rem;
       margin-top: 7rem;
+
+      .searchFilters {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 1rem;
+
+        .dropdownMenuContainer {
+          position: relative;
+        }
+      }
     }
   }
 
