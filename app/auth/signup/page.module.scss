@@ -1,3 +1,5 @@
+@import '../../breakpoints.scss';
+
 .signupPage {
   padding: 0 1.5rem;
 
@@ -61,6 +63,18 @@
         justify-content: center;
         align-items: center;
         margin: 2rem 0 1rem 0;
+      }
+
+      @include media('<1386px') {
+        width: 30%;
+      }
+
+      @include media('<1120px') {
+        width: 35%;
+      }
+
+      @include media('<960px') {
+        width: 25rem;
       }
     }
   }

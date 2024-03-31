@@ -1,3 +1,5 @@
+@import '../breakpoints.scss';
+
 .authPage {
   padding: 0 1.5rem;
 
@@ -46,6 +48,18 @@
 
       .heading {
         text-align: center;
+      }
+
+      @include media('<1386px') {
+        width: 30%;
+      }
+
+      @include media('<1120px') {
+        width: 35%;
+      }
+
+      @include media('<960px') {
+        width: 25rem;
       }
     }
 
