@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 
-import { Backer, Project, useAccountStore, useProjectStore } from '@/app/store';
+import { Backer, Project, useProjectStore } from '@/app/store';
 import useBlockchain from '@/app/hooks/useBlockchain';
 import Header from '@/app/components/Header/Header';
 import ProjectDetails from './_components/ProjectDetails/ProjectDetails';
