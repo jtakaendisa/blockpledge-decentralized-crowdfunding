@@ -24,14 +24,14 @@ const ProjectDetailsSkeleton = () => {
       </div>
       <div className={styles.info}>
         <h2 className={styles.title}>
-          <Skeleton width="65%" height={30} />
+          <Skeleton width="65%" height={22} />
         </h2>
         <span className={styles.category}>
           <Skeleton width="25%" height={18} />
         </span>
         <div className={styles.row}>
           <div className={styles.account}>
-            <Skeleton circle width={30} height={30} />
+            <Skeleton circle width={22} height={22} />
             <Skeleton width={90} height={18} />
           </div>
           <span className={styles.status}>
@@ -43,11 +43,11 @@ const ProjectDetailsSkeleton = () => {
           <Skeleton height={12} />
           <Skeleton width="60%" height={12} />
         </p>
-        <div className={styles.row}>
+        <div className={styles.row} style={{ marginBottom: -12 }}>
           <div className={styles.stats}>
             <div className={styles.stat}>
               <span>
-                <Skeleton width={40} height={28} />
+                <Skeleton width={40} height={20} />
               </span>
               <span>
                 <Skeleton width={60} height={16} />
@@ -55,7 +55,7 @@ const ProjectDetailsSkeleton = () => {
             </div>
             <div className={styles.stat}>
               <span>
-                <Skeleton width={40} height={28} />
+                <Skeleton width={40} height={20} />
               </span>
               <span>
                 <Skeleton width={60} height={16} />
@@ -64,18 +64,20 @@ const ProjectDetailsSkeleton = () => {
           </div>
           <div className={styles.policy}>
             <span>
-              <Skeleton width={90} height={16} />
+              <Skeleton width={90} height={12} />
             </span>
             <p>
-              <Skeleton width={160} height={10} />
+              <Skeleton width={160} height={8} />
             </p>
             <p>
-              <Skeleton width={70} height={10} />
+              <Skeleton width={70} height={8} />
             </p>
           </div>
         </div>
-        <Skeleton height={6} />
-        <div className={styles.row}>
+        <div style={{ marginBottom: -4 }}>
+          <Skeleton height={6} />
+        </div>
+        <div className={styles.row} style={{ marginBottom: -4 }}>
           <span>
             <Skeleton width={110} height={16} />
           </span>

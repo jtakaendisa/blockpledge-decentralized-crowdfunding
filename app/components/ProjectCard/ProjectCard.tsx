@@ -26,7 +26,7 @@ const ProjectCard = ({ project }: Props) => {
             src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageURLs[0]}`}
             alt={title}
             fill
-            sizes="10vw"
+            sizes="15vw"
           />
         </div>
         <div className={styles.info}>

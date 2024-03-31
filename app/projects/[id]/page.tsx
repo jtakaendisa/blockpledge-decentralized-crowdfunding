@@ -3,16 +3,16 @@
 import { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 
-import { Backer, Project, useProjectStore } from '@/app/store';
+import { Backer, Project, useAccountStore, useProjectStore } from '@/app/store';
 import useBlockchain from '@/app/hooks/useBlockchain';
 import Header from '@/app/components/Header/Header';
 import ProjectDetails from './_components/ProjectDetails/ProjectDetails';
 import InfoSelector from './_components/InfoSelector/InfoSelector';
 import ProjectBackers from './_components/ProjectBackers/ProjectBackers';
 import ProjectComments from './_components/ProjectComments/ProjectComments';
+import ProjectDetailsSkeleton from './_components/ProjectDetailsSkeleton/ProjectDetailsSkeleton';
 
 import styles from './page.module.scss';
-import ProjectDetailsSkeleton from './_components/ProjectDetailsSkeleton/ProjectDetailsSkeleton';
 
 interface Props {
   params: {
@@ -58,8 +58,6 @@ const ProjectPage = ({ params: { id } }: Props) => {
       unsubscribe.then((cleanup) => cleanup());
     };
   }, [listenForEvents]);
-
-  console.log('project');
 
   if (error) return <div>{error.message}</div>;
 
