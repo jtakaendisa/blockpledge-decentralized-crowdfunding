@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { User } from 'firebase/auth';
 import classNames from 'classnames';
@@ -17,7 +17,8 @@ import useBlockchain from '@/app/hooks/useBlockchain';
 import { Media, MediaContextProvider } from '@/app/media';
 import AuthDropdownMenu from '../AuthDropdownMenu/AuthDropdownMenu';
 import MobileDropdownMenu from '../MobileDropdownMenu/MobileDropdownMenu';
-import Button from '../Button/Button';
+import FlipButton from '../FlipButton/FlipButton';
+import SlideUpText from '../SlideUpText/SlideUpText';
 import Coin from '../categories/icons/Coin';
 
 import styles from './Header.module.scss';
@@ -30,8 +31,9 @@ const PATHS = {
   adminDashboard: '/admin_dashboard',
 };
 
+type NavLink = keyof typeof PATHS | null;
+
 const Header = () => {
-  const router = useRouter();
   const pathname = usePathname();
   const connectedAccount = useAccountStore((s) => s.connectedAccount);
   const authUser = useAccountStore((s) => s.authUser);
@@ -43,8 +45,12 @@ const Header = () => {
   const setCategories = useProjectStore((s) => s.setCategories);
   const setSelectedCategory = useProjectStore((s) => s.setSelectedCategory);
   const setUpdatingFollowStatus = useProjectStore((s) => s.setUpdatingFollowStatus);
+
   const { connectWallet, getProjects, getCategories, listenForEvents } =
     useBlockchain();
+
+  const [hoveredLink, setHoveredLink] = useState<NavLink>(null);
+
   const [loadingAuth, setLoadingAuth] = useState(false);
   const [refreshUi, setRefreshUi] = useState(false);
 
@@ -59,6 +65,10 @@ const Header = () => {
       setConnectedAccount(accounts[0]);
     }
   }, [connectWallet, setConnectedAccount]);
+
+  const handleLinkHover = (hoveredLink: NavLink) => setHoveredLink(hoveredLink);
+
+  const resetSelectedCategory = () => setSelectedCategory(null);
 
   useEffect(() => {
     const handleChainChange = () => {
@@ -123,16 +133,6 @@ const Header = () => {
         <div className={styles.navActions}>
           <Media greaterThanOrEqual="sm">
             <ul className={styles.navLinks}>
-              <li
-                className={classNames({
-                  [styles.navLink]: true,
-                  [styles.selected]: PATHS.projects === pathname,
-                })}
-              >
-                <Link href={PATHS.projects} onClick={() => setSelectedCategory(null)}>
-                  Explore Projects
-                </Link>
-              </li>
               {loadingAuth && !authUser && <Skeleton width={110} height={16} />}
               {authUser && !isAdmin && (
                 <li
@@ -140,12 +140,13 @@ const Header = () => {
                     [styles.navLink]: true,
                     [styles.selected]: PATHS.userDashboard === pathname,
                   })}
+                  onMouseEnter={() => handleLinkHover('userDashboard')}
+                  onMouseLeave={() => handleLinkHover(null)}
                 >
-                  <Link
-                    href={PATHS.userDashboard}
-                    onClick={() => setSelectedCategory(null)}
-                  >
-                    My Dashboard
+                  <Link href={PATHS.userDashboard} onClick={resetSelectedCategory}>
+                    <SlideUpText playAnimation={hoveredLink === 'userDashboard'}>
+                      My Dashboard
+                    </SlideUpText>
                   </Link>
                 </li>
               )}
@@ -156,15 +157,30 @@ const Header = () => {
                     [styles.navLink]: true,
                     [styles.selected]: PATHS.adminDashboard === pathname,
                   })}
+                  onMouseEnter={() => handleLinkHover('adminDashboard')}
+                  onMouseLeave={() => handleLinkHover(null)}
                 >
-                  <Link
-                    href={PATHS.adminDashboard}
-                    onClick={() => setSelectedCategory(null)}
-                  >
-                    Admin Dashboard
+                  <Link href={PATHS.adminDashboard} onClick={resetSelectedCategory}>
+                    <SlideUpText playAnimation={hoveredLink === 'adminDashboard'}>
+                      Admin Dashboard
+                    </SlideUpText>
                   </Link>
                 </li>
               )}
+              <li
+                className={classNames({
+                  [styles.navLink]: true,
+                  [styles.selected]: PATHS.projects === pathname,
+                })}
+                onMouseEnter={() => handleLinkHover('projects')}
+                onMouseLeave={() => handleLinkHover(null)}
+              >
+                <Link href={PATHS.projects} onClick={resetSelectedCategory}>
+                  <SlideUpText playAnimation={hoveredLink === 'projects'}>
+                    Explore Projects
+                  </SlideUpText>
+                </Link>
+              </li>
             </ul>
           </Media>
           <Media lessThan="sm">
@@ -181,11 +197,7 @@ const Header = () => {
                 onSignOut={signOutAuthUser}
               />
             ) : (
-              !loadingAuth && (
-                <Button inverted onClick={() => router.push('/auth')}>
-                  Sign In
-                </Button>
-              )
+              !loadingAuth && <FlipButton href="/auth">Sign In</FlipButton>
             )}
           </div>
         </div>

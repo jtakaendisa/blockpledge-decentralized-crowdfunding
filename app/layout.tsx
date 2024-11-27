@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
 import { mediaStyles } from './media';
+import Header from './components/Header/Header';
 
 import './globals.scss';
 import 'react-toastify/dist/ReactToastify.css';
@@ -23,7 +24,10 @@ export default function RootLayout({
       <head>
         <style type="text/css" dangerouslySetInnerHTML={{ __html: mediaStyles }} />
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }

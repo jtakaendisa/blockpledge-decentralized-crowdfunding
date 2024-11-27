@@ -1,6 +1,6 @@
 'use client';
 
-import { Dispatch, SetStateAction, useCallback } from 'react';
+import { useCallback } from 'react';
 import { ethers } from 'ethers';
 import { formatDistance } from 'date-fns';
 
@@ -9,6 +9,7 @@ import { truncateAccount } from '../utils';
 import useEmail from './useEmail';
 import { AddFormInputs } from '../components/modals/AddProjectModal/AddProjectModal';
 import { EditFormInputs } from '../components/modals/EditProjectModal/EditProjectModal';
+
 import contractAddress from '../abis/contractAddress.json';
 import contractAbi from '../abis/app/contracts/BlockPledge.sol/BlockPledge.json';
 

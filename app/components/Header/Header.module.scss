@@ -8,14 +8,16 @@ $dark-gray: rgb(53, 53, 53);
   justify-content: space-between;
   align-items: center;
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 2rem;
+  left: 8rem;
+  right: 8rem;
+  height: 72px;
+  padding: 0 2rem;
   z-index: 1001;
-  padding: 1.25rem;
   color: $light-gray;
-  background-color: white;
-  box-shadow: 0 0.5rem 1rem rgba(53, 53, 53, 0.25);
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 180px;
+  box-shadow: 0 0.3rem 1rem rgba(53, 53, 53, 0.25);
   transition: color 0.2s;
 
   &:hover {
@@ -26,7 +28,7 @@ $dark-gray: rgb(53, 53, 53);
     display: flex;
     align-items: center;
     gap: 0.2rem;
-    font-size: large;
+    font-size: 1.2rem;
     text-decoration: none;
     color: $light-gray;
     transition: color 0.2s;
@@ -60,6 +62,7 @@ $dark-gray: rgb(53, 53, 53);
 
       .navLink {
         & > a {
+          font-size: 1.2rem;
           text-decoration: none;
           color: $light-gray;
           transition: color 0.2s;

@@ -3,7 +3,6 @@
 import { ToastContainer } from 'react-toastify';
 
 import { useProjectStore } from './store';
-import Header from './components/Header/Header';
 import Hero from './components/Hero/Hero';
 import ProjectsRow from './components/ProjectsRow/ProjectsRow';
 import CategoriesGrid from './components/CategoriesGrid/CategoriesGrid';
@@ -17,7 +16,6 @@ const HomePage = () => {
 
   return (
     <div className={styles.homePage}>
-      <Header />
       <Hero stats={stats} />
       <ProjectsRow projects={projects} />
       <CategoriesGrid categories={categories} />
