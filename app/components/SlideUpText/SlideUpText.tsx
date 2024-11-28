@@ -7,6 +7,9 @@ import styles from './SlideUpText.module.scss';
 interface Props {
   playAnimation: boolean;
   children: ReactNode;
+  hidden?: boolean;
+  delay?: number;
+  duration?: number;
 }
 
 const transitionProps = {
@@ -14,7 +17,7 @@ const transitionProps = {
   ease: 'easeInOut',
 };
 
-const SlideUpText = ({ playAnimation, children }: Props) => {
+const SlideUpText = ({ playAnimation, children, hidden, ...otherProps }: Props) => {
   const controls = useAnimationControls();
   const controlsDuplicate = useAnimationControls();
 
@@ -22,27 +25,31 @@ const SlideUpText = ({ playAnimation, children }: Props) => {
     if (playAnimation) {
       controls.start({
         y: '-100%',
-        transition: transitionProps,
+        transition: { ...transitionProps, ...otherProps },
       });
       controlsDuplicate.start({
         y: 0,
-        transition: transitionProps,
+        transition: { ...transitionProps, ...otherProps },
       });
     } else {
       controls.start({
         y: 0,
-        transition: transitionProps,
+        transition: { ...transitionProps, ...otherProps },
       });
       controlsDuplicate.start({
         y: '100%',
-        transition: transitionProps,
+        transition: { ...transitionProps, ...otherProps },
       });
     }
-  }, [playAnimation, controls, controlsDuplicate]);
+  }, [playAnimation, controls, controlsDuplicate, otherProps]);
 
   return (
     <div className={styles.text}>
-      <motion.span initial={{ y: 0 }} animate={controls} className={styles.inlineBlock}>
+      <motion.span
+        initial={{ y: 0 }}
+        animate={controls}
+        className={classNames({ [styles.inlineBlock]: true, [styles.hidden]: hidden })}
+      >
         {children}
       </motion.span>
       <motion.span

@@ -8,6 +8,8 @@ import classNames from 'classnames';
 import Skeleton from 'react-loading-skeleton';
 
 import { useAccountStore, useProjectStore } from '@/app/store';
+import { routes } from '@/app/constants';
+import { RouteKey } from '@/app/entities';
 import {
   authStateChangeListener,
   formatAuthUserData,
@@ -23,18 +25,11 @@ import Coin from '../categories/icons/Coin';
 
 import styles from './Header.module.scss';
 import 'react-loading-skeleton/dist/skeleton.css';
-
-const PATHS = {
-  home: '/',
-  projects: '/projects',
-  userDashboard: '/user_dashboard',
-  adminDashboard: '/admin_dashboard',
-};
-
-type NavLink = keyof typeof PATHS | null;
+import usePageNavigation from '@/app/hooks/usePageNavigation';
 
 const Header = () => {
   const pathname = usePathname();
+
   const connectedAccount = useAccountStore((s) => s.connectedAccount);
   const authUser = useAccountStore((s) => s.authUser);
   const updatingAuthUserData = useAccountStore((s) => s.updatingAuthUserData);
@@ -49,7 +44,9 @@ const Header = () => {
   const { connectWallet, getProjects, getCategories, listenForEvents } =
     useBlockchain();
 
-  const [hoveredLink, setHoveredLink] = useState<NavLink>(null);
+  const { navigateToPage } = usePageNavigation();
+
+  const [hoveredLink, setHoveredLink] = useState<RouteKey | null>(null);
 
   const [loadingAuth, setLoadingAuth] = useState(false);
   const [refreshUi, setRefreshUi] = useState(false);
@@ -66,7 +63,7 @@ const Header = () => {
     }
   }, [connectWallet, setConnectedAccount]);
 
-  const handleLinkHover = (hoveredLink: NavLink) => setHoveredLink(hoveredLink);
+  const handleLinkHover = (hoveredLink: RouteKey | null) => setHoveredLink(hoveredLink);
 
   const resetSelectedCategory = () => setSelectedCategory(null);
 
@@ -126,7 +123,7 @@ const Header = () => {
   return (
     <MediaContextProvider>
       <header className={styles.header}>
-        <Link href={PATHS.home} className={styles.homeIcon}>
+        <Link href={routes.home} className={styles.homeIcon}>
           <span>BlockPledge</span>
           <Coin />
         </Link>
@@ -138,12 +135,12 @@ const Header = () => {
                 <li
                   className={classNames({
                     [styles.navLink]: true,
-                    [styles.selected]: PATHS.userDashboard === pathname,
+                    [styles.selected]: routes.userDashboard === pathname,
                   })}
                   onMouseEnter={() => handleLinkHover('userDashboard')}
                   onMouseLeave={() => handleLinkHover(null)}
                 >
-                  <Link href={PATHS.userDashboard} onClick={resetSelectedCategory}>
+                  <Link href={routes.userDashboard} onClick={resetSelectedCategory}>
                     <SlideUpText playAnimation={hoveredLink === 'userDashboard'}>
                       My Dashboard
                     </SlideUpText>
@@ -155,12 +152,12 @@ const Header = () => {
                 <li
                   className={classNames({
                     [styles.navLink]: true,
-                    [styles.selected]: PATHS.adminDashboard === pathname,
+                    [styles.selected]: routes.adminDashboard === pathname,
                   })}
                   onMouseEnter={() => handleLinkHover('adminDashboard')}
                   onMouseLeave={() => handleLinkHover(null)}
                 >
-                  <Link href={PATHS.adminDashboard} onClick={resetSelectedCategory}>
+                  <Link href={routes.adminDashboard} onClick={resetSelectedCategory}>
                     <SlideUpText playAnimation={hoveredLink === 'adminDashboard'}>
                       Admin Dashboard
                     </SlideUpText>
@@ -170,12 +167,12 @@ const Header = () => {
               <li
                 className={classNames({
                   [styles.navLink]: true,
-                  [styles.selected]: PATHS.projects === pathname,
+                  [styles.selected]: routes.projects === pathname,
                 })}
                 onMouseEnter={() => handleLinkHover('projects')}
                 onMouseLeave={() => handleLinkHover(null)}
               >
-                <Link href={PATHS.projects} onClick={resetSelectedCategory}>
+                <Link href={routes.projects} onClick={resetSelectedCategory}>
                   <SlideUpText playAnimation={hoveredLink === 'projects'}>
                     Explore Projects
                   </SlideUpText>
@@ -197,7 +194,9 @@ const Header = () => {
                 onSignOut={signOutAuthUser}
               />
             ) : (
-              !loadingAuth && <FlipButton href="/auth">Sign In</FlipButton>
+              !loadingAuth && (
+                <FlipButton onClick={() => navigateToPage('auth')}>Sign In</FlipButton>
+              )
             )}
           </div>
         </div>

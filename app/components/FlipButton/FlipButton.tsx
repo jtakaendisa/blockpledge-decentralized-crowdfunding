@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 import SlideUpText from '../SlideUpText/SlideUpText';
@@ -8,14 +7,32 @@ import styles from './FlipButton.module.scss';
 
 interface Props {
   children: string;
-  href: string;
-  target?: string;
+  inverted?: boolean;
+  onClick: () => void;
 }
 
-const FlipButton = ({ children, href, target }: Props) => {
+const FlipButton = ({ children, inverted, onClick }: Props) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const toggleHoverState = () => setIsHovered((prev) => !prev);
+
+  const mainbackgroundColor = !inverted
+    ? isHovered
+      ? '#3c6e71'
+      : ' rgba(255, 255, 255, 0.35)'
+    : isHovered
+    ? 'rgba(255, 255, 255, 0.35)'
+    : '#3c6e71';
+
+  const duplicateBackgroundColor = !inverted ? '#3c6e71' : 'rgba(255, 255, 255, .35)';
+
+  const color = !inverted
+    ? isHovered
+      ? '#fff'
+      : '#3c6e71'
+    : isHovered
+    ? '#3c6e71'
+    : '#fff';
 
   return (
     <motion.div
@@ -24,7 +41,7 @@ const FlipButton = ({ children, href, target }: Props) => {
       initial="initial"
       whileHover="hovered"
       className={styles.button}
-      style={{ backgroundColor: isHovered ? '#3c6e71' : '#fff' }}
+      style={{ backgroundColor: mainbackgroundColor }}
     >
       <motion.div
         variants={{ initial: { y: '100%' }, hovered: { y: 0 } }}
@@ -33,14 +50,11 @@ const FlipButton = ({ children, href, target }: Props) => {
           ease: 'easeInOut',
         }}
         className={styles.duplicate}
+        style={{ backgroundColor: duplicateBackgroundColor }}
       />
-      <Link
-        href={href}
-        target={target}
-        style={{ color: isHovered ? '#fff' : '#3c6e71' }}
-      >
+      <span onClick={onClick} style={{ color }}>
         <SlideUpText playAnimation={isHovered}>{children}</SlideUpText>
-      </Link>
+      </span>
     </motion.div>
   );
 };

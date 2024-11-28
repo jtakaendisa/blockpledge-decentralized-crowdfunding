@@ -1,29 +1,74 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Skeleton from 'react-loading-skeleton';
 
-import { Stats } from '@/app/store';
-import Button from '../Button/Button';
+import { useProjectStore } from '@/app/store';
+import SlideUpText from '../SlideUpText/SlideUpText';
+import FlipButton from '../FlipButton/FlipButton';
 import AddProjectModal from '../modals/AddProjectModal/AddProjectModal';
 
 import styles from './Hero.module.scss';
 import 'react-loading-skeleton/dist/skeleton.css';
 
-interface Props {
-  stats: Stats;
-}
+import Collage from '@/public/images/collage.png';
+import usePageNavigation from '@/app/hooks/usePageNavigation';
+import Image from 'next/image';
 
-const Hero = ({ stats }: Props) => {
+const Hero = () => {
+  const stats = useProjectStore((s) => s.stats);
+
   const { totalBackings, totalDonations, totalProjects } = stats;
 
-  const router = useRouter();
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const { navigateToPage } = usePageNavigation();
+
+  const statsArray = [
+    {
+      metric: 'Active Projects',
+      value: totalProjects,
+    },
+    {
+      metric: 'Donations',
+      value: totalBackings,
+    },
+    {
+      metric: 'Total Funded',
+      value: totalDonations,
+    },
+  ];
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const toggleModalState = () => setIsModalOpen((prev) => !prev);
 
   return (
     <section className={styles.hero}>
-      <h1 className={styles.heading}>
+      <div className={styles.textContent}>
+        <div className={styles.headingContainer}>
+          <h1 className={styles.headingSmall}>
+            <SlideUpText playAnimation={true} duration={0.8} hidden>
+              Bring Creative Projects To Life On
+            </SlideUpText>
+          </h1>
+          <h1 className={styles.headingLarge}>
+            <SlideUpText playAnimation={true} duration={0.8} delay={0.5} hidden>
+              BLOCKPLEDGE.
+            </SlideUpText>
+          </h1>
+        </div>
+        <div className={styles.buttons}>
+          <FlipButton onClick={toggleModalState} inverted>
+            Create Project
+          </FlipButton>
+          <FlipButton onClick={() => navigateToPage('projects')}>
+            View All Projects
+          </FlipButton>
+        </div>
+      </div>
+      <div className={styles.imageCollage}>
+        <Image src={Collage} alt="Projects Image Collage " className={styles.image} />
+      </div>
+      {/* <h1 className={styles.heading}>
         <span>Bring creative projects to life on</span>
         <br />
         <span>BlockPledge.</span>
@@ -71,8 +116,16 @@ const Hero = ({ stats }: Props) => {
             {totalProjects === 0 ? <Skeleton width={56} height={12} /> : 'Donated'}
           </span>
         </div>
+      </div> */}
+      <div className={styles.stats}>
+        {statsArray.map(({ metric, value }) => (
+          <div key={metric} className={styles.stat}>
+            <span className={styles.value}>{value}</span>
+            <span className={styles.metric}>{metric}</span>
+          </div>
+        ))}
       </div>
-      {modalIsOpen && <AddProjectModal closeModal={() => setModalIsOpen(false)} />}
+      {isModalOpen && <AddProjectModal closeModal={toggleModalState} />}
     </section>
   );
 };

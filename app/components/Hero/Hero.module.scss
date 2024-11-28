@@ -2,64 +2,144 @@
 
 $light-green: rgb(83, 167, 83);
 $dark-green: rgb(67, 136, 67);
-$dark-gray: rgb(53, 53, 53);
 
 .hero {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: $dark-gray;
+  width: 100%;
+  height: 100vh;
 
-  .heading {
-    margin-bottom: 3rem;
-    text-align: center;
+  .textContent {
+    position: absolute;
+    top: calc(72px + 2rem + 10vh);
+    left: 2rem;
+    display: flex;
+    height: fit-content;
+    flex-direction: column;
+    gap: 12vh;
+    z-index: 1;
 
-    & > span {
-      font-size: 3rem;
+    .headingContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
 
-      @include media('<phone') {
-        font-size: 2.2rem;
+      .headingSmall {
+        font-size: 3.75rem;
+        font-weight: 500;
+      }
+
+      .headingLarge {
+        font-size: 5rem;
+        font-weight: 600;
+        color: #3c6e71;
       }
     }
 
-    & > span:nth-child(1) {
-      text-transform: capitalize;
-    }
-
-    & > span:nth-child(3) {
-      text-transform: uppercase;
-      color: $light-green;
+    .buttons {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
     }
   }
 
-  .buttons {
+  .imageCollage {
+    position: absolute;
+    top: calc(72px + 2rem + 10vh);
+    right: 0;
+    width: 42vw;
+    height: calc(100vh - (72px + 4rem + 10vh));
     display: flex;
+    justify-content: center;
     align-items: center;
-    width: fit-content;
-    gap: 1rem;
+
+    .image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
   }
 
   .stats {
+    position: absolute;
+    left: 2rem;
+    bottom: 2rem;
     display: flex;
     align-items: center;
-    width: 100%;
+    gap: 2rem;
 
     .stat {
-      width: 100%;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin-top: 2.5rem;
       padding: 1rem;
-      border: 1px solid rgba(116, 116, 116, 0.25);
-      box-shadow: 0 0.25rem 0.5rem rgba(116, 116, 116, 0.25);
+      background-color: white;
+      border-radius: 20px;
+      box-shadow: 0 0.2rem 0.5rem rgba(53, 53, 53, 0.25);
 
-      .sum {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: $dark-green;
+      .value {
+        font-size: 3.5rem;
+        font-weight: 700;
+        text-align: right;
+        color: #3c6e71;
+      }
+
+      .metric {
+        font-size: 1.2rem;
+        font-weight: 500;
       }
     }
   }
+
+  // .heading {
+  //   margin-bottom: 3rem;
+  //   text-align: center;
+
+  //   & > span {
+  //     font-size: 3rem;
+
+  //     @include media('<phone') {
+  //       font-size: 2.2rem;
+  //     }
+  //   }
+
+  //   & > span:nth-child(1) {
+  //     text-transform: capitalize;
+  //   }
+
+  //   & > span:nth-child(3) {
+  //     text-transform: uppercase;
+  //     color: $light-green;
+  //   }
+  // }
+
+  // .buttons {
+  //   display: flex;
+  //   align-items: center;
+  //   width: fit-content;
+  //   gap: 1rem;
+  // }
+
+  // .stats {
+  //   display: flex;
+  //   align-items: center;
+  //   width: 100%;
+
+  //   .stat {
+  //     width: 100%;
+  //     display: flex;
+  //     flex-direction: column;
+  //     align-items: center;
+  //     justify-content: center;
+  //     margin-top: 2.5rem;
+  //     padding: 1rem;
+  //     border: 1px solid rgba(116, 116, 116, 0.25);
+  //     box-shadow: 0 0.25rem 0.5rem rgba(116, 116, 116, 0.25);
+
+  //     .sum {
+  //       font-size: 1.5rem;
+  //       font-weight: bold;
+  //       color: $dark-green;
+  //     }
+  //   }
+  // }
 }
