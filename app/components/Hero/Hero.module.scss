@@ -25,7 +25,7 @@ $dark-green: rgb(67, 136, 67);
       gap: 0.75rem;
 
       .headingSmall {
-        font-size: 3.75rem;
+        font-size: 3.5rem;
         font-weight: 500;
       }
 
@@ -45,10 +45,10 @@ $dark-green: rgb(67, 136, 67);
 
   .imageCollage {
     position: absolute;
-    top: calc(72px + 2rem + 10vh);
+    top: calc(72px + 2rem);
     right: 0;
-    width: 42vw;
-    height: calc(100vh - (72px + 4rem + 10vh));
+    width: 45vw;
+    height: calc(100vh - (72px + 2rem));
     display: flex;
     justify-content: center;
     align-items: center;

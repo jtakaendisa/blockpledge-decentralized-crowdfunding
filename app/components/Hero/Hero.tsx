@@ -11,9 +11,8 @@ import AddProjectModal from '../modals/AddProjectModal/AddProjectModal';
 import styles from './Hero.module.scss';
 import 'react-loading-skeleton/dist/skeleton.css';
 
-import Collage from '@/public/images/collage.png';
 import usePageNavigation from '@/app/hooks/usePageNavigation';
-import Image from 'next/image';
+import ImageCollage from '../ImageCollage/ImageCollage';
 
 const Hero = () => {
   const stats = useProjectStore((s) => s.stats);
@@ -42,7 +41,7 @@ const Hero = () => {
   const toggleModalState = () => setIsModalOpen((prev) => !prev);
 
   return (
-    <section className={styles.hero}>
+    <section id="hero" className={styles.hero}>
       <div className={styles.textContent}>
         <div className={styles.headingContainer}>
           <h1 className={styles.headingSmall}>
@@ -66,7 +65,7 @@ const Hero = () => {
         </div>
       </div>
       <div className={styles.imageCollage}>
-        <Image src={Collage} alt="Projects Image Collage " className={styles.image} />
+        <ImageCollage />
       </div>
       {/* <h1 className={styles.heading}>
         <span>Bring creative projects to life on</span>
