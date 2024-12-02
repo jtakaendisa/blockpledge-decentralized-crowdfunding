@@ -1,9 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import Skeleton from 'react-loading-skeleton';
+import { motion } from 'framer-motion';
 
 import { useProjectStore } from '@/app/store';
+import usePageNavigation from '@/app/hooks/usePageNavigation';
+import { colors } from '@/app/constants';
+import StatCard from '../StatCard/StatCard';
+import ImageCollage from '../ImageCollage/ImageCollage';
 import SlideUpText from '../SlideUpText/SlideUpText';
 import FlipButton from '../FlipButton/FlipButton';
 import AddProjectModal from '../modals/AddProjectModal/AddProjectModal';
@@ -11,8 +15,7 @@ import AddProjectModal from '../modals/AddProjectModal/AddProjectModal';
 import styles from './Hero.module.scss';
 import 'react-loading-skeleton/dist/skeleton.css';
 
-import usePageNavigation from '@/app/hooks/usePageNavigation';
-import ImageCollage from '../ImageCollage/ImageCollage';
+const { whiteSolid, lightGray, darkGreen } = colors;
 
 const Hero = () => {
   const stats = useProjectStore((s) => s.stats);
@@ -56,7 +59,13 @@ const Hero = () => {
           </h1>
         </div>
         <div className={styles.buttons}>
-          <FlipButton onClick={toggleModalState} inverted>
+          <FlipButton
+            onClick={toggleModalState}
+            textColor1={whiteSolid}
+            backgroundColor1={darkGreen}
+            textColor2={darkGreen}
+            backgroundColor2={lightGray}
+          >
             Create Project
           </FlipButton>
           <FlipButton onClick={() => navigateToPage('projects')}>
@@ -67,63 +76,11 @@ const Hero = () => {
       <div className={styles.imageCollage}>
         <ImageCollage />
       </div>
-      {/* <h1 className={styles.heading}>
-        <span>Bring creative projects to life on</span>
-        <br />
-        <span>BlockPledge.</span>
-      </h1>
-      <div className={styles.buttons}>
-        <Button onClick={() => setModalIsOpen(true)}>Add Project</Button>
-        <Button inverted onClick={() => router.push('/projects')}>
-          Back Projects
-        </Button>
-      </div>
-      <div className={styles.stats}>
-        <div className={styles.stat}>
-          <span className={styles.sum}>
-            {totalProjects === 0 ? <Skeleton width={56} height={20} /> : totalProjects}
-          </span>
-          <span>
-            {totalProjects === 0 ? (
-              <Skeleton width={56} height={12} />
-            ) : totalProjects === 1 ? (
-              'Project'
-            ) : (
-              'Projects'
-            )}
-          </span>
-        </div>
-        <div className={styles.stat}>
-          <span className={styles.sum}>
-            {totalProjects === 0 ? <Skeleton width={56} height={20} /> : totalBackings}
-          </span>
-          <span>
-            {totalProjects === 0 ? (
-              <Skeleton width={56} height={12} />
-            ) : totalBackings === 1 ? (
-              'Backing'
-            ) : (
-              'Backings'
-            )}
-          </span>
-        </div>
-        <div className={styles.stat}>
-          <span className={styles.sum}>
-            {totalProjects === 0 ? <Skeleton width={56} height={20} /> : totalDonations}
-          </span>
-          <span>
-            {totalProjects === 0 ? <Skeleton width={56} height={12} /> : 'Donated'}
-          </span>
-        </div>
-      </div> */}
-      <div className={styles.stats}>
-        {statsArray.map(({ metric, value }) => (
-          <div key={metric} className={styles.stat}>
-            <span className={styles.value}>{value}</span>
-            <span className={styles.metric}>{metric}</span>
-          </div>
+      <motion.div className={styles.stats} initial="initial" animate="enter">
+        {statsArray.map((stat, index) => (
+          <StatCard key={stat.metric} stat={stat} index={index} />
         ))}
-      </div>
+      </motion.div>
       {isModalOpen && <AddProjectModal closeModal={toggleModalState} />}
     </section>
   );

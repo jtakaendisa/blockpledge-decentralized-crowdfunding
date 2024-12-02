@@ -1,0 +1,20 @@
+.stat {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 0.2rem 0.5rem rgba(53, 53, 53, 0.25);
+
+  .value {
+    font-size: 3.5rem;
+    font-weight: 700;
+    text-align: right;
+    color: #3c6e71;
+  }
+
+  .metric {
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+}

@@ -1,8 +1,5 @@
 @import '../../breakpoints.scss';
 
-$light-green: rgb(83, 167, 83);
-$dark-green: rgb(67, 136, 67);
-
 .hero {
   position: relative;
   display: flex;
@@ -67,79 +64,5 @@ $dark-green: rgb(67, 136, 67);
     display: flex;
     align-items: center;
     gap: 2rem;
-
-    .stat {
-      display: flex;
-      flex-direction: column;
-      padding: 1rem;
-      background-color: white;
-      border-radius: 20px;
-      box-shadow: 0 0.2rem 0.5rem rgba(53, 53, 53, 0.25);
-
-      .value {
-        font-size: 3.5rem;
-        font-weight: 700;
-        text-align: right;
-        color: #3c6e71;
-      }
-
-      .metric {
-        font-size: 1.2rem;
-        font-weight: 500;
-      }
-    }
   }
-
-  // .heading {
-  //   margin-bottom: 3rem;
-  //   text-align: center;
-
-  //   & > span {
-  //     font-size: 3rem;
-
-  //     @include media('<phone') {
-  //       font-size: 2.2rem;
-  //     }
-  //   }
-
-  //   & > span:nth-child(1) {
-  //     text-transform: capitalize;
-  //   }
-
-  //   & > span:nth-child(3) {
-  //     text-transform: uppercase;
-  //     color: $light-green;
-  //   }
-  // }
-
-  // .buttons {
-  //   display: flex;
-  //   align-items: center;
-  //   width: fit-content;
-  //   gap: 1rem;
-  // }
-
-  // .stats {
-  //   display: flex;
-  //   align-items: center;
-  //   width: 100%;
-
-  //   .stat {
-  //     width: 100%;
-  //     display: flex;
-  //     flex-direction: column;
-  //     align-items: center;
-  //     justify-content: center;
-  //     margin-top: 2.5rem;
-  //     padding: 1rem;
-  //     border: 1px solid rgba(116, 116, 116, 0.25);
-  //     box-shadow: 0 0.25rem 0.5rem rgba(116, 116, 116, 0.25);
-
-  //     .sum {
-  //       font-size: 1.5rem;
-  //       font-weight: bold;
-  //       color: $dark-green;
-  //     }
-  //   }
-  // }
 }

@@ -1,38 +1,37 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 
+import { colors } from '@/app/constants';
 import SlideUpText from '../SlideUpText/SlideUpText';
 
 import styles from './FlipButton.module.scss';
 
 interface Props {
   children: string;
-  inverted?: boolean;
+  textColor1?: string;
+  textColor2?: string;
+  backgroundColor1?: string;
+  backgroundColor2?: string;
+  borderColor?: string;
   onClick: () => void;
 }
 
-const FlipButton = ({ children, inverted, onClick }: Props) => {
+const { whiteSolid, darkGreen, lightGray } = colors;
+
+const FlipButton = ({
+  children,
+  textColor1 = darkGreen,
+  textColor2 = whiteSolid,
+  backgroundColor1 = lightGray,
+  backgroundColor2 = darkGreen,
+  borderColor = darkGreen,
+  onClick,
+}: Props) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const toggleHoverState = () => setIsHovered((prev) => !prev);
 
-  const mainbackgroundColor = !inverted
-    ? isHovered
-      ? '#3c6e71'
-      : ' rgba(255, 255, 255, 0.35)'
-    : isHovered
-    ? 'rgba(255, 255, 255, 0.35)'
-    : '#3c6e71';
-
-  const duplicateBackgroundColor = !inverted ? '#3c6e71' : 'rgba(255, 255, 255, .35)';
-
-  const color = !inverted
-    ? isHovered
-      ? '#fff'
-      : '#3c6e71'
-    : isHovered
-    ? '#3c6e71'
-    : '#fff';
+  const color = isHovered ? textColor2 : textColor1;
 
   return (
     <motion.div
@@ -41,7 +40,7 @@ const FlipButton = ({ children, inverted, onClick }: Props) => {
       initial="initial"
       whileHover="hovered"
       className={styles.button}
-      style={{ backgroundColor: mainbackgroundColor }}
+      style={{ backgroundColor: backgroundColor1, borderColor }}
     >
       <motion.div
         variants={{ initial: { y: '100%' }, hovered: { y: 0 } }}
@@ -50,7 +49,7 @@ const FlipButton = ({ children, inverted, onClick }: Props) => {
           ease: 'easeInOut',
         }}
         className={styles.duplicate}
-        style={{ backgroundColor: duplicateBackgroundColor }}
+        style={{ backgroundColor: backgroundColor2 }}
       />
       <span onClick={onClick} style={{ color }}>
         <SlideUpText playAnimation={isHovered}>{children}</SlideUpText>

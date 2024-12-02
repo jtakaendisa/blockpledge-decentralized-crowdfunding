@@ -1,14 +1,9 @@
 import { MouseEvent, useRef, useLayoutEffect, useEffect } from 'react';
-import Image from 'next/image';
 import gsap from 'gsap';
 
-import styles from './ImageCollage.module.scss';
+import ImageCollageCard from '../ImageCollageCard/ImageCollageCard';
 
-interface CardProps {
-  imgSrc: string;
-  onHover: (event: MouseEvent<HTMLDivElement>) => void;
-  onMount: (element: HTMLDivElement) => void;
-}
+import styles from './ImageCollage.module.scss';
 
 const ROTATION_INTENSITY = 8;
 
@@ -37,6 +32,7 @@ const cardImages = [
 const ImageCollage = () => {
   const cardElementsRef = useRef<HTMLDivElement[]>([]);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const isIntroCompleteRef = useRef(false);
 
   // Function to update the cardElements array when a card is mounted to the DOM
   const handleCardMount = (element: HTMLDivElement) => {
@@ -85,7 +81,12 @@ const ImageCollage = () => {
 
     // Main animation sequence for revealing cards on page load
     const introAnimation = () => {
-      const tl = gsap.timeline({ defaults: { duration: 2.4, ease: 'power4.inOut' } });
+      const tl = gsap.timeline({
+        defaults: { duration: 2.4, ease: 'power4.inOut' },
+        onComplete: () => {
+          isIntroCompleteRef.current = true;
+        },
+      });
 
       tl.to(cards, {
         z: 0,
@@ -126,8 +127,8 @@ const ImageCollage = () => {
 
   useEffect(() => {
     // Function to handle card movement based on mouse or touch input
-    const handleMouseMove = (event: MouseEvent<HTMLElement>) => {
-      if (cardElementsRef.current.length !== 11) return;
+    const handleMouseMove = (event: globalThis.MouseEvent) => {
+      if (cardElementsRef.current.length !== 11 || !isIntroCompleteRef.current) return;
 
       // Calculate normalized X and Y positions relative to the viewport.
       const xPos = (event.clientX / window.innerWidth - 0.5) * 2;
@@ -158,7 +159,7 @@ const ImageCollage = () => {
     <section ref={containerRef} className={styles.container}>
       <div className={styles.imageCollage}>
         {cardImages.map((cardImage) => (
-          <Card
+          <ImageCollageCard
             key={cardImage}
             imgSrc={cardImage}
             onHover={handleHover}
@@ -167,25 +168,6 @@ const ImageCollage = () => {
         ))}
       </div>
     </section>
-  );
-};
-
-const Card = ({ imgSrc, onHover, onMount }: CardProps) => {
-  const cardRef = (element: HTMLDivElement | null) => {
-    if (element) {
-      onMount(element);
-    }
-  };
-
-  return (
-    <div
-      ref={cardRef}
-      onMouseEnter={onHover}
-      onMouseLeave={onHover}
-      className={styles.card}
-    >
-      <Image src={imgSrc} alt="" fill />
-    </div>
   );
 };
 

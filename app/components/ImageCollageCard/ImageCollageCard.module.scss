@@ -1,0 +1,137 @@
+$img-small: 13rem;
+$img-big: 19.5rem;
+
+.card {
+  position: absolute;
+  width: calc($img-small * min(var(--scale-factor, 1), 1));
+  height: calc($img-big * min(var(--scale-factor, 1), 1));
+  background-color: var(--secondary);
+  box-shadow: inset 0 0 20rem 1rem rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+
+  & > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    box-shadow: inset 0 0 20rem 1rem rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* [01] - Dynamically positions each card relative to the viewport (100vw and 100vh), ensuring they are centered or slightly offset for a Layered effect. */
+/* [02] - CSS variables (--img-small and --img-big) allow for flexible card dimensions, making it easy to adjust the Layout globally without modifying individual styles. */
+/* [03] - Values like the calculation and the CCS variables are divided by an offset value to position the cards slightly away from the center of the viewport. */
+
+/* Middle inner */
+.card:nth-child(1) {
+  top: calc(
+    (var(--container-height) / 2) - ($img-big * min(var(--scale-factor, 1), 1) / 2)
+  );
+  left: calc(
+    (var(--container-width) / 2) - ($img-small * min(var(--scale-factor, 1), 1) / 2)
+  );
+}
+
+.card:nth-child(2) {
+  top: calc(
+    (var(--container-height) / 2) - ($img-small * min(var(--scale-factor, 1), 1) / 0.75)
+  );
+  left: calc(
+    (var(--container-width) / 2) - ($img-big * min(var(--scale-factor, 1), 1) / 2)
+  );
+  width: calc($img-big * min(var(--scale-factor, 1), 1));
+  height: calc($img-small * min(var(--scale-factor, 1), 1));
+}
+
+.card:nth-child(3) {
+  bottom: calc(
+    (var(--container-height) / 2) - ($img-small * min(var(--scale-factor, 1), 1) / 0.75)
+  );
+  left: calc(
+    (var(--container-width) / 2) - ($img-big * min(var(--scale-factor, 1), 1) / 2)
+  );
+  width: calc($img-big * min(var(--scale-factor, 1), 1));
+  height: calc($img-small * min(var(--scale-factor, 1), 1));
+}
+
+/* Middle Outer */
+.card:nth-child(4) {
+  top: calc(
+    (var(--container-height) / 2) - ($img-small * min(var(--scale-factor, 1), 1) / 0.6)
+  );
+  left: calc(
+    (var(--container-width) / 2) - ($img-big * min(var(--scale-factor, 1), 1) / 2)
+  );
+  width: calc($img-big * min(var(--scale-factor, 1), 1));
+  height: calc($img-small * min(var(--scale-factor, 1), 1));
+}
+
+.card:nth-child(5) {
+  bottom: calc(
+    (var(--container-height) / 2) - ($img-small * min(var(--scale-factor, 1), 1) / 0.6)
+  );
+  left: calc(
+    (var(--container-width) / 2) - ($img-big * min(var(--scale-factor, 1), 1) / 2)
+  );
+  width: calc($img-big * min(var(--scale-factor, 1), 1));
+  height: calc($img-small * min(var(--scale-factor, 1), 1));
+}
+
+/* Left Side */
+.card:nth-child(6) {
+  top: calc(
+    (var(--container-height) / 2) - ($img-big * min(var(--scale-factor, 1), 1) / 1)
+  );
+  left: calc(
+    (var(--container-width) / 2) - ($img-small * min(var(--scale-factor, 1), 1) / 0.75)
+  );
+}
+
+.card:nth-child(7) {
+  top: calc(
+    (var(--container-height) / 2) - ($img-small * min(var(--scale-factor, 1), 1) / 2)
+  );
+  left: calc(
+    (var(--container-width) / 2) - ($img-big * min(var(--scale-factor, 1), 1) / 0.9)
+  );
+  width: calc($img-big * min(var(--scale-factor, 1), 1));
+  height: calc($img-small * min(var(--scale-factor, 1), 1));
+}
+
+.card:nth-child(8) {
+  bottom: calc(
+    (var(--container-height) / 2) - ($img-big * min(var(--scale-factor, 1), 1) / 1)
+  );
+  left: calc(
+    (var(--container-width) / 2) - ($img-small * min(var(--scale-factor, 1), 1) / 0.75)
+  );
+}
+
+/* Right Side */
+.card:nth-child(9) {
+  top: calc(
+    (var(--container-height) / 2) - ($img-big * min(var(--scale-factor, 1), 1) / 1)
+  );
+  right: calc(
+    (var(--container-width) / 2) - ($img-small * min(var(--scale-factor, 1), 1) / 0.75)
+  );
+}
+
+.card:nth-child(10) {
+  top: calc(
+    (var(--container-height) / 2) - ($img-small * min(var(--scale-factor, 1), 1) / 2)
+  );
+  right: calc(
+    (var(--container-width) / 2) - ($img-big * min(var(--scale-factor, 1), 1) / 0.9)
+  );
+  width: calc($img-big * min(var(--scale-factor, 1), 1));
+  height: calc($img-small * min(var(--scale-factor, 1), 1));
+}
+
+.card:nth-child(11) {
+  bottom: calc(
+    (var(--container-height) / 2) - ($img-big * min(var(--scale-factor, 1), 1) / 1)
+  );
+  right: calc(
+    (var(--container-width) / 2) - ($img-small * min(var(--scale-factor, 1), 1) / 0.75)
+  );
+}

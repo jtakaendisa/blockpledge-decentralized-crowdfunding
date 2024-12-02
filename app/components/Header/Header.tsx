@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import Skeleton from 'react-loading-skeleton';
 
 import { useAccountStore, useProjectStore } from '@/app/store';
-import { routes } from '@/app/constants';
+import { colors, routes } from '@/app/constants';
 import { RouteKey } from '@/app/entities';
 import {
   authStateChangeListener,
@@ -16,6 +16,7 @@ import {
   signOutAuthUser,
 } from '@/app/services/authService';
 import useBlockchain from '@/app/hooks/useBlockchain';
+import usePageNavigation from '@/app/hooks/usePageNavigation';
 import { Media, MediaContextProvider } from '@/app/media';
 import AuthDropdownMenu from '../AuthDropdownMenu/AuthDropdownMenu';
 import MobileDropdownMenu from '../MobileDropdownMenu/MobileDropdownMenu';
@@ -25,7 +26,6 @@ import Coin from '../categories/icons/Coin';
 
 import styles from './Header.module.scss';
 import 'react-loading-skeleton/dist/skeleton.css';
-import usePageNavigation from '@/app/hooks/usePageNavigation';
 
 const Header = () => {
   const pathname = usePathname();
@@ -195,7 +195,12 @@ const Header = () => {
               />
             ) : (
               !loadingAuth && (
-                <FlipButton onClick={() => navigateToPage('auth')}>Sign In</FlipButton>
+                <FlipButton
+                  onClick={() => navigateToPage('auth')}
+                  backgroundColor1={colors.whiteTransparent}
+                >
+                  Sign In
+                </FlipButton>
               )
             )}
           </div>

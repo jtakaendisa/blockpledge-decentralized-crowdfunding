@@ -14,8 +14,8 @@ const HomePage = () => {
   return (
     <>
       <Hero />
-      {/* <ProjectsRow projects={projects} />
-      <CategoriesGrid categories={categories} /> */}
+      <ProjectsRow projects={projects} />
+      {/* <CategoriesGrid categories={categories} /> */}
       <ToastContainer
         position="bottom-center"
         autoClose={3000}
