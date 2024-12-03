@@ -9,28 +9,29 @@ interface Props {
     value: number;
   };
   index: number;
+  delay?: number;
 }
 
-const riseVariant = {
-  initial: { y: 80, opacity: 0 },
-  enter: (i: number) => ({
-    y: 0,
-    opacity: 1,
-    transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: 2.2 + 0.2 * i },
-  }),
-};
-
-const StatCard = ({ stat, index }: Props) => {
+const StatCard = ({ stat, index, delay = 0 }: Props) => {
   const { value, metric } = stat;
 
   const displayValue = useMotionValue(0);
+
+  const riseVariant = {
+    initial: { y: 80, opacity: 0 },
+    enter: (i: number) => ({
+      y: 0,
+      opacity: 1,
+      transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: delay + 0.2 * i },
+    }),
+  };
 
   useEffect(() => {
     const controls = {
       start: 0,
       end: value,
       duration: 2,
-      delay: 2.2 + index * 0.2,
+      delay: delay + index * 0.2,
     };
 
     let startTime: number;
@@ -56,7 +57,7 @@ const StatCard = ({ stat, index }: Props) => {
     };
 
     requestAnimationFrame(animateValue);
-  }, [value, index, displayValue]);
+  }, [value, index, delay, displayValue]);
 
   return (
     <motion.div

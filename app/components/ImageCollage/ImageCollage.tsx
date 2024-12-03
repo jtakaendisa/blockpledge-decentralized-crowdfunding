@@ -5,31 +5,34 @@ import ImageCollageCard from '../ImageCollageCard/ImageCollageCard';
 
 import styles from './ImageCollage.module.scss';
 
+interface Props {
+  delay?: number;
+}
+
 const ROTATION_INTENSITY = 8;
 
-// TODO: curate more appropriate images
 const cardImages = [
   // Middle Inner
   require('../../../public/images/collage_1.gif'),
-  require('../../../public/images/collage_2.jpg'),
-  require('../../../public/images/collage_3.jpg'),
+  require('../../../public/images/collage_2.webp'),
+  require('../../../public/images/collage_3.webp'),
 
   // Middle Outer
-  require('../../../public/images/collage_4.jpg'),
-  require('../../../public/images/collage_5.jpg'),
+  require('../../../public/images/collage_4.webp'),
+  require('../../../public/images/collage_5.webp'),
 
   // Left Side
   require('../../../public/images/collage_6.webp'),
-  require('../../../public/images/collage_7.jpg'),
-  require('../../../public/images/collage_8.jpg'),
+  require('../../../public/images/collage_7.webp'),
+  require('../../../public/images/collage_8.webp'),
 
   // Right Side
-  require('../../../public/images/collage_9.jpg'),
+  require('../../../public/images/collage_9.webp'),
   require('../../../public/images/collage_10.gif'),
-  require('../../../public/images/collage_11.jpg'),
+  require('../../../public/images/collage_11.webp'),
 ];
 
-const ImageCollage = () => {
+const ImageCollage = ({ delay = 0 }: Props) => {
   const cardElementsRef = useRef<HTMLDivElement[]>([]);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const isIntroCompleteRef = useRef(false);
@@ -101,8 +104,11 @@ const ImageCollage = () => {
 
     setCSSProperties();
     init();
-    introAnimation();
-  }, []);
+
+    setTimeout(() => {
+      introAnimation();
+    }, delay * 1000); // Converting delay to milliseconds
+  }, [delay]);
 
   useEffect(() => {
     const container = containerRef.current;

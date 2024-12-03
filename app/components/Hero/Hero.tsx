@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 
+import { colors } from '@/app/constants';
 import { useProjectStore } from '@/app/store';
 import usePageNavigation from '@/app/hooks/usePageNavigation';
-import { colors } from '@/app/constants';
 import StatCard from '../StatCard/StatCard';
 import ImageCollage from '../ImageCollage/ImageCollage';
 import SlideUpText from '../SlideUpText/SlideUpText';
@@ -22,7 +22,7 @@ const Hero = () => {
 
   const { totalBackings, totalDonations, totalProjects } = stats;
 
-  const { navigateToPage } = usePageNavigation();
+  const { animatePageOut } = usePageNavigation();
 
   const statsArray = [
     {
@@ -48,12 +48,12 @@ const Hero = () => {
       <div className={styles.textContent}>
         <div className={styles.headingContainer}>
           <h1 className={styles.headingSmall}>
-            <SlideUpText playAnimation={true} duration={0.8} hidden>
+            <SlideUpText playAnimation={true} duration={0.8} delay={1} hidden>
               Bring Creative Projects To Life On
             </SlideUpText>
           </h1>
           <h1 className={styles.headingLarge}>
-            <SlideUpText playAnimation={true} duration={0.8} delay={0.5} hidden>
+            <SlideUpText playAnimation={true} duration={0.8} delay={1.5} hidden>
               BLOCKPLEDGE.
             </SlideUpText>
           </h1>
@@ -68,17 +68,17 @@ const Hero = () => {
           >
             Create Project
           </FlipButton>
-          <FlipButton onClick={() => navigateToPage('projects')}>
+          <FlipButton onClick={() => animatePageOut('/projects')}>
             View All Projects
           </FlipButton>
         </div>
       </div>
       <div className={styles.imageCollage}>
-        <ImageCollage />
+        <ImageCollage delay={1.5} />
       </div>
       <motion.div className={styles.stats} initial="initial" animate="enter">
         {statsArray.map((stat, index) => (
-          <StatCard key={stat.metric} stat={stat} index={index} />
+          <StatCard key={stat.metric} stat={stat} index={index} delay={4.5} />
         ))}
       </motion.div>
       {isModalOpen && <AddProjectModal closeModal={toggleModalState} />}

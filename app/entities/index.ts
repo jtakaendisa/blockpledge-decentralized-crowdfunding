@@ -1,3 +1,3 @@
-import { routes } from '../constants';
+import { pathnameMap } from '../constants';
 
-export type RouteKey = keyof typeof routes;
+export type RoutePath = keyof typeof pathnameMap;

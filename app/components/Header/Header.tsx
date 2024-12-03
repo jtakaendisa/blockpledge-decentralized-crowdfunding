@@ -2,14 +2,13 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import Link from 'next/link';
 import { User } from 'firebase/auth';
 import classNames from 'classnames';
 import Skeleton from 'react-loading-skeleton';
 
 import { useAccountStore, useProjectStore } from '@/app/store';
-import { colors, routes } from '@/app/constants';
-import { RouteKey } from '@/app/entities';
+import { RoutePath } from '@/app/entities';
+import { routes } from '@/app/constants';
 import {
   authStateChangeListener,
   formatAuthUserData,
@@ -18,6 +17,7 @@ import {
 import useBlockchain from '@/app/hooks/useBlockchain';
 import usePageNavigation from '@/app/hooks/usePageNavigation';
 import { Media, MediaContextProvider } from '@/app/media';
+import TransitionLink from '../TransitionLink/TransitionLink';
 import AuthDropdownMenu from '../AuthDropdownMenu/AuthDropdownMenu';
 import MobileDropdownMenu from '../MobileDropdownMenu/MobileDropdownMenu';
 import FlipButton from '../FlipButton/FlipButton';
@@ -44,9 +44,9 @@ const Header = () => {
   const { connectWallet, getProjects, getCategories, listenForEvents } =
     useBlockchain();
 
-  const { navigateToPage } = usePageNavigation();
+  const { animatePageOut } = usePageNavigation();
 
-  const [hoveredLink, setHoveredLink] = useState<RouteKey | null>(null);
+  const [hoveredLink, setHoveredLink] = useState<RoutePath | null>(null);
 
   const [loadingAuth, setLoadingAuth] = useState(false);
   const [refreshUi, setRefreshUi] = useState(false);
@@ -63,7 +63,8 @@ const Header = () => {
     }
   }, [connectWallet, setConnectedAccount]);
 
-  const handleLinkHover = (hoveredLink: RouteKey | null) => setHoveredLink(hoveredLink);
+  const handleLinkHover = (hoveredLink: RoutePath | null) =>
+    setHoveredLink(hoveredLink);
 
   const resetSelectedCategory = () => setSelectedCategory(null);
 
@@ -123,10 +124,12 @@ const Header = () => {
   return (
     <MediaContextProvider>
       <header className={styles.header}>
-        <Link href={routes.home} className={styles.homeIcon}>
-          <span>BlockPledge</span>
-          <Coin />
-        </Link>
+        <TransitionLink href="/">
+          <div className={styles.homeIcon}>
+            <span>BlockPledge</span>
+            <Coin />
+          </div>
+        </TransitionLink>
         <div className={styles.navActions}>
           <Media greaterThanOrEqual="sm">
             <ul className={styles.navLinks}>
@@ -137,14 +140,17 @@ const Header = () => {
                     [styles.navLink]: true,
                     [styles.selected]: routes.userDashboard === pathname,
                   })}
-                  onMouseEnter={() => handleLinkHover('userDashboard')}
+                  onMouseEnter={() => handleLinkHover('/user_dashboard')}
                   onMouseLeave={() => handleLinkHover(null)}
                 >
-                  <Link href={routes.userDashboard} onClick={resetSelectedCategory}>
-                    <SlideUpText playAnimation={hoveredLink === 'userDashboard'}>
+                  <TransitionLink
+                    href="/user_dashboard"
+                    onComplete={resetSelectedCategory}
+                  >
+                    <SlideUpText playAnimation={hoveredLink === '/user_dashboard'}>
                       My Dashboard
                     </SlideUpText>
-                  </Link>
+                  </TransitionLink>
                 </li>
               )}
               {loadingAuth && !authUser && <Skeleton circle width={40} height={40} />}
@@ -154,14 +160,17 @@ const Header = () => {
                     [styles.navLink]: true,
                     [styles.selected]: routes.adminDashboard === pathname,
                   })}
-                  onMouseEnter={() => handleLinkHover('adminDashboard')}
+                  onMouseEnter={() => handleLinkHover('/admin_dashboard')}
                   onMouseLeave={() => handleLinkHover(null)}
                 >
-                  <Link href={routes.adminDashboard} onClick={resetSelectedCategory}>
-                    <SlideUpText playAnimation={hoveredLink === 'adminDashboard'}>
+                  <TransitionLink
+                    href="/admin_dashboard"
+                    onComplete={resetSelectedCategory}
+                  >
+                    <SlideUpText playAnimation={hoveredLink === '/admin_dashboard'}>
                       Admin Dashboard
                     </SlideUpText>
-                  </Link>
+                  </TransitionLink>
                 </li>
               )}
               <li
@@ -169,14 +178,14 @@ const Header = () => {
                   [styles.navLink]: true,
                   [styles.selected]: routes.projects === pathname,
                 })}
-                onMouseEnter={() => handleLinkHover('projects')}
+                onMouseEnter={() => handleLinkHover('/projects')}
                 onMouseLeave={() => handleLinkHover(null)}
               >
-                <Link href={routes.projects} onClick={resetSelectedCategory}>
-                  <SlideUpText playAnimation={hoveredLink === 'projects'}>
+                <TransitionLink href="/projects" onComplete={resetSelectedCategory}>
+                  <SlideUpText playAnimation={hoveredLink === '/projects'}>
                     Explore Projects
                   </SlideUpText>
-                </Link>
+                </TransitionLink>
               </li>
             </ul>
           </Media>
@@ -196,8 +205,8 @@ const Header = () => {
             ) : (
               !loadingAuth && (
                 <FlipButton
-                  onClick={() => navigateToPage('auth')}
-                  backgroundColor1={colors.whiteTransparent}
+                  onClick={() => animatePageOut('/auth')}
+                  backgroundColor1="transparent"
                 >
                   Sign In
                 </FlipButton>

@@ -4,8 +4,15 @@ export const routes = {
   userDashboard: '/user_dashboard',
   adminDashboard: '/admin_dashboard',
   auth: '/auth',
-  authSignup: '/auth/signup',
-} as const;
+};
+
+export const pathnameMap = {
+  '/': 'Home',
+  '/projects': 'Projects',
+  '/user_dashboard': 'My Dashboard',
+  '/admin_dashboard': 'Admin Dashboard',
+  '/auth': 'Auth',
+};
 
 export const colors = {
   lightGray: '#e1e1e4',

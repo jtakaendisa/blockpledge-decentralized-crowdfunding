@@ -1,6 +1,6 @@
 import { addDays, format } from 'date-fns';
 
-const truncateAccount = (
+export const truncateAccount = (
   account: string,
   startCharLength: number,
   endCharLength: number
@@ -14,7 +14,7 @@ const truncateAccount = (
   } else return '';
 };
 
-const findDaysRemaining = (expiresAt: number) => {
+export const findDaysRemaining = (expiresAt: number) => {
   const today = Number(new Date());
   const millisecondsInADay = 1000 * 60 * 60 * 24;
   const expired = Date.now() > expiresAt * 1000;
@@ -37,11 +37,11 @@ const findDaysRemaining = (expiresAt: number) => {
     : [differenceInDays, ' days left'];
 };
 
-const getTomorrowsDate = () => {
+export const getTomorrowsDate = () => {
   const nextDay = addDays(new Date(), 1);
   return format(nextDay, 'yyyy-MM-dd');
 };
 
-const convertToTimestamp = (dateString: string) => Date.parse(dateString) / 1000;
+export const convertToTimestamp = (dateString: string) => Date.parse(dateString) / 1000;
 
-export { truncateAccount, findDaysRemaining, convertToTimestamp, getTomorrowsDate };
+export const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
