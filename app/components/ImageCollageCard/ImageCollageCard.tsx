@@ -23,7 +23,7 @@ const ImageCollageCard = ({ imgSrc, onHover, onMount }: Props) => {
       onMouseLeave={onHover}
       className={styles.card}
     >
-      <Image src={imgSrc} alt="" fill />
+      <Image src={imgSrc} alt="" fill sizes="332px, 500px" />
     </div>
   );
 };

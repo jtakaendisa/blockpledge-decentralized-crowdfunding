@@ -9,7 +9,7 @@
   .textContent {
     position: absolute;
     top: calc(72px + 2rem + 10vh);
-    left: 2rem;
+    left: 0;
     display: flex;
     height: fit-content;
     flex-direction: column;
@@ -59,7 +59,7 @@
 
   .stats {
     position: absolute;
-    left: 2rem;
+    left: 0;
     bottom: 2rem;
     display: flex;
     align-items: center;

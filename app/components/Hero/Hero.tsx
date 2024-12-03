@@ -48,12 +48,12 @@ const Hero = () => {
       <div className={styles.textContent}>
         <div className={styles.headingContainer}>
           <h1 className={styles.headingSmall}>
-            <SlideUpText playAnimation={true} duration={0.8} delay={1} hidden>
+            <SlideUpText playAnimation duration={0.8} delay={1} hidden>
               Bring Creative Projects To Life On
             </SlideUpText>
           </h1>
           <h1 className={styles.headingLarge}>
-            <SlideUpText playAnimation={true} duration={0.8} delay={1.5} hidden>
+            <SlideUpText playAnimation duration={0.8} delay={1.5} hidden>
               BLOCKPLEDGE.
             </SlideUpText>
           </h1>
@@ -74,11 +74,11 @@ const Hero = () => {
         </div>
       </div>
       <div className={styles.imageCollage}>
-        <ImageCollage delay={1.5} />
+        <ImageCollage delay={1.25} />
       </div>
       <motion.div className={styles.stats} initial="initial" animate="enter">
         {statsArray.map((stat, index) => (
-          <StatCard key={stat.metric} stat={stat} index={index} delay={4.5} />
+          <StatCard key={stat.metric} stat={stat} index={index} delay={3.5} />
         ))}
       </motion.div>
       {isModalOpen && <AddProjectModal closeModal={toggleModalState} />}

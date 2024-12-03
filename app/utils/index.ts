@@ -45,3 +45,6 @@ export const getTomorrowsDate = () => {
 export const convertToTimestamp = (dateString: string) => Date.parse(dateString) / 1000;
 
 export const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+export const splitText = (text: string) =>
+  Array.from(text).map((char) => (char === ' ' ? '\u00A0' : char));

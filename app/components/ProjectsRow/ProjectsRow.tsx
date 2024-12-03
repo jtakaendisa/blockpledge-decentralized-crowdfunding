@@ -1,8 +1,9 @@
-'use client';
-
+import { motion } from 'framer-motion';
 import Carousel from 'react-multi-carousel';
 
 import { Project } from '@/app/store';
+import useHeadingReveal from '@/app/hooks/useHeadingReveal';
+import StaggeredText from '../StaggeredText/StaggeredText';
 import ProjectCard from '../ProjectCard/ProjectCard';
 import ProjectCardSkeleton from '../ProjectCardSkeleton/ProjectCardSkeleton';
 
@@ -43,9 +44,15 @@ const responsive = {
 const skeletons = [1, 2, 3, 4, 5, 6];
 
 const ProjectsRow = ({ projects }: Props) => {
+  const { playAnimation, handleViewportEnter } = useHeadingReveal();
+
   return (
     <section className={styles.projectsRow}>
-      <h2 className={styles.heading}>Featured Projects</h2>
+      <motion.h2 onViewportEnter={handleViewportEnter} className={styles.heading}>
+        <StaggeredText playAnimation={playAnimation} hidden>
+          Featured Projects.
+        </StaggeredText>
+      </motion.h2>
       <div className={styles.carouselContainer}>
         {!projects.length ? (
           <Carousel responsive={responsive}>

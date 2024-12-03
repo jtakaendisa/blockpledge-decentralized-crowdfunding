@@ -164,9 +164,9 @@ const ImageCollage = ({ delay = 0 }: Props) => {
   return (
     <section ref={containerRef} className={styles.container}>
       <div className={styles.imageCollage}>
-        {cardImages.map((cardImage) => (
+        {cardImages.map((cardImage, index) => (
           <ImageCollageCard
-            key={cardImage}
+            key={index}
             imgSrc={cardImage}
             onHover={handleHover}
             onMount={handleCardMount}
