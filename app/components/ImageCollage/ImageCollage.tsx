@@ -39,7 +39,11 @@ const ImageCollage = ({ delay = 0 }: Props) => {
 
   // Function to update the cardElements array when a card is mounted to the DOM
   const handleCardMount = (element: HTMLDivElement) => {
-    cardElementsRef.current.push(element);
+    const cards = cardElementsRef.current;
+
+    if (cards.length < 11) {
+      cards.push(element);
+    }
   };
 
   // Function to handle hover interaction on individual cards

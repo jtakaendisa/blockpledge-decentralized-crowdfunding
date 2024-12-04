@@ -48,3 +48,14 @@ export const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve
 
 export const splitText = (text: string) =>
   Array.from(text).map((char) => (char === ' ' ? '\u00A0' : char));
+
+export const splitArray = <T>(array: T[], chunks: number) => {
+  const chunkSize = Math.round(array.length / chunks);
+
+  return Array.from({ length: chunks }, (_, i) =>
+    array.slice(i * chunkSize, i * chunkSize + chunkSize)
+  );
+};
+
+export const generateIncrementingArray = (length: number) =>
+  Array.from({ length }, (_, i) => i + 1);

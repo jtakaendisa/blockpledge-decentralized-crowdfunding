@@ -1,15 +1,19 @@
 .categoryCard {
   display: flex;
-  flex-direction: column;
   align-items: center;
   gap: 1rem;
+  width: 100%;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 0.2rem 0.5rem rgba(53, 53, 53, 0.25);
   cursor: pointer;
 
   .categoryIcon {
     & > svg {
       width: 64px;
       height: 64px;
-      fill: rgb(116, 116, 116);
+      fill: rgb(53, 53, 53);
       transition: all 0.2s;
     }
   }
@@ -18,12 +22,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-weight: 500;
   }
 
   &:hover {
     .categoryIcon {
       & > svg {
-        fill: rgb(67, 136, 67);
+        fill: #3c6e71;
         transform: scale(1.05);
       }
     }

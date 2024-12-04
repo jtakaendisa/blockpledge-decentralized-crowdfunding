@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import Carousel from 'react-multi-carousel';
 
-import { Project } from '@/app/store';
+import { useProjectStore } from '@/app/store';
 import useHeadingReveal from '@/app/hooks/useHeadingReveal';
 import StaggeredText from '../StaggeredText/StaggeredText';
 import ProjectCard from '../ProjectCard/ProjectCard';
@@ -9,10 +9,6 @@ import ProjectCardSkeleton from '../ProjectCardSkeleton/ProjectCardSkeleton';
 
 import styles from './ProjectsRow.module.scss';
 import 'react-multi-carousel/lib/styles.css';
-
-interface Props {
-  projects: Project[];
-}
 
 const responsive = {
   superLargeDesktop: {
@@ -43,7 +39,9 @@ const responsive = {
 
 const skeletons = [1, 2, 3, 4, 5, 6];
 
-const ProjectsRow = ({ projects }: Props) => {
+const ProjectsRow = () => {
+  const projects = useProjectStore((s) => s.projects);
+
   const { playAnimation, handleViewportEnter } = useHeadingReveal();
 
   return (
