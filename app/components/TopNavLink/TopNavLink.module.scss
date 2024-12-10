@@ -1,0 +1,24 @@
+$light-green: rgb(83, 167, 83);
+$dark-green: rgb(67, 136, 67);
+$light-gray: rgb(116, 116, 116);
+$dark-gray: rgb(53, 53, 53);
+
+.navLink {
+  & > a {
+    font-size: 1.1rem;
+    text-decoration: none;
+    color: $light-gray;
+    transition: color 0.2s;
+
+    &:hover {
+      color: $dark-gray;
+    }
+  }
+}
+
+.selected {
+  & > a {
+    color: $dark-gray;
+    font-weight: 500;
+  }
+}

@@ -1,0 +1,29 @@
+$light-green: rgb(83, 167, 83);
+$dark-green: rgb(67, 136, 67);
+$light-gray: rgb(116, 116, 116);
+$dark-gray: rgb(53, 53, 53);
+
+.homeIcon {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 1.2rem;
+  text-decoration: none;
+  color: $light-gray;
+  transition: color 0.2s;
+
+  & > svg {
+    width: 22px;
+    height: 22px;
+    fill: $light-gray;
+    transition: fill 0.2s;
+  }
+
+  &:hover {
+    color: $dark-gray;
+
+    & > svg {
+      fill: $dark-gray;
+    }
+  }
+}

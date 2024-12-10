@@ -42,6 +42,7 @@ const FlipButton = ({
       className={styles.button}
       style={{ backgroundColor: backgroundColor1, borderColor }}
     >
+      {/* Animated Background Sheet*/}
       <motion.div
         variants={{ initial: { y: '100%' }, hovered: { y: 0 } }}
         transition={{
@@ -51,6 +52,8 @@ const FlipButton = ({
         className={styles.duplicate}
         style={{ backgroundColor: backgroundColor2 }}
       />
+
+      {/* Main Text */}
       <span onClick={onClick} style={{ color }}>
         <SlideUpText playAnimation={isHovered}>{children}</SlideUpText>
       </span>

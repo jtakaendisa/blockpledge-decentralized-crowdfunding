@@ -6,7 +6,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { useRouter } from 'next/navigation';
 import { signInAuthUser } from '../services/authService';
-import Header from '../components/Header/Header';
+import Header from '../components/TopNav/TopNav';
 import Button from '../components/Button/Button';
 
 import styles from './page.module.scss';

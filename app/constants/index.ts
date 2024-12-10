@@ -4,7 +4,7 @@ export const routes = {
   userDashboard: '/user_dashboard',
   adminDashboard: '/admin_dashboard',
   auth: '/auth',
-};
+} as const;
 
 export const pathnameMap = {
   '/': 'Home',

@@ -5,7 +5,7 @@ import { ToastContainer } from 'react-toastify';
 
 import { Backer, Project, useProjectStore } from '@/app/store';
 import useBlockchain from '@/app/hooks/useBlockchain';
-import Header from '@/app/components/Header/Header';
+import Header from '@/app/components/TopNav/TopNav';
 import ProjectDetails from './_components/ProjectDetails/ProjectDetails';
 import InfoSelector from './_components/InfoSelector/InfoSelector';
 import ProjectBackers from './_components/ProjectBackers/ProjectBackers';

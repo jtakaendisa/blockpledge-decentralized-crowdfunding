@@ -2,7 +2,7 @@
 
 import { useProjectStore } from '../store';
 import { Media, MediaContextProvider } from '../media';
-import Header from '../components/Header/Header';
+import Header from '../components/TopNav/TopNav';
 import ProjectsGrid from '../components/ProjectsGrid/ProjectsGrid';
 import CategoriesSidebar from './_components/CategoriesSidebar/CategoriesSidebar';
 import SearchInput from './_components/SearchInput/SearchInput';

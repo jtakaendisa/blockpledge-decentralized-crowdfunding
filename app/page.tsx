@@ -3,15 +3,15 @@
 import { ToastContainer } from 'react-toastify';
 
 import Hero from './components/Hero/Hero';
-import ProjectsRow from './components/ProjectsRow/ProjectsRow';
+import FeaturedProjects from './components/FeaturedProjects/FeaturedProjects';
 import CategoriesGrid from './components/CategoriesGrid/CategoriesGrid';
 
 const HomePage = () => {
   return (
     <>
-      <Hero />
-      {/* <ProjectsRow /> */}
-      <CategoriesGrid />
+      {/* <Hero /> */}
+      {/* <FeaturedProjects /> */}
+      {/* <CategoriesGrid /> */}
       <ToastContainer
         position="bottom-center"
         autoClose={3000}

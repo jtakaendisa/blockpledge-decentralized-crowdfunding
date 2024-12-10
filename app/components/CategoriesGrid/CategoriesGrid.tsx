@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 
 import { useProjectStore } from '@/app/store';
-import { splitArray } from '@/app/utils';
+import { generateIncrementingArray, splitArray } from '@/app/utils';
 import useHeadingReveal from '@/app/hooks/useHeadingReveal';
 import StaggeredText from '../StaggeredText/StaggeredText';
 import CategoryCard from '../CategoryCard/CategoryCard';
@@ -9,7 +9,7 @@ import CategoryCardSkeleton from '../CategoryCardSkeleton/CategoryCardSkeleton';
 
 import styles from './CategoriesGrid.module.scss';
 
-const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+const skeletons = generateIncrementingArray(12);
 
 const CategoriesGrid = () => {
   const categories = useProjectStore((s) => s.categories);

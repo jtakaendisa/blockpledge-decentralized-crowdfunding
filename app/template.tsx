@@ -3,6 +3,7 @@
 import { PropsWithChildren, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
+import { MediaContextProvider } from './media';
 import { pathnameMap } from './constants';
 import usePageNavigation from './hooks/usePageNavigation';
 
@@ -18,7 +19,7 @@ const Template = ({ children }: PropsWithChildren) => {
   }, [animatePageIn]);
 
   return (
-    <>
+    <MediaContextProvider>
       {/* Main Content */}
       <div id="pt-page">{children}</div>
 
@@ -41,7 +42,7 @@ const Template = ({ children }: PropsWithChildren) => {
       <p id="pt-route" className={styles.route}>
         {pathnameMap[pathname as keyof typeof pathnameMap]}
       </p>
-    </>
+    </MediaContextProvider>
   );
 };
 

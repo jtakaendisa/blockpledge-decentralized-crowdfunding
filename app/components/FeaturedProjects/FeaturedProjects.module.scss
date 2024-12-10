@@ -1,0 +1,29 @@
+@import '../../breakpoints.scss';
+
+.featuredProjects {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 16rem;
+
+  .heading {
+    display: inline-block;
+    font-size: 3.5rem;
+    font-weight: 500;
+  }
+
+  .showcaseContainer {
+    display: flex;
+    gap: 2.5rem;
+
+    .highlightedProject {
+      width: 45%;
+      height: 400px;
+    }
+
+    .projectCarousel {
+      width: 55%;
+      height: 400px;
+    }
+  }
+}

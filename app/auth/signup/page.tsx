@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { createAuthUser, createUserDocument } from '@/app/services/authService';
-import Header from '../../components/Header/Header';
+import Header from '../../components/TopNav/TopNav';
 import Button from '../../components/Button/Button';
 
 import styles from './page.module.scss';

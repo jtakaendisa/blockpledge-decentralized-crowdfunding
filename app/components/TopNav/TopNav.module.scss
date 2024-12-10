@@ -1,0 +1,26 @@
+$light-green: rgb(83, 167, 83);
+$dark-green: rgb(67, 136, 67);
+$light-gray: rgb(116, 116, 116);
+$dark-gray: rgb(53, 53, 53);
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 2rem;
+  left: 8rem;
+  right: 8rem;
+  height: 72px;
+  padding: 0 2rem;
+  z-index: 4;
+  color: $light-gray;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 180px;
+  box-shadow: 0 0.3rem 1rem rgba(53, 53, 53, 0.25);
+  transition: color 0.2s;
+
+  &:hover {
+    color: $dark-gray;
+  }
+}

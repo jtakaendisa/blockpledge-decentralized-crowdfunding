@@ -47,7 +47,7 @@ const CategoryCard = ({ category, delay }: Props) => {
       custom={delay}
       initial="initial"
       whileInView="animate"
-      // viewport={{ once: true }}
+      viewport={{ once: true }}
       className={styles.categoryCard}
       onClick={() => handleSelectCategory(category)}
     >
