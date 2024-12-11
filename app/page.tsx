@@ -9,9 +9,9 @@ import CategoriesGrid from './components/CategoriesGrid/CategoriesGrid';
 const HomePage = () => {
   return (
     <>
-      {/* <Hero /> */}
-      {/* <FeaturedProjects /> */}
-      {/* <CategoriesGrid /> */}
+      <Hero />
+      <FeaturedProjects />
+      <CategoriesGrid />
       <ToastContainer
         position="bottom-center"
         autoClose={3000}

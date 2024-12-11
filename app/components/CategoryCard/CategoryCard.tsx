@@ -9,7 +9,7 @@ import styles from './CategoryCard.module.scss';
 
 interface Props {
   category: Category;
-  delay: number;
+  index: number;
 }
 
 const revealVariant = {
@@ -17,17 +17,17 @@ const revealVariant = {
     opacity: 0,
     y: 17,
   },
-  animate: (delay: number) => ({
+  animate: (index: number) => ({
     opacity: 1,
     y: 0,
     transition: {
       duration: 0.17,
-      delay,
+      delay: index * 0.12,
     },
   }),
 };
 
-const CategoryCard = ({ category, delay }: Props) => {
+const CategoryCard = ({ category, index }: Props) => {
   const { id, name } = category;
 
   const router = useRouter();
@@ -44,7 +44,7 @@ const CategoryCard = ({ category, delay }: Props) => {
   return (
     <motion.div
       variants={revealVariant}
-      custom={delay}
+      custom={index}
       initial="initial"
       whileInView="animate"
       viewport={{ once: true }}
