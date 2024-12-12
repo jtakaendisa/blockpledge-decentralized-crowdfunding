@@ -21,3 +21,12 @@ export const colors = {
   whiteSolid: '#fff',
   whiteTransparent: 'rgba(255, 255, 255, 0.9)',
 };
+
+export const statusColorMap = {
+  0: 'gray',
+  1: 'green',
+  2: 'gray',
+  3: 'red',
+  4: 'orange',
+  5: 'orange',
+};

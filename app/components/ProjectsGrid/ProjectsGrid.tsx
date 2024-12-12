@@ -14,15 +14,6 @@ interface Props {
   selectedCategory?: Category | null;
 }
 
-export const statusColorMap = {
-  0: 'gray',
-  1: 'green',
-  2: 'gray',
-  3: 'red',
-  4: 'orange',
-  5: 'orange',
-};
-
 const COUNT = 12;
 
 const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];

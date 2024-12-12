@@ -30,6 +30,8 @@ interface AccountStore {
   setUpdatingAuthUserData: () => void;
 }
 
+export type ProjectStatus = 0 | 1 | 2 | 3 | 4 | 5;
+
 export interface Project {
   id: number;
   owner: string;
@@ -42,7 +44,7 @@ export interface Project {
   timestamp: number;
   expiresAt: number;
   backers: number;
-  status: 0 | 1 | 2 | 3 | 4 | 5;
+  status: ProjectStatus;
   date: string;
   deletionReason: string;
 }

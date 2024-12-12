@@ -1,0 +1,9 @@
+.ownerInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  & > span {
+    font-size: 0.9rem;
+  }
+}

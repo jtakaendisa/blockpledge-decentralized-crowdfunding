@@ -16,8 +16,8 @@ import {
 import { followProject } from '@/app/services/authService';
 import { findDaysRemaining, truncateAccount } from '@/app/utils';
 import { Media, MediaContextProvider } from '@/app/media';
-import { statusColorMap } from '@/app/components/ProjectsGrid/ProjectsGrid';
-import ProgressBar from '@/app/components/ProgressBar/ProgressBar';
+import { statusColorMap } from '@/app/constants';
+import ProgressBar from '@/app/components/ProjectProgressBar/ProjectProgressBar';
 import Button from '@/app/components/Button/Button';
 import EditProjectModal from '@/app/components/modals/EditProjectModal/EditProjectModal';
 import DeleteProjectModal from '@/app/components/modals/DeleteProjectModal/DeleteProjectModal';
