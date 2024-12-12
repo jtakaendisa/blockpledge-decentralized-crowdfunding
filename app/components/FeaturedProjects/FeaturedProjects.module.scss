@@ -9,15 +9,35 @@
   .showcaseContainer {
     display: flex;
     gap: 2.5rem;
+    border: 1px solid red;
 
     .highlightedProject {
       width: 45%;
-      height: 400px;
+      border: 1px solid green;
     }
 
     .projectCarousel {
+      display: flex;
+      flex-direction: column;
+      gap: 4rem;
       width: 55%;
-      height: 400px;
+      border: 1px solid blue;
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        gap: 2rem;
+        height: 100%;
+        border: 1px solid gold;
+      }
+
+      .navigationButtons {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        border: 1px solid pink;
+      }
     }
   }
 }

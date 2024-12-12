@@ -1,7 +1,7 @@
+import { useState } from 'react';
 import Link from 'next/link';
 
 import { Project } from '@/app/store';
-import { findDaysRemaining } from '@/app/utils';
 import ProjectImage from '../ProjectImage/ProjectImage';
 import ProjectOwnerInfo from '../ProjectOwnerInfo/ProjectOwnerInfo';
 import ProjectStatus from '../ProjectStatus/ProjectStatus';
@@ -13,7 +13,6 @@ import SpaceBetweenRow from '../SpaceBetweenRow/SpaceBetweenRow';
 import VerticalSpacer from '../VerticalSpacer/VerticalSpacer';
 
 import styles from './ProjectCard.module.scss';
-import { useState } from 'react';
 
 interface Props {
   project: Project;
@@ -39,17 +38,22 @@ const ProjectCard = ({ project }: Props) => {
         <div className={styles.contentContainer}>
           <ProjectTitle>{title}</ProjectTitle>
           <VerticalSpacer height={0.7} />
+
           <ProjectOwnerInfo owner={owner} />
           <VerticalSpacer height={0.7} />
-          <ProjectRemainingTime>{findDaysRemaining(expiresAt)}</ProjectRemainingTime>
-          <VerticalSpacer height={0.2} />
+
+          <ProjectRemainingTime>{expiresAt}</ProjectRemainingTime>
+          <VerticalSpacer height={0.3} />
+
           <ProjectProgressBar raised={raised} cost={cost} />
-          <VerticalSpacer height={0.2} />
+          <VerticalSpacer height={0.3} />
+
           <SpaceBetweenRow>
             <ProjectText>{raised} ETH Raised</ProjectText>
             <ProjectText icon="ethereum">{cost} ETH</ProjectText>
           </SpaceBetweenRow>
           <VerticalSpacer />
+
           <SpaceBetweenRow>
             <ProjectText>
               {backers} {backers === 1 ? 'Backer' : 'Backers'}

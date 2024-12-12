@@ -1,13 +1,19 @@
-import { ReactNode } from 'react';
+import { findDaysRemaining } from '@/app/utils';
 
 import styles from './ProjectRemainingTime.module.scss';
 
 interface Props {
-  children: ReactNode;
+  children: number;
+  color?: string;
+  fontWeight?: string;
 }
 
-const ProjectRemainingTime = ({ children }: Props) => {
-  return <span className={styles.remainingTime}>{children}</span>;
+const ProjectRemainingTime = ({ children, color, fontWeight }: Props) => {
+  return (
+    <span style={{ color, fontWeight }} className={styles.remainingTime}>
+      {findDaysRemaining(children)}
+    </span>
+  );
 };
 
 export default ProjectRemainingTime;

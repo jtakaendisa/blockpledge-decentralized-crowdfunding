@@ -3,11 +3,17 @@ import Image from 'next/image';
 import { motion, useAnimationControls } from 'framer-motion';
 
 import styles from './ProjectImage.module.scss';
+import classNames from 'classnames';
 
 interface Props {
   imageURLs: string[];
   title: string;
-  isHovered: boolean;
+  height?: number;
+  borderTopLeftRadius?: number;
+  borderTopRightRadius?: number;
+  borderBottomRightRadius?: number;
+  borderBottomLeftRadius?: number;
+  isHovered?: boolean;
 }
 
 const transitionProps = {
@@ -17,19 +23,37 @@ const transitionProps = {
 
 const MotionImage = motion.create(Image);
 
-const ProjectImage = ({ imageURLs, title, isHovered }: Props) => {
+const ProjectImage = ({
+  imageURLs,
+  title,
+  height = 16,
+  borderTopLeftRadius,
+  borderTopRightRadius,
+  borderBottomRightRadius,
+  borderBottomLeftRadius,
+  isHovered,
+}: Props) => {
   const controls = useAnimationControls();
 
   useEffect(() => {
     if (isHovered) {
-      controls.start({ scale: 1.05 });
+      controls.start({ scale: 1.03 });
     } else {
       controls.start({ scale: 1 });
     }
   }, [isHovered, controls]);
 
   return (
-    <div className={styles.image}>
+    <div
+      style={{
+        height: `${height}rem`,
+        borderTopLeftRadius,
+        borderTopRightRadius,
+        borderBottomRightRadius,
+        borderBottomLeftRadius,
+      }}
+      className={classNames({ [styles.image]: true, [styles.hovered]: isHovered })}
+    >
       <MotionImage
         src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageURLs[0]}`}
         alt={title}

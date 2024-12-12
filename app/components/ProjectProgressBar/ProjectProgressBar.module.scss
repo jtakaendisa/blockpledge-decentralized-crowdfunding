@@ -1,6 +1,5 @@
 .progressBackground {
   background-color: rgba(116, 116, 116, 0.25);
-  height: 0.25rem;
   border-radius: 50px;
   overflow: hidden;
 
@@ -9,4 +8,8 @@
     height: 100%;
     border-radius: 50px;
   }
+}
+
+.flatEdge {
+  border-radius: 0;
 }

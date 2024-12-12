@@ -1,0 +1,22 @@
+.card {
+  align-self: flex-start;
+  width: 100%;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  cursor: pointer;
+
+  .link {
+    position: relative;
+    text-decoration: none;
+    color: rgb(53, 53, 53);
+
+    .contentContainer {
+      padding: 0 1rem;
+    }
+  }
+}
+
+.hovered {
+  background-color: white;
+  box-shadow: 0 0.25rem 0.5rem rgba(116, 116, 116, 0.25);
+}
