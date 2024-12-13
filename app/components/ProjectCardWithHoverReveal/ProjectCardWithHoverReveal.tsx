@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import classNames from 'classnames';
 
 import { Project } from '@/app/store';
@@ -21,6 +22,18 @@ interface Props {
   project: Project;
 }
 
+const revealVariants = {
+  initial: {
+    opacity: 0,
+  },
+  animate: {
+    opacity: 1,
+    transition: {
+      duration: 0.85,
+    },
+  },
+};
+
 const ProjectCardWithHoverReveal = ({ project }: Props) => {
   const {
     id,
@@ -40,10 +53,13 @@ const ProjectCardWithHoverReveal = ({ project }: Props) => {
   const toggleHoveredState = () => setIsHovered((prev) => !prev);
 
   return (
-    <div
+    <motion.div
       onMouseEnter={toggleHoveredState}
       onMouseLeave={toggleHoveredState}
       className={classNames({ [styles.card]: true, [styles.hovered]: isHovered })}
+      initial="initial"
+      animate="animate"
+      variants={revealVariants}
     >
       <Link href={`/projects/${id}`} className={styles.link}>
         <ProjectImage
@@ -89,7 +105,7 @@ const ProjectCardWithHoverReveal = ({ project }: Props) => {
           <VerticalSpacer />
         </ProjectRevealContent>
       </Link>
-    </div>
+    </motion.div>
   );
 };
 

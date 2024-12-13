@@ -15,7 +15,7 @@ const filterProjects = (
   selectedPage: number,
   chunkSize: number
 ) => {
-  const startIndex = selectedPage - 1;
+  const startIndex = (selectedPage - 1) * chunkSize;
   const endIndex = startIndex + chunkSize;
 
   return projects.slice(startIndex, endIndex);

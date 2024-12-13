@@ -16,6 +16,19 @@ interface Props {
   onClick: () => void;
 }
 
+const hoverVariants = {
+  initial: {
+    y: '100%',
+  },
+  hovered: {
+    y: 0,
+    transition: {
+      duration: 0.2,
+      ease: 'easeInOut',
+    },
+  },
+};
+
 const { whiteSolid, darkGreen, lightGray } = colors;
 
 const FlipButton = ({
@@ -44,11 +57,7 @@ const FlipButton = ({
     >
       {/* Animated Background Sheet*/}
       <motion.div
-        variants={{ initial: { y: '100%' }, hovered: { y: 0 } }}
-        transition={{
-          duration: 0.2,
-          ease: 'easeInOut',
-        }}
+        variants={hoverVariants}
         className={styles.duplicate}
         style={{ backgroundColor: backgroundColor2 }}
       />

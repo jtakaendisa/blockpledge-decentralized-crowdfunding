@@ -12,7 +12,7 @@ interface Props {
   index: number;
 }
 
-const revealVariant = {
+const revealVariants = {
   initial: {
     opacity: 0,
     y: 17,
@@ -43,7 +43,7 @@ const CategoryCard = ({ category, index }: Props) => {
 
   return (
     <motion.div
-      variants={revealVariant}
+      variants={revealVariants}
       custom={index}
       initial="initial"
       whileInView="animate"

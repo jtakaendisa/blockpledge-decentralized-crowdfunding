@@ -13,7 +13,7 @@ interface Props {
   delay?: number;
 }
 
-const revealVariant = {
+const revealVariants = {
   initial: { y: 80, opacity: 0 },
   enter: ({ index, delay }: { index: number; delay: number }) => ({
     y: 0,
@@ -35,7 +35,7 @@ const StatCard = ({ stat, index, delay = 0 }: Props) => {
 
   return (
     <motion.div
-      variants={revealVariant}
+      variants={revealVariants}
       custom={{ index, delay }}
       key={metric}
       className={styles.stat}
