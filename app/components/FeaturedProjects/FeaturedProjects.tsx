@@ -1,7 +1,7 @@
 import { useProjectStore } from '@/app/store';
 import SectionHeading from '../SectionHeading/SectionHeading';
-import ProjectCard from '../ProjectCard/ProjectCard';
-import ProjectCardWithHoverReveal from '../ProjectCardWithHoverReveal/ProjectCardWithHoverReveal';
+import ProjectHighlight from '@/app/home/_components/ProjectHighlight/ProjectHighlight';
+import ProjectCarousel from '@/app/home/_components/ProjectCarousel/ProjectCarousel';
 
 import styles from './FeaturedProjects.module.scss';
 
@@ -11,22 +11,13 @@ const FeaturedProjects = () => {
   return (
     <section className={styles.featuredProjects}>
       <SectionHeading>Featured Projects.</SectionHeading>
-      <div className={styles.showcaseContainer}>
+      <div className={styles.row}>
         {!projects.length ? (
           <span>projects loading placeholder</span>
         ) : (
           <>
-            <div className={styles.highlightedProject}>
-              <ProjectCard project={projects[0]} />
-            </div>
-            <div className={styles.projectCarousel}>
-              <div className={styles.grid}>
-                {projects.slice(1, 5).map((project) => (
-                  <ProjectCardWithHoverReveal key={project.id} project={project} />
-                ))}
-              </div>
-              <div className={styles.navigationButtons}>buttons</div>
-            </div>
+            <ProjectHighlight project={projects[0]} />
+            <ProjectCarousel projects={projects.slice(1)} />
           </>
         )}
       </div>

@@ -49,7 +49,7 @@ const ProjectCardWithHoverReveal = ({ project }: Props) => {
         <ProjectImage
           imageURLs={imageURLs}
           title={title}
-          height={14.5}
+          height={14}
           borderTopLeftRadius={16}
           borderTopRightRadius={16}
         />

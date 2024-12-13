@@ -16,6 +16,7 @@ export const pathnameMap = {
 
 export const colors = {
   lightGray: '#e1e1e4',
+  gray: '#9b9e9e',
   darkGray: '#353535',
   darkGreen: '#3c6e71',
   whiteSolid: '#fff',
