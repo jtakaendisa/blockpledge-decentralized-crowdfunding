@@ -1,4 +1,11 @@
 .highlight {
   width: 45%;
-  border: 1px solid green;
+
+  .contentContainer {
+    padding: 0 1rem;
+
+    .buttonContainer {
+      justify-self: flex-start;
+    }
+  }
 }

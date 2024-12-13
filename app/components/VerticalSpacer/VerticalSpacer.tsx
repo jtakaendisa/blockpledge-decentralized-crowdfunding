@@ -4,8 +4,8 @@ interface Props {
   height?: number;
 }
 
-const VerticalSpacer = ({ height = 1 }: Props) => {
-  return <div style={{ height: `${height}rem` }} className={styles.verticalSpacer} />;
+const VerticalSpacer = ({ height = 16 }: Props) => {
+  return <div style={{ height }} className={styles.verticalSpacer} />;
 };
 
 export default VerticalSpacer;

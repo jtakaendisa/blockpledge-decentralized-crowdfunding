@@ -1,14 +1,15 @@
 import { useEffect } from 'react';
 import Image from 'next/image';
+import classNames from 'classnames';
 import { motion, useAnimationControls } from 'framer-motion';
 
 import styles from './ProjectImage.module.scss';
-import classNames from 'classnames';
 
 interface Props {
   imageURLs: string[];
   title: string;
   height?: number;
+  sizes?: string;
   borderTopLeftRadius?: number;
   borderTopRightRadius?: number;
   borderBottomRightRadius?: number;
@@ -26,7 +27,8 @@ const MotionImage = motion.create(Image);
 const ProjectImage = ({
   imageURLs,
   title,
-  height = 16,
+  height = 256,
+  sizes = '15vw',
   borderTopLeftRadius,
   borderTopRightRadius,
   borderBottomRightRadius,
@@ -37,7 +39,7 @@ const ProjectImage = ({
 
   useEffect(() => {
     if (isHovered) {
-      controls.start({ scale: 1.03 });
+      controls.start({ scale: 1.02 });
     } else {
       controls.start({ scale: 1 });
     }
@@ -46,19 +48,23 @@ const ProjectImage = ({
   return (
     <div
       style={{
-        height: `${height}rem`,
+        height,
         borderTopLeftRadius,
         borderTopRightRadius,
         borderBottomRightRadius,
         borderBottomLeftRadius,
       }}
-      className={classNames({ [styles.image]: true, [styles.hovered]: isHovered })}
+      className={classNames({
+        [styles.imageContainer]: true,
+        [styles.hovered]: isHovered,
+      })}
     >
       <MotionImage
         src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageURLs[0]}`}
         alt={title}
         fill
-        sizes="15vw"
+        sizes={sizes}
+        className={styles.image}
         initial={{ scale: 1 }}
         animate={controls}
         transition={transitionProps}

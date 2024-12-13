@@ -37,16 +37,16 @@ const ProjectCard = ({ project }: Props) => {
 
         <div className={styles.contentContainer}>
           <ProjectTitle>{title}</ProjectTitle>
-          <VerticalSpacer height={0.7} />
+          <VerticalSpacer height={11} />
 
           <ProjectOwnerInfo owner={owner} />
-          <VerticalSpacer height={0.7} />
+          <VerticalSpacer height={11} />
 
           <ProjectRemainingTime>{expiresAt}</ProjectRemainingTime>
-          <VerticalSpacer height={0.3} />
+          <VerticalSpacer height={5} />
 
           <ProjectProgressBar raised={raised} cost={cost} />
-          <VerticalSpacer height={0.3} />
+          <VerticalSpacer height={5} />
 
           <SpaceBetweenRow>
             <ProjectText>{raised} ETH Raised</ProjectText>

@@ -8,12 +8,12 @@ interface Props {
   flatEdge?: boolean;
 }
 
-const ProjectProgressBar = ({ raised, cost, height = 0.25, flatEdge }: Props) => {
+const ProjectProgressBar = ({ raised, cost, height = 4, flatEdge }: Props) => {
   const progressPercentage = (raised / cost) * 100;
 
   return (
     <div
-      style={{ height: `${height}rem` }}
+      style={{ height }}
       className={classNames({
         [styles.progressBackground]: true,
         [styles.flatEdge]: flatEdge,

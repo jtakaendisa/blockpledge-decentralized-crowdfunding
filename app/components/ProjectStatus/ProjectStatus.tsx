@@ -7,11 +7,16 @@ import styles from './ProjectStatus.module.scss';
 
 interface Props {
   status: ProjStatus;
+  fontSize?: number;
+  fontWeight?: number;
 }
 
-const ProjectStatus = ({ status }: Props) => {
+const ProjectStatus = ({ status, fontSize, fontWeight }: Props) => {
   return (
-    <span className={classNames(styles.projectStatus, styles[statusColorMap[status]])}>
+    <span
+      style={{ fontSize, fontWeight }}
+      className={classNames(styles.projectStatus, styles[statusColorMap[status]])}
+    >
       {statusMap[status]}
     </span>
   );

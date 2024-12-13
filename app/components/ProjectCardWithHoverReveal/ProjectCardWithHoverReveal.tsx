@@ -65,34 +65,35 @@ const ProjectCardWithHoverReveal = ({ project }: Props) => {
         <ProjectImage
           imageURLs={imageURLs}
           title={title}
-          height={14}
+          height={224}
+          sizes="22vw"
           borderTopLeftRadius={16}
           borderTopRightRadius={16}
         />
 
-        <ProjectProgressBar raised={raised} cost={cost} height={0.65} flatEdge />
-        <VerticalSpacer height={0.2} />
+        <ProjectProgressBar raised={raised} cost={cost} height={10} flatEdge />
+        <VerticalSpacer height={3} />
 
         <div className={styles.contentContainer}>
           <SpaceBetweenRow>
             <ProjectText>{raised} ETH Raised</ProjectText>
             <ProjectText icon="ethereum">{cost} ETH</ProjectText>
           </SpaceBetweenRow>
-          <VerticalSpacer height={0.75} />
+          <VerticalSpacer height={12} />
 
           <ProjectTitle>{title}</ProjectTitle>
-          <VerticalSpacer height={0.5} />
+          <VerticalSpacer height={8} />
 
           <ProjectOwnerInfo owner={owner} />
-          <VerticalSpacer height={0.5} />
+          <VerticalSpacer height={8} />
 
           <ProjectBadge top={8} right={8}>
-            <ProjectCategory categoryId={categoryId} color="white" fontWeight="500" />
+            <ProjectCategory categoryId={categoryId} color="white" fontWeight={500} />
           </ProjectBadge>
         </div>
 
         <ProjectRevealContent isHovered={isHovered}>
-          <VerticalSpacer height={0.5} />
+          <VerticalSpacer height={8} />
           <ProjectText>{description}</ProjectText>
           <VerticalSpacer />
 

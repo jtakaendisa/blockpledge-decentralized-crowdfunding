@@ -4,13 +4,14 @@ import styles from './ProjectRemainingTime.module.scss';
 
 interface Props {
   children: number;
+  fontSize?: number;
+  fontWeight?: number;
   color?: string;
-  fontWeight?: string;
 }
 
-const ProjectRemainingTime = ({ children, color, fontWeight }: Props) => {
+const ProjectRemainingTime = ({ children, fontSize, fontWeight, color }: Props) => {
   return (
-    <span style={{ color, fontWeight }} className={styles.remainingTime}>
+    <span style={{ fontSize, fontWeight, color }} className={styles.remainingTime}>
       {findDaysRemaining(children)}
     </span>
   );

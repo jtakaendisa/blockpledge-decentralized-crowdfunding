@@ -4,22 +4,35 @@ import Image from 'next/image';
 import styles from './ProjectText.module.scss';
 
 interface Props {
-  icon?: string;
   children: ReactNode;
+  icon?: string;
+  iconSize?: number;
+  fontSize?: number;
+  fontWeight?: number;
+  color?: string;
 }
 
-const ProjectText = ({ icon, children }: Props) => {
+const ProjectText = ({
+  children,
+  icon,
+  iconSize = 18,
+  fontSize,
+  fontWeight,
+  color,
+}: Props) => {
   return (
     <div className={styles.textContainer}>
       {icon && (
         <Image
           src={require(`@/public/icons/${icon}.svg`)}
           alt={icon}
-          width={18}
-          height={18}
+          width={iconSize}
+          height={iconSize}
         />
       )}
-      <span>{children}</span>
+      <span style={{ fontSize, fontWeight, color }} className={styles.text}>
+        {children}
+      </span>
     </div>
   );
 };
