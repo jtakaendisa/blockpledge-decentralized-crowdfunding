@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import classNames from 'classnames';
 
 import { Project } from '@/app/store';
+import { truncateText } from '@/app/utils';
 import ProjectImage from '../ProjectImage/ProjectImage';
 import ProjectTitle from '../ProjectTitle/ProjectTitle';
 import ProjectOwnerInfo from '../ProjectOwnerInfo/ProjectOwnerInfo';
@@ -52,6 +53,8 @@ const ProjectCardWithHoverReveal = ({ project }: Props) => {
 
   const toggleHoveredState = () => setIsHovered((prev) => !prev);
 
+  console.log(title.slice(0, 6) + ' ...');
+
   return (
     <motion.div
       onMouseEnter={toggleHoveredState}
@@ -65,7 +68,7 @@ const ProjectCardWithHoverReveal = ({ project }: Props) => {
         <ProjectImage
           imageURLs={imageURLs}
           title={title}
-          height={224}
+          height={176}
           sizes="22vw"
           borderTopLeftRadius={16}
           borderTopRightRadius={16}
@@ -81,7 +84,7 @@ const ProjectCardWithHoverReveal = ({ project }: Props) => {
           </SpaceBetweenRow>
           <VerticalSpacer height={12} />
 
-          <ProjectTitle>{title}</ProjectTitle>
+          <ProjectTitle>{truncateText(title, 29, true)}</ProjectTitle>
           <VerticalSpacer height={8} />
 
           <ProjectOwnerInfo owner={owner} />

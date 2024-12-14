@@ -2,16 +2,24 @@ import { addDays, format } from 'date-fns';
 
 export const truncateAccount = (
   account: string,
-  startCharLength: number,
-  endCharLength: number
+  startCharCount: number,
+  endCharCount: number
 ) => {
   if (account?.length) {
     return (
-      account.slice(0, startCharLength) +
+      account.slice(0, startCharCount) +
       '...' +
-      account.slice(account.length - endCharLength, account.length)
+      account.slice(account.length - endCharCount, account.length)
     );
   } else return '';
+};
+
+export const truncateText = (text: string, charCount: number, ellipsis?: boolean) => {
+  const truncatedText = text.slice(0, charCount + 1);
+
+  if (ellipsis && text.length > charCount) return truncatedText + ' ...';
+
+  return truncatedText;
 };
 
 export const findDaysRemaining = (expiresAt: number) => {

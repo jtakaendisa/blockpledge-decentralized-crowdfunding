@@ -16,6 +16,7 @@ import VerticalSpacer from '@/app/components/VerticalSpacer/VerticalSpacer';
 import FlipButton from '@/app/components/FlipButton/FlipButton';
 
 import styles from './ProjectHighlight.module.scss';
+import { truncateText } from '@/app/utils';
 
 interface Props {
   project: Project;
@@ -46,11 +47,10 @@ const ProjectHighlight = ({ project }: Props) => {
         imageURLs={imageURLs}
         title={title}
         height={projectImageHeight}
-        sizes="40vw"
+        sizes="30vw"
         borderTopLeftRadius={16}
         borderTopRightRadius={16}
       />
-
       <ProjectProgressBar cost={cost} raised={raised} height={10} flatEdge />
       <VerticalSpacer height={6} />
 
@@ -60,11 +60,10 @@ const ProjectHighlight = ({ project }: Props) => {
           <ProjectText icon="ethereum">{cost}</ProjectText>
         </SpaceBetweenRow>
         <VerticalSpacer />
-
-        <ProjectTitle fontSize={26}>{title}</ProjectTitle>
+        <ProjectTitle fontSize={20}>{truncateText(title, 50, true)}</ProjectTitle>
         <VerticalSpacer height={6} />
 
-        <ProjectCategory categoryId={categoryId} fontSize={18} fontWeight={500} />
+        <ProjectCategory categoryId={categoryId} fontSize={16} fontWeight={500} />
         <VerticalSpacer />
 
         <SpaceBetweenRow>
@@ -79,10 +78,10 @@ const ProjectHighlight = ({ project }: Props) => {
         <VerticalSpacer height={6} />
 
         <ProjectRemainingTime fontSize={16}>{expiresAt}</ProjectRemainingTime>
-        <VerticalSpacer height={32} />
+        <VerticalSpacer height={24} />
 
         <ProjectText fontSize={16}>{description}</ProjectText>
-        <VerticalSpacer height={32} />
+        <VerticalSpacer height={24} />
 
         <div className={styles.buttonContainer}>
           <FlipButton onClick={() => animatePageOut(`/projects/${id}`)}>

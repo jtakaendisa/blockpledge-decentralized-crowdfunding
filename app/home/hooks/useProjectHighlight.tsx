@@ -9,7 +9,7 @@ const useProjectHighlight = (cardRef: MutableRefObject<HTMLDivElement | null>) =
     if (!card) return;
 
     const bounds = card.getBoundingClientRect();
-    setProjectImageHeight(bounds.height / 2);
+    setProjectImageHeight(bounds.height / 2.25);
   }, [cardRef]);
 
   return { projectImageHeight };
