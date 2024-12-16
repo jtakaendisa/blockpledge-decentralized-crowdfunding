@@ -7,15 +7,11 @@ const CategoryCardSkeleton = () => {
   return (
     <div className={styles.categoryCard}>
       <div className={styles.categoryIcon}>
-        <Skeleton width={80} height={60} />
+        <Skeleton width={80} height={60} borderRadius={10} />
       </div>
       <div className={styles.categoryName}>
-        <span>
-          <Skeleton width={80} height={12} />
-        </span>
-        <span>
-          <Skeleton width={80} height={12} />
-        </span>
+        <Skeleton width={100} height={16} />
+        <Skeleton width={85} height={16} />
       </div>
     </div>
   );
