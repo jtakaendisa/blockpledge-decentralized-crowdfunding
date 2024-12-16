@@ -53,8 +53,6 @@ const ProjectCardWithHoverReveal = ({ project }: Props) => {
 
   const toggleHoveredState = () => setIsHovered((prev) => !prev);
 
-  console.log(title.slice(0, 6) + ' ...');
-
   return (
     <motion.div
       onMouseEnter={toggleHoveredState}

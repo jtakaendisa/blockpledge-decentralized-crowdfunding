@@ -1,20 +1,21 @@
-$light-green: rgb(83, 167, 83);
-$dark-green: rgb(67, 136, 67);
 $light-gray: rgb(116, 116, 116);
 $dark-gray: rgb(53, 53, 53);
 
-.homeIcon {
+.homeButton {
   display: flex;
   align-items: center;
-  gap: 0.2rem;
-  font-size: 1.2rem;
-  text-decoration: none;
+  gap: calc(0.2rem * var(--scale, 1));
   color: $light-gray;
   transition: color 0.2s;
 
-  & > svg {
-    width: 22px;
-    height: 22px;
+  .text {
+    font-size: calc(1.2rem * var(--scale, 1));
+    text-decoration: none;
+  }
+
+  .icon {
+    width: calc(22px * var(--scale, 1));
+    height: calc(22px * var(--scale, 1));
     fill: $light-gray;
     transition: fill 0.2s;
   }
@@ -22,7 +23,7 @@ $dark-gray: rgb(53, 53, 53);
   &:hover {
     color: $dark-gray;
 
-    & > svg {
+    .icon {
       fill: $dark-gray;
     }
   }

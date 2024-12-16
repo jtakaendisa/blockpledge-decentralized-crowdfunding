@@ -31,3 +31,15 @@ export const statusColorMap = {
   4: 'orange',
   5: 'orange',
 };
+
+export const socials = [
+  { slug: 'nav_email', href: 'mailto:james.takaendisa01@gmail.com' },
+  {
+    slug: 'nav_linkedin',
+    href: 'https://www.linkedin.com/in/james-takaendisa-0b0b68b7/',
+  },
+  {
+    slug: 'nav_github',
+    href: 'https://github.com/jtakaendisa',
+  },
+];
