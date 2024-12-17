@@ -8,10 +8,7 @@ import ProjectCarouselSkeleton from '../ProjectCarouselSkeleton/ProjectCarouselS
 import styles from './FeaturedProjects.module.scss';
 
 const FeaturedProjects = () => {
-  let projects: any;
-
-  projects = useProjectStore((s) => s.projects);
-  projects = [];
+  const projects = useProjectStore((s) => s.projects);
 
   return (
     <section className={styles.featuredProjects}>

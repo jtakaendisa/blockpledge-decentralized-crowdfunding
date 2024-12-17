@@ -1,0 +1,51 @@
+.projectCarousel {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  width: 55%;
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 2rem;
+    height: 100%;
+
+    .card {
+      align-self: flex-start;
+      width: 100%;
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+      overflow: hidden;
+
+      .imageContainer {
+        position: relative;
+        height: 186px;
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+        overflow: hidden;
+      }
+
+      .contentContainer {
+        padding: 0 1rem;
+
+        .heading {
+          font-size: 1rem;
+          font-weight: 500;
+        }
+
+        .text {
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+
+  .pagination {
+    display: flex;
+    align-items: center;
+    align-self: flex-end;
+    gap: 1.2rem;
+    height: 40px;
+  }
+}
