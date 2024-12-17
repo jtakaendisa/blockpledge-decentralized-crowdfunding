@@ -1,0 +1,36 @@
+.highlight {
+  width: 45%;
+
+  .imageContainer {
+    position: relative;
+    overflow: hidden;
+    height: 266px;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+  }
+
+  .contentContainer {
+    padding: 0 1rem;
+
+    .buttonContainer {
+      justify-self: flex-start;
+
+      .button {
+        position: relative;
+      }
+    }
+  }
+
+  .heading {
+    font-size: 20px;
+    font-weight: 500;
+  }
+
+  .largeText {
+    font-size: 1rem;
+  }
+
+  .text {
+    font-size: 0.9rem;
+  }
+}

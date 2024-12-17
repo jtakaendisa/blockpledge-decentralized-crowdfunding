@@ -27,6 +27,8 @@ const revealVariants = {
   }),
 };
 
+const splitName = (name: string) => name.split(' & ');
+
 const CategoryCard = ({ category, index }: Props) => {
   const { id, name } = category;
 
@@ -38,8 +40,6 @@ const CategoryCard = ({ category, index }: Props) => {
     setSelectedCategory(category);
     router.push('/projects');
   };
-
-  const splitName = (name: string) => name.split(' & ');
 
   return (
     <motion.div
