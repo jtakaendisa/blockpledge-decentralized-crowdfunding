@@ -20,11 +20,6 @@ const ProjectDetailsImageGallery = ({ imageURLs, title }: Props) => {
 
   return (
     <div className={styles.imageGallery}>
-      <ProjectDetailsImageGalleryMainImage
-        imageURLs={imageURLs}
-        selectedImageIndex={selectedImageIndex}
-        title={title}
-      />
       {hasMultipleImages(imageURLs) && (
         <ProjectDetailsImageGalleryImageCards
           imageURLs={imageURLs}
@@ -33,6 +28,13 @@ const ProjectDetailsImageGallery = ({ imageURLs, title }: Props) => {
           onSelect={handleImageSelect}
         />
       )}
+
+      <ProjectDetailsImageGalleryMainImage
+        key={selectedImageIndex}
+        imageURLs={imageURLs}
+        selectedImageIndex={selectedImageIndex}
+        title={title}
+      />
     </div>
   );
 };

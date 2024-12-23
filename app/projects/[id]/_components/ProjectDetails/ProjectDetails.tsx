@@ -99,10 +99,8 @@ const ProjectDetails = ({ project, categories }: Props) => {
   return (
     <MediaContextProvider>
       <Media greaterThanOrEqual="cus">
-        <section className={styles.mainContainer}>
-          {!!imageURLs?.length && (
-            <ProjectDetailsImageGallery imageURLs={imageURLs} title={title} />
-          )}
+        <div className={styles.details}>
+          <ProjectDetailsImageGallery imageURLs={imageURLs} title={title} />
           <div className={styles.info}>
             <h2 className={styles.title}>{title}</h2>
             <span className={styles.category}>
@@ -258,7 +256,7 @@ const ProjectDetails = ({ project, categories }: Props) => {
               closeModal={() => setModalState({ ...modalState, deleteIsOpen: false })}
             />
           )}
-        </section>
+        </div>
       </Media>
       {/* <Media lessThan="cus">
         <section className={styles.mobileMainContainer}>

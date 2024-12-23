@@ -52,7 +52,7 @@ const ProjectPage = ({ params: { id } }: Props) => {
 
   useEffect(() => {
     const unsubscribe = listenForEvents(() => setRefreshUi((prev) => !prev));
-    ('');
+
     return () => {
       unsubscribe.then((cleanup) => cleanup());
     };
