@@ -17,6 +17,7 @@ import { followProject } from '@/app/services/authService';
 import { findDaysRemaining, truncateAccount } from '@/app/utils';
 import { Media, MediaContextProvider } from '@/app/media';
 import { statusColorMap } from '@/app/constants';
+import ProjectDetailsImageGallery from '../ProjectDetailsImageGallery/ProjectDetailsImageGallery';
 import ProgressBar from '@/app/components/ProjectProgressBar/ProjectProgressBar';
 import Button from '@/app/components/Button/Button';
 import EditProjectModal from '@/app/components/modals/EditProjectModal/EditProjectModal';
@@ -38,7 +39,7 @@ interface Props {
   categories: Category[];
 }
 
-const TEST_URL = 'udemy.com';
+const PLACEHOLDER_URL = 'https://github.com/jtakaendisa';
 
 const ProjectDetails = ({ project, categories }: Props) => {
   const {
@@ -59,7 +60,6 @@ const ProjectDetails = ({ project, categories }: Props) => {
   const setUpdatingAuthUserData = useAccountStore((s) => s.setUpdatingAuthUserData);
   const updatingFollowStatus = useProjectStore((s) => s.updatingFollowStatus);
   const setUpdatingFollowStatus = useProjectStore((s) => s.setUpdatingFollowStatus);
-  const [selectedImage, setSelectedImage] = useState(0);
   const [urlCopied, setUrlCopied] = useState(false);
   const [modalState, setModalState] = useState({
     backIsOpen: false,
@@ -73,8 +73,6 @@ const ProjectDetails = ({ project, categories }: Props) => {
   const isOpen = project.status === 0;
   const isPendingApproval = project.status === 5;
   const isFollowing = authUser?.following.includes(project.id);
-
-  const largeImageUrl = `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageURLs[selectedImage]}`;
 
   const { backIsOpen, editIsOpen, deleteIsOpen, authorizeIsOpen } = modalState;
 
@@ -102,34 +100,8 @@ const ProjectDetails = ({ project, categories }: Props) => {
     <MediaContextProvider>
       <Media greaterThanOrEqual="cus">
         <section className={styles.mainContainer}>
-          {imageURLs?.length && (
-            <div className={styles.imageGallery}>
-              <div className={styles.imageLarge}>
-                <Image src={largeImageUrl} alt={title} fill sizes="35vw" priority />
-              </div>
-              {imageURLs.length > 1 && (
-                <div className={styles.imageRow}>
-                  {imageURLs.map((image, idx) => (
-                    <div
-                      key={image + idx}
-                      className={classNames({
-                        [styles.imageSmall]: true,
-                        [styles.selected]: idx === selectedImage,
-                      })}
-                      onClick={() => setSelectedImage(idx)}
-                    >
-                      <Image
-                        src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${image}`}
-                        alt={title}
-                        fill
-                        sizes="5vw"
-                        priority
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+          {!!imageURLs?.length && (
+            <ProjectDetailsImageGallery imageURLs={imageURLs} title={title} />
           )}
           <div className={styles.info}>
             <h2 className={styles.title}>{title}</h2>
@@ -164,7 +136,7 @@ const ProjectDetails = ({ project, categories }: Props) => {
                 <p>This project will only be funded if it reaches its goal.</p>
               </div>
             </div>
-            <ProgressBar progress={(raised / cost) * 100} />
+            <ProgressBar cost={cost} raised={raised} />
             <div className={styles.row}>
               <span>{raised} ETH Raised</span>
               <div className={styles.etherTarget}>
@@ -228,17 +200,17 @@ const ProjectDetails = ({ project, categories }: Props) => {
                 )}
               </div>
               <div className={styles.socials}>
-                <FacebookShareButton url={TEST_URL}>
+                <FacebookShareButton url={PLACEHOLDER_URL}>
                   <div className={styles.socialButton}>
                     <Facebook />
                   </div>
                 </FacebookShareButton>
-                <TwitterShareButton url={TEST_URL}>
+                <TwitterShareButton url={PLACEHOLDER_URL}>
                   <div className={styles.socialButton}>
                     <Twitter />
                   </div>
                 </TwitterShareButton>
-                <EmailShareButton url={TEST_URL}>
+                <EmailShareButton url={PLACEHOLDER_URL}>
                   <div className={styles.socialButton}>
                     <Email />
                   </div>
@@ -288,7 +260,7 @@ const ProjectDetails = ({ project, categories }: Props) => {
           )}
         </section>
       </Media>
-      <Media lessThan="cus">
+      {/* <Media lessThan="cus">
         <section className={styles.mobileMainContainer}>
           {imageURLs?.length && (
             <div className={styles.imageGallery}>
@@ -416,17 +388,17 @@ const ProjectDetails = ({ project, categories }: Props) => {
                 )}
               </div>
               <div className={styles.socials}>
-                <FacebookShareButton url={TEST_URL}>
+                <FacebookShareButton url={PLACEHOLDER_URL}>
                   <div className={styles.socialButton}>
                     <Facebook />
                   </div>
                 </FacebookShareButton>
-                <TwitterShareButton url={TEST_URL}>
+                <TwitterShareButton url={PLACEHOLDER_URL}>
                   <div className={styles.socialButton}>
                     <Twitter />
                   </div>
                 </TwitterShareButton>
-                <EmailShareButton url={TEST_URL}>
+                <EmailShareButton url={PLACEHOLDER_URL}>
                   <div className={styles.socialButton}>
                     <Email />
                   </div>
@@ -449,7 +421,7 @@ const ProjectDetails = ({ project, categories }: Props) => {
             </div>
           </div>
         </section>
-      </Media>
+      </Media> */}
       <div className={styles.divider} />
     </MediaContextProvider>
   );

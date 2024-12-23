@@ -5,7 +5,6 @@ import { ToastContainer } from 'react-toastify';
 
 import { Backer, Project, useProjectStore } from '@/app/store';
 import useBlockchain from '@/app/hooks/useBlockchain';
-import Header from '@/app/components/TopNav/TopNav';
 import ProjectDetails from './_components/ProjectDetails/ProjectDetails';
 import InfoSelector from './_components/InfoSelector/InfoSelector';
 import ProjectBackers from './_components/ProjectBackers/ProjectBackers';
@@ -53,7 +52,7 @@ const ProjectPage = ({ params: { id } }: Props) => {
 
   useEffect(() => {
     const unsubscribe = listenForEvents(() => setRefreshUi((prev) => !prev));
-
+    ('');
     return () => {
       unsubscribe.then((cleanup) => cleanup());
     };
@@ -61,28 +60,24 @@ const ProjectPage = ({ params: { id } }: Props) => {
 
   if (error) return <div>{error.message}</div>;
 
+  if (!project) return null;
+
   return (
     <div className={styles.projectPage}>
-      <Header />
-      {!project ? (
-        <ProjectDetailsSkeleton />
-      ) : (
-        <>
-          <ProjectDetails project={project} categories={categories} />
-          <InfoSelector onSelectInfo={handleSelectInfo} selectedInfo={selectedInfo}>
+      <ProjectDetails project={project} categories={categories} />
+
+      {/* <InfoSelector onSelectInfo={handleSelectInfo} selectedInfo={selectedInfo}>
             {selectedInfo === 'donations' && (
               <ProjectBackers backers={backers} project={project} />
             )}
             {selectedInfo === 'comments' && <ProjectComments backers={backers} />}
-          </InfoSelector>
-          <ToastContainer
-            position="bottom-center"
-            autoClose={3000}
-            theme="dark"
-            hideProgressBar
-          />
-        </>
-      )}
+          </InfoSelector> */}
+      <ToastContainer
+        position="bottom-center"
+        autoClose={3000}
+        theme="dark"
+        hideProgressBar
+      />
     </div>
   );
 };
