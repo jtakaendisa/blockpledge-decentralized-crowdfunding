@@ -1,0 +1,10 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+
+  .topRow {
+    display: flex;
+    justify-content: space-between;
+  }
+}

@@ -1,0 +1,15 @@
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  .value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #3c6e71;
+  }
+
+  .unit {
+    font-weight: 700;
+  }
+}

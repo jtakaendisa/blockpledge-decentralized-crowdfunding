@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { AuthUser } from '@/app/store';
 import { truncateAccount } from '@/app/utils';
 import Button from '../Button/Button';
-import User from '../categories/icons/User';
+import User from '../icons/User';
 import userSVG from '@/public/icons/user.svg';
 import walletSVG from '@/public/icons/wallet.svg';
 

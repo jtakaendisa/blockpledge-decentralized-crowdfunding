@@ -1,17 +1,17 @@
 import { create } from 'zustand';
 import { User } from 'firebase/auth';
-import Art from './components/categories/icons/Art';
-import Tech from './components/categories/icons/Tech';
-import Community from './components/categories/icons/Community';
-import Fashion from './components/categories/icons/Fashion';
-import Food from './components/categories/icons/Food';
-import Gaming from './components/categories/icons/Gaming';
-import Travel from './components/categories/icons/Travel';
-import Education from './components/categories/icons/Education';
-import Health from './components/categories/icons/Health';
-import Crafts from './components/categories/icons/Crafts';
-import Finance from './components/categories/icons/Finance';
-import Pets from './components/categories/icons/Pets';
+import Art from './components/icons/Art';
+import Tech from './components/icons/Tech';
+import Community from './components/icons/Community';
+import Fashion from './components/icons/Fashion';
+import Food from './components/icons/Food';
+import Gaming from './components/icons/Gaming';
+import Travel from './components/icons/Travel';
+import Education from './components/icons/Education';
+import Health from './components/icons/Health';
+import Crafts from './components/icons/Crafts';
+import Finance from './components/icons/Finance';
+import Pets from './components/icons/Pets';
 import { ReactNode } from 'react';
 
 export type AuthUser = User & {

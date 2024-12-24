@@ -7,11 +7,11 @@ interface Props {
   children: ReactNode;
   color?: 'green' | 'gray' | 'red' | 'orange';
   inverted?: boolean;
-  onClick?: () => void;
   disabled?: boolean;
+  onClick?: () => void;
 }
 
-const Button = ({ color = 'green', inverted, children, onClick, disabled }: Props) => {
+const Button = ({ color = 'green', inverted, children, disabled, onClick }: Props) => {
   return (
     <button
       className={classNames({

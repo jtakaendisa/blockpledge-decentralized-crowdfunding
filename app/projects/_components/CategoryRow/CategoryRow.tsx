@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 
 import { Category, categoryImageMap } from '@/app/store';
-import Categories from '@/app/components/categories/icons/Categories';
+import Categories from '@/app/components/icons/Categories';
 
 import styles from './CategoryRow.module.scss';
 

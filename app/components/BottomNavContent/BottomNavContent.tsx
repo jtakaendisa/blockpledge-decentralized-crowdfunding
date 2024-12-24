@@ -1,4 +1,4 @@
-import Heart from '../categories/icons/Heart';
+import Heart from '../icons/Heart';
 import BottomNavSocials from '../BottomNavSocials/BottomNavSocials';
 
 import styles from './BottomNavContent.module.scss';

@@ -1,4 +1,4 @@
-import { findDaysRemaining } from '@/app/utils';
+import { findRemainingTime } from '@/app/utils';
 
 import styles from './ProjectRemainingTime.module.scss';
 
@@ -12,7 +12,7 @@ interface Props {
 const ProjectRemainingTime = ({ children, fontSize, fontWeight, color }: Props) => {
   return (
     <span style={{ fontSize, fontWeight, color }} className={styles.remainingTime}>
-      {findDaysRemaining(children)}
+      {findRemainingTime(children)}
     </span>
   );
 };

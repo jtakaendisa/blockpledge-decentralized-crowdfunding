@@ -1,0 +1,50 @@
+.followButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  width: 48px;
+  height: 30px;
+  margin-left: 0.5rem;
+  background-color: white;
+  border-width: 0;
+  border-radius: 8px;
+  box-shadow: 0 0.2rem 0.35rem rgba(53, 53, 53, 0.25);
+}
+
+.tooltipButton {
+  position: relative;
+
+  .tooltip {
+    visibility: hidden;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    text-align: center;
+    text-wrap: nowrap;
+    padding: 5px;
+    border-radius: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+  }
+
+  .tooltip.show {
+    visibility: visible;
+    opacity: 1;
+  }
+}

@@ -22,7 +22,6 @@ interface Props {
 export type Info = 'donations' | 'comments';
 
 const ProjectPage = ({ params: { id } }: Props) => {
-  const categories = useProjectStore((s) => s.categories);
   const { getProject, getBackers, getCategories, listenForEvents } = useBlockchain();
   const [project, setProject] = useState<Project | null>(null);
   const [backers, setBackers] = useState<Backer[]>([]);
@@ -64,7 +63,7 @@ const ProjectPage = ({ params: { id } }: Props) => {
 
   return (
     <div className={styles.projectPage}>
-      <ProjectDetails project={project} categories={categories} />
+      <ProjectDetails project={project} />
 
       {/* <InfoSelector onSelectInfo={handleSelectInfo} selectedInfo={selectedInfo}>
             {selectedInfo === 'donations' && (
@@ -72,6 +71,7 @@ const ProjectPage = ({ params: { id } }: Props) => {
             )}
             {selectedInfo === 'comments' && <ProjectComments backers={backers} />}
           </InfoSelector> */}
+
       <ToastContainer
         position="bottom-center"
         autoClose={3000}

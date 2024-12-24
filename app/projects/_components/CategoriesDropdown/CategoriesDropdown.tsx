@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { Category } from '@/app/store';
 import MobileCategoryCard from '../MobileCategoryCard/MobileCategoryCard';
-import Categories from '@/app/components/categories/icons/Categories';
+import Categories from '@/app/components/icons/Categories';
 
 import styles from './CategoriesDropdown.module.scss';
 

@@ -1,0 +1,41 @@
+@import '../../breakpoints.scss';
+
+$light-green: rgb(83, 167, 83);
+$dark-green: rgb(67, 136, 67);
+$light-gray: rgb(76, 84, 95);
+$light-red: rgb(202, 57, 49);
+$light-orange: rgb(216, 96, 41);
+
+.socials {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  .socialButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border-radius: 50%;
+    box-shadow: 0 0.2rem 0.35rem rgba(53, 53, 53, 0.25);
+
+    & > svg {
+      width: 22px;
+      height: 22px;
+      fill: #353535;
+      transition: fill 0.2s;
+    }
+
+    &:hover {
+      & > svg {
+        fill: #3c6e71;
+      }
+    }
+  }
+
+  @include media('<1320px') {
+    scale: 0.8;
+  }
+}

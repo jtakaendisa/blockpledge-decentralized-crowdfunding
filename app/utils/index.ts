@@ -22,7 +22,7 @@ export const truncateText = (text: string, charCount: number, ellipsis?: boolean
   return truncatedText;
 };
 
-export const findDaysRemaining = (expiresAt: number) => {
+export const findRemainingTime = (expiresAt: number): [string | number, string] => {
   const today = Number(new Date());
   const millisecondsInADay = 1000 * 60 * 60 * 24;
   const expired = Date.now() > expiresAt * 1000;
@@ -39,9 +39,9 @@ export const findDaysRemaining = (expiresAt: number) => {
   if (expired) return ['-', 'expired'];
 
   return differenceInDays === 1
-    ? [1, 'day left']
+    ? [1, ' day left']
     : differenceInDays === 0
-    ? ['-', 'a few hours left']
+    ? ['-', ' a few hours left']
     : [differenceInDays, ' days left'];
 };
 

@@ -1,7 +1,7 @@
 'use client';
 
 import TransitionLink from '../TransitionLink/TransitionLink';
-import Coin from '../categories/icons/Coin';
+import Coin from '../icons/Coin';
 
 import styles from './HomeButton.module.scss';
 

@@ -1,7 +1,7 @@
 import { socials } from '@/app/constants';
-import Envelope from '../categories/icons/Envelope';
-import LinkedIn from '../categories/icons/LinkedIn';
-import Github from '../categories/icons/Github';
+import Envelope from '../icons/Envelope';
+import LinkedIn from '../icons/LinkedIn';
+import Github from '../icons/Github';
 import BottomNavSocialIcon from '../BottomNavSocialIcon/BottomNavSocialIcon';
 
 import styles from './BottomNavSocials.module.scss';

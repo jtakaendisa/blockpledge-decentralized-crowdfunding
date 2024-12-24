@@ -19,6 +19,8 @@ export const colors = {
   gray: '#9b9e9e',
   darkGray: '#353535',
   darkGreen: '#3c6e71',
+  orange: '#d86029',
+  red: '#ca3931',
   whiteSolid: '#fff',
   whiteTransparent: 'rgba(255, 255, 255, 0.9)',
 };

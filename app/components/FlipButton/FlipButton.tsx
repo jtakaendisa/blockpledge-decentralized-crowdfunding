@@ -13,6 +13,7 @@ interface Props {
   backgroundColor1?: string;
   backgroundColor2?: string;
   borderColor?: string;
+  scale?: number;
   onClick: () => void;
 }
 
@@ -38,6 +39,7 @@ const FlipButton = ({
   backgroundColor1 = lightGray,
   backgroundColor2 = darkGreen,
   borderColor = darkGreen,
+  scale = 1,
   onClick,
 }: Props) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -46,8 +48,15 @@ const FlipButton = ({
 
   const color = isHovered ? textColor2 : textColor1;
 
+  const buttonRef = (element: HTMLDivElement) => {
+    if (element) {
+      element.style.setProperty('--scale', scale.toString());
+    }
+  };
+
   return (
     <motion.div
+      ref={buttonRef}
       onPointerEnter={toggleHoverState}
       onPointerLeave={toggleHoverState}
       initial="initial"
@@ -63,7 +72,7 @@ const FlipButton = ({
       />
 
       {/* Main Text */}
-      <span onClick={onClick} style={{ color }}>
+      <span onClick={onClick} className={styles.mainText} style={{ color }}>
         <SlideUpText playAnimation={isHovered}>{children}</SlideUpText>
       </span>
     </motion.div>
