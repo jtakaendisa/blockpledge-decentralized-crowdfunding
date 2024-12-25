@@ -6,14 +6,19 @@ import styles from './ProjectDetails.module.scss';
 
 interface Props {
   project: Project;
+  blurDataURLs: string[];
 }
 
-const ProjectDetails = ({ project }: Props) => {
+const ProjectDetails = ({ project, blurDataURLs }: Props) => {
   const { imageURLs, title } = project;
 
   return (
     <div className={styles.details}>
-      <ProjectDetailsImageGallery imageURLs={imageURLs} title={title} />
+      <ProjectDetailsImageGallery
+        imageURLs={imageURLs}
+        title={title}
+        blurDataURLs={blurDataURLs}
+      />
       <ProjectDetailsContent project={project} />
     </div>
   );

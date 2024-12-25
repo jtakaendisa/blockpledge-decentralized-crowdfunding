@@ -7,6 +7,7 @@ interface Props {
   imageURLs: string[];
   selectedImageIndex: number;
   title: string;
+  blurDataURLs: string[];
 }
 
 const revealVariants = {
@@ -25,6 +26,7 @@ const ProjectDetailsImageGalleryMainImage = ({
   imageURLs,
   selectedImageIndex,
   title,
+  blurDataURLs,
 }: Props) => {
   const mainImageUrl = `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageURLs[selectedImageIndex]}`;
 
@@ -35,7 +37,14 @@ const ProjectDetailsImageGalleryMainImage = ({
       animate="animate"
       variants={revealVariants}
     >
-      <Image src={mainImageUrl} alt={title} fill sizes="35vw" priority />
+      <Image
+        src={mainImageUrl}
+        alt={title}
+        fill
+        sizes="35vw"
+        placeholder="blur"
+        blurDataURL={blurDataURLs[selectedImageIndex]}
+      />
     </motion.div>
   );
 };

@@ -8,11 +8,12 @@ import styles from './ProjectDetailsImageGallery.module.scss';
 interface Props {
   imageURLs: string[];
   title: string;
+  blurDataURLs: string[];
 }
 
 const hasMultipleImages = (imageURLs: string[]) => imageURLs.length > 1;
 
-const ProjectDetailsImageGallery = ({ imageURLs, title }: Props) => {
+const ProjectDetailsImageGallery = ({ imageURLs, title, blurDataURLs }: Props) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   const handleImageSelect = (selectedImageIndex: number) =>
@@ -34,6 +35,7 @@ const ProjectDetailsImageGallery = ({ imageURLs, title }: Props) => {
         imageURLs={imageURLs}
         selectedImageIndex={selectedImageIndex}
         title={title}
+        blurDataURLs={blurDataURLs}
       />
     </div>
   );

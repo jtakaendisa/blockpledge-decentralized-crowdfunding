@@ -20,7 +20,6 @@ const ProjectDetailsImageGalleryImageCard = ({
 }: Props) => {
   return (
     <div
-      key={imageURL}
       className={classNames({
         [styles.imageCard]: true,
         [styles.selected]: index === selectedImageIndex,
@@ -31,7 +30,7 @@ const ProjectDetailsImageGalleryImageCard = ({
         src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageURL}`}
         alt={title}
         fill
-        sizes="5vw"
+        sizes="76px"
         priority
       />
     </div>

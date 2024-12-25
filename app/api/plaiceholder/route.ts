@@ -1,0 +1,39 @@
+import { NextResponse, NextRequest } from 'next/server';
+import { getPlaiceholder } from 'plaiceholder';
+
+export async function POST(req: NextRequest) {
+  const imageUrls = await req.json();
+
+  if (!Array.isArray(imageUrls)) {
+    return NextResponse.json(
+      { error: 'Invalid data format. Expected an array.' },
+      { status: 400 }
+    );
+  }
+
+  try {
+    const generateBlurDataURLs = async () => {
+      const promises = imageUrls.map(async (imageUrl) => {
+        const buffer = await fetch(
+          `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageUrl}`
+        ).then(async (res) => Buffer.from(await res.arrayBuffer()));
+
+        const { base64 } = await getPlaiceholder(buffer);
+        return base64;
+      });
+
+      const results = await Promise.all(promises);
+      return results;
+    };
+
+    const blurDataURLs = await generateBlurDataURLs();
+
+    return NextResponse.json({ blurDataURLs }, { status: 200 });
+  } catch (error) {
+    console.error('Error generating plaiceholder:', error);
+    return NextResponse.json(
+      { error: 'Failed to generate blurDataURLs' },
+      { status: 500 }
+    );
+  }
+}
