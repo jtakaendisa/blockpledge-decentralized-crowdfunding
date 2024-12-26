@@ -26,6 +26,7 @@ const ProjectDetailsImageGallery = ({ imageURLs, title, blurDataURLs }: Props) =
           imageURLs={imageURLs}
           selectedImageIndex={selectedImageIndex}
           title={title}
+          blurDataURLs={blurDataURLs}
           onSelect={handleImageSelect}
         />
       )}

@@ -9,7 +9,7 @@ const usePinata = (setUploading: (uploading: boolean) => void) => {
 
         data.set('file', file);
 
-        const res = await fetch('/api/files', {
+        const res = await fetch('/api/pinata', {
           method: 'POST',
           body: data,
         });

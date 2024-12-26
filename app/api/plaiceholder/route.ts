@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     const generateBlurDataURLs = async () => {
       const promises = imageUrls.map(async (imageUrl) => {
         const buffer = await fetch(
-          `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageUrl}`
+          `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageUrl}?img-width=10&img-height=10`
         ).then(async (res) => Buffer.from(await res.arrayBuffer()));
 
         const { base64 } = await getPlaiceholder(buffer);
