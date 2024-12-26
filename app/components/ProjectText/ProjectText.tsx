@@ -30,9 +30,9 @@ const ProjectText = ({
           height={iconSize}
         />
       )}
-      <span style={{ fontSize, fontWeight, color }} className={styles.text}>
+      <p style={{ fontSize, fontWeight, color }} className={styles.text}>
         {children}
-      </span>
+      </p>
     </div>
   );
 };

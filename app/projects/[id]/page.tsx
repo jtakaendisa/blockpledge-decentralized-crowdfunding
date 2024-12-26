@@ -11,6 +11,7 @@ import InfoSelector from './_components/InfoSelector/InfoSelector';
 import ProjectBackers from './_components/ProjectBackers/ProjectBackers';
 import ProjectComments from './_components/ProjectComments/ProjectComments';
 import ProjectDetailsSkeleton from './_components/ProjectDetailsSkeleton/ProjectDetailsSkeleton';
+import ErrorFallback from '@/app/components/ErrorFallback/ErrorFallback';
 
 import styles from './page.module.scss';
 
@@ -31,6 +32,8 @@ const ProjectPage = ({ params: { id } }: Props) => {
   const [error, setError] = useState<Error | null>(null);
   const [selectedInfo, setSelectedInfo] = useState<Info>('donations');
   const [refreshUi, setRefreshUi] = useState(false);
+
+  const isLoading = !project || !backers || !blurDataURLs;
 
   const handleSelectInfo = (selection: Info) => {
     setSelectedInfo(selection);
@@ -62,13 +65,17 @@ const ProjectPage = ({ params: { id } }: Props) => {
     };
   }, [listenForEvents]);
 
-  if (error) return <div>{error.message}</div>;
-
-  if (!project || !backers || !blurDataURLs) return null;
+  if (error) {
+    return <ErrorFallback error={error} />;
+  }
 
   return (
     <div className={styles.projectPage}>
-      <ProjectDetails project={project} blurDataURLs={blurDataURLs} />
+      {isLoading ? (
+        <></>
+      ) : (
+        <ProjectDetails project={project} blurDataURLs={blurDataURLs} />
+      )}
 
       {/* <InfoSelector onSelectInfo={handleSelectInfo} selectedInfo={selectedInfo}>
             {selectedInfo === 'donations' && (
