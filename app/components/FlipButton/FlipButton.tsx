@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 
 import { colors } from '@/app/constants';
 import SlideUpText from '../SlideUpText/SlideUpText';
@@ -17,7 +17,7 @@ interface Props {
   onClick: () => void;
 }
 
-const hoverVariants = {
+const hoverVariants: Variants = {
   initial: {
     y: '100%',
   },
@@ -26,6 +26,7 @@ const hoverVariants = {
     transition: {
       duration: 0.2,
       ease: 'easeInOut',
+      bounce: 0,
     },
   },
 };
@@ -44,8 +45,6 @@ const FlipButton = ({
 }: Props) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  const toggleHoverState = () => setIsHovered((prev) => !prev);
-
   const color = isHovered ? textColor2 : textColor1;
 
   const buttonRef = (element: HTMLDivElement) => {
@@ -53,6 +52,8 @@ const FlipButton = ({
       element.style.setProperty('--scale', scale.toString());
     }
   };
+
+  const toggleHoverState = () => setIsHovered((prev) => !prev);
 
   return (
     <motion.div

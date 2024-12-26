@@ -77,7 +77,7 @@ const ProjectDetailsContent = ({ project }: Props) => {
       </SpaceBetweenRow>
       <VerticalSpacer height={24} />
 
-      <ProjectProgressBar raised={raised} cost={cost} />
+      <ProjectProgressBar height={10} raised={raised} cost={cost} />
       <VerticalSpacer height={12} />
 
       <SpaceBetweenRow>

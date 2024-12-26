@@ -13,14 +13,14 @@ const ProjectDetails = ({ project, blurDataURLs }: Props) => {
   const { imageURLs, title } = project;
 
   return (
-    <div className={styles.details}>
+    <section className={styles.details}>
       <ProjectDetailsImageGallery
         imageURLs={imageURLs}
         title={title}
         blurDataURLs={blurDataURLs}
       />
       <ProjectDetailsContent project={project} />
-    </div>
+    </section>
   );
 };
 

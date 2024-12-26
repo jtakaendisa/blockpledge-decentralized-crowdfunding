@@ -2,16 +2,4 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-
-  .follow {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-
-    & > svg {
-      width: 18px;
-      height: 18px;
-      transition: fill 0.2s;
-    }
-  }
 }

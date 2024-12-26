@@ -72,7 +72,7 @@ const ProjectPage = ({ params: { id } }: Props) => {
   return (
     <div className={styles.projectPage}>
       {isLoading ? (
-        <></>
+        <ProjectDetailsSkeleton />
       ) : (
         <ProjectDetails project={project} blurDataURLs={blurDataURLs} />
       )}
