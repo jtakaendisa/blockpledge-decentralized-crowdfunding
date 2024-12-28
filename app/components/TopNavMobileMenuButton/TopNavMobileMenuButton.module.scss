@@ -1,0 +1,11 @@
+$dark-gray: rgb(53, 53, 53);
+
+.mobileMenuButton {
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: color 0.2s;
+
+  &:hover {
+    color: $dark-gray;
+  }
+}

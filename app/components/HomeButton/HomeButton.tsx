@@ -9,9 +9,9 @@ interface Props {
   scale?: number;
 }
 
-const HomeButton = ({ scale }: Props) => {
+const HomeButton = ({ scale = 1 }: Props) => {
   const homeButtonRef = (element: HTMLDivElement | null) => {
-    if (element && scale) {
+    if (element) {
       element.style.setProperty('--scale', scale.toString());
     }
   };

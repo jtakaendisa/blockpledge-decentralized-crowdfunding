@@ -12,12 +12,12 @@ interface Props {
 
 const revealVariants = {
   initial: {
-    opacity: 0,
+    opacity: 0.5,
   },
   animate: {
     opacity: 1,
     transition: {
-      duration: 0.85,
+      duration: 0.5,
     },
   },
 };

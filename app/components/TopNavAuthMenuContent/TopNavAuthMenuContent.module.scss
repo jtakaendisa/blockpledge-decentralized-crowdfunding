@@ -1,28 +1,10 @@
 $light-gray: rgb(116, 116, 116);
 $dark-gray: rgb(53, 53, 53);
-$dark-green: rgb(67, 136, 67);
 
-.mobileMenu {
-  color: $light-gray;
-  cursor: pointer;
-  transition: color 0.2s;
-
-  &:hover {
-    color: $dark-gray;
-  }
-}
-
-.dropDownMenu {
+.authMenuContent {
   display: flex;
   flex-direction: column;
-  position: absolute;
-  gap: 0.5rem;
-  top: 72px;
-  right: 0;
-  background-color: white;
-  padding: 1rem;
-  border: 1px solid rgba($color: $light-gray, $alpha: 0.5);
-  border-radius: 8px;
+  padding: 0.25rem 1rem;
 
   .row {
     display: flex;
@@ -33,18 +15,14 @@ $dark-green: rgb(67, 136, 67);
     border-radius: 8px;
     transition: background-color 0.2s;
 
-    & > span {
-      text-wrap: nowrap;
-      cursor: pointer;
-    }
-
     &:hover {
       background-color: rgba($color: $light-gray, $alpha: 0.1);
     }
   }
 
-  .signOutButtonContainer {
+  .buttonContainer {
     align-self: center;
+    padding-bottom: 0.75rem;
     margin-top: 1rem;
   }
 }

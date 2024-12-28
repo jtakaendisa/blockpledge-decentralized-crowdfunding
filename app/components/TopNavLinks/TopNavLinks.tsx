@@ -1,72 +1,43 @@
 import Skeleton from 'react-loading-skeleton';
 
-import { Media } from '@/app/media';
-import { routes } from '@/app/constants';
-import usePageNavigation from '@/app/hooks/usePageNavigation';
-import useTopNavLinks from '@/app/hooks/useTopNavLinks';
+import { RoutePath, TopNavLink as TNLink } from '@/app/entities';
 import TopNavLink from '../TopNavLink/TopNavLink';
-import TopNavDropdownMenu from '../TopNavDropdownMenu/TopNavDropdownMenu';
 
 import styles from './TopNavLinks.module.scss';
 
-const TopNavLinks = () => {
-  const { animatePageOut } = usePageNavigation();
-  const {
-    authUser,
-    connectedAccount,
-    isAdmin,
-    loadingAuth,
-    hoveredLink,
-    handleLinkHover,
-    resetSelectedCategory,
-    handleWalletConnection,
-  } = useTopNavLinks();
+interface Props {
+  links: TNLink[];
+  isAuthenticating: boolean;
+  hoveredLink: RoutePath | null;
+  onHover: (hoveredLink: RoutePath | null) => void;
+  onComplete: () => void;
+}
 
+const TopNavLinks = ({
+  links,
+  isAuthenticating,
+  hoveredLink,
+  onHover,
+  onComplete,
+}: Props) => {
   return (
-    <div className={styles.topNavLinks}>
-      <Media greaterThanOrEqual="sm">
-        <ul className={styles.row}>
+    <ul className={styles.topNavLinks}>
+      {links.map(({ label, routePath, isEnabled }) =>
+        isEnabled ? (
           <TopNavLink
-            routePath={routes.projects}
+            key={label}
+            routePath={routePath}
             hoveredLink={hoveredLink}
-            onHover={handleLinkHover}
-            onComplete={resetSelectedCategory}
+            onHover={onHover}
+            onComplete={onComplete}
           >
-            Explore Projects
+            {label}
           </TopNavLink>
-          {loadingAuth && !authUser && <Skeleton width={110} height={16} />}
-          {authUser && !isAdmin && (
-            <TopNavLink
-              routePath={routes.userDashboard}
-              hoveredLink={hoveredLink}
-              onHover={handleLinkHover}
-              onComplete={resetSelectedCategory}
-            >
-              My Dashboard
-            </TopNavLink>
-          )}
-          {loadingAuth && !authUser && <Skeleton circle width={40} height={40} />}
-          {isAdmin && (
-            <TopNavLink
-              routePath={routes.adminDashboard}
-              hoveredLink={hoveredLink}
-              onHover={handleLinkHover}
-              onComplete={resetSelectedCategory}
-            >
-              Admin Dashboard
-            </TopNavLink>
-          )}
-        </ul>
-      </Media>
-      <TopNavDropdownMenu
-        authUser={authUser}
-        connectedAccount={connectedAccount}
-        isAdmin={isAdmin}
-        loadingAuth={loadingAuth}
-        onWalletConnect={handleWalletConnection}
-        onNavigate={animatePageOut}
-      />
-    </div>
+        ) : null
+      )}
+
+      {isAuthenticating && <Skeleton width={110} height={16} />}
+    </ul>
   );
 };
 

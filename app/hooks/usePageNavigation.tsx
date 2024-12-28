@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { animate, useAnimate } from 'framer-motion';
 
 import { RoutePath } from '../entities';
@@ -36,6 +36,7 @@ const animateBlocks = (rows: number, columns: number, animationType: 'in' | 'out
 
 const usePageNavigation = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const [_, animate] = useAnimate();
 
   const navigateToPage = useCallback((href: RoutePath) => router.push(href), [router]);
@@ -64,6 +65,7 @@ const usePageNavigation = () => {
       const route = document.getElementById('pt-route');
 
       if (!page || !route) return;
+      if (pathname === href) return;
 
       route.textContent = pathnameMap[href as keyof typeof pathnameMap];
 
@@ -85,7 +87,7 @@ const usePageNavigation = () => {
           console.log(error);
         });
     },
-    [navigateToPage, animate]
+    [pathname, navigateToPage, animate]
   );
 
   return { navigateToPage, animatePageIn, animatePageOut };

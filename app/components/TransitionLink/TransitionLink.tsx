@@ -1,7 +1,6 @@
 'use client';
 
 import { ReactNode, MouseEvent } from 'react';
-import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 import { RoutePath } from '@/app/entities';
@@ -16,17 +15,13 @@ interface Props {
 }
 
 const TransitionLink = ({ href, children, onComplete }: Props) => {
-  const pathname = usePathname();
-
   const { animatePageOut } = usePageNavigation();
 
   const handleClick = (e: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>) => {
     e.preventDefault();
 
-    if (pathname !== href) {
-      animatePageOut(href);
-      onComplete?.();
-    }
+    animatePageOut(href);
+    onComplete?.();
   };
 
   return (

@@ -1,10 +1,12 @@
+import { ReactNode } from 'react';
 import classNames from 'classnames';
-import styles from './TopNavLink.module.scss';
+
+import { RoutePath } from '@/app/entities';
 import { usePathname } from 'next/navigation';
 import TransitionLink from '../TransitionLink/TransitionLink';
 import SlideUpText from '../SlideUpText/SlideUpText';
-import { ReactNode } from 'react';
-import { RoutePath } from '@/app/entities';
+
+import styles from './TopNavLink.module.scss';
 
 interface Props {
   children: ReactNode;

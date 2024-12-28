@@ -6,7 +6,7 @@ import { useAccountStore, useProjectStore } from '../store';
 import { authStateChangeListener, formatAuthUserData } from '../services/authService';
 import useBlockchain from './useBlockchain';
 
-const useTopNavLinks = () => {
+const useTopNav = () => {
   const connectedAccount = useAccountStore((s) => s.connectedAccount);
   const authUser = useAccountStore((s) => s.authUser);
   const updatingAuthUserData = useAccountStore((s) => s.updatingAuthUserData);
@@ -27,6 +27,7 @@ const useTopNavLinks = () => {
   const [refreshUi, setRefreshUi] = useState(false);
 
   const isAdmin = authUser?.uid === process.env.NEXT_PUBLIC_ADMIN_UID;
+  const isAuthenticating = loadingAuth && !authUser;
 
   const handleWalletConnection = useCallback(async () => {
     const { accounts } = await connectWallet();
@@ -95,10 +96,11 @@ const useTopNavLinks = () => {
   }, [listenForEvents]);
 
   return {
+    isAdmin,
+    isAuthenticating,
     connectedAccount,
     authUser,
     loadingAuth,
-    isAdmin,
     hoveredLink,
     handleLinkHover,
     resetSelectedCategory,
@@ -106,4 +108,4 @@ const useTopNavLinks = () => {
   };
 };
 
-export default useTopNavLinks;
+export default useTopNav;
