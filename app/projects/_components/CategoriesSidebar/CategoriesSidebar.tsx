@@ -1,6 +1,7 @@
 'use client';
 
-import { Category, useProjectStore } from '@/app/store';
+import { Category } from '@/app/store';
+import { generateIncrementingArray } from '@/app/utils';
 import CategoryRow from '../CategoryRow/CategoryRow';
 import CategoryRowSkeleton from '../CategoryRowSkeleton/CategoryRowSkeleton';
 
@@ -11,11 +12,9 @@ interface Props {
   selectedCategoryId: number | null;
 }
 
-const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+const skeletons = generateIncrementingArray(13);
 
 const CategoriesSidebar = ({ categories, selectedCategoryId }: Props) => {
-  const setSelectedCategory = useProjectStore((s) => s.setSelectedCategory);
-
   return (
     <aside className={styles.sidebar}>
       <h2>Browse by Category</h2>

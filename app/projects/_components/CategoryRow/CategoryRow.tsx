@@ -19,7 +19,9 @@ const CategoryRow = ({ category, selectedCategoryId }: Props) => {
       className={classNames({
         [styles.categoryRow]: true,
         [styles.selected]:
-          selectedCategoryId === category?.id || (!category && !selectedCategoryId),
+          (typeof selectedCategoryId === 'number' &&
+            selectedCategoryId === category?.id) ||
+          (!category && typeof selectedCategoryId !== 'number'),
       })}
     >
       {category ? categoryImageMap[category.id] : <Categories />}

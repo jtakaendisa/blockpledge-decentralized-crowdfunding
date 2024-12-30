@@ -1,9 +1,9 @@
 import { ReactNode } from 'react';
+import Link from 'next/link';
 
 import { Social } from '@/app/entities';
 
 import styles from './BottomNavSocialIcon.module.scss';
-import Link from 'next/link';
 
 interface Props {
   social: Social;
