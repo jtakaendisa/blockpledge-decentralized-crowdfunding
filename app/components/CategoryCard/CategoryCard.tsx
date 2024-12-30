@@ -1,9 +1,7 @@
-'use client';
-
-import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 
-import { Category, categoryImageMap, useProjectStore } from '@/app/store';
+import { Category, categoryImageMap } from '@/app/store';
+import usePageNavigation from '@/app/hooks/usePageNavigation';
 
 import styles from './CategoryCard.module.scss';
 
@@ -30,16 +28,11 @@ const revealVariants = {
 const splitName = (name: string) => name.split(' & ');
 
 const CategoryCard = ({ category, index }: Props) => {
+  const { animatePageOut } = usePageNavigation();
+
   const { id, name } = category;
 
-  const router = useRouter();
-
-  const setSelectedCategory = useProjectStore((s) => s.setSelectedCategory);
-
-  const handleSelectCategory = (category: Category) => {
-    setSelectedCategory(category);
-    router.push('/projects');
-  };
+  const handleCategorySelect = () => animatePageOut(`/projects?categoryId=${id}`);
 
   return (
     <motion.div
@@ -49,7 +42,7 @@ const CategoryCard = ({ category, index }: Props) => {
       whileInView="animate"
       viewport={{ once: true }}
       className={styles.categoryCard}
-      onClick={() => handleSelectCategory(category)}
+      onClick={handleCategorySelect}
     >
       <div className={styles.categoryIcon}>{categoryImageMap[id]}</div>
       <div className={styles.categoryName}>

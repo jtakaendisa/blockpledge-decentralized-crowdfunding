@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
 
-import { RoutePath, TopNavLink } from '@/app/entities';
+import { TopNavLink } from '@/app/entities';
 import useTopNavDropdownMenu from '@/app/hooks/useTopNavDropdownMenu';
 import TopNavMobileMenuButton from '../TopNavMobileMenuButton/TopNavMobileMenuButton';
 import TopNavMobileMenuLinks from '../TopNavMobileMenuLinks/TopNavMobileMenuLinks';
@@ -11,10 +11,9 @@ import styles from './TopNavMobileMenu.module.scss';
 
 interface Props {
   links: TopNavLink[];
-  onNavigate: (routePath: RoutePath) => void;
 }
 
-const TopNavMobileMenu = ({ links, onNavigate }: Props) => {
+const TopNavMobileMenu = ({ links }: Props) => {
   const menuButtonRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -30,7 +29,7 @@ const TopNavMobileMenu = ({ links, onNavigate }: Props) => {
       <AnimatePresence>
         {isDropdownOpen && (
           <TopNavDropdownMenu ref={dropdownRef}>
-            <TopNavMobileMenuLinks links={links} onNavigate={onNavigate} />
+            <TopNavMobileMenuLinks links={links} />
           </TopNavDropdownMenu>
         )}
       </AnimatePresence>

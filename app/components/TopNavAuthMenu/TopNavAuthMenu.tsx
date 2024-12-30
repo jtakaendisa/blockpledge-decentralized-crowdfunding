@@ -1,9 +1,9 @@
 import { useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
 
-import { RoutePath } from '@/app/entities';
 import { AuthUser } from '@/app/store';
 import { signOutAuthUser } from '@/app/services/authService';
+import usePageNavigation from '@/app/hooks/usePageNavigation';
 import useTopNavDropdownMenu from '@/app/hooks/useTopNavDropdownMenu';
 import TopNavAuthMenuButton from '../TopNavAuthMenuButton/TopNavAuthMenuButton';
 import TopNavDropdownMenu from '../TopNavDropdownMenu/TopNavDropdownMenu';
@@ -14,20 +14,14 @@ import styles from './TopNavAuthMenu.module.scss';
 
 interface Props {
   authUser: AuthUser | null;
-  connectedAccount: string;
   loadingAuth: boolean;
-  onNavigate: (routePath: RoutePath) => void;
 }
 
-const TopNavAuthMenu = ({
-  authUser,
-  connectedAccount,
-  loadingAuth,
-  onNavigate,
-}: Props) => {
+const TopNavAuthMenu = ({ authUser, loadingAuth }: Props) => {
   const menuButtonRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  const { animatePageOut } = usePageNavigation();
   const { isDropdownOpen, toggleDropdownOpenState } = useTopNavDropdownMenu(
     menuButtonRef,
     dropdownRef
@@ -36,7 +30,10 @@ const TopNavAuthMenu = ({
   return (
     <div className={styles.authMenu}>
       {!loadingAuth && !authUser && (
-        <FlipButton onClick={() => onNavigate('/auth')} backgroundColor1="transparent">
+        <FlipButton
+          onClick={() => animatePageOut('/auth')}
+          backgroundColor1="transparent"
+        >
           Sign In
         </FlipButton>
       )}
@@ -48,11 +45,7 @@ const TopNavAuthMenu = ({
       <AnimatePresence>
         {authUser && isDropdownOpen && (
           <TopNavDropdownMenu ref={dropdownRef}>
-            <TopNavAuthMenuContent
-              authUser={authUser}
-              connectedAccount={connectedAccount}
-              onSignOut={signOutAuthUser}
-            />
+            <TopNavAuthMenuContent authUser={authUser} onSignOut={signOutAuthUser} />
           </TopNavDropdownMenu>
         )}
       </AnimatePresence>

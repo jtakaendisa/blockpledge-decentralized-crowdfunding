@@ -6,7 +6,7 @@
   cursor: pointer;
 
   .icon {
-    & > svg path {
+    & > svg {
       transition: fill 0.2s;
     }
   }
@@ -19,7 +19,7 @@
 
   &:hover {
     .icon {
-      & > svg path {
+      & > svg {
         fill: #3c6e71;
       }
     }

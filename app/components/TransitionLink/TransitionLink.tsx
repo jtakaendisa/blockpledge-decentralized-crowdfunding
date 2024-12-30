@@ -11,17 +11,15 @@ import styles from './TransitionLink.module.scss';
 interface Props {
   href: RoutePath;
   children: ReactNode;
-  onComplete?: () => void;
 }
 
-const TransitionLink = ({ href, children, onComplete }: Props) => {
+const TransitionLink = ({ href, children }: Props) => {
   const { animatePageOut } = usePageNavigation();
 
   const handleClick = (e: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>) => {
     e.preventDefault();
 
     animatePageOut(href);
-    onComplete?.();
   };
 
   return (

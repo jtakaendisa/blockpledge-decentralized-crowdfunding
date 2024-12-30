@@ -1,13 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 import { User } from 'firebase/auth';
 
-import { RoutePath } from '../entities';
 import { useAccountStore, useProjectStore } from '../store';
 import { authStateChangeListener, formatAuthUserData } from '../services/authService';
 import useBlockchain from './useBlockchain';
 
 const useTopNav = () => {
-  const connectedAccount = useAccountStore((s) => s.connectedAccount);
   const authUser = useAccountStore((s) => s.authUser);
   const updatingAuthUserData = useAccountStore((s) => s.updatingAuthUserData);
   const setConnectedAccount = useAccountStore((s) => s.setConnectedAccount);
@@ -15,13 +13,10 @@ const useTopNav = () => {
   const setProjects = useProjectStore((s) => s.setProjects);
   const setStats = useProjectStore((s) => s.setStats);
   const setCategories = useProjectStore((s) => s.setCategories);
-  const setSelectedCategory = useProjectStore((s) => s.setSelectedCategory);
   const setUpdatingFollowStatus = useProjectStore((s) => s.setUpdatingFollowStatus);
 
   const { connectWallet, getProjects, getCategories, listenForEvents } =
     useBlockchain();
-
-  const [hoveredLink, setHoveredLink] = useState<RoutePath | null>(null);
 
   const [loadingAuth, setLoadingAuth] = useState(false);
   const [refreshUi, setRefreshUi] = useState(false);
@@ -36,11 +31,6 @@ const useTopNav = () => {
       setConnectedAccount(accounts[0]);
     }
   }, [connectWallet, setConnectedAccount]);
-
-  const handleLinkHover = (hoveredLink: RoutePath | null) =>
-    setHoveredLink(hoveredLink);
-
-  const resetSelectedCategory = () => setSelectedCategory(null);
 
   useEffect(() => {
     const handleChainChange = () => {
@@ -98,12 +88,8 @@ const useTopNav = () => {
   return {
     isAdmin,
     isAuthenticating,
-    connectedAccount,
     authUser,
     loadingAuth,
-    hoveredLink,
-    handleLinkHover,
-    resetSelectedCategory,
     handleWalletConnection,
   };
 };

@@ -8,17 +8,13 @@ import styles from './CategoriesSidebar.module.scss';
 
 interface Props {
   categories: Category[];
-  selectedCategory: Category | null;
+  selectedCategoryId: number | null;
 }
 
 const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 
-const CategoriesSidebar = ({ categories, selectedCategory }: Props) => {
+const CategoriesSidebar = ({ categories, selectedCategoryId }: Props) => {
   const setSelectedCategory = useProjectStore((s) => s.setSelectedCategory);
-
-  const handleCategorySelection = (category: Category | null) => {
-    setSelectedCategory(category);
-  };
 
   return (
     <aside className={styles.sidebar}>
@@ -31,16 +27,12 @@ const CategoriesSidebar = ({ categories, selectedCategory }: Props) => {
         </div>
       ) : (
         <div>
-          <CategoryRow
-            selectedCategory={selectedCategory}
-            onSelectCategory={handleCategorySelection}
-          />
+          <CategoryRow selectedCategoryId={selectedCategoryId} />
           {categories.map((category) => (
             <CategoryRow
               key={category.id}
               category={category}
-              selectedCategory={selectedCategory}
-              onSelectCategory={handleCategorySelection}
+              selectedCategoryId={selectedCategoryId}
             />
           ))}
         </div>

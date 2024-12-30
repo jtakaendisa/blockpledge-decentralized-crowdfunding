@@ -1,28 +1,33 @@
 import classNames from 'classnames';
 
 import { Category, categoryImageMap } from '@/app/store';
+import usePageNavigation from '@/app/hooks/usePageNavigation';
 import Categories from '@/app/components/icons/Categories';
 
 import styles from './CategoryRow.module.scss';
 
 interface Props {
   category?: Category;
-  selectedCategory?: Category | null;
-  onSelectCategory: (category: Category | null) => void;
+  selectedCategoryId: number | null;
 }
 
-const CategoryRow = ({ category, selectedCategory, onSelectCategory }: Props) => {
+const CategoryRow = ({ category, selectedCategoryId }: Props) => {
+  const { navigateToPage } = usePageNavigation();
+
   return (
     <div
       className={classNames({
         [styles.categoryRow]: true,
-        [styles.selected]: selectedCategory?.id === category?.id,
+        [styles.selected]:
+          selectedCategoryId === category?.id || (!category && !selectedCategoryId),
       })}
     >
       {category ? categoryImageMap[category.id] : <Categories />}
       <span
         className={styles.categoryName}
-        onClick={() => onSelectCategory(category ? category : null)}
+        onClick={() =>
+          navigateToPage(category ? `/projects?categoryId=${category.id}` : '/projects')
+        }
       >
         {category ? category.name : 'All Categories'}
       </span>

@@ -2,7 +2,6 @@
 
 import { routes } from '@/app/constants';
 import { Media } from '@/app/media';
-import usePageNavigation from '@/app/hooks/usePageNavigation';
 import useTopNav from '@/app/hooks/useTopNav';
 import HomeButton from '../HomeButton/HomeButton';
 import TopNavLinks from '../TopNavLinks/TopNavLinks';
@@ -13,17 +12,7 @@ import styles from './TopNav.module.scss';
 import 'react-loading-skeleton/dist/skeleton.css';
 
 const TopNav = () => {
-  const { animatePageOut } = usePageNavigation();
-  const {
-    isAdmin,
-    isAuthenticating,
-    authUser,
-    connectedAccount,
-    loadingAuth,
-    hoveredLink,
-    handleLinkHover,
-    resetSelectedCategory,
-  } = useTopNav();
+  const { isAdmin, isAuthenticating, authUser, loadingAuth } = useTopNav();
 
   const links = [
     {
@@ -49,25 +38,14 @@ const TopNav = () => {
 
       <div className={styles.row}>
         <Media greaterThanOrEqual="sm">
-          <TopNavLinks
-            links={links}
-            isAuthenticating={isAuthenticating}
-            hoveredLink={hoveredLink}
-            onHover={handleLinkHover}
-            onComplete={resetSelectedCategory}
-          />
+          <TopNavLinks links={links} isAuthenticating={isAuthenticating} />
         </Media>
 
         <Media lessThan="sm">
-          <TopNavMobileMenu links={links} onNavigate={animatePageOut} />
+          <TopNavMobileMenu links={links} />
         </Media>
 
-        <TopNavAuthMenu
-          authUser={authUser}
-          connectedAccount={connectedAccount}
-          loadingAuth={loadingAuth}
-          onNavigate={animatePageOut}
-        />
+        <TopNavAuthMenu authUser={authUser} loadingAuth={loadingAuth} />
       </div>
     </header>
   );

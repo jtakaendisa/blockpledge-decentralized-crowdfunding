@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { Category, Project, useProjectStore } from '@/app/store';
+import { Project, useProjectStore } from '@/app/store';
 import Button from '../Button/Button';
 import ProjectCard from '../ProjectCard/ProjectCard';
 import ProjectCardSkeleton from '../ProjectCardSkeleton/ProjectCardSkeleton';
@@ -11,14 +11,14 @@ import styles from './ProjectsGrid.module.scss';
 
 interface Props {
   projects: Project[];
-  selectedCategory?: Category | null;
+  selectedCategoryId: number | null;
 }
 
 const COUNT = 12;
 
 const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-const ProjectsGrid = ({ projects, selectedCategory }: Props) => {
+const ProjectsGrid = ({ projects, selectedCategoryId }: Props) => {
   const searchText = useProjectStore((s) => s.searchText);
   const [filteredProjects, setFilteredProjects] = useState(projects);
   const [end, setEnd] = useState(12);
@@ -42,20 +42,20 @@ const ProjectsGrid = ({ projects, selectedCategory }: Props) => {
   }, [searchText, projects, end]);
 
   useEffect(() => {
-    if (selectedCategory && projects.length) {
+    if (projects.length) {
       setFilteredProjects(
-        projects.filter((project) => project.categoryId === selectedCategory.id)
+        projects.filter((project) => project.categoryId === selectedCategoryId)
       );
     }
 
-    if (!selectedCategory && projects.length) {
+    if (typeof selectedCategoryId !== 'number' && projects.length) {
       setFilteredProjects(projects);
     }
-  }, [selectedCategory, projects, end]);
+  }, [selectedCategoryId, projects, end]);
 
   useEffect(() => {
     setEnd(12);
-  }, [selectedCategory]);
+  }, [selectedCategoryId]);
 
   return (
     <section className={styles.projects}>

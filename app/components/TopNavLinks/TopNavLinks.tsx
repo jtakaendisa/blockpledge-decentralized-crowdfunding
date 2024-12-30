@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
 import { RoutePath, TopNavLink as TNLink } from '@/app/entities';
@@ -8,18 +9,14 @@ import styles from './TopNavLinks.module.scss';
 interface Props {
   links: TNLink[];
   isAuthenticating: boolean;
-  hoveredLink: RoutePath | null;
-  onHover: (hoveredLink: RoutePath | null) => void;
-  onComplete: () => void;
 }
 
-const TopNavLinks = ({
-  links,
-  isAuthenticating,
-  hoveredLink,
-  onHover,
-  onComplete,
-}: Props) => {
+const TopNavLinks = ({ links, isAuthenticating }: Props) => {
+  const [hoveredLink, setHoveredLink] = useState<RoutePath | null>(null);
+
+  const handleLinkHover = (hoveredLink: RoutePath | null) =>
+    setHoveredLink(hoveredLink);
+
   return (
     <ul className={styles.topNavLinks}>
       {links.map(({ label, routePath, isEnabled }) =>
@@ -28,8 +25,7 @@ const TopNavLinks = ({
             key={label}
             routePath={routePath}
             hoveredLink={hoveredLink}
-            onHover={onHover}
-            onComplete={onComplete}
+            onHover={handleLinkHover}
           >
             {label}
           </TopNavLink>

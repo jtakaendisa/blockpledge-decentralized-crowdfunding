@@ -1,23 +1,13 @@
-$light-gray: rgb(116, 116, 116);
-$dark-gray: rgb(53, 53, 53);
-
 .authMenuContent {
   display: flex;
   flex-direction: column;
   padding: 0.25rem 1rem;
 
-  .row {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 0.5rem 1rem;
-    border: 1px solid rgba($color: $light-gray, $alpha: 0.25);
-    border-radius: 8px;
-    transition: background-color 0.2s;
-
-    &:hover {
-      background-color: rgba($color: $light-gray, $alpha: 0.1);
-    }
+  .heading {
+    font-size: 1.2rem;
+    font-weight: 500;
+    padding-top: 0.75rem;
+    border-bottom: 1px solid #9b9e9e;
   }
 
   .buttonContainer {

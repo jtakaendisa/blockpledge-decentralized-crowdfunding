@@ -1,5 +1,5 @@
 import { colors } from '@/app/constants';
-import { AuthUser } from '@/app/store';
+import { AuthUser, useAccountStore } from '@/app/store';
 import { truncateAccount } from '@/app/utils';
 
 import TopNavAuthMenuContentItem from '../TopNavAuthMenuContentItem/TopNavAuthMenuContentItem';
@@ -11,13 +11,14 @@ import styles from './TopNavAuthMenuContent.module.scss';
 
 interface Props {
   authUser: AuthUser;
-  connectedAccount: string;
   onSignOut: () => void;
 }
 
 const { whiteSolid } = colors;
 
-const TopNavAuthMenuContent = ({ authUser, connectedAccount, onSignOut }: Props) => {
+const TopNavAuthMenuContent = ({ authUser, onSignOut }: Props) => {
+  const connectedAccount = useAccountStore((s) => s.connectedAccount);
+
   const contentItems = [
     {
       label: authUser.email!,
@@ -31,6 +32,8 @@ const TopNavAuthMenuContent = ({ authUser, connectedAccount, onSignOut }: Props)
 
   return (
     <div className={styles.authMenuContent}>
+      <h6 className={styles.heading}>User Info</h6>
+
       {contentItems.map(({ label, icon }) => (
         <TopNavAuthMenuContentItem key={label} label={label} icon={icon} />
       ))}

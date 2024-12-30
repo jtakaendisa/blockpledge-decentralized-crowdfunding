@@ -286,8 +286,8 @@ const dummyProjects = [
     title: 'Renewable Energy Revolution',
     description:
       'Back renewable energy projects aimed at accelerating the transition to clean and sustainable energy sources.',
-    imageURLs: getRandomImages(imageCategoryMap[0], 3),
-    category: 0,
+    imageURLs: getRandomImages(imageCategoryMap[1], 3),
+    category: 1,
     cost: 300,
     expiresAt: getRandomDate(),
   },
@@ -826,8 +826,8 @@ const dummyProjects = [
     title: 'Artificial Intelligence Research',
     description:
       'Back a research project focused on advancing artificial intelligence technologies for applications in healthcare, finance, robotics, and natural language processing.',
-    imageURLs: getRandomImages(imageCategoryMap[0], 3),
-    category: 0,
+    imageURLs: getRandomImages(imageCategoryMap[1], 3),
+    category: 1,
     cost: 320,
     expiresAt: getRandomDate(),
   },

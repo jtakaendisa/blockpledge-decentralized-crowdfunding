@@ -13,16 +13,9 @@ interface Props {
   routePath: RoutePath;
   hoveredLink: RoutePath | null;
   onHover: (routePath: RoutePath | null) => void;
-  onComplete: () => void;
 }
 
-const TopNavLink = ({
-  children,
-  routePath,
-  hoveredLink,
-  onHover,
-  onComplete,
-}: Props) => {
+const TopNavLink = ({ children, routePath, hoveredLink, onHover }: Props) => {
   const pathname = usePathname();
 
   return (
@@ -34,7 +27,7 @@ const TopNavLink = ({
       onMouseEnter={() => onHover(routePath)}
       onMouseLeave={() => onHover(null)}
     >
-      <TransitionLink href={routePath} onComplete={onComplete}>
+      <TransitionLink href={routePath}>
         <SlideUpText playAnimation={hoveredLink === routePath}>{children}</SlideUpText>
       </TransitionLink>
     </li>
