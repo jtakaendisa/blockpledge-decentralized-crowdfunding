@@ -1,0 +1,52 @@
+.filterCategory {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  cursor: pointer;
+
+  .icon {
+    & > svg {
+      width: 30px;
+      height: 30px;
+      fill: #353535;
+      transition: fill 0.2s;
+    }
+  }
+
+  .text {
+    font-weight: 500;
+    color: #5a5a5a;
+  }
+
+  &:not(:last-child) {
+    border-bottom: 1px solid #9b9e9e;
+  }
+
+  &:hover {
+    .icon {
+      & > svg {
+        fill: #3c6e71;
+      }
+    }
+
+    .text {
+      color: #353535;
+      text-decoration: underline;
+    }
+  }
+}
+
+.selected {
+  .icon {
+    & > svg {
+      fill: #3c6e71;
+    }
+  }
+
+  .text {
+    font-weight: bold;
+    text-decoration: underline;
+    color: #353535;
+  }
+}

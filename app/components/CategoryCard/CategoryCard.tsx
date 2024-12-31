@@ -1,12 +1,14 @@
+import { ReactNode } from 'react';
 import { motion } from 'framer-motion';
 
-import { Category, categoryImageMap } from '@/app/store';
+import { Category } from '@/app/store';
 import usePageNavigation from '@/app/hooks/usePageNavigation';
 
 import styles from './CategoryCard.module.scss';
 
 interface Props {
   category: Category;
+  icon: ReactNode;
   index: number;
 }
 
@@ -27,7 +29,7 @@ const revealVariants = {
 
 const splitName = (name: string) => name.split(' & ');
 
-const CategoryCard = ({ category, index }: Props) => {
+const CategoryCard = ({ category, icon, index }: Props) => {
   const { animatePageOut } = usePageNavigation();
 
   const { id, name } = category;
@@ -44,7 +46,7 @@ const CategoryCard = ({ category, index }: Props) => {
       className={styles.categoryCard}
       onClick={handleCategorySelect}
     >
-      <div className={styles.categoryIcon}>{categoryImageMap[id]}</div>
+      <div className={styles.categoryIcon}>{icon}</div>
       <div className={styles.categoryName}>
         {splitName(name).map((part, idx) => (
           <span key={part}>

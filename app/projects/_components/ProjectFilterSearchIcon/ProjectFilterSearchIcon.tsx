@@ -32,6 +32,7 @@ const ProjectFilterSearchIcon = ({ children, align, onClick }: Props) => {
       className={classNames({
         [styles.icon]: true,
         [styles[align]]: true,
+        [styles.button]: !!onClick,
       })}
       initial="initial"
       animate="animate"
