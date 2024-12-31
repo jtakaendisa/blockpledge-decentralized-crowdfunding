@@ -17,6 +17,10 @@
     transition: color 0.2s;
   }
 
+  &:not(:last-child) {
+    border-bottom: 1px solid #9b9e9e;
+  }
+
   &:hover {
     .icon {
       & > svg {
@@ -28,8 +32,4 @@
       color: rgb(53, 53, 53);
     }
   }
-}
-
-.underline {
-  border-bottom: 1px solid #9b9e9e;
 }

@@ -8,7 +8,7 @@ interface Props {
   index: number;
   selectedImageIndex: number;
   title: string;
-  blurDataURLs: string[];
+  blurDataURL: string;
   onSelect: (index: number) => void;
 }
 
@@ -17,7 +17,7 @@ const ProjectDetailsImageGalleryImageCard = ({
   index,
   selectedImageIndex,
   title,
-  blurDataURLs,
+  blurDataURL,
   onSelect,
 }: Props) => {
   return (
@@ -34,7 +34,7 @@ const ProjectDetailsImageGalleryImageCard = ({
         fill
         sizes="76px"
         placeholder="blur"
-        blurDataURL={blurDataURLs[index]}
+        blurDataURL={blurDataURL}
       />
     </div>
   );

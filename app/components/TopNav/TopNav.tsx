@@ -45,7 +45,11 @@ const TopNav = () => {
           <TopNavMobileMenu links={links} />
         </Media>
 
-        <TopNavAuthMenu authUser={authUser} loadingAuth={loadingAuth} />
+        <TopNavAuthMenu
+          authUser={authUser}
+          loadingAuth={loadingAuth}
+          isAuthenticating={isAuthenticating}
+        />
       </div>
     </header>
   );

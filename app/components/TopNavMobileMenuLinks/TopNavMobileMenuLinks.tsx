@@ -1,4 +1,4 @@
-import { RoutePath, TopNavLink } from '@/app/entities';
+import { TopNavLink } from '@/app/entities';
 import TopNavMobileMenuLink from '../TopNavMobileMenuLink/TopNavMobileMenuLink';
 
 import styles from './TopNavMobileMenuLinks.module.scss';
@@ -13,11 +13,7 @@ const TopNavMobileMenuLinks = ({ links }: Props) => {
   return (
     <div className={styles.mobileMenuLinks}>
       {enabledLinks.map(({ label, routePath }, index) => (
-        <TopNavMobileMenuLink
-          key={label}
-          routePath={routePath}
-          isUnderlined={index < enabledLinks.length - 1}
-        >
+        <TopNavMobileMenuLink key={label} routePath={routePath}>
           {label}
         </TopNavMobileMenuLink>
       ))}

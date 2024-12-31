@@ -27,6 +27,7 @@ const FeaturedProjects = () => {
   return (
     <section className={styles.featuredProjects}>
       <SectionHeading>Featured Projects.</SectionHeading>
+
       <div className={styles.row}>
         {isLoading ? (
           <ProjectHighlightSkeleton />

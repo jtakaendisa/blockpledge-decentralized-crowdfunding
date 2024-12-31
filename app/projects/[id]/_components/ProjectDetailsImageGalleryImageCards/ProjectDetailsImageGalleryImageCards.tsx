@@ -26,7 +26,7 @@ const ProjectDetailsImageGalleryImageCards = ({
           index={index}
           selectedImageIndex={selectedImageIndex}
           title={title}
-          blurDataURLs={blurDataURLs}
+          blurDataURL={blurDataURLs[index]}
           onSelect={onSelect}
         />
       ))}

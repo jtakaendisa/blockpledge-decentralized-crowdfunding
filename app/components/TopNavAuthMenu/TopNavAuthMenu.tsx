@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
+import Skeleton from 'react-loading-skeleton';
 
 import { AuthUser } from '@/app/store';
 import { signOutAuthUser } from '@/app/services/authService';
@@ -15,9 +16,10 @@ import styles from './TopNavAuthMenu.module.scss';
 interface Props {
   authUser: AuthUser | null;
   loadingAuth: boolean;
+  isAuthenticating: boolean;
 }
 
-const TopNavAuthMenu = ({ authUser, loadingAuth }: Props) => {
+const TopNavAuthMenu = ({ authUser, loadingAuth, isAuthenticating }: Props) => {
   const menuButtonRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -38,6 +40,7 @@ const TopNavAuthMenu = ({ authUser, loadingAuth }: Props) => {
         </FlipButton>
       )}
 
+      {isAuthenticating && <Skeleton width={44} height={44} circle />}
       {authUser && (
         <TopNavAuthMenuButton ref={menuButtonRef} onClick={toggleDropdownOpenState} />
       )}

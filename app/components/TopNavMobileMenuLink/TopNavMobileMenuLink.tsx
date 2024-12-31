@@ -1,21 +1,19 @@
 import { ReactNode } from 'react';
-import classNames from 'classnames';
 import { motion, useAnimationControls } from 'framer-motion';
 
 import { RoutePath } from '@/app/entities';
 import usePageNavigation from '@/app/hooks/usePageNavigation';
+import useTopNavMenuIconAnimations from '@/app/hooks/useTopNavMenuIconAnimations';
 import TopRightArrow from '../icons/TopRightArrow';
 
 import styles from './TopNavMobileMenuLink.module.scss';
-import useTopNavMenuIconAnimations from '@/app/hooks/useTopNavMenuIconAnimations';
 
 interface Props {
   children: ReactNode;
   routePath: RoutePath;
-  isUnderlined: boolean;
 }
 
-const TopNavMobileMenuLink = ({ children, routePath, isUnderlined }: Props) => {
+const TopNavMobileMenuLink = ({ children, routePath }: Props) => {
   const controls = useAnimationControls();
 
   const { animatePageOut } = usePageNavigation();
@@ -25,10 +23,7 @@ const TopNavMobileMenuLink = ({ children, routePath, isUnderlined }: Props) => {
 
   return (
     <div
-      className={classNames({
-        [styles.mobileMenuLink]: true,
-        [styles.underline]: isUnderlined,
-      })}
+      className={styles.mobileMenuLink}
       onMouseEnter={toggleHoveredState}
       onMouseLeave={toggleHoveredState}
       onClick={handleNavigate}
