@@ -1,27 +1,31 @@
 import { Project } from '@/app/store';
 import useProjectCarousel from '../../hooks/useProjectCarousel';
-import ProjectGrid from '../ProjectGrid/ProjectGrid';
-import ProjectPagination from '../ProjectPagination/ProjectPagination';
+import ProjectCarouselGrid from '../ProjectCarouselGrid/ProjectCarouselGrid';
+import ProjectCarouselPagination from '../ProjectCarouselPagination/ProjectCarouselPagination';
 
 import styles from './ProjectCarousel.module.scss';
 
 interface Props {
   projects: Project[];
+  totalPages: number;
+  chunkSize: number;
 }
 
-const TOTAL_PAGES = 3;
-
-const ProjectCarousel = ({ projects }: Props) => {
+const ProjectCarousel = ({ projects, totalPages, chunkSize }: Props) => {
   const { selectedPage, handlePageSelect, handlePageChange } = useProjectCarousel();
 
   return (
     <div className={styles.projectCarousel}>
-      <ProjectGrid projects={projects} selectedPage={selectedPage} />
-      <ProjectPagination
+      <ProjectCarouselGrid
+        projects={projects}
         selectedPage={selectedPage}
-        totalPages={TOTAL_PAGES}
+        chunkSize={chunkSize}
+      />
+      <ProjectCarouselPagination
+        selectedPage={selectedPage}
+        totalPages={totalPages}
         onSelect={handlePageSelect}
-        onChange={handlePageChange.bind(null, TOTAL_PAGES)}
+        onChange={handlePageChange.bind(null, totalPages)}
       />
     </div>
   );

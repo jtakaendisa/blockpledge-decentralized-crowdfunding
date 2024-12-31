@@ -10,6 +10,7 @@ interface Props {
   title: string;
   height?: number;
   sizes?: string;
+  blurDataURL?: string;
   borderTopLeftRadius?: number;
   borderTopRightRadius?: number;
   borderBottomRightRadius?: number;
@@ -29,6 +30,7 @@ const ProjectImage = ({
   title,
   height = 256,
   sizes = '15vw',
+  blurDataURL,
   borderTopLeftRadius,
   borderTopRightRadius,
   borderBottomRightRadius,
@@ -64,6 +66,8 @@ const ProjectImage = ({
         alt={title}
         fill
         sizes={sizes}
+        placeholder={blurDataURL ? 'blur' : 'empty'}
+        blurDataURL={blurDataURL}
         className={styles.image}
         initial={{ scale: 1 }}
         animate={controls}

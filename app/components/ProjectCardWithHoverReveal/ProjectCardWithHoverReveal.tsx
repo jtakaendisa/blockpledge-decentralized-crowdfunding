@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import classNames from 'classnames';
 
 import { Project } from '@/app/store';
@@ -20,20 +19,8 @@ import VerticalSpacer from '../VerticalSpacer/VerticalSpacer';
 import styles from './ProjectCardWithHoverReveal.module.scss';
 
 interface Props {
-  project: Project;
+  project: Project & { blurDataURL: string };
 }
-
-const revealVariants = {
-  initial: {
-    opacity: 0,
-  },
-  animate: {
-    opacity: 1,
-    transition: {
-      duration: 0.85,
-    },
-  },
-};
 
 const ProjectCardWithHoverReveal = ({ project }: Props) => {
   const {
@@ -47,6 +34,7 @@ const ProjectCardWithHoverReveal = ({ project }: Props) => {
     raised,
     cost,
     status,
+    blurDataURL,
   } = project;
 
   const [isHovered, setIsHovered] = useState(false);
@@ -54,13 +42,10 @@ const ProjectCardWithHoverReveal = ({ project }: Props) => {
   const toggleHoveredState = () => setIsHovered((prev) => !prev);
 
   return (
-    <motion.div
+    <div
       onMouseEnter={toggleHoveredState}
       onMouseLeave={toggleHoveredState}
       className={classNames({ [styles.card]: true, [styles.hovered]: isHovered })}
-      initial="initial"
-      animate="animate"
-      variants={revealVariants}
     >
       <Link href={`/projects/${id}`} className={styles.link}>
         <ProjectImage
@@ -68,6 +53,7 @@ const ProjectCardWithHoverReveal = ({ project }: Props) => {
           title={title}
           height={176}
           sizes="22vw"
+          blurDataURL={blurDataURL}
           borderTopLeftRadius={16}
           borderTopRightRadius={16}
         />
@@ -107,7 +93,7 @@ const ProjectCardWithHoverReveal = ({ project }: Props) => {
           <VerticalSpacer />
         </ProjectRevealContent>
       </Link>
-    </motion.div>
+    </div>
   );
 };
 

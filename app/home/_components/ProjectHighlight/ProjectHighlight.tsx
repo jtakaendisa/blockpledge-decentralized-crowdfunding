@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 
 import { Project } from '@/app/store';
+import { truncateText } from '@/app/utils';
 import useProjectHighlight from '../../hooks/useProjectHighlight';
 import usePageNavigation from '@/app/hooks/usePageNavigation';
 import ProjectImage from '@/app/components/ProjectImage/ProjectImage';
@@ -16,13 +17,13 @@ import VerticalSpacer from '@/app/components/VerticalSpacer/VerticalSpacer';
 import FlipButton from '@/app/components/FlipButton/FlipButton';
 
 import styles from './ProjectHighlight.module.scss';
-import { truncateText } from '@/app/utils';
 
 interface Props {
   project: Project;
+  blurDataURL: string;
 }
 
-const ProjectHighlight = ({ project }: Props) => {
+const ProjectHighlight = ({ project, blurDataURL }: Props) => {
   const {
     id,
     owner,
@@ -48,6 +49,7 @@ const ProjectHighlight = ({ project }: Props) => {
         title={title}
         height={projectImageHeight}
         sizes="30vw"
+        blurDataURL={blurDataURL}
         borderTopLeftRadius={16}
         borderTopRightRadius={16}
       />

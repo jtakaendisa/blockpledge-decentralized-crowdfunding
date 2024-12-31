@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 
-import styles from './ProjectPaginationListItem.module.scss';
+import styles from './ProjectCarouselPaginationListItem.module.scss';
 
 interface Props {
   pageNumber: number;
@@ -8,7 +8,11 @@ interface Props {
   onSelect: (selectedPage: number) => void;
 }
 
-const ProjectPaginationListItem = ({ pageNumber, selectedPage, onSelect }: Props) => {
+const ProjectCarouselPaginationListItem = ({
+  pageNumber,
+  selectedPage,
+  onSelect,
+}: Props) => {
   const isSelected = pageNumber === selectedPage;
 
   return (
@@ -32,4 +36,4 @@ const ProjectPaginationListItem = ({ pageNumber, selectedPage, onSelect }: Props
   );
 };
 
-export default ProjectPaginationListItem;
+export default ProjectCarouselPaginationListItem;
