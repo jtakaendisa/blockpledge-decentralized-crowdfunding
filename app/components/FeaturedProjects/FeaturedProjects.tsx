@@ -1,6 +1,6 @@
 import { useProjectStore } from '@/app/store';
 import { useFeaturedProjectsState } from '@/app/contexts/FeaturedProjectsContext';
-import useFeaturedProjects from '@/app/home/hooks/useFeaturedProjects';
+import useFeaturedProjects from '@/app/home/_hooks/useFeaturedProjects';
 import SectionHeading from '../SectionHeading/SectionHeading';
 import ProjectHighlight from '@/app/home/_components/ProjectHighlight/ProjectHighlight';
 import ProjectHighlightSkeleton from '../ProjectHighlightSkeleton/ProjectHighlightSkeleton';
