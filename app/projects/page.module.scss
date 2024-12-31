@@ -1,30 +1,6 @@
-.browseProjectsPage {
-  padding: 0 1.5rem;
-
-  .mainContent {
-    display: flex;
-
-    .projectsSection {
-      display: flex;
-      width: 100%;
-      flex-direction: column;
-      gap: 2rem;
-      margin-top: 7rem;
-
-      .searchFilters {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        gap: 1rem;
-
-        .dropdownMenuContainer {
-          position: relative;
-        }
-      }
-    }
-  }
-
-  & > section:nth-child(2) {
-    margin-top: 9rem;
-  }
+.projectsPage {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: calc(72px + 6rem);
 }

@@ -4,9 +4,10 @@ $light-gray: rgb(76, 84, 95);
 $light-red: rgb(202, 57, 49);
 $light-orange: rgb(216, 96, 41);
 
-.projects {
+.projectsGrid {
   display: flex;
   flex-direction: column;
+  width: 88%;
 
   .cards {
     display: flex;

@@ -41,7 +41,7 @@ const ProjectDetailsImageGalleryMainImage = ({
         src={mainImageUrl}
         alt={title}
         fill
-        sizes="35vw"
+        sizes="40vw"
         placeholder="blur"
         blurDataURL={blurDataURLs[selectedImageIndex]}
       />
