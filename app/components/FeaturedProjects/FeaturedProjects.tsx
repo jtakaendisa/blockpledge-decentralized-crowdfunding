@@ -1,8 +1,6 @@
-import { useEffect } from 'react';
-
 import { useProjectStore } from '@/app/store';
 import { useFeaturedProjectsState } from '@/app/contexts/FeaturedProjectsContext';
-import useBlurDataURLs from '@/app/hooks/useBlurDataURLs';
+import useFeaturedProjects from '@/app/home/hooks/useFeaturedProjects';
 import SectionHeading from '../SectionHeading/SectionHeading';
 import ProjectHighlight from '@/app/home/_components/ProjectHighlight/ProjectHighlight';
 import ProjectHighlightSkeleton from '../ProjectHighlightSkeleton/ProjectHighlightSkeleton';
@@ -19,26 +17,12 @@ const FeaturedProjects = () => {
 
   const { blurDataURLs } = useFeaturedProjectsState(['blurDataURLs']);
 
-  const { getBlurDataURLs } = useBlurDataURLs();
-
-  const isLoading = !projects.length || !blurDataURLs.get.length;
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const imageUrls = projects
-        .slice(0, TOTAL_PAGES * CHUNK_SIZE + 1)
-        .map((project) => project.imageURLs[0]);
-
-      const { blurDataURLs: bdURLs } = await getBlurDataURLs(imageUrls);
-
-      blurDataURLs.set(bdURLs);
-    };
-
-    if (projects.length) {
-      fetchData();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [projects, getBlurDataURLs]);
+  const { isLoading } = useFeaturedProjects(
+    projects,
+    blurDataURLs,
+    TOTAL_PAGES,
+    CHUNK_SIZE
+  );
 
   return (
     <section className={styles.featuredProjects}>
