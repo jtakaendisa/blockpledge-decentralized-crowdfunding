@@ -1,13 +1,14 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useRef } from 'react';
 
 import { useProjectStore } from '@/app/store';
 import { useProjectsPageState } from '@/app/contexts/ProjectsPageContext';
-import { debounce, generateIncrementingArray } from '@/app/utils';
+import { generateIncrementingArray } from '@/app/utils';
+import { useProjectsGrid } from '../../_hooks/useProjectsGrid';
 import ProjectsGridNoResults from '../ProjectsGridNoResults/ProjectsGridNoResults';
 import ProjectCard from '../../../components/ProjectCard/ProjectCard';
 import FlipButton from '../../../components/FlipButton/FlipButton';
 import ProjectCardSkeleton from '../../../components/ProjectCardSkeleton/ProjectCardSkeleton';
+import DefaultBlurDataURL from '@/public/images/defaultBlurDataURL.png';
 
 import styles from './ProjectsGrid.module.scss';
 
@@ -16,19 +17,6 @@ interface Props {
 }
 
 const INITIAL_LIST_SIZE = 10;
-const INCREMENT_SIZE = 5;
-
-const revealVariants = {
-  initial: {
-    opacity: 0.5,
-  },
-  animate: {
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-    },
-  },
-};
 
 const skeletons = generateIncrementingArray(INITIAL_LIST_SIZE);
 
@@ -37,66 +25,29 @@ const ProjectsGrid = ({ selectedCategoryId }: Props) => {
   const { searchQuery } = useProjectsPageState(['searchQuery']);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [listSize, setListSize] = useState(INITIAL_LIST_SIZE);
+  const { filteredProjects, visibleProjects, listSize, increaseListSize } =
+    useProjectsGrid(
+      projects,
+      selectedCategoryId,
+      containerRef,
+      searchQuery,
+      INITIAL_LIST_SIZE
+    );
 
-  const increaseListSize = () => setListSize((prev) => prev + INCREMENT_SIZE);
-
-  const filteredProjects = useMemo(() => {
-    return projects.filter((project) => {
-      const matchesCategory =
-        selectedCategoryId == null || project.categoryId === selectedCategoryId;
-
-      const matchesSearchQuery = project.title
-        .toLowerCase()
-        .includes(searchQuery.get.toLowerCase());
-
-      return matchesCategory && matchesSearchQuery;
-    });
-  }, [projects, searchQuery.get, selectedCategoryId]);
-
-  useEffect(() => {
-    const container = containerRef.current;
-
-    const handleResize = debounce(() => {
-      if (!container) return;
-
-      const { width } = container.getBoundingClientRect();
-      const cardsPerRow = width >= 1335 ? 5 : width >= 1052 ? 4 : width >= 786 ? 3 : 2;
-
-      container.style.setProperty('--cards-per-row', cardsPerRow.toString());
-    }, 350);
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [containerRef]);
-
-  useEffect(() => {
-    setListSize(INITIAL_LIST_SIZE);
-  }, [selectedCategoryId, searchQuery.get]);
-
-  const visibleProjects = filteredProjects.slice(0, listSize);
-
-  if (!visibleProjects.length) {
+  if (projects.length && !visibleProjects.length) {
     return <ProjectsGridNoResults />;
   }
 
   return (
-    <motion.section
-      key={selectedCategoryId + searchQuery.get}
-      ref={containerRef}
-      className={styles.projectsGrid}
-      initial="initial"
-      animate="animate"
-      variants={revealVariants}
-    >
+    <section ref={containerRef} className={styles.projectsGrid}>
       {!projects.length
         ? skeletons.map((skeleton) => <ProjectCardSkeleton key={skeleton} />)
         : visibleProjects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+            <ProjectCard
+              key={project.id}
+              project={project}
+              blurDataURL={DefaultBlurDataURL.blurDataURL}
+            />
           ))}
 
       {listSize < filteredProjects.length && (
@@ -104,7 +55,7 @@ const ProjectsGrid = ({ selectedCategoryId }: Props) => {
           <FlipButton onClick={increaseListSize}>Load More</FlipButton>
         </div>
       )}
-    </motion.section>
+    </section>
   );
 };
 

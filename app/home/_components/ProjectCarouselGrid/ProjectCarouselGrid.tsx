@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { motion } from 'framer-motion';
 
 import { Project } from '@/app/store';
 import { useFeaturedProjectsState } from '@/app/contexts/FeaturedProjectsContext';
@@ -12,18 +11,6 @@ interface Props {
   selectedPage: number;
   chunkSize: number;
 }
-
-const revealVariants = {
-  initial: {
-    opacity: 0.5,
-  },
-  animate: {
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-    },
-  },
-};
 
 const ProjectCarouselGrid = ({ projects, selectedPage, chunkSize }: Props) => {
   const { blurDataURLs } = useFeaturedProjectsState(['blurDataURLs']);
@@ -40,17 +27,11 @@ const ProjectCarouselGrid = ({ projects, selectedPage, chunkSize }: Props) => {
   }, [projects, selectedPage, chunkSize, blurDataURLs]);
 
   return (
-    <motion.div
-      key={selectedPage}
-      className={styles.grid}
-      initial="initial"
-      animate="animate"
-      variants={revealVariants}
-    >
+    <div className={styles.grid}>
       {filteredProjectsWithBlurData.map((project) => (
         <ProjectCardWithHoverReveal key={project.id} project={project} />
       ))}
-    </motion.div>
+    </div>
   );
 };
 

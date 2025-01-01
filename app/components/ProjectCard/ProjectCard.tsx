@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 import { Project } from '@/app/store';
 import ProjectImage from '../ProjectImage/ProjectImage';
@@ -16,9 +17,22 @@ import styles from './ProjectCard.module.scss';
 
 interface Props {
   project: Project;
+  blurDataURL?: string;
 }
 
-const ProjectCard = ({ project }: Props) => {
+const revealVariants = {
+  initial: {
+    opacity: 0.5,
+  },
+  animate: {
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+    },
+  },
+};
+
+const ProjectCard = ({ project, blurDataURL }: Props) => {
   const { id, owner, title, imageURLs, backers, expiresAt, raised, cost, status } =
     project;
 
@@ -27,13 +41,21 @@ const ProjectCard = ({ project }: Props) => {
   const toggleHoveredState = () => setIsHovered((prev) => !prev);
 
   return (
-    <div
+    <motion.div
       onMouseEnter={toggleHoveredState}
       onMouseLeave={toggleHoveredState}
       className={styles.card}
+      initial="initial"
+      animate="animate"
+      variants={revealVariants}
     >
       <Link href={`/projects/${id}`} className={styles.link}>
-        <ProjectImage imageURLs={imageURLs} title={title} isHovered={isHovered} />
+        <ProjectImage
+          imageURLs={imageURLs}
+          blurDataURL={blurDataURL}
+          title={title}
+          isHovered={isHovered}
+        />
 
         <div className={styles.contentContainer}>
           <ProjectTitle>{title}</ProjectTitle>
@@ -62,7 +84,7 @@ const ProjectCard = ({ project }: Props) => {
           </SpaceBetweenRow>
         </div>
       </Link>
-    </div>
+    </motion.div>
   );
 };
 
