@@ -1,4 +1,3 @@
-import { colors } from '@/app/constants';
 import { AuthUser, useAccountStore } from '@/app/store';
 import { truncateAccount } from '@/app/utils';
 
@@ -13,8 +12,6 @@ interface Props {
   authUser: AuthUser;
   onSignOut: () => void;
 }
-
-const { whiteSolid } = colors;
 
 const TopNavAuthMenuContent = ({ authUser, onSignOut }: Props) => {
   const connectedAccount = useAccountStore((s) => s.connectedAccount);
@@ -39,7 +36,7 @@ const TopNavAuthMenuContent = ({ authUser, onSignOut }: Props) => {
       ))}
 
       <div className={styles.buttonContainer}>
-        <FlipButton onClick={onSignOut} scale={0.8} backgroundColor1={whiteSolid}>
+        <FlipButton onClick={onSignOut} scale={0.8} backgroundColor1="transparent">
           Sign Out
         </FlipButton>
       </div>

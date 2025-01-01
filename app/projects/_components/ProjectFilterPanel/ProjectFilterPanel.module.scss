@@ -1,4 +1,6 @@
 .filterPanel {
+  position: sticky;
+  top: calc(72px + 5.5rem);
   display: flex;
   flex-direction: column;
   width: 18%;
