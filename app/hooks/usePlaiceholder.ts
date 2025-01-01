@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-export const useBlurDataURLs = () => {
+export const usePlaiceholder = () => {
   const getBlurDataURLs = useCallback(async (imageUrls: string[]) => {
     let blurDataURLs: string[] = [];
 

@@ -1,5 +1,5 @@
 import { colors } from '@/app/constants';
-import usePageNavigation from '@/app/hooks/usePageNavigation';
+import { usePageNavigation } from '@/app/hooks/usePageNavigation';
 import FlipButton from '../FlipButton/FlipButton';
 import SpaceBetweenRow from '../SpaceBetweenRow/SpaceBetweenRow';
 import VerticalSpacer from '../VerticalSpacer/VerticalSpacer';

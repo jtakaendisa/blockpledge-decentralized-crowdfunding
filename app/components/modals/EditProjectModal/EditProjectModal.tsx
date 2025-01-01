@@ -5,8 +5,8 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 import { Project } from '@/app/store';
-import usePinata from '@/app/hooks/usePinata';
-import useBlockchain from '@/app/hooks/useBlockchain';
+import { usePinata } from '@/app/hooks/usePinata';
+import { useBlockchain } from '@/app/hooks/useBlockchain';
 import Button from '../../Button/Button';
 import xmarkSVG from '@/public/icons/xmark.svg';
 

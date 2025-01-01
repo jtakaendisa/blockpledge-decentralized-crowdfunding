@@ -1,11 +1,13 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 
-import { useProjectsPageState } from '@/app/contexts/ProjectsPageContext';
 import { useDebounce } from './useDebounce';
 
-export const useProjectFilterSearch = () => {
-  const { searchQuery } = useProjectsPageState(['searchQuery']);
+type SearchQuery = {
+  get: string;
+  set: (value: string) => void;
+};
 
+export const useProjectFilterSearch = (searchQuery: SearchQuery) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const { debouncedValue: debouncedSearchTerm } = useDebounce(searchTerm);

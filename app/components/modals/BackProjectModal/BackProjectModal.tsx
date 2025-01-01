@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 
 import { Project, useAccountStore } from '@/app/store';
 import { backProjectFirebase } from '@/app/services/authService';
-import useBlockchain from '@/app/hooks/useBlockchain';
+import { useBlockchain } from '@/app/hooks/useBlockchain';
 import Button from '../../Button/Button';
 import xmarkSVG from '@/public/icons/xmark.svg';
 

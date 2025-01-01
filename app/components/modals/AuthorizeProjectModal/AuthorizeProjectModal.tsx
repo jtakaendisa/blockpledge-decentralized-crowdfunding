@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import classNames from 'classnames';
 
 import { Project } from '@/app/store';
-import useBlockchain from '@/app/hooks/useBlockchain';
+import { useBlockchain } from '@/app/hooks/useBlockchain';
 import Button from '../../Button/Button';
 import xmarkSVG from '@/public/icons/xmark.svg';
 

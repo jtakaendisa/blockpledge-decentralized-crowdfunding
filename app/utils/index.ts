@@ -67,3 +67,11 @@ export const splitArray = <T>(array: T[], chunks: number) => {
 
 export const generateIncrementingArray = (length: number) =>
   Array.from({ length }, (_, i) => i + 1);
+
+export const debounce = (func: (...args: any[]) => void, wait: number) => {
+  let timeout: NodeJS.Timeout;
+  return (...args: any[]) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), wait);
+  };
+};

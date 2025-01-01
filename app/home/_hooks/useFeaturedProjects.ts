@@ -1,16 +1,20 @@
 import { useEffect } from 'react';
 
 import { Project } from '@/app/store';
-import { useBlurDataURLs } from '@/app/hooks/useBlurDataURLs';
-import { useFeaturedProjectsState } from '@/app/contexts/FeaturedProjectsContext';
+import { usePlaiceholder } from '@/app/hooks/usePlaiceholder';
+
+type BlurDataURLs = {
+  get: string[];
+  set: (value: string[]) => void;
+};
 
 export const useFeaturedProjects = (
   projects: Project[],
+  blurDataURLs: BlurDataURLs,
   totalPages: number,
   chunkSize: number
 ) => {
-  const { blurDataURLs } = useFeaturedProjectsState(['blurDataURLs']);
-  const { getBlurDataURLs } = useBlurDataURLs();
+  const { getBlurDataURLs } = usePlaiceholder();
 
   const isLoading = !projects.length || !blurDataURLs.get.length;
 
@@ -31,5 +35,5 @@ export const useFeaturedProjects = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projects, totalPages, chunkSize, getBlurDataURLs]);
 
-  return { isLoading, blurDataURLs: blurDataURLs.get };
+  return { isLoading };
 };

@@ -2,7 +2,7 @@
 
 import { ProjectsPageProvider } from '../contexts/ProjectsPageContext';
 import ProjectFilterPanel from './_components/ProjectFilterPanel/ProjectFilterPanel';
-import ProjectsGrid from '../components/ProjectsGrid/ProjectsGrid';
+import ProjectsGrid from './_components/ProjectsGrid/ProjectsGrid';
 
 import styles from './page.module.scss';
 import 'react-loading-skeleton/dist/skeleton.css';

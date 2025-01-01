@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { Project, useProjectStore } from '../store';
 import Header from '../components/TopNav/TopNav';
-import ProjectsGrid from '../components/ProjectsGrid/ProjectsGrid';
+import ProjectsGrid from '../projects/_components/ProjectsGrid/ProjectsGrid';
 
 import styles from './page.module.scss';
 

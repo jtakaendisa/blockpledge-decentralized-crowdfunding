@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { Backer, Project } from '@/app/store';
 import { useBlockchain } from '@/app/hooks/useBlockchain';
-import { useBlurDataURLs } from '@/app/hooks/useBlurDataURLs';
+import { usePlaiceholder } from '@/app/hooks/usePlaiceholder';
 
 export const useProjectPage = (id: string, updates: number) => {
   const [project, setProject] = useState<Project | null>(null);
@@ -11,7 +11,7 @@ export const useProjectPage = (id: string, updates: number) => {
   const [error, setError] = useState<Error | null>(null);
 
   const { getProject, getBackers, getCategories } = useBlockchain();
-  const { getBlurDataURLs } = useBlurDataURLs();
+  const { getBlurDataURLs } = usePlaiceholder();
 
   const isLoading = !project || !backers || !blurDataURLs;
 

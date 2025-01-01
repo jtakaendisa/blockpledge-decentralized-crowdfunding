@@ -1,4 +1,5 @@
 .projectsGrid {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(var(--cards-per-row, 5), 1fr);
   grid-template-rows: auto;
@@ -6,4 +7,10 @@
   row-gap: 1rem;
   width: 88%;
   min-width: 524px;
+
+  .button {
+    position: absolute;
+    bottom: -72px;
+    justify-self: center;
+  }
 }
