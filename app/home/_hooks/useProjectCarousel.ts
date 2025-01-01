@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const useProjectCarousel = () => {
+export const useProjectCarousel = () => {
   const [selectedPage, setSelectedPage] = useState(1);
 
   const handlePageSelect = (selectedPage: number) => setSelectedPage(selectedPage);
@@ -14,5 +14,3 @@ const useProjectCarousel = () => {
 
   return { selectedPage, handlePageSelect, handlePageChange };
 };
-
-export default useProjectCarousel;

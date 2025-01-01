@@ -1,8 +1,7 @@
-import { ChangeEvent } from 'react';
 import { AnimatePresence } from 'framer-motion';
 
 import { colors } from '@/app/constants';
-import { useProjectsPageState } from '@/app/contexts/ProjectsPageContext';
+import { useProjectFilterSearch } from '../../_hooks/useProjectFilterSearch';
 import ProjectFilterSearchInput from '../ProjectFilterSearchInput/ProjectFilterSearchInput';
 import ProjectFilterSearchIcon from '../ProjectFilterSearchIcon/ProjectFilterSearchIcon';
 import MagnifyingGlass from '@/app/components/icons/MagnifyingGlass';
@@ -13,12 +12,7 @@ import styles from './ProjectFilterSearch.module.scss';
 const { gray, red } = colors;
 
 const ProjectFilterSearch = () => {
-  const { searchQuery } = useProjectsPageState(['searchQuery']);
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) =>
-    searchQuery.set(event.target.value);
-
-  const handleReset = () => searchQuery.set('');
+  const { searchTerm, handleChange, handleReset } = useProjectFilterSearch();
 
   return (
     <div className={styles.search}>
@@ -26,10 +20,10 @@ const ProjectFilterSearch = () => {
         <MagnifyingGlass fill={gray} />
       </ProjectFilterSearchIcon>
 
-      <ProjectFilterSearchInput searchQuery={searchQuery.get} onChange={handleChange} />
+      <ProjectFilterSearchInput searchTerm={searchTerm} onChange={handleChange} />
 
       <AnimatePresence>
-        {searchQuery.get && (
+        {searchTerm && (
           <ProjectFilterSearchIcon align="right" onClick={handleReset}>
             <Xmark fill={red} />
           </ProjectFilterSearchIcon>

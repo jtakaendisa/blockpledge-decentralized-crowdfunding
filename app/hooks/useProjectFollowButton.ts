@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useAccountStore } from '../store';
 import { followProject } from '../services/authService';
 
-const useProjectFollowButton = (projectId: number) => {
+export const useProjectFollowButton = (projectId: number) => {
   const authUser = useAccountStore((s) => s.authUser);
   const setUpdatingAuthUserData = useAccountStore((s) => s.setUpdatingAuthUserData);
 
@@ -40,5 +40,3 @@ const useProjectFollowButton = (projectId: number) => {
     handleProjectFollow,
   };
 };
-
-export default useProjectFollowButton;

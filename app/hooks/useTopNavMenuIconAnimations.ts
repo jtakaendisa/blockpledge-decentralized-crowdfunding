@@ -6,7 +6,7 @@ const transitionProps = {
   ease: 'easeInOut',
 };
 
-const useTopNavMenuIconAnimations = (controls: AnimationControls) => {
+export const useTopNavMenuIconAnimations = (controls: AnimationControls) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const toggleHoveredState = () => setIsHovered((prev) => !prev);
@@ -27,5 +27,3 @@ const useTopNavMenuIconAnimations = (controls: AnimationControls) => {
 
   return { toggleHoveredState };
 };
-
-export default useTopNavMenuIconAnimations;

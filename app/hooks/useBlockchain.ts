@@ -1,12 +1,10 @@
-'use client';
-
 import { useCallback } from 'react';
 import { ethers } from 'ethers';
 import { formatDistance } from 'date-fns';
 
 import { Project } from '../store';
 import { truncateAccount } from '../utils';
-import useEmail from './useEmail';
+import { useEmail } from './useEmail';
 import { AddFormInputs } from '../components/modals/AddProjectModal/AddProjectModal';
 import { EditFormInputs } from '../components/modals/EditProjectModal/EditProjectModal';
 
@@ -16,7 +14,7 @@ import contractAbi from '../abis/app/contracts/BlockPledge.sol/BlockPledge.json'
 const address = contractAddress.address;
 const abi = contractAbi.abi;
 
-const useBlockchain = () => {
+export const useBlockchain = () => {
   const { sendPaymentNotification } = useEmail();
 
   const formatDate = useCallback((timestamp: number) => {
@@ -476,8 +474,6 @@ const useBlockchain = () => {
     listenForEvents,
   };
 };
-
-export default useBlockchain;
 
 // Declaration to tell TypeScript that 'ethereum' property exists on 'window'
 declare global {

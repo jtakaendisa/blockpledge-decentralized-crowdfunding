@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import classNames from 'classnames';
 
 import { Category } from '@/app/store';
-import usePageNavigation from '@/app/hooks/usePageNavigation';
+import { usePageNavigation } from '@/app/hooks/usePageNavigation';
 import Categories from '@/app/components/icons/Categories';
 
 import styles from './ProjectFilterCategory.module.scss';

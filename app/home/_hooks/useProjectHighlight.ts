@@ -1,6 +1,8 @@
 import { MutableRefObject, useLayoutEffect, useState } from 'react';
 
-const useProjectHighlight = (cardRef: MutableRefObject<HTMLDivElement | null>) => {
+export const useProjectHighlight = (
+  cardRef: MutableRefObject<HTMLDivElement | null>
+) => {
   const [projectImageHeight, setProjectImageHeight] = useState(0);
 
   useLayoutEffect(() => {
@@ -14,5 +16,3 @@ const useProjectHighlight = (cardRef: MutableRefObject<HTMLDivElement | null>) =
 
   return { projectImageHeight };
 };
-
-export default useProjectHighlight;

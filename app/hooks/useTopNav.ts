@@ -3,9 +3,9 @@ import { User } from 'firebase/auth';
 
 import { useAccountStore, useProjectStore } from '../store';
 import { authStateChangeListener, formatAuthUserData } from '../services/authService';
-import useBlockchain from './useBlockchain';
+import { useBlockchain } from './useBlockchain';
 
-const useTopNav = () => {
+export const useTopNav = () => {
   const authUser = useAccountStore((s) => s.authUser);
   const updatingAuthUserData = useAccountStore((s) => s.updatingAuthUserData);
   const setConnectedAccount = useAccountStore((s) => s.setConnectedAccount);
@@ -93,5 +93,3 @@ const useTopNav = () => {
     handleWalletConnection,
   };
 };
-
-export default useTopNav;

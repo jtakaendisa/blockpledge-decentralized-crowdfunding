@@ -1,6 +1,6 @@
 import { RefObject, useCallback, useEffect, useState } from 'react';
 
-const useTopNavDropdownMenu = (
+export const useTopNavDropdownMenu = (
   menuButtonRef: RefObject<HTMLDivElement>,
   dropdownRef: RefObject<HTMLDivElement>
 ) => {
@@ -32,5 +32,3 @@ const useTopNavDropdownMenu = (
 
   return { isDropdownOpen, toggleDropdownOpenState };
 };
-
-export default useTopNavDropdownMenu;

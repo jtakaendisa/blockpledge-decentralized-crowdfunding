@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const useHeadingReveal = () => {
+export const useHeadingReveal = () => {
   const [hasEntered, setHasEntered] = useState(false);
   const [playAnimation, setPlayAnimation] = useState(false);
 
@@ -13,5 +13,3 @@ const useHeadingReveal = () => {
 
   return { playAnimation, handleViewportEnter };
 };
-
-export default useHeadingReveal;

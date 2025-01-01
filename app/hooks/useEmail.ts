@@ -1,5 +1,3 @@
-'use client';
-
 import { useCallback } from 'react';
 import emailjs from '@emailjs/browser';
 
@@ -13,7 +11,7 @@ interface PaymentNotificationProps {
   timestamp: string;
 }
 
-const useEmail = () => {
+export const useEmail = () => {
   const projects = useProjectStore((s) => s.projects);
 
   emailjs.init({
@@ -46,5 +44,3 @@ const useEmail = () => {
 
   return { sendPaymentNotification };
 };
-
-export default useEmail;

@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { motion } from 'framer-motion';
 
 import { Category } from '@/app/store';
-import usePageNavigation from '@/app/hooks/usePageNavigation';
+import { usePageNavigation } from '@/app/hooks/usePageNavigation';
 
 import styles from './CategoryCard.module.scss';
 

@@ -58,9 +58,15 @@ const ProjectsGrid = ({ selectedCategoryId }: Props) => {
     }
 
     if (!searchQuery.get.length && projects.length) {
-      setFilteredProjects(projects);
+      if (typeof selectedCategoryId === 'number') {
+        setFilteredProjects(
+          projects.filter((project) => project.categoryId === selectedCategoryId)
+        );
+      } else {
+        setFilteredProjects(projects);
+      }
     }
-  }, [searchQuery.get, projects, end]);
+  }, [searchQuery.get, selectedCategoryId, projects, end]);
 
   useEffect(() => {
     if (projects.length) {

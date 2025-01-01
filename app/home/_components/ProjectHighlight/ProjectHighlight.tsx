@@ -2,8 +2,8 @@ import { useRef } from 'react';
 
 import { Project } from '@/app/store';
 import { truncateText } from '@/app/utils';
-import useProjectHighlight from '../../_hooks/useProjectHighlight';
-import usePageNavigation from '@/app/hooks/usePageNavigation';
+import { useProjectHighlight } from '../../_hooks/useProjectHighlight';
+import { usePageNavigation } from '@/app/hooks/usePageNavigation';
 import ProjectImage from '@/app/components/ProjectImage/ProjectImage';
 import ProjectProgressBar from '@/app/components/ProjectProgressBar/ProjectProgressBar';
 import ProjectTitle from '@/app/components/ProjectTitle/ProjectTitle';

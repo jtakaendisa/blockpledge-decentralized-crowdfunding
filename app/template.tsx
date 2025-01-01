@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 
 import { MediaContextProvider } from './media';
 import { pathnameMap } from './constants';
-import usePageNavigation from './hooks/usePageNavigation';
+import { usePageNavigation } from './hooks/usePageNavigation';
 
 import styles from './template.module.scss';
 

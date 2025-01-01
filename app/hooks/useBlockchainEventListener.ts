@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import useBlockchain from './useBlockchain';
+import { useBlockchain } from './useBlockchain';
 
-const useBlockchainEventListener = () => {
+export const useBlockchainEventListener = () => {
   const [updates, setUpdates] = useState(0);
 
   const { listenForEvents } = useBlockchain();
@@ -17,5 +17,3 @@ const useBlockchainEventListener = () => {
 
   return { updates };
 };
-
-export default useBlockchainEventListener;

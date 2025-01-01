@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { MotionValue } from 'framer-motion';
 
-const useAnimatedNumber = (
+export const useAnimatedNumber = (
   value: number,
   index: number,
   delay: number,
@@ -40,5 +40,3 @@ const useAnimatedNumber = (
     requestAnimationFrame(animateValue);
   }, [value, index, delay, displayValue]);
 };
-
-export default useAnimatedNumber;

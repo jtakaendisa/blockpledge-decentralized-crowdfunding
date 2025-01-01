@@ -1,4 +1,4 @@
-import useProjectModals from '@/app/hooks/useProjectModals';
+import { useProjectModals } from '@/app/hooks/useProjectModals';
 import CallToAction from '../CallToAction/CallToAction';
 import ImageCollage from '../ImageCollage/ImageCollage';
 import StatCards from '../StatCards/StatCards';

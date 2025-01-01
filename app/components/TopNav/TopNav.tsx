@@ -2,7 +2,7 @@
 
 import { routes } from '@/app/constants';
 import { Media } from '@/app/media';
-import useTopNav from '@/app/hooks/useTopNav';
+import { useTopNav } from '@/app/hooks/useTopNav';
 import HomeButton from '../HomeButton/HomeButton';
 import TopNavLinks from '../TopNavLinks/TopNavLinks';
 import TopNavMobileMenu from '../TopNavMobileMenu/TopNavMobileMenu';

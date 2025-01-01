@@ -1,19 +1,15 @@
 import { useEffect } from 'react';
 
 import { Project } from '@/app/store';
-import useBlurDataURLs from '@/app/hooks/useBlurDataURLs';
+import { useBlurDataURLs } from '@/app/hooks/useBlurDataURLs';
+import { useFeaturedProjectsState } from '@/app/contexts/FeaturedProjectsContext';
 
-type BlurDataURLs = {
-  get: string[];
-  set: (value: string[]) => void;
-};
-
-const useFeaturedProjects = (
+export const useFeaturedProjects = (
   projects: Project[],
-  blurDataURLs: BlurDataURLs,
   totalPages: number,
   chunkSize: number
 ) => {
+  const { blurDataURLs } = useFeaturedProjectsState(['blurDataURLs']);
   const { getBlurDataURLs } = useBlurDataURLs();
 
   const isLoading = !projects.length || !blurDataURLs.get.length;
@@ -32,10 +28,8 @@ const useFeaturedProjects = (
     if (projects.length) {
       fetchData();
     }
-    //   eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projects, totalPages, chunkSize, getBlurDataURLs]);
 
-  return { isLoading };
+  return { isLoading, blurDataURLs: blurDataURLs.get };
 };
-
-export default useFeaturedProjects;

@@ -1,4 +1,4 @@
-const usePinata = (setUploading: (uploading: boolean) => void) => {
+export const usePinata = (setUploading: (uploading: boolean) => void) => {
   const uploadFiles = async (filesToUpload: File[]) => {
     let uploadedCids: string[] = [];
 
@@ -31,5 +31,3 @@ const usePinata = (setUploading: (uploading: boolean) => void) => {
 
   return { uploadFiles };
 };
-
-export default usePinata;

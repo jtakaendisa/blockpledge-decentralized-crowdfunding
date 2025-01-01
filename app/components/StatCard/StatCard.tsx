@@ -1,6 +1,6 @@
 import { motion, useMotionValue } from 'framer-motion';
 
-import useAnimatedNumber from '@/app/hooks/useAnimatedNumber';
+import { useAnimatedNumber } from '@/app/hooks/useAnimatedNumber';
 
 import styles from './StatCard.module.scss';
 

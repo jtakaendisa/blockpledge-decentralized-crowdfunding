@@ -4,7 +4,7 @@ import { ReactNode, MouseEvent } from 'react';
 import Link from 'next/link';
 
 import { RoutePath } from '@/app/entities';
-import usePageNavigation from '@/app/hooks/usePageNavigation';
+import { usePageNavigation } from '@/app/hooks/usePageNavigation';
 
 import styles from './TransitionLink.module.scss';
 

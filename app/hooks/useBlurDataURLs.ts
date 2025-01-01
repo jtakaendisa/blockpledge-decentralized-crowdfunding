@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-const useBlurDataURLs = () => {
+export const useBlurDataURLs = () => {
   const getBlurDataURLs = useCallback(async (imageUrls: string[]) => {
     let blurDataURLs: string[] = [];
 
@@ -27,5 +27,3 @@ const useBlurDataURLs = () => {
     getBlurDataURLs,
   };
 };
-
-export default useBlurDataURLs;

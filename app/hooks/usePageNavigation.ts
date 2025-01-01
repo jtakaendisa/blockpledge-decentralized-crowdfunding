@@ -34,7 +34,7 @@ const animateBlocks = (rows: number, columns: number, animationType: 'in' | 'out
   });
 };
 
-const usePageNavigation = () => {
+export const usePageNavigation = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [_, animate] = useAnimate();
@@ -92,5 +92,3 @@ const usePageNavigation = () => {
 
   return { navigateToPage, animatePageIn, animatePageOut };
 };
-
-export default usePageNavigation;

@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
 
 import { TopNavLink } from '@/app/entities';
-import useTopNavDropdownMenu from '@/app/hooks/useTopNavDropdownMenu';
+import { useTopNavDropdownMenu } from '@/app/hooks/useTopNavDropdownMenu';
 import TopNavMobileMenuButton from '../TopNavMobileMenuButton/TopNavMobileMenuButton';
 import TopNavMobileMenuLinks from '../TopNavMobileMenuLinks/TopNavMobileMenuLinks';
 import TopNavDropdownMenu from '../TopNavDropdownMenu/TopNavDropdownMenu';

@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { motion, useAnimationControls } from 'framer-motion';
 
-import useTopNavMenuIconAnimations from '@/app/hooks/useTopNavMenuIconAnimations';
+import { useTopNavMenuIconAnimations } from '@/app/hooks/useTopNavMenuIconAnimations';
 
 import styles from './TopNavAuthMenuContentItem.module.scss';
 

@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 
-import useImageCollage from '@/app/hooks/useImageCollage';
+import { useImageCollage } from '@/app/hooks/useImageCollage';
 import ImageCollageCard from '../ImageCollageCard/ImageCollageCard';
 
 import styles from './ImageCollage.module.scss';

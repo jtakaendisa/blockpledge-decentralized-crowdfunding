@@ -3,7 +3,7 @@ import gsap from 'gsap';
 
 const ROTATION_INTENSITY = 8;
 
-const useImageCollage = (
+export const useImageCollage = (
   cardElementsRef: MutableRefObject<HTMLDivElement[]>,
   containerRef: MutableRefObject<HTMLDivElement | null>,
   isIntroCompleteRef: MutableRefObject<boolean>,
@@ -139,5 +139,3 @@ const useImageCollage = (
 
   return { handleHover, handleCardMount };
 };
-
-export default useImageCollage;

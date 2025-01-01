@@ -4,8 +4,8 @@ import Skeleton from 'react-loading-skeleton';
 
 import { AuthUser } from '@/app/store';
 import { signOutAuthUser } from '@/app/services/authService';
-import usePageNavigation from '@/app/hooks/usePageNavigation';
-import useTopNavDropdownMenu from '@/app/hooks/useTopNavDropdownMenu';
+import { usePageNavigation } from '@/app/hooks/usePageNavigation';
+import { useTopNavDropdownMenu } from '@/app/hooks/useTopNavDropdownMenu';
 import TopNavAuthMenuButton from '../TopNavAuthMenuButton/TopNavAuthMenuButton';
 import TopNavDropdownMenu from '../TopNavDropdownMenu/TopNavDropdownMenu';
 import TopNavAuthMenuContent from '../TopNavAuthMenuContent/TopNavAuthMenuContent';

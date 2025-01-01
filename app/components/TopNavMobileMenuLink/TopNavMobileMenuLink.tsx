@@ -2,8 +2,8 @@ import { ReactNode } from 'react';
 import { motion, useAnimationControls } from 'framer-motion';
 
 import { RoutePath } from '@/app/entities';
-import usePageNavigation from '@/app/hooks/usePageNavigation';
-import useTopNavMenuIconAnimations from '@/app/hooks/useTopNavMenuIconAnimations';
+import { usePageNavigation } from '@/app/hooks/usePageNavigation';
+import { useTopNavMenuIconAnimations } from '@/app/hooks/useTopNavMenuIconAnimations';
 import TopRightArrow from '../icons/TopRightArrow';
 
 import styles from './TopNavMobileMenuLink.module.scss';

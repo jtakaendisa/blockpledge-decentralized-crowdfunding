@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const useProjectModals = () => {
+export const useProjectModals = () => {
   const [isAddProjectModalOpen, setIsAddProjectModalOpen] = useState(false);
   const [isAuthorizeProjectModalOpen, setIsAuthorizeProjectModalOpen] = useState(false);
   const [isBackProjectModalOpen, setIsBackProjectModalOpen] = useState(false);
@@ -27,5 +27,3 @@ const useProjectModals = () => {
     toggleDeleteProjectState,
   };
 };
-
-export default useProjectModals;

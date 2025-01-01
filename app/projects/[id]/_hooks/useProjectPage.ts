@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 
 import { Backer, Project } from '@/app/store';
-import useBlockchain from '@/app/hooks/useBlockchain';
-import useBlurDataURLs from '@/app/hooks/useBlurDataURLs';
+import { useBlockchain } from '@/app/hooks/useBlockchain';
+import { useBlurDataURLs } from '@/app/hooks/useBlurDataURLs';
 
-const useProjectPage = (id: string, updates: number) => {
+export const useProjectPage = (id: string, updates: number) => {
   const [project, setProject] = useState<Project | null>(null);
   const [backers, setBackers] = useState<Backer[] | null>(null);
   const [blurDataURLs, setBlurDataURLs] = useState<string[] | null>(null);
@@ -35,5 +35,3 @@ const useProjectPage = (id: string, updates: number) => {
 
   return { isLoading, project, backers, blurDataURLs, error };
 };
-
-export default useProjectPage;

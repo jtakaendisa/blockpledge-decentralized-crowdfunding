@@ -1,5 +1,5 @@
 import { Project } from '@/app/store';
-import useProjectCarousel from '../../_hooks/useProjectCarousel';
+import { useProjectCarousel } from '../../_hooks/useProjectCarousel';
 import ProjectCarouselGrid from '../ProjectCarouselGrid/ProjectCarouselGrid';
 import ProjectCarouselPagination from '../ProjectCarouselPagination/ProjectCarouselPagination';
 

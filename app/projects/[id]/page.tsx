@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 
-import useBlockchainEventListener from '@/app/hooks/useBlockchainEventListener';
-import useProjectPage from './_hooks/useProjectPage';
+import { useBlockchainEventListener } from '@/app/hooks/useBlockchainEventListener';
+import { useProjectPage } from './_hooks/useProjectPage';
 import ProjectDetails from './_components/ProjectDetails/ProjectDetails';
 import InfoSelector from './_components/InfoSelector/InfoSelector';
 import ProjectBackers from './_components/ProjectBackers/ProjectBackers';

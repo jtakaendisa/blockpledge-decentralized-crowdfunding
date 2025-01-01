@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 
-import useHeadingReveal from '@/app/hooks/useHeadingReveal';
+import { useHeadingReveal } from '@/app/hooks/useHeadingReveal';
 import StaggeredText from '../StaggeredText/StaggeredText';
 
 import styles from './SectionHeading.module.scss';

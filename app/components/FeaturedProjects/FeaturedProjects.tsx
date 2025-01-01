@@ -1,6 +1,5 @@
 import { useProjectStore } from '@/app/store';
-import { useFeaturedProjectsState } from '@/app/contexts/FeaturedProjectsContext';
-import useFeaturedProjects from '@/app/home/_hooks/useFeaturedProjects';
+import { useFeaturedProjects } from '@/app/home/_hooks/useFeaturedProjects';
 import SectionHeading from '../SectionHeading/SectionHeading';
 import ProjectHighlight from '@/app/home/_components/ProjectHighlight/ProjectHighlight';
 import ProjectHighlightSkeleton from '../ProjectHighlightSkeleton/ProjectHighlightSkeleton';
@@ -15,11 +14,8 @@ const CHUNK_SIZE = 4;
 const FeaturedProjects = () => {
   const projects = useProjectStore((s) => s.projects);
 
-  const { blurDataURLs } = useFeaturedProjectsState(['blurDataURLs']);
-
-  const { isLoading } = useFeaturedProjects(
+  const { isLoading, blurDataURLs } = useFeaturedProjects(
     projects,
-    blurDataURLs,
     TOTAL_PAGES,
     CHUNK_SIZE
   );
@@ -32,7 +28,7 @@ const FeaturedProjects = () => {
         {isLoading ? (
           <ProjectHighlightSkeleton />
         ) : (
-          <ProjectHighlight project={projects[0]} blurDataURL={blurDataURLs.get[0]} />
+          <ProjectHighlight project={projects[0]} blurDataURL={blurDataURLs[0]} />
         )}
 
         {isLoading ? (
