@@ -1,8 +1,8 @@
 import { colors } from '@/app/constants';
 import { usePageNavigation } from '@/app/hooks/usePageNavigation';
-import FlipButton from '../FlipButton/FlipButton';
-import SpaceBetweenRow from '../SpaceBetweenRow/SpaceBetweenRow';
-import VerticalSpacer from '../VerticalSpacer/VerticalSpacer';
+import FlipButton from '@/app/components/FlipButton/FlipButton';
+import SpaceBetweenRow from '@/app/components/SpaceBetweenRow/SpaceBetweenRow';
+import VerticalSpacer from '@/app/components/VerticalSpacer/VerticalSpacer';
 
 import styles from './ErrorFallback.module.scss';
 

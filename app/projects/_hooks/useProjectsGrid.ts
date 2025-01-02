@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useMemo, useState } from 'react';
+import { RefObject, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Project } from '@/app/entities';
 import { debounce } from '@/app/utils';
@@ -19,7 +19,10 @@ export const useProjectsGrid = (
 ) => {
   const [listSize, setListSize] = useState(initialListSize);
 
-  const increaseListSize = () => setListSize((prev) => prev + INCREMENT_SIZE);
+  const increaseListSize = useCallback(
+    () => setListSize((prev) => prev + INCREMENT_SIZE),
+    []
+  );
 
   const filteredProjects = useMemo(() => {
     return projects.filter((project) => {

@@ -6,7 +6,7 @@ import { generateIncrementingArray } from '@/app/utils';
 import { useProjectsGrid } from '../../_hooks/useProjectsGrid';
 import ProjectsGridNoResults from '../ProjectsGridNoResults/ProjectsGridNoResults';
 import ProjectCard from '../ProjectCard/ProjectCard';
-import FlipButton from '../../../components/FlipButton/FlipButton';
+import IntersectionObserverWithCallback from '../IntersectionObserverWithCallback/IntersectionObserverWithCallback';
 import ProjectCardSkeleton from '../ProjectCardSkeleton/ProjectCardSkeleton';
 import DefaultBlurDataURL from '@/public/images/defaultBlurDataURL.png';
 
@@ -25,14 +25,13 @@ const ProjectsGrid = ({ selectedCategoryId }: Props) => {
   const { searchQuery } = useProjectsPageState(['searchQuery']);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const { filteredProjects, visibleProjects, listSize, increaseListSize } =
-    useProjectsGrid(
-      projects,
-      selectedCategoryId,
-      containerRef,
-      searchQuery,
-      INITIAL_LIST_SIZE
-    );
+  const { visibleProjects, increaseListSize } = useProjectsGrid(
+    projects,
+    selectedCategoryId,
+    containerRef,
+    searchQuery,
+    INITIAL_LIST_SIZE
+  );
 
   if (projects.length && !visibleProjects.length) {
     return <ProjectsGridNoResults />;
@@ -50,11 +49,7 @@ const ProjectsGrid = ({ selectedCategoryId }: Props) => {
             />
           ))}
 
-      {listSize < filteredProjects.length && (
-        <div className={styles.button}>
-          <FlipButton onClick={increaseListSize}>Load More</FlipButton>
-        </div>
-      )}
+      <IntersectionObserverWithCallback onIntersect={increaseListSize} />
     </section>
   );
 };

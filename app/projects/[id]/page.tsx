@@ -9,8 +9,8 @@ import ProjectDetails from './_components/ProjectDetails/ProjectDetails';
 import InfoSelector from './_components/InfoSelector/InfoSelector';
 import ProjectBackers from './_components/ProjectBackers/ProjectBackers';
 import ProjectComments from './_components/ProjectComments/ProjectComments';
-import ProjectDetailsSkeleton from './_components/ProjectDetailsSkeleton/ProjectDetailsSkeleton';
 import ErrorFallback from './_components/ErrorFallback/ErrorFallback';
+import ProjectDetailsSkeleton from './_components/ProjectDetailsSkeleton/ProjectDetailsSkeleton';
 
 import styles from './page.module.scss';
 
