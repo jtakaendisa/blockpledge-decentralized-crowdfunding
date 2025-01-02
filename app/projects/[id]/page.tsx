@@ -47,12 +47,15 @@ const ProjectPage = ({ params: { id } }: Props) => {
         <ProjectDetails project={project!} blurDataURLs={blurDataURLs!} />
       )}
 
-      {/* <InfoSelector onSelectInfo={handleSelectInfo} selectedInfo={selectedInfo}>
-            {selectedInfo === 'donations' && (
-              <ProjectBackers backers={backers} project={project} />
-            )}
-            {selectedInfo === 'comments' && <ProjectComments backers={backers} />}
-          </InfoSelector> */}
+      {/* Bad conditional check */}
+      {backers?.length && (
+        <InfoSelector onSelectInfo={handleSelectInfo} selectedInfo={selectedInfo}>
+          {selectedInfo === 'donations' && (
+            <ProjectBackers backers={backers} project={project} />
+          )}
+          {selectedInfo === 'comments' && <ProjectComments backers={backers} />}
+        </InfoSelector>
+      )}
 
       <ToastContainer
         position="bottom-center"

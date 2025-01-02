@@ -1,12 +1,9 @@
-$light-gray: rgb(116, 116, 116);
-$dark-gray: rgb(53, 53, 53);
-
 .authMenuButton {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 0.5rem;
-  border: 2px solid $light-gray;
+  border: 2px solid var(--color-base-gray);
   border-radius: 50%;
   cursor: pointer;
   transition: border-color 0.2s;
@@ -14,15 +11,15 @@ $dark-gray: rgb(53, 53, 53);
   & > svg {
     width: 24px;
     height: 24px;
-    fill: $light-gray;
+    fill: var(--color-base-gray);
     transition: fill 0.2s;
   }
 
   &:hover {
-    border-color: $dark-gray;
+    border-color: var(--color-dark-gray);
 
     & > svg {
-      fill: $dark-gray;
+      fill: var(--color-dark-gray);
     }
   }
 }

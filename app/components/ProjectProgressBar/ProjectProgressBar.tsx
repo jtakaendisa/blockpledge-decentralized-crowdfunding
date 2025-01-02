@@ -1,4 +1,6 @@
 import classNames from 'classnames';
+import { motion, Variants } from 'framer-motion';
+
 import styles from './ProjectProgressBar.module.scss';
 
 interface Props {
@@ -7,6 +9,19 @@ interface Props {
   height?: number;
   flatEdge?: boolean;
 }
+
+const progressVariants: Variants = {
+  initial: {
+    width: 0,
+  },
+  animate: (width) => ({
+    width,
+    transition: {
+      duration: 0.85,
+      ease: 'easeInOut',
+    },
+  }),
+};
 
 const ProjectProgressBar = ({ raised, cost, height = 4, flatEdge }: Props) => {
   const progressPercentage = (raised / cost) * 100;
@@ -19,9 +34,12 @@ const ProjectProgressBar = ({ raised, cost, height = 4, flatEdge }: Props) => {
         [styles.flatEdge]: flatEdge,
       })}
     >
-      <div
+      <motion.div
         className={styles.progressForeground}
-        style={{ width: `${progressPercentage}%` }}
+        initial="initial"
+        animate="animate"
+        custom={`${progressPercentage}%`}
+        variants={progressVariants}
       />
     </div>
   );

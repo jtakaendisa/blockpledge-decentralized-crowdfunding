@@ -1,25 +1,19 @@
-$light-green: rgb(83, 167, 83);
-$dark-green: rgb(67, 136, 67);
-$light-gray: rgb(76, 84, 95);
-$light-red: rgb(202, 57, 49);
-$light-orange: rgb(216, 96, 41);
-
 .projectStatus {
   font-size: 0.9rem;
 }
 
 .green {
-  color: $light-green;
+  color: var(--color-dark-green);
 }
 
 .gray {
-  color: $light-gray;
+  color: var(--color-dark-gray);
 }
 
 .red {
-  color: $light-red;
+  color: var(--color-red);
 }
 
 .orange {
-  color: $light-orange;
+  color: var(--color-orange);
 }

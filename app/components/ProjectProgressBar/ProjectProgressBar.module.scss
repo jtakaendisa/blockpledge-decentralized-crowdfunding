@@ -1,10 +1,10 @@
 .progressBackground {
-  background-color: rgba(116, 116, 116, 0.25);
+  background-color: var(--color-dark-gray-transparent);
   border-radius: 50px;
   overflow: hidden;
 
   .progressForeground {
-    background-color: rgb(83, 167, 83);
+    background-color: var(--color-dark-green);
     height: 100%;
     border-radius: 50px;
   }
