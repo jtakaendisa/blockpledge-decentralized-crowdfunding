@@ -13,7 +13,7 @@ interface Props {
   onChange: (mode: 'increment' | 'decrement') => void;
 }
 
-const { darkGreen, gray } = colors;
+const { darkGreen, baseGray } = colors;
 
 const ProjectsCarouselPaginationArrow = ({
   icon,
@@ -21,7 +21,7 @@ const ProjectsCarouselPaginationArrow = ({
   size = 12,
   onChange,
 }: Props) => {
-  const fill = !disabled ? darkGreen : gray;
+  const fill = !disabled ? darkGreen : baseGray;
 
   return (
     <span

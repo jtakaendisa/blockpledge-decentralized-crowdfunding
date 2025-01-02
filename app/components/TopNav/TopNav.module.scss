@@ -15,9 +15,9 @@ $dark-gray: rgb(53, 53, 53);
   padding: 0 2rem;
   z-index: 4;
   color: $light-gray;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: var(--color-white-transparent);
   border-radius: 180px;
-  box-shadow: 0 0.3rem 1rem rgba(53, 53, 53, 0.25);
+  box-shadow: 0 0.3rem 1rem var(--color-dark-gray-transparent);
   transition: color 0.2s;
 
   .row {

@@ -17,7 +17,7 @@
     .column {
       position: relative;
       flex: 1;
-      background: #553a41;
+      background: var(--color-mauve);
       margin: -0.25px;
     }
   }
@@ -30,7 +30,7 @@
   transform: translate(-50%, -50%);
   font-size: 3.5rem;
   font-weight: bold;
-  color: #e8e8e3;
+  color: var(--color-light-gray);
   opacity: 0;
   z-index: 5;
   pointer-events: none;

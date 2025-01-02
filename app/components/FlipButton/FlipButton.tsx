@@ -31,12 +31,12 @@ const hoverVariants: Variants = {
   },
 };
 
-const { whiteSolid, darkGreen, lightGray } = colors;
+const { white, darkGreen, lightGray } = colors;
 
 const FlipButton = ({
   children,
   textColor1 = darkGreen,
-  textColor2 = whiteSolid,
+  textColor2 = white,
   backgroundColor1 = lightGray,
   backgroundColor2 = darkGreen,
   borderColor = darkGreen,

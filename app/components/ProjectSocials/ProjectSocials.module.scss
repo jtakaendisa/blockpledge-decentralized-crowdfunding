@@ -9,20 +9,20 @@
     align-items: center;
     width: 40px;
     height: 40px;
-    background-color: white;
+    background-color: var(--color-white);
     border-radius: 50%;
-    box-shadow: 0 0.2rem 0.35rem rgba(53, 53, 53, 0.25);
+    box-shadow: 0 0.2rem 0.35rem var(--color-dark-gray-transparent);
 
     & > svg {
       width: 22px;
       height: 22px;
-      fill: #353535;
+      fill: var(--color-dark-gray);
       transition: fill 0.2s;
     }
 
     &:hover {
       & > svg {
-        fill: #3c6e71;
+        fill: var(--color-dark-green);
       }
     }
   }

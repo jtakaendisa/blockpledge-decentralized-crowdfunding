@@ -18,13 +18,13 @@
   }
 
   &:not(:last-child) {
-    border-bottom: 1px solid #9b9e9e;
+    border-bottom: 1px solid var(--color-base-gray);
   }
 
   &:hover {
     .icon {
       & > svg {
-        fill: #3c6e71;
+        fill: var(--color-dark-green);
       }
     }
 

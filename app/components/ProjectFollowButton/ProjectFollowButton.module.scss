@@ -6,10 +6,10 @@
   width: 48px;
   height: 30px;
   margin-left: 0.5rem;
-  background-color: white;
+  background-color: var(--color-white);
   border-width: 0;
   border-radius: 8px;
-  box-shadow: 0 0.2rem 0.35rem rgba(53, 53, 53, 0.25);
+  box-shadow: 0 0.2rem 0.35rem var(--color-dark-gray-transparent);
 }
 
 .tooltipButton {
@@ -17,8 +17,8 @@
 
   .tooltip {
     visibility: hidden;
-    background-color: rgba(0, 0, 0, 0.8);
-    color: #fff;
+    background-color: var(--color-black-transparent);
+    color: var(--color-white);
     text-align: center;
     text-wrap: nowrap;
     padding: 5px;
@@ -40,7 +40,7 @@
     margin-left: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+    border-color: var(--color-black-transparent) transparent transparent transparent;
   }
 
   .tooltip.show {

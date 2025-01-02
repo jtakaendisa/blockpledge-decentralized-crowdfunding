@@ -10,7 +10,7 @@ import Xmark from '@/app/components/icons/Xmark';
 
 import styles from './ProjectFilterSearch.module.scss';
 
-const { gray, red } = colors;
+const { baseGray, red } = colors;
 
 const ProjectFilterSearch = () => {
   const { searchQuery } = useProjectsPageState(['searchQuery']);
@@ -19,7 +19,7 @@ const ProjectFilterSearch = () => {
   return (
     <div className={styles.search}>
       <ProjectFilterSearchIcon align="left">
-        <MagnifyingGlass fill={gray} />
+        <MagnifyingGlass fill={baseGray} />
       </ProjectFilterSearchIcon>
 
       <ProjectFilterSearchInput searchTerm={searchTerm} onChange={handleChange} />

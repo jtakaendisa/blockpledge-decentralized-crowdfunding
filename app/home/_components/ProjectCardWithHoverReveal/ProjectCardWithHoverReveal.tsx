@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { motion } from 'framer-motion';
 
 import { Project } from '@/app/entities';
+import { colors } from '@/app/constants';
 import { truncateText } from '@/app/utils';
 import ProjectImage from '@/app/components/ProjectImage/ProjectImage';
 import ProjectTitle from '@/app/components/ProjectTitle/ProjectTitle';
@@ -34,6 +35,8 @@ const revealVariants = {
     },
   },
 };
+
+const { white } = colors;
 
 const ProjectCardWithHoverReveal = ({ project }: Props) => {
   const {
@@ -91,7 +94,7 @@ const ProjectCardWithHoverReveal = ({ project }: Props) => {
           <VerticalSpacer height={8} />
 
           <ProjectBadge top={8} right={8}>
-            <ProjectCategory categoryId={categoryId} color="white" fontWeight={500} />
+            <ProjectCategory categoryId={categoryId} color={white} fontWeight={500} />
           </ProjectBadge>
         </div>
 

@@ -4,9 +4,9 @@
   gap: 1rem;
   width: 100%;
   padding: 1rem;
-  background-color: white;
+  background-color: var(--color-white);
   border-radius: 16px;
-  box-shadow: 0 0.2rem 0.5rem rgba(53, 53, 53, 0.25);
+  box-shadow: 0 0.2rem 0.5rem var(--color-dark-gray-transparent);
   cursor: pointer;
 
   .categoryIcon {
@@ -28,7 +28,7 @@
   &:hover {
     .categoryIcon {
       & > svg {
-        fill: #3c6e71;
+        fill: var(--color-dark-green);
         transform: scale(1.03);
       }
     }

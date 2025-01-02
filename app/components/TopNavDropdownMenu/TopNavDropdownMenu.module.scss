@@ -2,7 +2,7 @@
   position: absolute;
   top: 64px;
   right: 0;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: var(--color-white-transparent);
   border-radius: 8px;
-  box-shadow: 0 0.2rem 0.5rem rgba(53, 53, 53, 0.25);
+  box-shadow: 0 0.2rem 0.5rem var(--color-dark-gray-transparent);
 }

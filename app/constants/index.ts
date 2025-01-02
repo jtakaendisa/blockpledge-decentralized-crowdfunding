@@ -15,14 +15,18 @@ export const pathnameMap = {
 };
 
 export const colors = {
+  white: '#fff',
+  whiteTransparent: 'rgba(255, 255, 255, 0.9)',
   lightGray: '#e1e1e4',
-  gray: '#9b9e9e',
+  baseGray: '#9b9e9e',
+  altGray: '#5a5a5a',
   darkGray: '#353535',
+  darkGrayTransparent: 'rgba(53, 53, 53, 0.25)',
   darkGreen: '#3c6e71',
   orange: '#d86029',
   red: '#ca3931',
-  whiteSolid: '#fff',
-  whiteTransparent: 'rgba(255, 255, 255, 0.9)',
+  mauve: '#553a41',
+  blackTransparent: 'rgba(0, 0, 0, 0.8)',
 };
 
 export const statusMap = {

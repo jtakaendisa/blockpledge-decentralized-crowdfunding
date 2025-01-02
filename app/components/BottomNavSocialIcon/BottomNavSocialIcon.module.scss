@@ -5,20 +5,20 @@
   width: 48px;
   height: 48px;
   border-radius: 12px;
-  background-color: white;
+  background-color: var(--color-white);
   cursor: pointer;
-  box-shadow: 0 0.2rem 0.35rem rgba(53, 53, 53, 0.25);
+  box-shadow: 0 0.2rem 0.35rem var(--color-dark-gray-transparent);
 
   & > svg {
     width: 24px;
     height: 24px;
-    fill: #353535;
+    fill: var(--color-dark-gray);
     transition: fill 0.2s;
   }
 
   &:hover {
     & > svg {
-      fill: #3c6e71;
+      fill: var(--color-dark-green);
     }
   }
 }

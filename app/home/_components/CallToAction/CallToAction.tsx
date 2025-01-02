@@ -9,7 +9,7 @@ interface Props {
   onToggle: () => void;
 }
 
-const { whiteSolid, lightGray, darkGreen } = colors;
+const { white, lightGray, darkGreen } = colors;
 
 const CallToAction = ({ onToggle }: Props) => {
   const { animatePageOut } = usePageNavigation();
@@ -32,7 +32,7 @@ const CallToAction = ({ onToggle }: Props) => {
       <div className={styles.buttons}>
         <FlipButton
           onClick={onToggle}
-          textColor1={whiteSolid}
+          textColor1={white}
           backgroundColor1={darkGreen}
           textColor2={darkGreen}
           backgroundColor2={lightGray}
