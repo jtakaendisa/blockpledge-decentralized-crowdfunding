@@ -3,19 +3,19 @@ import Link from 'next/link';
 import classNames from 'classnames';
 import { motion } from 'framer-motion';
 
-import { Project } from '@/app/store';
+import { Project } from '@/app/entities';
 import { truncateText } from '@/app/utils';
-import ProjectImage from '../ProjectImage/ProjectImage';
-import ProjectTitle from '../ProjectTitle/ProjectTitle';
-import ProjectOwnerInfo from '../ProjectOwnerInfo/ProjectOwnerInfo';
-import ProjectProgressBar from '../ProjectProgressBar/ProjectProgressBar';
-import SpaceBetweenRow from '../SpaceBetweenRow/SpaceBetweenRow';
-import ProjectRevealContent from '../ProjectRevealContent/ProjectRevealContent';
-import ProjectCategory from '../ProjectCategory/ProjectCategory';
-import ProjectStatus from '../ProjectStatus/ProjectStatus';
-import ProjectText from '../ProjectText/ProjectText';
-import ProjectBadge from '../ProjectBadge/ProjectBadge';
-import VerticalSpacer from '../VerticalSpacer/VerticalSpacer';
+import ProjectImage from '@/app/components/ProjectImage/ProjectImage';
+import ProjectTitle from '@/app/components/ProjectTitle/ProjectTitle';
+import ProjectOwnerInfo from '@/app/components/ProjectOwnerInfo/ProjectOwnerInfo';
+import ProjectProgressBar from '@/app/components/ProjectProgressBar/ProjectProgressBar';
+import SpaceBetweenRow from '@/app/components/SpaceBetweenRow/SpaceBetweenRow';
+import ProjectRevealContent from '@/app/components/ProjectRevealContent/ProjectRevealContent';
+import ProjectCategory from '@/app/components/ProjectCategory/ProjectCategory';
+import ProjectStatus from '@/app/components/ProjectStatus/ProjectStatus';
+import ProjectText from '@/app/components/ProjectText/ProjectText';
+import ProjectBadge from '@/app/components/ProjectBadge/ProjectBadge';
+import VerticalSpacer from '@/app/components/VerticalSpacer/VerticalSpacer';
 
 import styles from './ProjectCardWithHoverReveal.module.scss';
 

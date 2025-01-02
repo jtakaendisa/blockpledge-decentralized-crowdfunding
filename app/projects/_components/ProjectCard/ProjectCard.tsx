@@ -2,16 +2,16 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
-import { Project } from '@/app/store';
-import ProjectImage from '../ProjectImage/ProjectImage';
-import ProjectOwnerInfo from '../ProjectOwnerInfo/ProjectOwnerInfo';
-import ProjectStatus from '../ProjectStatus/ProjectStatus';
-import ProjectProgressBar from '../ProjectProgressBar/ProjectProgressBar';
-import ProjectTitle from '../ProjectTitle/ProjectTitle';
-import ProjectRemainingTime from '../ProjectRemainingTime/ProjectRemainingTime';
-import ProjectText from '../ProjectText/ProjectText';
-import SpaceBetweenRow from '../SpaceBetweenRow/SpaceBetweenRow';
-import VerticalSpacer from '../VerticalSpacer/VerticalSpacer';
+import { Project } from '@/app/entities';
+import ProjectImage from '../../../components/ProjectImage/ProjectImage';
+import ProjectOwnerInfo from '../../../components/ProjectOwnerInfo/ProjectOwnerInfo';
+import ProjectStatus from '../../../components/ProjectStatus/ProjectStatus';
+import ProjectProgressBar from '../../../components/ProjectProgressBar/ProjectProgressBar';
+import ProjectTitle from '../../../components/ProjectTitle/ProjectTitle';
+import ProjectRemainingTime from '../../../components/ProjectRemainingTime/ProjectRemainingTime';
+import ProjectText from '../../../components/ProjectText/ProjectText';
+import SpaceBetweenRow from '../../../components/SpaceBetweenRow/SpaceBetweenRow';
+import VerticalSpacer from '../../../components/VerticalSpacer/VerticalSpacer';
 
 import styles from './ProjectCard.module.scss';
 

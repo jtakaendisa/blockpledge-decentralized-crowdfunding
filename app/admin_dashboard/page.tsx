@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
-import { Project, useProjectStore } from '../store';
+import { Project } from '../entities';
+import { useProjectStore } from '../store';
 import Header from '../components/TopNav/TopNav';
 import ProjectsGrid from '../projects/_components/ProjectsGrid/ProjectsGrid';
 

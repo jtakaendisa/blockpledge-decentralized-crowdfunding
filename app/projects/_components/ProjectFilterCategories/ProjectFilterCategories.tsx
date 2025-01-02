@@ -1,4 +1,4 @@
-import { categoryImageMap, useProjectStore } from '@/app/store';
+import { useProjectStore } from '@/app/store';
 import ProjectFilterCategory from '../ProjectFilterCategory/ProjectFilterCategory';
 
 interface Props {
@@ -16,7 +16,6 @@ const ProjectFilterCategories = ({ selectedCategoryId }: Props) => {
         <ProjectFilterCategory
           key={category.id}
           category={category}
-          icon={categoryImageMap[category.id]}
           selectedCategoryId={selectedCategoryId}
         />
       ))}

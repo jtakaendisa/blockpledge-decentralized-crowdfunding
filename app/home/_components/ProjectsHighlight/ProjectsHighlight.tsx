@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 
-import { Project } from '@/app/store';
+import { Project } from '@/app/entities';
 import { truncateText } from '@/app/utils';
 import { useProjectsHighlight } from '../../_hooks/useProjectsHighlight';
 import { usePageNavigation } from '@/app/hooks/usePageNavigation';

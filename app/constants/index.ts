@@ -25,6 +25,15 @@ export const colors = {
   whiteTransparent: 'rgba(255, 255, 255, 0.9)',
 };
 
+export const statusMap = {
+  0: 'Open',
+  1: 'Approved',
+  2: 'Reverted',
+  3: 'Deleted',
+  4: 'Paid out',
+  5: 'Pending approval',
+} as const;
+
 export const statusColorMap = {
   0: 'gray',
   1: 'green',

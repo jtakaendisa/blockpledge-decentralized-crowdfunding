@@ -9,7 +9,8 @@ import {
   onAuthStateChanged,
 } from 'firebase/auth';
 import { getFirestore, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
-import { AuthUser } from '../store';
+
+import { AuthUser } from '../entities';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,

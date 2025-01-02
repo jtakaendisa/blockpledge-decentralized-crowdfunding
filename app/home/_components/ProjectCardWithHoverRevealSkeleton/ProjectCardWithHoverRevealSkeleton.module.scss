@@ -1,0 +1,28 @@
+.card {
+  align-self: flex-start;
+  width: 100%;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  overflow: hidden;
+
+  .imageContainer {
+    position: relative;
+    height: 186px;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    overflow: hidden;
+  }
+
+  .contentContainer {
+    padding: 0 1rem;
+
+    .heading {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .text {
+      font-size: 0.9rem;
+    }
+  }
+}

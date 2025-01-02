@@ -5,9 +5,9 @@ import { useProjectsPageState } from '@/app/contexts/ProjectsPageContext';
 import { generateIncrementingArray } from '@/app/utils';
 import { useProjectsGrid } from '../../_hooks/useProjectsGrid';
 import ProjectsGridNoResults from '../ProjectsGridNoResults/ProjectsGridNoResults';
-import ProjectCard from '../../../components/ProjectCard/ProjectCard';
+import ProjectCard from '../ProjectCard/ProjectCard';
 import FlipButton from '../../../components/FlipButton/FlipButton';
-import ProjectCardSkeleton from '../../../components/ProjectCardSkeleton/ProjectCardSkeleton';
+import ProjectCardSkeleton from '../ProjectCardSkeleton/ProjectCardSkeleton';
 import DefaultBlurDataURL from '@/public/images/defaultBlurDataURL.png';
 
 import styles from './ProjectsGrid.module.scss';

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { Project } from '@/app/store';
+import { Project } from '@/app/entities';
 import { usePlaiceholder } from '@/app/hooks/usePlaiceholder';
 
 type BlurDataURLs = {

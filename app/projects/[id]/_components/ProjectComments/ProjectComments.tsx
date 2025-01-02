@@ -1,5 +1,6 @@
-import { Backer } from '@/app/store';
 import Identicon from 'react-hooks-identicons';
+
+import { Backer } from '@/app/entities';
 
 import styles from './ProjectComments.module.scss';
 

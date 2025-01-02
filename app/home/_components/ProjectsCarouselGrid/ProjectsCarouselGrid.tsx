@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 
-import { Project } from '@/app/store';
+import { Project } from '@/app/entities';
 import { useFeaturedProjectsState } from '@/app/contexts/FeaturedProjectsContext';
-import ProjectCardWithHoverReveal from '@/app/components/ProjectCardWithHoverReveal/ProjectCardWithHoverReveal';
+import ProjectCardWithHoverReveal from '../ProjectCardWithHoverReveal/ProjectCardWithHoverReveal';
 
 import styles from './ProjectsCarouselGrid.module.scss';
 

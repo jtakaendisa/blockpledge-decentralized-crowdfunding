@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Identicon from 'react-hooks-identicons';
 
-import { Backer, Project } from '@/app/store';
+import { Backer, Project } from '@/app/entities';
 import ethereumSVG from '@/public/icons/ethereum.svg';
 
 import styles from './ProjectBackers.module.scss';

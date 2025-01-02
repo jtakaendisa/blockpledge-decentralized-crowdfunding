@@ -1,8 +1,8 @@
-import { categoryImageMap, useProjectStore } from '@/app/store';
+import { useProjectStore } from '@/app/store';
 import { generateIncrementingArray } from '@/app/utils';
-import SectionHeading from '../SectionHeading/SectionHeading';
-import CategoryCard from '../../home/_components/CategoryCard/CategoryCard';
-import CategoryCardSkeleton from '../../home/_components/CategoryCardSkeleton/CategoryCardSkeleton';
+import SectionHeading from '../../../components/SectionHeading/SectionHeading';
+import CategoryCard from '../CategoryCard/CategoryCard';
+import CategoryCardSkeleton from '../CategoryCardSkeleton/CategoryCardSkeleton';
 
 import styles from './CategoriesGrid.module.scss';
 
@@ -18,12 +18,7 @@ const CategoriesGrid = () => {
         {!categories.length
           ? skeletons.map((skeleton) => <CategoryCardSkeleton key={skeleton} />)
           : categories.map((category, index) => (
-              <CategoryCard
-                key={category.id}
-                category={category}
-                icon={categoryImageMap[category.id]}
-                index={index}
-              />
+              <CategoryCard key={category.id} category={category} index={index} />
             ))}
       </div>
     </section>

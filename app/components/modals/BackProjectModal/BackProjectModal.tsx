@@ -5,7 +5,8 @@ import Image from 'next/image';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-import { Project, useAccountStore } from '@/app/store';
+import { Project } from '@/app/entities';
+import { useAccountStore } from '@/app/store';
 import { backProjectFirebase } from '@/app/services/authService';
 import { useBlockchain } from '@/app/hooks/useBlockchain';
 import Button from '../../Button/Button';

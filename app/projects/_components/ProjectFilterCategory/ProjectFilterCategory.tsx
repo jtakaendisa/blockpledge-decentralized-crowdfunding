@@ -1,15 +1,13 @@
-import { ReactNode } from 'react';
 import classNames from 'classnames';
 
-import { Category } from '@/app/store';
+import { Category } from '@/app/entities';
 import { usePageNavigation } from '@/app/hooks/usePageNavigation';
-import Categories from '@/app/components/icons/Categories';
+import CategoryIcon from '@/app/components/icons/CategoryIcon';
 
 import styles from './ProjectFilterCategory.module.scss';
 
 interface Props {
   category?: Category;
-  icon?: ReactNode;
   selectedCategoryId: number | null;
 }
 
@@ -20,7 +18,7 @@ const isSelected = (
   (typeof selectedCategoryId === 'number' && selectedCategoryId === category?.id) ||
   (!category && typeof selectedCategoryId !== 'number');
 
-const ProjectFilterCategory = ({ category, icon, selectedCategoryId }: Props) => {
+const ProjectFilterCategory = ({ category, selectedCategoryId }: Props) => {
   const { navigateToPage } = usePageNavigation();
 
   const handleCategorySelect = () =>
@@ -34,9 +32,9 @@ const ProjectFilterCategory = ({ category, icon, selectedCategoryId }: Props) =>
       })}
       onClick={handleCategorySelect}
     >
-      <span className={styles.icon}>{category ? icon : <Categories />}</span>
+      <span className={styles.icon}>{<CategoryIcon id={category?.id} />}</span>
 
-      <span className={styles.text}>{category ? category.name : 'All Categories'}</span>
+      <span className={styles.text}>{category?.name || 'All Categories'}</span>
     </div>
   );
 };

@@ -6,10 +6,10 @@ import classNames from 'classnames';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-import { Category } from '@/app/store';
+import { Category } from '@/app/entities';
+import { convertToTimestamp, getTomorrowsDate } from '@/app/utils';
 import { usePinata } from '@/app/hooks/usePinata';
 import { useBlockchain } from '@/app/hooks/useBlockchain';
-import { convertToTimestamp, getTomorrowsDate } from '@/app/utils';
 import Button from '../../Button/Button';
 import xmarkSVG from '@/public/icons/xmark.svg';
 

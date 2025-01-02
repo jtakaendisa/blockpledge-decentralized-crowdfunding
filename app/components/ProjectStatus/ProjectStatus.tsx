@@ -1,12 +1,12 @@
 import classNames from 'classnames';
 
-import { statusColorMap } from '@/app/constants';
-import { ProjectStatus as ProjStatus, statusMap } from '@/app/store';
+import { Status } from '@/app/entities';
+import { statusMap, statusColorMap } from '@/app/constants';
 
 import styles from './ProjectStatus.module.scss';
 
 interface Props {
-  status: ProjStatus;
+  status: Status;
   fontSize?: number;
   fontWeight?: number;
 }

@@ -1,6 +1,7 @@
-import { AuthUser, useAccountStore } from '@/app/store';
+import { useAccountStore } from '@/app/store';
 import { truncateAccount } from '@/app/utils';
 
+import { AuthUser } from '@/app/entities';
 import TopNavAuthMenuContentItem from '../TopNavAuthMenuContentItem/TopNavAuthMenuContentItem';
 import FlipButton from '../FlipButton/FlipButton';
 import Envelope from '../icons/Envelope';

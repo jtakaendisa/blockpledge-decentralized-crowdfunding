@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import classNames from 'classnames';
 
-import { Project } from '@/app/store';
+import { Project } from '@/app/entities';
 import { useBlockchain } from '@/app/hooks/useBlockchain';
 import Button from '../../Button/Button';
 import xmarkSVG from '@/public/icons/xmark.svg';

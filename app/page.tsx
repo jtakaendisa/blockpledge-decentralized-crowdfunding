@@ -4,8 +4,8 @@ import { ToastContainer } from 'react-toastify';
 
 import { FeaturedProjectsProvider } from './contexts/FeaturedProjectsContext';
 import Hero from './home/_components/Hero/Hero';
-import FeaturedProjects from './components/FeaturedProjects/FeaturedProjects';
-import CategoriesGrid from './components/CategoriesGrid/CategoriesGrid';
+import FeaturedProjects from './home/_components/FeaturedProjects/FeaturedProjects';
+import CategoriesGrid from './home/_components/CategoriesGrid/CategoriesGrid';
 
 const HomePage = () => {
   return (

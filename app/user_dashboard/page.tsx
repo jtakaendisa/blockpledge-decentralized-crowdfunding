@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 
-import { Project, useAccountStore, useProjectStore } from '../store';
-import useBlockchain from '../hooks/useBlockchain';
-import Header from '../components/TopNav/TopNav';
+import { Project } from '../entities';
+import { useAccountStore, useProjectStore } from '../store';
+import { useBlockchain } from '../hooks/useBlockchain';
 import ProjectsGrid from '../projects/_components/ProjectsGrid/ProjectsGrid';
 
 import styles from './page.module.scss';
@@ -48,7 +48,6 @@ const UserDashBoardPage = () => {
 
   return (
     <div className={styles.dashboardPage}>
-      <Header />
       {authUser?.accountType === 'owner' && (
         <section>
           <h2>You&apos;re Projects</h2>

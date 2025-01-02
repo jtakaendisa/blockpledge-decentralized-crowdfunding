@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 
+import { AuthUser } from '@/app/entities';
 import { colors } from '@/app/constants';
-import { AuthUser } from '@/app/store';
 import { useProjectFollowButton } from '@/app/hooks/useProjectFollowButton';
 import Follow from '../icons/Follow';
 import Following from '../icons/Following';

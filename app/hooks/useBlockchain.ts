@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { ethers } from 'ethers';
 import { formatDistance } from 'date-fns';
 
-import { Project } from '../store';
+import { Project } from '../entities';
 import { truncateAccount } from '../utils';
 import { useEmail } from './useEmail';
 import { AddFormInputs } from '../components/modals/AddProjectModal/AddProjectModal';

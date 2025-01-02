@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { Backer, Project } from '@/app/store';
+import { Backer, Project } from '@/app/entities';
 import { useBlockchain } from '@/app/hooks/useBlockchain';
 import { usePlaiceholder } from '@/app/hooks/usePlaiceholder';
 

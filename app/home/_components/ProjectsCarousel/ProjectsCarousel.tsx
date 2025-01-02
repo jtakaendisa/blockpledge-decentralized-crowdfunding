@@ -1,4 +1,4 @@
-import { Project } from '@/app/store';
+import { Project } from '@/app/entities';
 import { useProjectsCarousel } from '../../_hooks/useProjectsCarousel';
 import ProjectsCarouselGrid from '../ProjectsCarouselGrid/ProjectsCarouselGrid';
 import ProjectsCarouselPagination from '../ProjectsCarouselPagination/ProjectsCarouselPagination';

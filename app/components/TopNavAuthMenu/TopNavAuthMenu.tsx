@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import Skeleton from 'react-loading-skeleton';
 
-import { AuthUser } from '@/app/store';
+import { AuthUser } from '@/app/entities';
 import { signOutAuthUser } from '@/app/services/authService';
 import { usePageNavigation } from '@/app/hooks/usePageNavigation';
 import { useTopNavDropdownMenu } from '@/app/hooks/useTopNavDropdownMenu';

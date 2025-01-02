@@ -1,7 +1,7 @@
 import { RefObject, useEffect, useMemo, useState } from 'react';
 
+import { Project } from '@/app/entities';
 import { debounce } from '@/app/utils';
-import { Project } from '@/app/store';
 
 type SearchQuery = {
   get: string;

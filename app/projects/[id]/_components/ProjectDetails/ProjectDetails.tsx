@@ -1,4 +1,4 @@
-import { Project } from '@/app/store';
+import { Project } from '@/app/entities';
 import ProjectDetailsImageGallery from '../ProjectDetailsImageGallery/ProjectDetailsImageGallery';
 import ProjectDetailsContent from '../ProjectDetailsContent/ProjectDetailsContent';
 

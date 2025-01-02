@@ -1,5 +1,5 @@
+import { Project } from '@/app/entities';
 import { colors } from '@/app/constants';
-import { Project } from '@/app/store';
 import { useProjectModals } from '@/app/hooks/useProjectModals';
 import ProjectTitle from '@/app/components/ProjectTitle/ProjectTitle';
 import ProjectFollowButton from '@/app/components/ProjectFollowButton/ProjectFollowButton';

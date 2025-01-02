@@ -1,7 +1,7 @@
 import { useProjectStore } from '@/app/store';
 import { useFeaturedProjectsState } from '@/app/contexts/FeaturedProjectsContext';
 import { useFeaturedProjects } from '@/app/home/_hooks/useFeaturedProjects';
-import SectionHeading from '../SectionHeading/SectionHeading';
+import SectionHeading from '../../../components/SectionHeading/SectionHeading';
 import ProjectsHighlight from '@/app/home/_components/ProjectsHighlight/ProjectsHighlight';
 import ProjectsHighlightSkeleton from '@/app/home/_components/ProjectsHighlightSkeleton/ProjectsHighlightSkeleton';
 import ProjectsCarousel from '@/app/home/_components/ProjectsCarousel/ProjectsCarousel';

@@ -1,5 +1,4 @@
-import { Project } from '@/app/store';
-
+import { Project } from '@/app/entities';
 import AuthorizeProjectModal from '@/app/components/modals/AuthorizeProjectModal/AuthorizeProjectModal';
 import BackProjectModal from '@/app/components/modals/BackProjectModal/BackProjectModal';
 import EditProjectModal from '@/app/components/modals/EditProjectModal/EditProjectModal';
