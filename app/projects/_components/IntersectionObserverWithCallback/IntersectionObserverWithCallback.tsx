@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 
 interface Props {
-  onIntersect: () => void;
+  onIntersect?: () => void;
 }
 
 const IntersectionObserverWithCallback = ({ onIntersect }: Props) => {
@@ -14,7 +14,7 @@ const IntersectionObserverWithCallback = ({ onIntersect }: Props) => {
       const entry = entries[0];
 
       if (entry.isIntersecting) {
-        onIntersect();
+        onIntersect?.();
       }
     });
 
@@ -28,4 +28,4 @@ const IntersectionObserverWithCallback = ({ onIntersect }: Props) => {
   return <div ref={ref} />;
 };
 
-export default IntersectionObserverWithCallback;
+export default memo(IntersectionObserverWithCallback);

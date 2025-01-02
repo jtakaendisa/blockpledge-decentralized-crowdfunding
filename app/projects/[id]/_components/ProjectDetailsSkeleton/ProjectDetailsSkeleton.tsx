@@ -8,7 +8,6 @@ import SpaceBetweenRow from '@/app/components/SpaceBetweenRow/SpaceBetweenRow';
 import VerticalSpacer from '@/app/components/VerticalSpacer/VerticalSpacer';
 
 import styles from './ProjectDetailsSkeleton.module.scss';
-import 'react-loading-skeleton/dist/skeleton.css';
 
 const ProjectDetailsSkeleton = () => {
   return (

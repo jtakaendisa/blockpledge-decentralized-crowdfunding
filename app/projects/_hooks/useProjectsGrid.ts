@@ -37,6 +37,10 @@ export const useProjectsGrid = (
     });
   }, [projects, searchQuery.get, selectedCategoryId]);
 
+  const visibleProjects = filteredProjects.slice(0, listSize);
+
+  const shouldShowMoreProjects = visibleProjects.length < filteredProjects.length;
+
   useEffect(() => {
     const container = containerRef.current;
 
@@ -57,11 +61,9 @@ export const useProjectsGrid = (
     };
   }, [containerRef]);
 
-  const visibleProjects = filteredProjects.slice(0, listSize);
-
   useEffect(() => {
     setListSize(initialListSize);
   }, [initialListSize, selectedCategoryId, searchQuery.get]);
 
-  return { filteredProjects, visibleProjects, listSize, increaseListSize };
+  return { visibleProjects, shouldShowMoreProjects, increaseListSize };
 };

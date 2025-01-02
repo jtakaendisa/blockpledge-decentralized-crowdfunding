@@ -1,13 +1,12 @@
-import { useProjectStore } from '@/app/store';
+import { Category } from '@/app/entities';
 import ProjectFilterCategory from '../ProjectFilterCategory/ProjectFilterCategory';
 
 interface Props {
   selectedCategoryId: number | null;
+  categories: Category[];
 }
 
-const ProjectFilterCategories = ({ selectedCategoryId }: Props) => {
-  const categories = useProjectStore((s) => s.categories);
-
+const ProjectFilterCategories = ({ selectedCategoryId, categories }: Props) => {
   return (
     <>
       <ProjectFilterCategory selectedCategoryId={selectedCategoryId} />

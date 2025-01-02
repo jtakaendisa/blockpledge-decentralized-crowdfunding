@@ -24,7 +24,7 @@ const ProjectCardWithHoverRevealSkeleton = () => {
         </SpaceBetweenRow>
         <VerticalSpacer height={12} />
 
-        <span className={styles.heading}>
+        <span className={styles.title}>
           <Skeleton width="78%" />
         </span>
         <VerticalSpacer height={8} />

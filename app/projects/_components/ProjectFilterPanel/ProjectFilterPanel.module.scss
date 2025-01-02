@@ -7,8 +7,11 @@
   min-width: 296px;
   height: fit-content;
   padding: 0 0.35rem;
-  background-color: white;
   border-radius: 16px;
-  box-shadow: 0 0.25rem 0.5rem rgba(116, 116, 116, 0.25);
   overflow: hidden;
+}
+
+.backgroundAndShadow {
+  background-color: white;
+  box-shadow: 0 0.25rem 0.5rem rgba(116, 116, 116, 0.25);
 }

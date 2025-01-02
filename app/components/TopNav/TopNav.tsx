@@ -9,7 +9,6 @@ import TopNavMobileMenu from '../TopNavMobileMenu/TopNavMobileMenu';
 import TopNavAuthMenu from '../TopNavAuthMenu/TopNavAuthMenu';
 
 import styles from './TopNav.module.scss';
-import 'react-loading-skeleton/dist/skeleton.css';
 
 const TopNav = () => {
   const { isAdmin, isAuthenticating, authUser, loadingAuth } = useTopNav();

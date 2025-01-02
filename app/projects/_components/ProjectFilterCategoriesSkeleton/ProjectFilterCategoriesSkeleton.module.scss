@@ -1,0 +1,15 @@
+.column {
+  display: flex;
+  flex-direction: column;
+
+  .filterCategory {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 50px;
+
+    .text {
+      width: 100%;
+    }
+  }
+}

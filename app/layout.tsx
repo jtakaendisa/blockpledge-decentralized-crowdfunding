@@ -7,6 +7,7 @@ import BottomNav from './components/BottomNav/BottomNav';
 
 import './globals.scss';
 import 'react-toastify/dist/ReactToastify.css';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const inter = localFont({ src: '../public/fonts/inter-variable.ttf' });
 

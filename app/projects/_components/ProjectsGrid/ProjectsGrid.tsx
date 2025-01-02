@@ -25,7 +25,7 @@ const ProjectsGrid = ({ selectedCategoryId }: Props) => {
   const { searchQuery } = useProjectsPageState(['searchQuery']);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const { visibleProjects, increaseListSize } = useProjectsGrid(
+  const { visibleProjects, shouldShowMoreProjects, increaseListSize } = useProjectsGrid(
     projects,
     selectedCategoryId,
     containerRef,
@@ -49,7 +49,11 @@ const ProjectsGrid = ({ selectedCategoryId }: Props) => {
             />
           ))}
 
-      <IntersectionObserverWithCallback onIntersect={increaseListSize} />
+      {projects.length && (
+        <IntersectionObserverWithCallback
+          onIntersect={shouldShowMoreProjects ? increaseListSize : undefined}
+        />
+      )}
     </section>
   );
 };

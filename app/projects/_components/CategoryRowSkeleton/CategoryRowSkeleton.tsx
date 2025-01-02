@@ -1,7 +1,6 @@
 import Skeleton from 'react-loading-skeleton';
 
 import styles from './CategoryRowSkeleton.module.scss';
-import 'react-loading-skeleton/dist/skeleton.css';
 
 const CategoryRowSkeleton = () => {
   return (
