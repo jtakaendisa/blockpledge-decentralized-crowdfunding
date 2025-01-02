@@ -4,7 +4,7 @@ import { colors } from '@/app/constants';
 import ChevronLeft from '@/app/components/icons/ChevronLeft';
 import ChevronRight from '@/app/components/icons/ChevronRight';
 
-import styles from './ProjectCarouselPaginationArrow.module.scss';
+import styles from './ProjectsCarouselPaginationArrow.module.scss';
 
 interface Props {
   icon: 'chevronLeft' | 'chevronRight';
@@ -15,7 +15,7 @@ interface Props {
 
 const { darkGreen, gray } = colors;
 
-const ProjectCarouselPaginationArrow = ({
+const ProjectsCarouselPaginationArrow = ({
   icon,
   disabled,
   size = 12,
@@ -37,4 +37,4 @@ const ProjectCarouselPaginationArrow = ({
   );
 };
 
-export default ProjectCarouselPaginationArrow;
+export default ProjectsCarouselPaginationArrow;

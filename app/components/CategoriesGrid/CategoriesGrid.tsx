@@ -1,8 +1,8 @@
 import { categoryImageMap, useProjectStore } from '@/app/store';
 import { generateIncrementingArray } from '@/app/utils';
 import SectionHeading from '../SectionHeading/SectionHeading';
-import CategoryCard from '../CategoryCard/CategoryCard';
-import CategoryCardSkeleton from '../CategoryCardSkeleton/CategoryCardSkeleton';
+import CategoryCard from '../../home/_components/CategoryCard/CategoryCard';
+import CategoryCardSkeleton from '../../home/_components/CategoryCardSkeleton/CategoryCardSkeleton';
 
 import styles from './CategoriesGrid.module.scss';
 

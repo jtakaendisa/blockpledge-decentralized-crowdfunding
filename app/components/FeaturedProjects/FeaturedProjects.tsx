@@ -2,12 +2,13 @@ import { useProjectStore } from '@/app/store';
 import { useFeaturedProjectsState } from '@/app/contexts/FeaturedProjectsContext';
 import { useFeaturedProjects } from '@/app/home/_hooks/useFeaturedProjects';
 import SectionHeading from '../SectionHeading/SectionHeading';
-import ProjectHighlight from '@/app/home/_components/ProjectHighlight/ProjectHighlight';
-import ProjectHighlightSkeleton from '../ProjectHighlightSkeleton/ProjectHighlightSkeleton';
-import ProjectCarousel from '@/app/home/_components/ProjectCarousel/ProjectCarousel';
-import ProjectCarouselSkeleton from '../ProjectCarouselSkeleton/ProjectCarouselSkeleton';
+import ProjectsHighlight from '@/app/home/_components/ProjectsHighlight/ProjectsHighlight';
+import ProjectsHighlightSkeleton from '@/app/home/_components/ProjectsHighlightSkeleton/ProjectsHighlightSkeleton';
+import ProjectsCarousel from '@/app/home/_components/ProjectsCarousel/ProjectsCarousel';
+import ProjectsCarouselSkeleton from '@/app/home/_components/ProjectsCarouselSkeleton/ProjectsCarouselSkeleton';
 
 import styles from './FeaturedProjects.module.scss';
+
 const TOTAL_PAGES = 3;
 const CHUNK_SIZE = 4;
 
@@ -28,15 +29,15 @@ const FeaturedProjects = () => {
 
       <div className={styles.row}>
         {isLoading ? (
-          <ProjectHighlightSkeleton />
+          <ProjectsHighlightSkeleton />
         ) : (
-          <ProjectHighlight project={projects[0]} blurDataURL={blurDataURLs.get[0]} />
+          <ProjectsHighlight project={projects[0]} blurDataURL={blurDataURLs.get[0]} />
         )}
 
         {isLoading ? (
-          <ProjectCarouselSkeleton />
+          <ProjectsCarouselSkeleton />
         ) : (
-          <ProjectCarousel
+          <ProjectsCarousel
             projects={projects.slice(1)}
             totalPages={TOTAL_PAGES}
             chunkSize={CHUNK_SIZE}

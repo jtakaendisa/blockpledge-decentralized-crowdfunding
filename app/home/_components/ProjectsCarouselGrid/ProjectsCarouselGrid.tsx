@@ -4,7 +4,7 @@ import { Project } from '@/app/store';
 import { useFeaturedProjectsState } from '@/app/contexts/FeaturedProjectsContext';
 import ProjectCardWithHoverReveal from '@/app/components/ProjectCardWithHoverReveal/ProjectCardWithHoverReveal';
 
-import styles from './ProjectCarouselGrid.module.scss';
+import styles from './ProjectsCarouselGrid.module.scss';
 
 interface Props {
   projects: Project[];
@@ -12,7 +12,7 @@ interface Props {
   chunkSize: number;
 }
 
-const ProjectCarouselGrid = ({ projects, selectedPage, chunkSize }: Props) => {
+const ProjectsCarouselGrid = ({ projects, selectedPage, chunkSize }: Props) => {
   const { blurDataURLs } = useFeaturedProjectsState(['blurDataURLs']);
 
   const filteredProjectsWithBlurData = useMemo(() => {
@@ -35,4 +35,4 @@ const ProjectCarouselGrid = ({ projects, selectedPage, chunkSize }: Props) => {
   );
 };
 
-export default ProjectCarouselGrid;
+export default ProjectsCarouselGrid;

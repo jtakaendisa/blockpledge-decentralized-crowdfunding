@@ -1,11 +1,11 @@
 import Skeleton from 'react-loading-skeleton';
 
-import SpaceBetweenRow from '../SpaceBetweenRow/SpaceBetweenRow';
-import VerticalSpacer from '../VerticalSpacer/VerticalSpacer';
+import SpaceBetweenRow from '@/app/components/SpaceBetweenRow/SpaceBetweenRow';
+import VerticalSpacer from '@/app/components/VerticalSpacer/VerticalSpacer';
 
-import styles from './ProjectHighlightSkeleton.module.scss';
+import styles from './ProjectsHighlightSkeleton.module.scss';
 
-const ProjectHighlightSkeleton = () => {
+const ProjectsHighlightSkeleton = () => {
   return (
     <div className={styles.highlight}>
       <div className={styles.imageContainer}>
@@ -65,4 +65,4 @@ const ProjectHighlightSkeleton = () => {
   );
 };
 
-export default ProjectHighlightSkeleton;
+export default ProjectsHighlightSkeleton;

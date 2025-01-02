@@ -2,7 +2,7 @@ import { useProjectModals } from '@/app/hooks/useProjectModals';
 import CallToAction from '../CallToAction/CallToAction';
 import ImageCollage from '../ImageCollage/ImageCollage';
 import StatCards from '../StatCards/StatCards';
-import AddProjectModal from '../modals/AddProjectModal/AddProjectModal';
+import AddProjectModal from '../../../components/modals/AddProjectModal/AddProjectModal';
 
 import styles from './Hero.module.scss';
 

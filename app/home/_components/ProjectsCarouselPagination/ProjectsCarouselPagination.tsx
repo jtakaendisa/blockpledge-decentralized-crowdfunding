@@ -1,7 +1,7 @@
-import ProjectCarouselPaginationArrow from '../ProjectCarouselPaginationArrow/ProjectCarouselPaginationArrow';
-import ProjectCarouselPaginationList from '../ProjectCarouselPaginationList/ProjectCarouselPaginationList';
+import ProjectsCarouselPaginationArrow from '../ProjectsCarouselPaginationArrow/ProjectsCarouselPaginationArrow';
+import ProjectsCarouselPaginationList from '../ProjectsCarouselPaginationList/ProjectsCarouselPaginationList';
 
-import styles from './ProjectCarouselPagination.module.scss';
+import styles from './ProjectsCarouselPagination.module.scss';
 
 interface Props {
   selectedPage: number;
@@ -12,7 +12,7 @@ interface Props {
 
 const isDisabled = (selectedPage: number, limit: number) => selectedPage === limit;
 
-const ProjectCarouselPagination = ({
+const ProjectsCarouselPagination = ({
   selectedPage,
   totalPages,
   onSelect,
@@ -20,17 +20,17 @@ const ProjectCarouselPagination = ({
 }: Props) => {
   return (
     <div className={styles.pagination}>
-      <ProjectCarouselPaginationArrow
+      <ProjectsCarouselPaginationArrow
         icon="chevronLeft"
         disabled={isDisabled(selectedPage, 1)}
         onChange={onChange}
       />
-      <ProjectCarouselPaginationList
+      <ProjectsCarouselPaginationList
         selectedPage={selectedPage}
         totalPages={totalPages}
         onSelect={onSelect}
       />
-      <ProjectCarouselPaginationArrow
+      <ProjectsCarouselPaginationArrow
         icon="chevronRight"
         disabled={isDisabled(selectedPage, totalPages)}
         onChange={onChange}
@@ -39,4 +39,4 @@ const ProjectCarouselPagination = ({
   );
 };
 
-export default ProjectCarouselPagination;
+export default ProjectsCarouselPagination;

@@ -1,7 +1,7 @@
 import { colors } from '@/app/constants';
 import { usePageNavigation } from '@/app/hooks/usePageNavigation';
-import SlideUpText from '../SlideUpText/SlideUpText';
-import FlipButton from '../FlipButton/FlipButton';
+import SlideUpText from '../../../components/SlideUpText/SlideUpText';
+import FlipButton from '../../../components/FlipButton/FlipButton';
 
 import styles from './CallToAction.module.scss';
 

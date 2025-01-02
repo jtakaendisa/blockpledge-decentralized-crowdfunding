@@ -1,7 +1,7 @@
 import { generateIncrementingArray } from '@/app/utils';
-import ProjectCarouselPaginationListItem from '../ProjectCarouselPaginationListItem/ProjectCarouselPaginationListItem';
+import ProjectsCarouselPaginationListItem from '../ProjectsCarouselPaginationListItem/ProjectsCarouselPaginationListItem';
 
-import styles from './ProjectCarouselPaginationList.module.scss';
+import styles from './ProjectsCarouselPaginationList.module.scss';
 
 interface Props {
   selectedPage: number;
@@ -9,7 +9,7 @@ interface Props {
   onSelect: (selectedPage: number) => void;
 }
 
-const ProjectCarouselPaginationList = ({
+const ProjectsCarouselPaginationList = ({
   selectedPage,
   totalPages,
   onSelect,
@@ -17,7 +17,7 @@ const ProjectCarouselPaginationList = ({
   return (
     <div className={styles.paginationList}>
       {generateIncrementingArray(totalPages).map((pageNumber) => (
-        <ProjectCarouselPaginationListItem
+        <ProjectsCarouselPaginationListItem
           key={pageNumber}
           pageNumber={pageNumber}
           selectedPage={selectedPage}
@@ -28,4 +28,4 @@ const ProjectCarouselPaginationList = ({
   );
 };
 
-export default ProjectCarouselPaginationList;
+export default ProjectsCarouselPaginationList;

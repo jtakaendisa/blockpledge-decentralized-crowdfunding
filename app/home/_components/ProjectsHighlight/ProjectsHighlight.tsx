@@ -2,7 +2,7 @@ import { useRef } from 'react';
 
 import { Project } from '@/app/store';
 import { truncateText } from '@/app/utils';
-import { useProjectHighlight } from '../../_hooks/useProjectHighlight';
+import { useProjectsHighlight } from '../../_hooks/useProjectsHighlight';
 import { usePageNavigation } from '@/app/hooks/usePageNavigation';
 import ProjectImage from '@/app/components/ProjectImage/ProjectImage';
 import ProjectProgressBar from '@/app/components/ProjectProgressBar/ProjectProgressBar';
@@ -16,14 +16,14 @@ import SpaceBetweenRow from '@/app/components/SpaceBetweenRow/SpaceBetweenRow';
 import VerticalSpacer from '@/app/components/VerticalSpacer/VerticalSpacer';
 import FlipButton from '@/app/components/FlipButton/FlipButton';
 
-import styles from './ProjectHighlight.module.scss';
+import styles from './ProjectsHighlight.module.scss';
 
 interface Props {
   project: Project;
   blurDataURL: string;
 }
 
-const ProjectHighlight = ({ project, blurDataURL }: Props) => {
+const ProjectsHighlight = ({ project, blurDataURL }: Props) => {
   const {
     id,
     owner,
@@ -39,7 +39,7 @@ const ProjectHighlight = ({ project, blurDataURL }: Props) => {
 
   const cardRef = useRef<HTMLDivElement | null>(null);
 
-  const { projectImageHeight } = useProjectHighlight(cardRef);
+  const { projectImageHeight } = useProjectsHighlight(cardRef);
   const { animatePageOut } = usePageNavigation();
 
   return (
@@ -95,4 +95,4 @@ const ProjectHighlight = ({ project, blurDataURL }: Props) => {
   );
 };
 
-export default ProjectHighlight;
+export default ProjectsHighlight;

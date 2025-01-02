@@ -1,12 +1,12 @@
 import Skeleton from 'react-loading-skeleton';
 
 import { generateIncrementingArray } from '@/app/utils';
-import VerticalSpacer from '../VerticalSpacer/VerticalSpacer';
-import SpaceBetweenRow from '../SpaceBetweenRow/SpaceBetweenRow';
+import VerticalSpacer from '@/app/components/VerticalSpacer/VerticalSpacer';
+import SpaceBetweenRow from '@/app/components/SpaceBetweenRow/SpaceBetweenRow';
 
-import styles from './ProjectCarouselSkeleton.module.scss';
+import styles from './ProjectsCarouselSkeleton.module.scss';
 
-const ProjectCarouselSkeleton = () => {
+const ProjectsCarouselSkeleton = () => {
   return (
     <div className={styles.projectCarousel}>
       <div className={styles.grid}>
@@ -62,4 +62,4 @@ const ProjectCarouselSkeleton = () => {
   );
 };
 
-export default ProjectCarouselSkeleton;
+export default ProjectsCarouselSkeleton;
