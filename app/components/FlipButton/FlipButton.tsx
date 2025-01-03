@@ -19,14 +19,13 @@ interface Props {
 
 const hoverVariants: Variants = {
   initial: {
-    y: '100%',
+    top: '100%',
   },
   hovered: {
-    y: 0,
+    top: 0,
     transition: {
       duration: 0.2,
       ease: 'easeInOut',
-      bounce: 0,
     },
   },
 };

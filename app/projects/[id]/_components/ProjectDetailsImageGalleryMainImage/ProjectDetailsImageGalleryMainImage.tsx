@@ -6,7 +6,6 @@ import styles from './ProjectDetailsImageGalleryMainImage.module.scss';
 interface Props {
   imageURLs: string[];
   selectedImageIndex: number;
-  title: string;
   blurDataURLs: string[];
 }
 
@@ -25,7 +24,6 @@ const revealVariants = {
 const ProjectDetailsImageGalleryMainImage = ({
   imageURLs,
   selectedImageIndex,
-  title,
   blurDataURLs,
 }: Props) => {
   const mainImageUrl = `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageURLs[selectedImageIndex]}`;
@@ -39,7 +37,7 @@ const ProjectDetailsImageGalleryMainImage = ({
     >
       <Image
         src={mainImageUrl}
-        alt={title}
+        alt="main image"
         fill
         sizes="40vw"
         placeholder="blur"

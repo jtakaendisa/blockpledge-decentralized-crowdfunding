@@ -2,12 +2,12 @@ import { ChangeEvent, useEffect, useState } from 'react';
 
 import { useDebounce } from './useDebounce';
 
-type SearchQuery = {
+interface FastContextSearchQuery {
   get: string;
   set: (value: string) => void;
-};
+}
 
-export const useProjectFilterSearch = (searchQuery: SearchQuery) => {
+export const useProjectFilterSearch = (searchQuery: FastContextSearchQuery) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const { debouncedValue: debouncedSearchTerm } = useDebounce(searchTerm);

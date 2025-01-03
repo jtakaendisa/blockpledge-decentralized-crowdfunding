@@ -1,18 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { ToastContainer } from 'react-toastify';
-
-import { useBlockchainEventListener } from '@/app/hooks/useBlockchainEventListener';
-import { useProjectPage } from './_hooks/useProjectPage';
-import ProjectDetails from './_components/ProjectDetails/ProjectDetails';
-import InfoSelector from './_components/InfoSelector/InfoSelector';
-import ProjectBackers from './_components/ProjectBackers/ProjectBackers';
-import ProjectComments from './_components/ProjectComments/ProjectComments';
-import ErrorFallback from './_components/ErrorFallback/ErrorFallback';
-import ProjectDetailsSkeleton from './_components/ProjectDetailsSkeleton/ProjectDetailsSkeleton';
-
-import styles from './page.module.scss';
+import { ProjectPageProvider } from '@/app/contexts/ProjectPageContext';
+import ProjectPageContent from './_components/ProjectPageContent/ProjectPageContent';
 
 interface Props {
   params: {
@@ -20,50 +9,11 @@ interface Props {
   };
 }
 
-export type Info = 'donations' | 'comments';
-
 const ProjectPage = ({ params: { id } }: Props) => {
-  const { updates } = useBlockchainEventListener();
-  const { isLoading, project, backers, blurDataURLs, error } = useProjectPage(
-    id,
-    updates
-  );
-
-  const [selectedInfo, setSelectedInfo] = useState<Info>('donations');
-
-  const handleSelectInfo = (selection: Info) => {
-    setSelectedInfo(selection);
-  };
-
-  if (error) {
-    return <ErrorFallback error={error} />;
-  }
-
   return (
-    <div className={styles.projectPage}>
-      {isLoading ? (
-        <ProjectDetailsSkeleton />
-      ) : (
-        <ProjectDetails project={project!} blurDataURLs={blurDataURLs!} />
-      )}
-
-      {/* Bad conditional check */}
-      {backers?.length && (
-        <InfoSelector onSelectInfo={handleSelectInfo} selectedInfo={selectedInfo}>
-          {selectedInfo === 'donations' && (
-            <ProjectBackers backers={backers} project={project} />
-          )}
-          {selectedInfo === 'comments' && <ProjectComments backers={backers} />}
-        </InfoSelector>
-      )}
-
-      <ToastContainer
-        position="bottom-center"
-        autoClose={3000}
-        theme="dark"
-        hideProgressBar
-      />
-    </div>
+    <ProjectPageProvider>
+      <ProjectPageContent id={id} />
+    </ProjectPageProvider>
   );
 };
 

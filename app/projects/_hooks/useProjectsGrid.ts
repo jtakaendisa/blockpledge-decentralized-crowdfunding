@@ -3,18 +3,23 @@ import { RefObject, useCallback, useEffect, useMemo, useState } from 'react';
 import { Project } from '@/app/entities';
 import { debounce } from '@/app/utils';
 
-type SearchQuery = {
+interface FastContextSelectedCategoryId {
+  get: number | null;
+  set: (value: number | null) => void;
+}
+
+interface FastContextSearchQuery {
   get: string;
   set: (value: string) => void;
-};
+}
 
 const INCREMENT_SIZE = 5;
 
 export const useProjectsGrid = (
   projects: Project[],
-  selectedCategoryId: number | null,
+  selectedCategoryId: FastContextSelectedCategoryId,
   containerRef: RefObject<HTMLDivElement>,
-  searchQuery: SearchQuery,
+  searchQuery: FastContextSearchQuery,
   initialListSize: number
 ) => {
   const [listSize, setListSize] = useState(initialListSize);
@@ -27,7 +32,7 @@ export const useProjectsGrid = (
   const filteredProjects = useMemo(() => {
     return projects.filter((project) => {
       const matchesCategory =
-        selectedCategoryId == null || project.categoryId === selectedCategoryId;
+        selectedCategoryId.get == null || project.categoryId === selectedCategoryId.get;
 
       const matchesSearchQuery = project.title
         .toLowerCase()
@@ -35,7 +40,7 @@ export const useProjectsGrid = (
 
       return matchesCategory && matchesSearchQuery;
     });
-  }, [projects, searchQuery.get, selectedCategoryId]);
+  }, [projects, searchQuery.get, selectedCategoryId.get]);
 
   const visibleProjects = filteredProjects.slice(0, listSize);
 
@@ -63,7 +68,7 @@ export const useProjectsGrid = (
 
   useEffect(() => {
     setListSize(initialListSize);
-  }, [initialListSize, selectedCategoryId, searchQuery.get]);
+  }, [initialListSize, selectedCategoryId.get, searchQuery.get]);
 
   return { visibleProjects, shouldShowMoreProjects, increaseListSize };
 };

@@ -5,7 +5,6 @@ import styles from './ProjectDetailsImageGalleryImageCards.module.scss';
 interface Props {
   imageURLs: string[];
   selectedImageIndex: number;
-  title: string;
   blurDataURLs: string[];
   onSelect: (index: number) => void;
 }
@@ -13,7 +12,6 @@ interface Props {
 const ProjectDetailsImageGalleryImageCards = ({
   imageURLs,
   selectedImageIndex,
-  title,
   blurDataURLs,
   onSelect,
 }: Props) => {
@@ -25,7 +23,6 @@ const ProjectDetailsImageGalleryImageCards = ({
           imageURL={imageURL}
           index={index}
           selectedImageIndex={selectedImageIndex}
-          title={title}
           blurDataURL={blurDataURLs[index]}
           onSelect={onSelect}
         />

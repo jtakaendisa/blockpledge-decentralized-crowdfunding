@@ -1,11 +1,9 @@
-@import '../../breakpoints.scss';
-
 .button {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid;
+  border: 2px solid var(--color-dark-green);
   border-radius: calc(50px * var(--scale));
   overflow: hidden;
   cursor: pointer;
@@ -26,21 +24,5 @@
     letter-spacing: 1px;
     padding: calc(0.75rem * var(--scale)) calc(1rem * var(--scale));
     transition: color 0.2s;
-  }
-
-  @include media('<520px') {
-    transform: scale(0.9);
-  }
-
-  @include media('<442px') {
-    transform: scale(0.85);
-  }
-
-  @include media('<420px') {
-    transform: scale(0.8);
-  }
-
-  @include media('<380px') {
-    transform: scale(0.78);
   }
 }

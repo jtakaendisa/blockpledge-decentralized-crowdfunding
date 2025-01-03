@@ -7,7 +7,6 @@ interface Props {
   imageURL: string;
   index: number;
   selectedImageIndex: number;
-  title: string;
   blurDataURL: string;
   onSelect: (index: number) => void;
 }
@@ -16,7 +15,6 @@ const ProjectDetailsImageGalleryImageCard = ({
   imageURL,
   index,
   selectedImageIndex,
-  title,
   blurDataURL,
   onSelect,
 }: Props) => {
@@ -30,7 +28,7 @@ const ProjectDetailsImageGalleryImageCard = ({
     >
       <Image
         src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageURL}`}
-        alt={title}
+        alt={`thumbnail image ${index}`}
         fill
         sizes="76px"
         placeholder="blur"

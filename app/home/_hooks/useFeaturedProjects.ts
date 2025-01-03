@@ -3,14 +3,14 @@ import { useEffect } from 'react';
 import { Project } from '@/app/entities';
 import { usePlaiceholder } from '@/app/hooks/usePlaiceholder';
 
-type BlurDataURLs = {
+interface FastContextBlurDataURLs {
   get: string[];
   set: (value: string[]) => void;
-};
+}
 
 export const useFeaturedProjects = (
   projects: Project[],
-  blurDataURLs: BlurDataURLs,
+  blurDataURLs: FastContextBlurDataURLs,
   totalPages: number,
   chunkSize: number
 ) => {

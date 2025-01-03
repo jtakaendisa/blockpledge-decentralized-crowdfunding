@@ -8,11 +8,7 @@ import ProjectFilterCategoriesSkeleton from '../ProjectFilterCategoriesSkeleton/
 
 import styles from './ProjectFilterPanel.module.scss';
 
-interface Props {
-  selectedCategoryId: number | null;
-}
-
-const ProjectFilterPanel = ({ selectedCategoryId }: Props) => {
+const ProjectFilterPanel = () => {
   const categories = useProjectStore((s) => s.categories);
 
   return (
@@ -27,10 +23,7 @@ const ProjectFilterPanel = ({ selectedCategoryId }: Props) => {
       {!categories.length ? (
         <ProjectFilterCategoriesSkeleton />
       ) : (
-        <ProjectFilterCategories
-          selectedCategoryId={selectedCategoryId}
-          categories={categories}
-        />
+        <ProjectFilterCategories categories={categories} />
       )}
     </aside>
   );

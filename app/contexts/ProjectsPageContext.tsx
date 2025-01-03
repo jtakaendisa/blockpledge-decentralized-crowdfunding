@@ -5,6 +5,8 @@ export const {
   useFastContextFields: useProjectsPageState,
 } = createFastContext<{
   searchQuery: string;
+  selectedCategoryId: number | null;
 }>({
   searchQuery: '',
+  selectedCategoryId: null,
 });

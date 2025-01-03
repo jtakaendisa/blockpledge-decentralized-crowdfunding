@@ -2,21 +2,16 @@ import { Category } from '@/app/entities';
 import ProjectFilterCategory from '../ProjectFilterCategory/ProjectFilterCategory';
 
 interface Props {
-  selectedCategoryId: number | null;
   categories: Category[];
 }
 
-const ProjectFilterCategories = ({ selectedCategoryId, categories }: Props) => {
+const ProjectFilterCategories = ({ categories }: Props) => {
   return (
     <>
-      <ProjectFilterCategory selectedCategoryId={selectedCategoryId} />
+      <ProjectFilterCategory />
 
       {categories.map((category) => (
-        <ProjectFilterCategory
-          key={category.id}
-          category={category}
-          selectedCategoryId={selectedCategoryId}
-        />
+        <ProjectFilterCategory key={category.id} category={category} />
       ))}
     </>
   );

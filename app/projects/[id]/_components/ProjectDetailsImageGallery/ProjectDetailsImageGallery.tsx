@@ -1,32 +1,28 @@
 import { useState } from 'react';
 
+import { useProjectPageState } from '@/app/contexts/ProjectPageContext';
 import ProjectDetailsImageGalleryMainImage from '../ProjectDetailsImageGalleryMainImage/ProjectDetailsImageGalleryMainImage';
 import ProjectDetailsImageGalleryImageCards from '../ProjectDetailsImageGalleryImageCards/ProjectDetailsImageGalleryImageCards';
 
 import styles from './ProjectDetailsImageGallery.module.scss';
 
-interface Props {
-  imageURLs: string[];
-  title: string;
-  blurDataURLs: string[];
-}
+const ProjectDetailsImageGallery = () => {
+  const { project, blurDataURLs } = useProjectPageState(['project', 'blurDataURLs']);
 
-const hasMultipleImages = (imageURLs: string[]) => imageURLs.length > 1;
-
-const ProjectDetailsImageGallery = ({ imageURLs, title, blurDataURLs }: Props) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
+  const { imageURLs } = project.get!;
 
   const handleImageSelect = (selectedImageIndex: number) =>
     setSelectedImageIndex(selectedImageIndex);
 
   return (
     <div className={styles.imageGallery}>
-      {hasMultipleImages(imageURLs) && (
+      {imageURLs.length > 1 && (
         <ProjectDetailsImageGalleryImageCards
           imageURLs={imageURLs}
           selectedImageIndex={selectedImageIndex}
-          title={title}
-          blurDataURLs={blurDataURLs}
+          blurDataURLs={blurDataURLs.get!}
           onSelect={handleImageSelect}
         />
       )}
@@ -35,8 +31,7 @@ const ProjectDetailsImageGallery = ({ imageURLs, title, blurDataURLs }: Props) =
         key={selectedImageIndex}
         imageURLs={imageURLs}
         selectedImageIndex={selectedImageIndex}
-        title={title}
-        blurDataURLs={blurDataURLs}
+        blurDataURLs={blurDataURLs.get!}
       />
     </div>
   );

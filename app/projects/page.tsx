@@ -1,10 +1,7 @@
 'use client';
 
 import { ProjectsPageProvider } from '../contexts/ProjectsPageContext';
-import ProjectFilterPanel from './_components/ProjectFilterPanel/ProjectFilterPanel';
-import ProjectsGrid from './_components/ProjectsGrid/ProjectsGrid';
-
-import styles from './page.module.scss';
+import ProjectsPageContent from './_components/ProjectsPageContent/ProjectsPageContent';
 
 interface Props {
   searchParams: {
@@ -13,15 +10,10 @@ interface Props {
 }
 
 const ProjectsPage = ({ searchParams: { categoryId } }: Props) => {
-  const selectedCategoryId = categoryId ? +categoryId : null;
-
   return (
-    <div className={styles.projectsPage}>
-      <ProjectsPageProvider>
-        <ProjectFilterPanel selectedCategoryId={selectedCategoryId} />
-        <ProjectsGrid selectedCategoryId={selectedCategoryId} />
-      </ProjectsPageProvider>
-    </div>
+    <ProjectsPageProvider>
+      <ProjectsPageContent categoryId={categoryId ? +categoryId : null} />
+    </ProjectsPageProvider>
   );
 };
 

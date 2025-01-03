@@ -1,4 +1,4 @@
-import { Project } from '@/app/entities';
+import { useProjectPageState } from '@/app/contexts/ProjectPageContext';
 import { colors } from '@/app/constants';
 import { useProjectModals } from '@/app/hooks/useProjectModals';
 import ProjectTitle from '@/app/components/ProjectTitle/ProjectTitle';
@@ -18,13 +18,11 @@ import VerticalSpacer from '@/app/components/VerticalSpacer/VerticalSpacer';
 
 import styles from './ProjectDetailsContent.module.scss';
 
-interface Props {
-  project: Project;
-}
-
 const { darkGreen } = colors;
 
-const ProjectDetailsContent = ({ project }: Props) => {
+const ProjectDetailsContent = () => {
+  const { project } = useProjectPageState(['project']);
+
   const {
     id,
     title,
@@ -36,7 +34,7 @@ const ProjectDetailsContent = ({ project }: Props) => {
     expiresAt,
     raised,
     cost,
-  } = project;
+  } = project.get!;
 
   const {
     isAuthorizeProjectModalOpen,
@@ -103,7 +101,7 @@ const ProjectDetailsContent = ({ project }: Props) => {
       </SpaceBetweenRow>
 
       <ProjectDetailsContentModals
-        project={project}
+        project={project.get!}
         isAuthorizeProjectModalOpen={isAuthorizeProjectModalOpen}
         isBackProjectModalOpen={isBackProjectModalOpen}
         isEditProjectModalOpen={isEditProjectModalOpen}
