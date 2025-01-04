@@ -15,10 +15,11 @@ import ProjectButtons from '@/app/components/ProjectButtons/ProjectButtons';
 import ProjectSocials from '@/app/components/ProjectSocials/ProjectSocials';
 import ProjectDetailsContentModals from '../ProjectDetailsContentModals/ProjectDetailsContentModals';
 import VerticalSpacer from '@/app/components/VerticalSpacer/VerticalSpacer';
+import Ethereum from '@/app/components/icons/Ethereum';
 
 import styles from './ProjectDetailsContent.module.scss';
 
-const { darkGreen } = colors;
+const { darkGreen, baseGray } = colors;
 
 const ProjectDetailsContent = () => {
   const { project } = useProjectPageState(['project']);
@@ -82,7 +83,11 @@ const ProjectDetailsContent = () => {
         <ProjectText fontSize={16} fontWeight={500}>
           {raised} ETH Raised
         </ProjectText>
-        <ProjectText icon="ethereum" fontSize={16} fontWeight={500}>
+        <ProjectText
+          icon={<Ethereum fill={baseGray} size={18} />}
+          fontSize={16}
+          fontWeight={500}
+        >
           {cost} ETH
         </ProjectText>
       </SpaceBetweenRow>

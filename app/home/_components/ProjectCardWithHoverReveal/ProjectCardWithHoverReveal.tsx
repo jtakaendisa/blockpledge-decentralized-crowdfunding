@@ -17,6 +17,7 @@ import ProjectStatus from '@/app/components/ProjectStatus/ProjectStatus';
 import ProjectText from '@/app/components/ProjectText/ProjectText';
 import ProjectBadge from '@/app/components/ProjectBadge/ProjectBadge';
 import VerticalSpacer from '@/app/components/VerticalSpacer/VerticalSpacer';
+import Ethereum from '@/app/components/icons/Ethereum';
 
 import styles from './ProjectCardWithHoverReveal.module.scss';
 
@@ -36,7 +37,7 @@ const revealVariants = {
   },
 };
 
-const { white } = colors;
+const { white, baseGray } = colors;
 
 const ProjectCardWithHoverReveal = ({ project }: Props) => {
   const {
@@ -83,7 +84,9 @@ const ProjectCardWithHoverReveal = ({ project }: Props) => {
         <div className={styles.contentContainer}>
           <SpaceBetweenRow>
             <ProjectText>{raised} ETH Raised</ProjectText>
-            <ProjectText icon="ethereum">{cost} ETH</ProjectText>
+            <ProjectText icon={<Ethereum fill={baseGray} size={18} />}>
+              {cost} ETH
+            </ProjectText>
           </SpaceBetweenRow>
           <VerticalSpacer height={12} />
 

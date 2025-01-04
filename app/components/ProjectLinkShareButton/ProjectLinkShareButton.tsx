@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import classNames from 'classnames';
 
-import Link from '../icons/Link';
+import ChainLink from '../icons/ChainLink';
 
 import styles from './ProjectLinkShareButton.module.scss';
 
@@ -23,7 +23,7 @@ const ProjectLinkShareButton = () => {
       className={classNames(styles.socialButton, styles.linkButton)}
       onClick={copyToClipboard}
     >
-      <Link />
+      <ChainLink />
       <span
         className={classNames({
           [styles.tooltip]: true,

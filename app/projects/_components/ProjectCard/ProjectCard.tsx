@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 import { Project } from '@/app/entities';
+import { colors } from '@/app/constants';
 import ProjectImage from '../../../components/ProjectImage/ProjectImage';
 import ProjectOwnerInfo from '../../../components/ProjectOwnerInfo/ProjectOwnerInfo';
 import ProjectStatus from '../../../components/ProjectStatus/ProjectStatus';
@@ -12,6 +13,7 @@ import ProjectRemainingTime from '../../../components/ProjectRemainingTime/Proje
 import ProjectText from '../../../components/ProjectText/ProjectText';
 import SpaceBetweenRow from '../../../components/SpaceBetweenRow/SpaceBetweenRow';
 import VerticalSpacer from '../../../components/VerticalSpacer/VerticalSpacer';
+import Ethereum from '@/app/components/icons/Ethereum';
 
 import styles from './ProjectCard.module.scss';
 
@@ -31,6 +33,8 @@ const revealVariants = {
     },
   },
 };
+
+const { baseGray } = colors;
 
 const ProjectCard = ({ project, blurDataURL }: Props) => {
   const { id, owner, title, imageURLs, backers, expiresAt, raised, cost, status } =
@@ -72,7 +76,9 @@ const ProjectCard = ({ project, blurDataURL }: Props) => {
 
           <SpaceBetweenRow>
             <ProjectText>{raised} ETH Raised</ProjectText>
-            <ProjectText icon="ethereum">{cost} ETH</ProjectText>
+            <ProjectText icon={<Ethereum fill={baseGray} size={18} />}>
+              {cost} ETH
+            </ProjectText>
           </SpaceBetweenRow>
           <VerticalSpacer />
 

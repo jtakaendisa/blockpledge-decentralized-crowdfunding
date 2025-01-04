@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 
 import { Project } from '@/app/entities';
+import { colors } from '@/app/constants';
 import { truncateText } from '@/app/utils';
 import { useProjectsHighlight } from '../../_hooks/useProjectsHighlight';
 import { usePageNavigation } from '@/app/hooks/usePageNavigation';
@@ -15,6 +16,7 @@ import ProjectRemainingTime from '@/app/components/ProjectRemainingTime/ProjectR
 import SpaceBetweenRow from '@/app/components/SpaceBetweenRow/SpaceBetweenRow';
 import VerticalSpacer from '@/app/components/VerticalSpacer/VerticalSpacer';
 import FlipButton from '@/app/components/FlipButton/FlipButton';
+import Ethereum from '@/app/components/icons/Ethereum';
 
 import styles from './ProjectsHighlight.module.scss';
 
@@ -22,6 +24,8 @@ interface Props {
   project: Project;
   blurDataURL: string;
 }
+
+const { baseGray } = colors;
 
 const ProjectsHighlight = ({ project, blurDataURL }: Props) => {
   const {
@@ -59,7 +63,9 @@ const ProjectsHighlight = ({ project, blurDataURL }: Props) => {
       <div className={styles.contentContainer}>
         <SpaceBetweenRow>
           <ProjectText>{raised} ETH Raised</ProjectText>
-          <ProjectText icon="ethereum">{cost}</ProjectText>
+          <ProjectText icon={<Ethereum fill={baseGray} size={18} />}>
+            {cost}
+          </ProjectText>
         </SpaceBetweenRow>
         <VerticalSpacer />
         <ProjectTitle fontSize={20}>{truncateText(title, 50, true)}</ProjectTitle>
