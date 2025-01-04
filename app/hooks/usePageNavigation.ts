@@ -67,7 +67,7 @@ export const usePageNavigation = () => {
       if (!page || !route) return;
       if (pathname === href) return;
 
-      route.textContent = pathnameMap[href as keyof typeof pathnameMap];
+      route.textContent = pathnameMap[href.split('?')[0] as keyof typeof pathnameMap];
 
       Promise.all([
         animate(page, { opacity: 0.5 }, { duration: 1 }),
