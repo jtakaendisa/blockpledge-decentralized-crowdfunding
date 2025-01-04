@@ -1,0 +1,13 @@
+.tableBody {
+  tr:last-of-type {
+    & > td {
+      border-bottom: none;
+    }
+  }
+
+  tr {
+    & > td:last-of-type {
+      padding-right: 0.25rem;
+    }
+  }
+}

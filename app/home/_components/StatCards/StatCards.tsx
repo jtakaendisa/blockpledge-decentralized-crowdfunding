@@ -16,7 +16,7 @@ const StatCards = () => {
       value: totalProjects,
     },
     {
-      metric: 'Donations',
+      metric: totalBackings === 1 ? 'Contribution' : 'Contributions',
       value: totalBackings,
     },
     {

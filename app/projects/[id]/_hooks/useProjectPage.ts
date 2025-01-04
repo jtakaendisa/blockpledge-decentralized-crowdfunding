@@ -5,18 +5,18 @@ import { useBlockchain } from '@/app/hooks/useBlockchain';
 import { usePlaiceholder } from '@/app/hooks/usePlaiceholder';
 
 interface FastContextProject {
-  get: Project | null;
-  set: (value: Project | null) => void;
+  get: Project;
+  set: (value: Project) => void;
 }
 
 interface FastContextBackers {
-  get: Backer[] | null;
-  set: (value: Backer[] | null) => void;
+  get: Backer[];
+  set: (value: Backer[]) => void;
 }
 
 interface FastContextBlurDataURLs {
-  get: string[] | null;
-  set: (value: string[] | null) => void;
+  get: string[];
+  set: (value: string[]) => void;
 }
 
 export const useProjectPage = (
@@ -26,12 +26,11 @@ export const useProjectPage = (
   blurDataURLs: FastContextBlurDataURLs,
   updates: number
 ) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
   const { getProject, getBackers } = useBlockchain();
   const { getBlurDataURLs } = usePlaiceholder();
-
-  const isLoading = !project.get || !backers.get || !blurDataURLs.get;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,6 +46,8 @@ export const useProjectPage = (
         blurDataURLs.set(fetchedBlurDataURLs);
       } catch (error) {
         setError(error as Error);
+      } finally {
+        setIsLoading(false);
       }
     };
 

@@ -2,12 +2,12 @@
   background-color: var(--color-dark-gray-transparent);
   border-radius: 50px;
   overflow: hidden;
+}
 
-  .progressForeground {
-    background-color: var(--color-dark-green);
-    height: 100%;
-    border-radius: 50px;
-  }
+.progressForeground {
+  background-color: var(--color-dark-green);
+  height: 100%;
+  border-radius: 50px;
 }
 
 .flatEdge {

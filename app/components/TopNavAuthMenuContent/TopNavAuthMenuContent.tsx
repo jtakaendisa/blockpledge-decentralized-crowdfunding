@@ -30,7 +30,7 @@ const TopNavAuthMenuContent = ({ authUser, onSignOut }: Props) => {
 
   return (
     <div className={styles.authMenuContent}>
-      <h6 className={styles.heading}>User Info</h6>
+      <h6 className={styles.heading}>Account Info</h6>
 
       {contentItems.map(({ label, icon }) => (
         <TopNavAuthMenuContentItem key={label} label={label} icon={icon} />

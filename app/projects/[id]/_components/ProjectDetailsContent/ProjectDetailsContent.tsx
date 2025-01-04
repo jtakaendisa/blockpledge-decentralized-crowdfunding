@@ -34,7 +34,7 @@ const ProjectDetailsContent = () => {
     expiresAt,
     raised,
     cost,
-  } = project.get!;
+  } = project.get;
 
   const {
     isAuthorizeProjectModalOpen,
@@ -101,7 +101,7 @@ const ProjectDetailsContent = () => {
       </SpaceBetweenRow>
 
       <ProjectDetailsContentModals
-        project={project.get!}
+        project={project.get}
         isAuthorizeProjectModalOpen={isAuthorizeProjectModalOpen}
         isBackProjectModalOpen={isBackProjectModalOpen}
         isEditProjectModalOpen={isEditProjectModalOpen}

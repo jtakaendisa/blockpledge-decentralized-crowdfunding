@@ -1,6 +1,5 @@
-import ProjectMetric from '@/app/components/ProjectMetric/ProjectMetric';
-
 import { findRemainingTime } from '@/app/utils';
+import ProjectMetric from '../ProjectMetric/ProjectMetric';
 
 import styles from './ProjectMetrics.module.scss';
 

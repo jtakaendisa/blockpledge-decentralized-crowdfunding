@@ -35,7 +35,10 @@ const ProjectProgressBar = ({ raised, cost, height = 4, flatEdge }: Props) => {
       })}
     >
       <motion.div
-        className={styles.progressForeground}
+        className={classNames({
+          [styles.progressForeground]: true,
+          [styles.flatEdge]: flatEdge,
+        })}
         initial="initial"
         animate="animate"
         custom={`${progressPercentage}%`}

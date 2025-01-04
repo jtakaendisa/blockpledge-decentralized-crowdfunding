@@ -11,7 +11,7 @@ const ProjectDetailsImageGallery = () => {
 
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-  const { imageURLs } = project.get!;
+  const { imageURLs } = project.get;
 
   const handleImageSelect = (selectedImageIndex: number) =>
     setSelectedImageIndex(selectedImageIndex);
@@ -22,7 +22,7 @@ const ProjectDetailsImageGallery = () => {
         <ProjectDetailsImageGalleryImageCards
           imageURLs={imageURLs}
           selectedImageIndex={selectedImageIndex}
-          blurDataURLs={blurDataURLs.get!}
+          blurDataURLs={blurDataURLs.get}
           onSelect={handleImageSelect}
         />
       )}
@@ -31,7 +31,7 @@ const ProjectDetailsImageGallery = () => {
         key={selectedImageIndex}
         imageURLs={imageURLs}
         selectedImageIndex={selectedImageIndex}
-        blurDataURLs={blurDataURLs.get!}
+        blurDataURLs={blurDataURLs.get}
       />
     </div>
   );

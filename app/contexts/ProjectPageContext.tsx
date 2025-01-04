@@ -5,11 +5,11 @@ export const {
   FastContextProvider: ProjectPageProvider,
   useFastContextFields: useProjectPageState,
 } = createFastContext<{
-  project: Project | null;
-  backers: Backer[] | null;
-  blurDataURLs: string[] | null;
+  project: Project;
+  backers: Backer[];
+  blurDataURLs: string[];
 }>({
-  project: null,
-  backers: null,
-  blurDataURLs: null,
+  project: {} as Project,
+  backers: [],
+  blurDataURLs: [],
 });

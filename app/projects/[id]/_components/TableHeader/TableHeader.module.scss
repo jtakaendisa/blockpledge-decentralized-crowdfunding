@@ -1,0 +1,7 @@
+.tableHeader {
+  tr {
+    & > th:last-of-type {
+      padding-right: 0.25rem;
+    }
+  }
+}
