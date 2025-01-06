@@ -10,40 +10,41 @@ import styles from './page.module.scss';
 const AdminDashboardPage = () => {
   const projects = useProjectStore((s) => s.projects);
 
-  const projectsPendingApproval = useMemo(
-    () => projects.filter((project) => project.status === 5),
+  const categorizedProjects = useMemo(
+    () => ({
+      pendingApproval: projects.filter((project) => project.status === 5),
+      paidOut: projects.filter((project) => project.status === 4),
+      terminated: projects.filter((project) => [2, 3].includes(project.status)),
+    }),
     [projects]
   );
-  const projectsPaidOut = useMemo(
-    () => projects.filter((project) => project.status === 4),
-    [projects]
-  );
-  const projectsTerminated = useMemo(
-    () => projects.filter((project) => project.status === 2 || project.status === 3),
-    [projects]
-  );
+
+  const sections = [
+    {
+      title: 'Projects Pending Approval.',
+      projects: categorizedProjects.pendingApproval,
+    },
+    {
+      title: 'Projects Paid Out.',
+      projects: categorizedProjects.paidOut,
+    },
+    {
+      title: 'Projects Terminated.',
+      projects: categorizedProjects.terminated,
+    },
+  ];
 
   return (
     <div className={styles.dashboardPage}>
-      {!!projectsPendingApproval.length && (
-        <DashboardProjectsSection
-          sectionTitle="Projects Pending Approval."
-          projects={projectsPendingApproval}
-        />
-      )}
-
-      {!!projectsPaidOut.length && (
-        <DashboardProjectsSection
-          sectionTitle="Projects Paid Out."
-          projects={projectsPaidOut}
-        />
-      )}
-
-      {!!projectsTerminated.length && (
-        <DashboardProjectsSection
-          sectionTitle="Projects Terminated."
-          projects={projectsTerminated}
-        />
+      {sections.map(
+        ({ title, projects }) =>
+          projects.length > 0 && (
+            <DashboardProjectsSection
+              key={title}
+              sectionTitle={`${title} (${projects.length})`}
+              projects={projects}
+            />
+          )
       )}
     </div>
   );
