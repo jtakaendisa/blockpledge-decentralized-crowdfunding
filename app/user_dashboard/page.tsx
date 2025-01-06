@@ -3,7 +3,6 @@
 import { useAccountStore, useProjectStore } from '../store';
 import { useUserDashboard } from './hooks/useUserDashboard';
 import DashboardProjectsSection from '../components/DashboardProjectsSection/DashboardProjectsSection';
-import ErrorFallback from '../components/ErrorFallback/ErrorFallback';
 
 import styles from './page.module.scss';
 
@@ -11,15 +10,11 @@ const UserDashboardPage = () => {
   const projects = useProjectStore((s) => s.projects);
   const authUser = useAccountStore((s) => s.authUser);
 
-  const { sections, isLoading, error } = useUserDashboard(projects, authUser);
-
-  if (error) {
-    return <ErrorFallback error={error} />;
-  }
+  const { sections } = useUserDashboard(projects, authUser);
 
   return (
     <div className={styles.dashboardPage}>
-      {isLoading ? (
+      {!projects.length ? (
         <span>Loading...</span>
       ) : (
         sections.map(

@@ -1,17 +1,13 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 import { AuthUser, Project } from '@/app/entities';
-import { useBlockchain } from '@/app/hooks/useBlockchain';
 
 export const useUserDashboard = (projects: Project[], authUser: AuthUser | null) => {
-  const { getUserProjects } = useBlockchain();
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [userProjects, setUserProjects] = useState<Project[]>([]);
-  const [error, setError] = useState<Error | null>(null);
-
   const categorizedProjects = useMemo(
     () => ({
+      userProjects: projects.filter(
+        (project) => authUser?.wallet.toLowerCase() === project.owner.toLowerCase()
+      ),
       following: projects.filter((project) => authUser?.following.includes(project.id)),
       backed: projects.filter((project) => authUser?.backed.includes(project.id)),
     }),
@@ -21,7 +17,7 @@ export const useUserDashboard = (projects: Project[], authUser: AuthUser | null)
   const sections = [
     {
       title: 'My Projects',
-      projects: userProjects,
+      projects: categorizedProjects.userProjects,
     },
     {
       title: "Projects I'm Following.",
@@ -33,23 +29,5 @@ export const useUserDashboard = (projects: Project[], authUser: AuthUser | null)
     },
   ];
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (authUser?.accountType !== 'owner') return;
-
-      try {
-        setIsLoading(true);
-        const { userProjects } = await getUserProjects(authUser.wallet);
-        setUserProjects(userProjects);
-      } catch (error) {
-        setError(error as Error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [authUser, projects, getUserProjects]);
-
-  return { sections, isLoading, error };
+  return { sections };
 };
