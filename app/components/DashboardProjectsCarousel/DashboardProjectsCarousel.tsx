@@ -15,8 +15,7 @@ const CHUNK_SIZE = 12;
 const DashboardProjectsCarousel = ({ projects }: Props) => {
   const totalPages = Math.ceil(projects.length / CHUNK_SIZE);
 
-  const { selectedPage, handlePageSelect, handlePageChange } =
-    useCarouselPagination(totalPages);
+  const { selectedPage, handlePageChange } = useCarouselPagination(totalPages);
 
   return (
     <div className={styles.dashboardProjectsCarousel}>
@@ -25,7 +24,11 @@ const DashboardProjectsCarousel = ({ projects }: Props) => {
         selectedPage={selectedPage}
         chunkSize={CHUNK_SIZE}
       />
-      <DashboardProjectsCarouselPagination />
+      <DashboardProjectsCarouselPagination
+        selectedPage={selectedPage}
+        totalPages={totalPages}
+        onChange={handlePageChange}
+      />
     </div>
   );
 };

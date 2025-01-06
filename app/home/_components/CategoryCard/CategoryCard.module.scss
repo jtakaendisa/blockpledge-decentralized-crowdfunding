@@ -13,7 +13,7 @@
     & > svg {
       width: 64px;
       height: 64px;
-      fill: rgb(53, 53, 53);
+      fill: var(--color-dark-gray);
       transition: all 0.2s;
     }
   }

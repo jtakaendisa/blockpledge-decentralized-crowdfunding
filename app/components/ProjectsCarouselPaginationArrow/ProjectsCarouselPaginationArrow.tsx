@@ -10,7 +10,7 @@ interface Props {
   icon: 'chevronLeft' | 'chevronRight';
   disabled: boolean;
   size?: number;
-  onChange: (mode: 'increment' | 'decrement') => void;
+  onChange: (increment: number) => void;
 }
 
 const { darkGreen, baseGray } = colors;
@@ -25,7 +25,7 @@ const ProjectsCarouselPaginationArrow = ({
 
   return (
     <span
-      onClick={() => onChange(icon === 'chevronLeft' ? 'decrement' : 'increment')}
+      onClick={() => onChange(icon === 'chevronLeft' ? -1 : 1)}
       className={classNames({ [styles.arrow]: true, [styles.disabled]: disabled })}
     >
       {icon === 'chevronLeft' ? (

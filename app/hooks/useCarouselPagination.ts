@@ -5,11 +5,13 @@ export const useCarouselPagination = (totalPages: number) => {
 
   const handlePageSelect = (selectedPage: number) => setSelectedPage(selectedPage);
 
-  const handlePageChange = (mode: 'increment' | 'decrement') => {
-    if (mode === 'decrement' && selectedPage === 1) return;
-    if (mode === 'increment' && selectedPage === totalPages) return;
-
-    setSelectedPage((prev) => (mode === 'decrement' ? prev - 1 : prev + 1));
+  const handlePageChange = (increment: number) => {
+    setSelectedPage((prev) => {
+      const newPage = prev + increment;
+      if (newPage < 1) return 1;
+      if (newPage > totalPages) return totalPages;
+      return newPage;
+    });
   };
 
   return { selectedPage, handlePageSelect, handlePageChange };

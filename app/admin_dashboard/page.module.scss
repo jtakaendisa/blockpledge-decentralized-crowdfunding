@@ -1,2 +1,5 @@
 .dashboardPage {
+  & > section:first-of-type {
+    margin-top: 10rem;
+  }
 }

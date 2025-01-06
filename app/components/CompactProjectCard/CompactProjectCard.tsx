@@ -13,12 +13,25 @@ import ProjectOwnerInfo from '../ProjectOwnerInfo/ProjectOwnerInfo';
 import SpaceBetweenRow from '../SpaceBetweenRow/SpaceBetweenRow';
 import VerticalSpacer from '../VerticalSpacer/VerticalSpacer';
 import TopRightArrow from '../icons/TopRightArrow';
+import defaultBlurDataURL from '@/public/images/defaultBlurDataURL.png';
 
 import styles from './CompactProjectCard.module.scss';
 
 interface Props {
   project: Project;
 }
+
+const revealVariants = {
+  initial: {
+    opacity: 0.5,
+  },
+  animate: {
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+    },
+  },
+};
 
 const IMAGE_SIZE = 100;
 
@@ -38,10 +51,13 @@ const CompactProjectCard = ({ project }: Props) => {
   };
 
   return (
-    <div
+    <motion.div
       onMouseEnter={toggleHoveredState}
       onMouseLeave={toggleHoveredState}
       className={styles.compactProjectCard}
+      initial="initial"
+      animate="animate"
+      variants={revealVariants}
     >
       <Link href={`/projects/${id}`} className={styles.link}>
         <div ref={imageContainerRef} className={styles.imageContainer}>
@@ -49,6 +65,7 @@ const CompactProjectCard = ({ project }: Props) => {
             imageURLs={imageURLs}
             title={title}
             height={IMAGE_SIZE}
+            blurDataURL={defaultBlurDataURL.blurDataURL}
             sizes="120px"
           />
         </div>
@@ -77,7 +94,7 @@ const CompactProjectCard = ({ project }: Props) => {
           </SpaceBetweenRow>
         </div>
       </Link>
-    </div>
+    </motion.div>
   );
 };
 

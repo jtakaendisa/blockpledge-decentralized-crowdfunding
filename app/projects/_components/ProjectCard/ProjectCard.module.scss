@@ -3,12 +3,12 @@
   width: 16rem;
   border-radius: 16px;
   background-color: var(--color-white);
-  box-shadow: 0 0.25rem 0.5rem rgba(116, 116, 116, 0.25);
+  box-shadow: 0 0.25rem 0.5rem var(--color-dark-gray-transparent);
   overflow: hidden;
 
   .link {
     text-decoration: none;
-    color: rgb(53, 53, 53);
+    color: var(--color-dark-gray);
 
     .contentContainer {
       padding: 0.8rem 1rem;

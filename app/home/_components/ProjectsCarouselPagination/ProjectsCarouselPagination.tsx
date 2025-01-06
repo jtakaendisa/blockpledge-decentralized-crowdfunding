@@ -1,4 +1,4 @@
-import ProjectsCarouselPaginationArrow from '../ProjectsCarouselPaginationArrow/ProjectsCarouselPaginationArrow';
+import ProjectsCarouselPaginationArrow from '@/app/components/ProjectsCarouselPaginationArrow/ProjectsCarouselPaginationArrow';
 import ProjectsCarouselPaginationList from '../ProjectsCarouselPaginationList/ProjectsCarouselPaginationList';
 
 import styles from './ProjectsCarouselPagination.module.scss';
@@ -7,7 +7,7 @@ interface Props {
   selectedPage: number;
   totalPages: number;
   onSelect: (selectedPage: number) => void;
-  onChange: (mode: 'increment' | 'decrement') => void;
+  onChange: (increment: number) => void;
 }
 
 const isDisabled = (selectedPage: number, limit: number) => selectedPage === limit;
