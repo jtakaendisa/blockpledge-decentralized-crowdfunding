@@ -3,6 +3,7 @@
 import { useAccountStore, useProjectStore } from '../store';
 import { useUserDashboard } from './hooks/useUserDashboard';
 import DashboardProjectsSection from '../components/DashboardProjectsSection/DashboardProjectsSection';
+import DashboardProjectsSectionSkeleton from '../components/DashboardProjectsSectionSkeleton/DashboardProjectsSectionSkeleton';
 
 import styles from './page.module.scss';
 
@@ -15,7 +16,7 @@ const UserDashboardPage = () => {
   return (
     <div className={styles.dashboardPage}>
       {!projects.length ? (
-        <span>Loading...</span>
+        <DashboardProjectsSectionSkeleton />
       ) : (
         sections.map(
           ({ title, projects }) =>
