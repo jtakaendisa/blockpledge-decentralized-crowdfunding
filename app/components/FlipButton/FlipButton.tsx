@@ -44,8 +44,6 @@ const FlipButton = ({
 }: Props) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  const color = isHovered ? textColor2 : textColor1;
-
   const buttonRef = (element: HTMLDivElement) => {
     if (element) {
       element.style.setProperty('--scale', scale.toString());
@@ -72,7 +70,11 @@ const FlipButton = ({
       />
 
       {/* Main Text */}
-      <span onClick={onClick} className={styles.mainText} style={{ color }}>
+      <span
+        onClick={onClick}
+        className={styles.mainText}
+        style={{ color: isHovered ? textColor2 : textColor1 }}
+      >
         <SlideUpText playAnimation={isHovered}>{children}</SlideUpText>
       </span>
     </motion.div>

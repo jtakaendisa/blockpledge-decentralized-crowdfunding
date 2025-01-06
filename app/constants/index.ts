@@ -40,9 +40,9 @@ export const statusMap = {
 export const statusColorMap = {
   0: 'gray',
   1: 'green',
-  2: 'gray',
+  2: 'red',
   3: 'red',
-  4: 'orange',
+  4: 'green',
   5: 'orange',
 };
 

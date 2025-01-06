@@ -1,0 +1,26 @@
+.compactProjectCard {
+  background-color: var(--color-white);
+  border-radius: 16px;
+  box-shadow: 0 0.2rem 0.5rem var(--color-dark-gray-transparent);
+  overflow: hidden;
+  cursor: pointer;
+
+  .link {
+    display: flex;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: var(--color-dark-gray);
+
+    .imageContainer {
+      flex-shrink: 0;
+      width: var(--image-size);
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      padding: 0.5rem 0.5rem 0.5rem 0;
+    }
+  }
+}

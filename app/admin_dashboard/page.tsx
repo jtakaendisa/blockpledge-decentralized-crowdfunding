@@ -1,46 +1,50 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 
-import { Project } from '../entities';
 import { useProjectStore } from '../store';
-import Header from '../components/TopNav/TopNav';
-import ProjectsGrid from '../projects/_components/ProjectsGrid/ProjectsGrid';
+import DashboardProjectsSection from '../components/DashboardProjectsSection/DashboardProjectsSection';
 
 import styles from './page.module.scss';
 
 const AdminDashboardPage = () => {
   const projects = useProjectStore((s) => s.projects);
-  const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (!projects) return;
-
-        setFilteredProjects(projects.filter((project) => project.status === 5));
-      } catch (error) {
-        console.log((error as Error).message);
-      }
-    };
-
-    fetchData();
-  }, [projects]);
+  const projectsPendingApproval = useMemo(
+    () => projects.filter((project) => project.status === 5),
+    [projects]
+  );
+  const projectsPaidOut = useMemo(
+    () => projects.filter((project) => project.status === 4),
+    [projects]
+  );
+  const projectsTerminated = useMemo(
+    () => projects.filter((project) => project.status === 2 || project.status === 3),
+    [projects]
+  );
 
   return (
     <div className={styles.dashboardPage}>
-      <Header />
-      <section className={styles.projectsSection}>
-        <h2>Projects Pending Approval</h2>
-        {!projects.length ? (
-          <ProjectsGrid projects={[]} />
-        ) : (
-          <>
-            {!filteredProjects.length && <p>No projects to approve.</p>}
-            <ProjectsGrid projects={filteredProjects} />
-          </>
-        )}
-      </section>
+      {!!projectsPendingApproval.length && (
+        <DashboardProjectsSection
+          sectionTitle="Projects Pending Approval."
+          projects={projectsPendingApproval}
+        />
+      )}
+
+      {!!projectsPaidOut.length && (
+        <DashboardProjectsSection
+          sectionTitle="Projects Paid Out."
+          projects={projectsPaidOut}
+        />
+      )}
+
+      {!!projectsTerminated.length && (
+        <DashboardProjectsSection
+          sectionTitle="Projects Terminated."
+          projects={projectsTerminated}
+        />
+      )}
     </div>
   );
 };

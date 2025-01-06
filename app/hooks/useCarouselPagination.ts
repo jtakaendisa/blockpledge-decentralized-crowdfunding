@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
-export const useProjectsCarousel = () => {
+export const useCarouselPagination = (totalPages: number) => {
   const [selectedPage, setSelectedPage] = useState(1);
 
   const handlePageSelect = (selectedPage: number) => setSelectedPage(selectedPage);
 
-  const handlePageChange = (totalPages: number, mode: 'increment' | 'decrement') => {
+  const handlePageChange = (mode: 'increment' | 'decrement') => {
     if (mode === 'decrement' && selectedPage === 1) return;
     if (mode === 'increment' && selectedPage === totalPages) return;
 
