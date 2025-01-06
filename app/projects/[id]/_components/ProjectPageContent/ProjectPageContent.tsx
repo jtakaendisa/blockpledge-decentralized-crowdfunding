@@ -5,7 +5,7 @@ import { useBlockchainEventListener } from '@/app/hooks/useBlockchainEventListen
 import { useProjectPage } from '../../_hooks/useProjectPage';
 import ProjectDetails from '../ProjectDetails/ProjectDetails';
 import DonationLedger from '../DonationLedger/DonationLedger';
-import ErrorFallback from '../ErrorFallback/ErrorFallback';
+import ErrorFallback from '@/app/components/ErrorFallback/ErrorFallback';
 import ProjectDetailsSkeleton from '../ProjectDetailsSkeleton/ProjectDetailsSkeleton';
 
 import styles from './ProjectPageContent.module.scss';

@@ -1,86 +1,40 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
-import { Project } from '../entities';
 import { useAccountStore, useProjectStore } from '../store';
-import { useBlockchain } from '../hooks/useBlockchain';
-import ProjectsGrid from '../projects/_components/ProjectsGrid/ProjectsGrid';
+import { useUserDashboard } from './hooks/useUserDashboard';
+import DashboardProjectsSection from '../components/DashboardProjectsSection/DashboardProjectsSection';
+import ErrorFallback from '../components/ErrorFallback/ErrorFallback';
 
 import styles from './page.module.scss';
 
-const UserDashBoardPage = () => {
-  const authUser = useAccountStore((s) => s.authUser);
+const UserDashboardPage = () => {
   const projects = useProjectStore((s) => s.projects);
-  const { getUserProjects } = useBlockchain();
-  const [projectsFollowed, setProjectsFollowed] = useState<Project[]>([]);
-  const [projectsBacked, setProjectsBacked] = useState<Project[]>([]);
-  const [userProjects, setUserProjects] = useState<Project[]>([]);
-  const [loadingUserProjects, setLoadingUserProjects] = useState(false);
+  const authUser = useAccountStore((s) => s.authUser);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const projectsBeingFollowed = projects.filter((project) =>
-          authUser?.following.includes(project.id)
-        );
+  const { sections, isLoading, error } = useUserDashboard(projects, authUser);
 
-        const projectsBeingBacked = projects.filter((project) =>
-          authUser?.backed.includes(project.id)
-        );
-
-        setProjectsFollowed(projectsBeingFollowed);
-        setProjectsBacked(projectsBeingBacked);
-
-        if (authUser?.accountType === 'owner') {
-          setLoadingUserProjects(true);
-          const { userProjects } = await getUserProjects(authUser.wallet);
-          setUserProjects(userProjects);
-          setLoadingUserProjects(false);
-        }
-      } catch (error) {
-        console.log((error as Error).message);
-      }
-    };
-
-    fetchData();
-  }, [authUser, projects, getUserProjects]);
+  if (error) {
+    return <ErrorFallback error={error} />;
+  }
 
   return (
     <div className={styles.dashboardPage}>
-      {authUser?.accountType === 'owner' && (
-        <section>
-          <h2>You&apos;re Projects</h2>
-          {loadingUserProjects ? (
-            <ProjectsGrid projects={[]} />
-          ) : (
-            <>
-              {!userProjects.length && <p>No projects yet.</p>}
-              <ProjectsGrid projects={userProjects} />
-            </>
-          )}
-        </section>
+      {isLoading ? (
+        <span>Loading...</span>
+      ) : (
+        sections.map(
+          ({ title, projects }) =>
+            projects.length > 0 && (
+              <DashboardProjectsSection
+                key={title}
+                sectionTitle={`${title} (${projects.length})`}
+                projects={projects}
+              />
+            )
+        )
       )}
-      <section>
-        <h2>Projects You&apos;re Following</h2>
-        {!projects.length && <ProjectsGrid projects={[]} />}
-        {!projectsFollowed.length ? (
-          <p>No projects yet.</p>
-        ) : (
-          <ProjectsGrid projects={projectsFollowed} />
-        )}
-      </section>
-      <section>
-        <h2>Projects You&apos;ve Backed</h2>
-        {!projects.length && <ProjectsGrid projects={[]} />}
-        {!projectsBacked.length ? (
-          <p>No projects yet.</p>
-        ) : (
-          <ProjectsGrid projects={projectsBacked} />
-        )}
-      </section>
     </div>
   );
 };
 
-export default UserDashBoardPage;
+export default UserDashboardPage;

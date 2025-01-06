@@ -24,11 +24,14 @@ const DashboardProjectsCarousel = ({ projects }: Props) => {
         selectedPage={selectedPage}
         chunkSize={CHUNK_SIZE}
       />
-      <DashboardProjectsCarouselPagination
-        selectedPage={selectedPage}
-        totalPages={totalPages}
-        onChange={handlePageChange}
-      />
+
+      {totalPages > 1 && (
+        <DashboardProjectsCarouselPagination
+          selectedPage={selectedPage}
+          totalPages={totalPages}
+          onChange={handlePageChange}
+        />
+      )}
     </div>
   );
 };

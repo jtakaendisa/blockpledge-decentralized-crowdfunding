@@ -83,7 +83,7 @@ const CompactProjectCard = ({ project }: Props) => {
           <VerticalSpacer height={8} />
 
           <SpaceBetweenRow>
-            <ProjectText>{truncateText(description, 40, true)}</ProjectText>
+            <ProjectText>{truncateText(description, 48, true)}</ProjectText>
             <motion.span
               className={styles.icon}
               initial={{ y: '10%', opacity: 0 }}
