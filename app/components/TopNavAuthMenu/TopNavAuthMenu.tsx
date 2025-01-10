@@ -29,6 +29,11 @@ const TopNavAuthMenu = ({ authUser, loadingAuth, isAuthenticating }: Props) => {
     dropdownRef
   );
 
+  const handleSignOut = () => {
+    signOutAuthUser();
+    animatePageOut('/');
+  };
+
   return (
     <div className={styles.authMenu}>
       {!loadingAuth && !authUser && (
@@ -48,7 +53,7 @@ const TopNavAuthMenu = ({ authUser, loadingAuth, isAuthenticating }: Props) => {
       <AnimatePresence>
         {authUser && isDropdownOpen && (
           <TopNavDropdownMenu ref={dropdownRef}>
-            <TopNavAuthMenuContent authUser={authUser} onSignOut={signOutAuthUser} />
+            <TopNavAuthMenuContent authUser={authUser} onSignOut={handleSignOut} />
           </TopNavDropdownMenu>
         )}
       </AnimatePresence>

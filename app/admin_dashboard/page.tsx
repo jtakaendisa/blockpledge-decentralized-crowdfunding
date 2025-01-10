@@ -14,7 +14,7 @@ const AdminDashboardPage = () => {
 
   return (
     <div className={styles.dashboardPage}>
-      {projects.length ? (
+      {!projects.length ? (
         <DashboardProjectsSectionSkeleton />
       ) : (
         sections.map(
