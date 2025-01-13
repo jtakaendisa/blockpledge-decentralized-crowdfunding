@@ -75,6 +75,3 @@ export const debounce = (func: (...args: any[]) => void, wait: number) => {
     timeout = setTimeout(() => func(...args), wait);
   };
 };
-
-export const isObjectEmpty = (obj: { [key: string]: any }) =>
-  Object.keys(obj).length === 0;

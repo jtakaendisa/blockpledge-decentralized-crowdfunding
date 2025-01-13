@@ -3,6 +3,10 @@
 .signupPage {
   padding: 0 1.5rem;
 
+  .error {
+    color: var(--color-red);
+  }
+
   & > section {
     display: flex;
     justify-content: center;

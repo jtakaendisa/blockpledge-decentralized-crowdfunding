@@ -5,14 +5,16 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { SubmitHandler } from 'react-hook-form';
 import { FirebaseError } from 'firebase/app';
+import { z } from 'zod';
 
-import { AuthFormData } from '../entities';
-import { authSchema } from '../validationSchemas';
+import { signInSchema } from '../validationSchemas';
 import { signInAuthUser } from '../services/authService';
 import useFormHandler from '../hooks/useFormHandler';
 import Button from '../components/Button/Button';
 
 import styles from './page.module.scss';
+
+type SignInFormData = z.infer<typeof signInSchema>;
 
 const AuthPage = () => {
   const router = useRouter();
@@ -20,14 +22,14 @@ const AuthPage = () => {
   const [authError, setAuthError] = useState<string | null>(null);
 
   const { errors, register, handleSubmit } = useFormHandler({
-    schema: authSchema,
+    schema: signInSchema,
     defaultValues: {
       email: '',
       password: '',
     },
   });
 
-  const onSubmit: SubmitHandler<AuthFormData> = async (data) => {
+  const onSubmit: SubmitHandler<SignInFormData> = async (data) => {
     const { email, password } = data;
 
     setAuthError(null);

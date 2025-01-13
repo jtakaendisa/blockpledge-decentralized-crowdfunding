@@ -1,8 +1,6 @@
 import { User } from 'firebase/auth';
-import { z } from 'zod';
 
 import { pathnameMap, socials } from '../constants';
-import { authSchema } from '../validationSchemas';
 
 export type RoutePath =
   | keyof typeof pathnameMap
@@ -61,5 +59,3 @@ export interface Project {
   date: string;
   deletionReason: string;
 }
-
-export type AuthFormData = z.infer<typeof authSchema>;

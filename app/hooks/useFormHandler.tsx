@@ -3,19 +3,16 @@ import { DefaultValues, FieldValues, useForm } from 'react-hook-form';
 import { ZodType } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { isObjectEmpty } from '../utils';
-
-type Props<T extends FieldValues> = {
+interface Props<T extends FieldValues> {
   schema: ZodType<T>;
   defaultValues: DefaultValues<T>;
-};
+}
 
 const useFormHandler = <T extends FieldValues>({ schema, defaultValues }: Props<T>) => {
   const {
-    control,
     register,
-    handleSubmit,
     watch,
+    handleSubmit,
     reset,
     formState: { isSubmitSuccessful, errors },
   } = useForm<T>({
@@ -23,22 +20,16 @@ const useFormHandler = <T extends FieldValues>({ schema, defaultValues }: Props<
     resolver: zodResolver(schema),
   });
 
-  const watchAllFields = watch();
-
-  const hasNoErrors = isObjectEmpty(errors);
-
   useEffect(() => {
-    if (isSubmitSuccessful && hasNoErrors) {
+    if (isSubmitSuccessful) {
       reset();
     }
-  }, [isSubmitSuccessful, hasNoErrors, reset]);
+  }, [isSubmitSuccessful, reset]);
 
   return {
-    control,
-    isSubmitSuccessful,
     errors,
-    watchAllFields,
     register,
+    watch,
     handleSubmit,
   };
 };

@@ -34,7 +34,11 @@ provider.setCustomParameters({
 const createAuthUser = async (email: string, password: string) => {
   if (!email || !password) return;
 
-  return await createUserWithEmailAndPassword(auth, email, password);
+  try {
+    return await createUserWithEmailAndPassword(auth, email, password);
+  } catch (error) {
+    throw error;
+  }
 };
 
 const createUserDocument = async (
@@ -64,7 +68,7 @@ const createUserDocument = async (
         backed,
       });
     } catch (error) {
-      console.log('error creating the user', (error as Error).message);
+      throw error;
     }
   }
 
