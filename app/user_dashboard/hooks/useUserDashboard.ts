@@ -1,8 +1,11 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 
 import { AuthUser, Project } from '@/app/entities';
 
 export const useUserDashboard = (projects: Project[], authUser: AuthUser | null) => {
+  const router = useRouter();
+
   const categorizedProjects = useMemo(
     () => ({
       userProjects: projects.filter(
@@ -28,6 +31,12 @@ export const useUserDashboard = (projects: Project[], authUser: AuthUser | null)
       projects: categorizedProjects.backed,
     },
   ];
+
+  useEffect(() => {
+    if (!authUser) {
+      router.replace('/auth');
+    }
+  }, [authUser, router]);
 
   return { sections };
 };

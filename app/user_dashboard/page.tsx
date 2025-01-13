@@ -13,6 +13,10 @@ const UserDashboardPage = () => {
 
   const { sections } = useUserDashboard(projects, authUser);
 
+  if (!authUser) {
+    return <div>Redirecting to sign in page...</div>;
+  }
+
   return (
     <div className={styles.dashboardPage}>
       {!projects.length ? (

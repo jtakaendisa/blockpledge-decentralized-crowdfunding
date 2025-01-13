@@ -1,8 +1,11 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 
-import { Project } from '@/app/entities';
+import { AuthUser, Project } from '@/app/entities';
 
-const useAdminDashboard = (projects: Project[]) => {
+const useAdminDashboard = (projects: Project[], authUser: AuthUser | null) => {
+  const router = useRouter();
+
   const categorizedProjects = useMemo(
     () => ({
       pendingApproval: projects.filter((project) => project.status === 5),
@@ -27,7 +30,15 @@ const useAdminDashboard = (projects: Project[]) => {
     },
   ];
 
-  return { sections };
+  const isAdmin = authUser?.uid === process.env.NEXT_PUBLIC_ADMIN_UID;
+
+  useEffect(() => {
+    if (!isAdmin) {
+      router.replace('/auth');
+    }
+  }, [authUser, isAdmin, router]);
+
+  return { isAdmin, sections };
 };
 
 export default useAdminDashboard;
