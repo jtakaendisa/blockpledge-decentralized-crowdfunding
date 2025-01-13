@@ -11,17 +11,21 @@
   }
 
   .icon {
-    width: calc(22px * var(--scale));
-    height: calc(22px * var(--scale));
-    fill: var(--color-base-gray);
-    transition: fill 0.2s;
+    & > svg {
+      width: calc(22px * var(--scale));
+      height: calc(22px * var(--scale));
+      fill: var(--color-base-gray);
+      transition: fill 0.2s;
+    }
   }
 
   &:hover {
     color: var(--color-dark-gray);
 
     .icon {
-      fill: var(--color-dark-gray);
+      & > svg {
+        fill: var(--color-dark-gray);
+      }
     }
   }
 }
