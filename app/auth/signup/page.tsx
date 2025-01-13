@@ -9,6 +9,7 @@ import Header from '../../components/TopNav/TopNav';
 import Button from '../../components/Button/Button';
 
 import styles from './page.module.scss';
+import Link from 'next/link';
 
 interface SigninFormInputs {
   email: string;
@@ -129,6 +130,9 @@ const SignupPage = () => {
               <Button>Sign Up</Button>
             </div>
           </form>
+          <span className={styles.redirectLink}>
+            Already have an account? <Link href="/auth">Sign in</Link>
+          </span>
         </div>
       </section>
     </div>

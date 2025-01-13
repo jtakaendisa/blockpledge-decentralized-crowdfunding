@@ -140,7 +140,7 @@ const signInAuthUser = async (email: string, password: string) => {
 
     return user;
   } catch (error) {
-    console.log('Error during sign-in:', (error as Error).message);
+    throw error;
   }
 };
 

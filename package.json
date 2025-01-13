@@ -11,6 +11,7 @@
   "dependencies": {
     "@artsy/fresnel": "^7.1.4",
     "@emailjs/browser": "^4.3.3",
+    "@hookform/resolvers": "^3.10.0",
     "@plaiceholder/next": "^3.0.0",
     "classnames": "^2.5.1",
     "date-fns": "^3.3.1",
@@ -29,6 +30,7 @@
     "react-share": "^5.1.0",
     "react-toastify": "^10.0.4",
     "sass": "^1.71.1",
+    "zod": "^3.24.1",
     "zustand": "^4.5.1"
   },
   "devDependencies": {

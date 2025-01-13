@@ -1,53 +1,55 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
-import { SubmitHandler, useForm } from 'react-hook-form';
-
 import { useRouter } from 'next/navigation';
+import { SubmitHandler } from 'react-hook-form';
+import { FirebaseError } from 'firebase/app';
+
+import { AuthFormData } from '../entities';
+import { authSchema } from '../validationSchemas';
 import { signInAuthUser } from '../services/authService';
-import Header from '../components/TopNav/TopNav';
+import useFormHandler from '../hooks/useFormHandler';
 import Button from '../components/Button/Button';
 
 import styles from './page.module.scss';
 
-interface SigninFormInputs {
-  email: string;
-  password: string;
-}
-
 const AuthPage = () => {
   const router = useRouter();
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { isSubmitSuccessful },
-  } = useForm<SigninFormInputs>({
+
+  const [authError, setAuthError] = useState<string | null>(null);
+
+  const { errors, register, handleSubmit } = useFormHandler({
+    schema: authSchema,
     defaultValues: {
       email: '',
       password: '',
     },
   });
 
-  const onSubmit: SubmitHandler<SigninFormInputs> = async (data) => {
+  const onSubmit: SubmitHandler<AuthFormData> = async (data) => {
     const { email, password } = data;
+
+    setAuthError(null);
 
     try {
       await signInAuthUser(email, password);
       router.push('/');
     } catch (error) {
-      console.log('error encountered during sign in', (error as Error).message);
+      if (error instanceof FirebaseError) {
+        switch (error.code) {
+          case 'auth/invalid-credential':
+            setAuthError('Incorrect email or password.');
+            break;
+          default:
+            setAuthError('An unexpected error occurred. Please try again.');
+        }
+      }
     }
   };
 
-  useEffect(() => {
-    reset();
-  }, [isSubmitSuccessful, reset]);
-
   return (
     <div className={styles.authPage}>
-      <Header />
       <section>
         <div className={styles.card}>
           <h2 className={styles.heading}>Sign In</h2>
@@ -60,6 +62,7 @@ const AuthPage = () => {
                 {...register('email', { required: true })}
               />
             </div>
+            {errors.email && <p className={styles.error}>{errors.email.message}</p>}
             <div className={styles.formInput}>
               <label htmlFor="password">Password</label>
               <input
@@ -68,11 +71,16 @@ const AuthPage = () => {
                 {...register('password', { required: true })}
               />
             </div>
+            {errors.password && (
+              <p className={styles.error}>{errors.password.message}</p>
+            )}
+
+            {authError && <p className={styles.error}>{authError}</p>}
             <div className={styles.buttonContainer}>
               <Button>Sign In</Button>
             </div>
           </form>
-          <span className={styles.signup}>
+          <span className={styles.redirectLink}>
             Don&apos;t have an account? <Link href="/auth/signup">Sign up</Link>
           </span>
         </div>
