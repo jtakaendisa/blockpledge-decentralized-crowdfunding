@@ -1,11 +1,11 @@
-import { ReactNode } from 'react';
+import { FormEvent, ReactNode } from 'react';
 
 import styles from './Form.module.scss';
 
 interface Props {
   children: ReactNode;
   width?: number | string;
-  onSubmit: () => void;
+  onSubmit: (event: FormEvent<HTMLFormElement>) => void;
 }
 
 const Form = ({ children, width, onSubmit }: Props) => {

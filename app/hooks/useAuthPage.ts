@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
@@ -42,5 +42,11 @@ export const useAuthPage = () => {
     }
   };
 
-  return { fieldErrors, authError, register, handleSubmit, onSubmit };
+  const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    return handleSubmit(onSubmit)();
+  };
+
+  return { fieldErrors, authError, register, handleFormSubmit };
 };

@@ -1,5 +1,6 @@
 'use client';
 
+import { Fragment } from 'react';
 import { AnimatePresence } from 'framer-motion';
 
 import { useAuthPage } from '../hooks/useAuthPage';
@@ -13,36 +14,38 @@ import VerticalSpacer from '../components/VerticalSpacer/VerticalSpacer';
 
 import styles from './page.module.scss';
 
-const AuthPage = () => {
-  const { fieldErrors, authError, register, handleSubmit, onSubmit } = useAuthPage();
+const fields = [
+  { label: 'Email', id: 'email', type: 'text' },
+  { label: 'Password', id: 'password', type: 'password' },
+] as const;
 
-  const fields = [
-    { label: 'Email', id: 'email', type: 'text' },
-    { label: 'Password', id: 'password', type: 'password' },
-  ] as const;
+const AuthPage = () => {
+  const { fieldErrors, authError, register, handleFormSubmit } = useAuthPage();
 
   return (
     <div className={styles.authPage}>
-      <Form onSubmit={handleSubmit(onSubmit)} width="400px">
+      <Form onSubmit={handleFormSubmit} width="400px">
         <FormHeading>Sign In</FormHeading>
-        <VerticalSpacer />
+        <VerticalSpacer height={20} />
 
         {fields.map(({ label, id, type }) => (
-          <div key={id}>
+          <Fragment key={id}>
             <FormInputWithLabel
               label={label}
               id={id}
               type={type}
               error={fieldErrors[id]}
               register={register}
+              required
             />
             <VerticalSpacer />
-          </div>
+          </Fragment>
         ))}
 
         <AnimatePresence>
           {authError && <FormErrorMessage>{authError}</FormErrorMessage>}
         </AnimatePresence>
+        <VerticalSpacer />
 
         <div className={styles.buttonContainer}>
           <FlipButton backgroundColor1="transparent">Sign In</FlipButton>

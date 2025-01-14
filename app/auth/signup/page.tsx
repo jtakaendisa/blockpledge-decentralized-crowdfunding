@@ -1,156 +1,104 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { SubmitHandler } from 'react-hook-form';
-import { FirebaseError } from 'firebase/app';
+import { Fragment } from 'react';
 import { z } from 'zod';
+import { AnimatePresence } from 'framer-motion';
 
-import { signUpSchema } from '@/app/validationSchemas';
-import { createAuthUser, createUserDocument } from '@/app/services/authService';
-import useFormHandler from '@/app/hooks/useFormHandler';
-import Button from '../../components/Button/Button';
+import { accountTypeSchema, signUpSchema } from '@/app/validationSchemas';
+import { useSignupPage } from '@/app/hooks/useSignupPage';
+import Form from '@/app/components/Form/Form';
+import FormHeading from '@/app/components/FormHeading/FormHeading';
+import FormInputWithLabel from '@/app/components/FormInputWithLabel/FormInputWithLabel';
+import FormFieldsetWithLegend from '@/app/components/FormFieldsetWithLegend/FormFieldsetWithLegend';
+import FormRadioWithLabel from '@/app/components/FormRadioWithLabel/FormRadioWithLabel';
+import FormRedirectLink from '@/app/components/FormRedirectLink/FormRedirectLink';
+import FormErrorMessage from '@/app/components/FormErrorMessage/FormErrorMessage';
+import FlipButton from '@/app/components/FlipButton/FlipButton';
+import VerticalSpacer from '@/app/components/VerticalSpacer/VerticalSpacer';
 
 import styles from './page.module.scss';
 
 type SignUpFormData = z.infer<typeof signUpSchema>;
 
+type AccountType = z.infer<typeof accountTypeSchema>;
+
+const fields = [
+  { label: 'Email', id: 'email', type: 'email' },
+  { label: 'Password', id: 'password', type: 'password' },
+  { label: 'Confirm Password', id: 'confirmPassword', type: 'password' },
+] as const;
+
+const radioOptions = [
+  { label: 'Funder', id: 'funder' },
+  { label: 'Owner', id: 'owner' },
+] as const;
+
 const SignupPage = () => {
-  const router = useRouter();
-
-  const [authError, setAuthError] = useState<string | null>(null);
-
-  const { errors, register, watch, handleSubmit } = useFormHandler({
-    schema: signUpSchema,
-    defaultValues: {
-      email: '',
-      password: '',
-      confirmPassword: '',
-      accountType: 'funder',
-      walletAddress: '',
-    },
-  });
-
-  const watchAccountType = watch('accountType');
-
-  const onSubmit: SubmitHandler<SignUpFormData> = async (data) => {
-    const { email, password, accountType, walletAddress } = data;
-
-    setAuthError(null);
-
-    try {
-      const response = await createAuthUser(email, password);
-
-      if (response) {
-        await createUserDocument(response.user, accountType, walletAddress);
-        router.push('/');
-      }
-    } catch (error) {
-      if (error instanceof FirebaseError) {
-        switch (error.code) {
-          case 'auth/email-already-in-use':
-            setAuthError(
-              'This email address is already registered. Please log in or use a different email.'
-            );
-            break;
-          default:
-            setAuthError('An unexpected error occurred. Please try again.');
-        }
-      }
-    }
-  };
+  const { fieldErrors, authError, watchAccountType, register, handleFormSubmit } =
+    useSignupPage();
 
   return (
     <div className={styles.signupPage}>
-      <section>
-        <div className={styles.card}>
-          <h2 className={styles.heading}>Create Your Account</h2>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className={styles.formInput}>
-              <label htmlFor="email">Email</label>
-              <input
-                id="email"
-                type="email"
-                {...register('email', { required: true })}
-              />
-            </div>
-            {errors.email && <p className={styles.error}>{errors.email.message}</p>}
-            <div className={styles.formInput}>
-              <label htmlFor="password">Password</label>
-              <input
-                id="password"
-                type="password"
-                {...register('password', { required: true })}
-              />
-            </div>
-            {errors.password && (
-              <p className={styles.error}>{errors.password.message}</p>
-            )}
-            <div className={styles.formInput}>
-              <label htmlFor="confirmPassword">Confirm Password</label>
-              <input
-                id="confirmPassword"
-                type="password"
-                {...register('confirmPassword', { required: true })}
-              />
-            </div>
-            {errors.confirmPassword && (
-              <p className={styles.error}>{errors.confirmPassword.message}</p>
-            )}
-            <fieldset className={styles.formFieldset}>
-              <legend>Select an account type:</legend>
+      <Form onSubmit={handleFormSubmit} width="400px">
+        <FormHeading>Create Account</FormHeading>
+        <VerticalSpacer height={20} />
 
-              <div className={styles.formOption}>
-                <label htmlFor="funder">Project Funder</label>
-                <input
-                  id="funder"
-                  type="radio"
-                  value="funder"
-                  {...register('accountType')}
-                />
-              </div>
+        {fields.map(({ label, id, type }) => (
+          <Fragment key={id}>
+            <FormInputWithLabel
+              label={label}
+              id={id}
+              type={type}
+              error={fieldErrors[id]}
+              register={register}
+              required
+            />
+            <VerticalSpacer />
+          </Fragment>
+        ))}
 
-              <div className={styles.formOption}>
-                <label htmlFor="owner">Project Owner</label>
-                <input
-                  id="owner"
-                  type="radio"
-                  value="owner"
-                  {...register('accountType')}
-                />
-              </div>
-            </fieldset>
-            {errors.accountType && (
-              <p className={styles.error}>{errors.accountType.message}</p>
-            )}
+        <FormFieldsetWithLegend legend="Account Type" error={fieldErrors.accountType}>
+          {radioOptions.map(({ label, id }) => (
+            <FormRadioWithLabel<SignUpFormData, AccountType>
+              key={id}
+              label={label}
+              id={id}
+              field="accountType"
+              register={register}
+            />
+          ))}
+        </FormFieldsetWithLegend>
+        <VerticalSpacer />
 
-            {watchAccountType === 'owner' && (
-              <>
-                <div className={styles.formInput}>
-                  <label htmlFor="walletAddress">Crypto Wallet</label>
-                  <input
-                    id="walletAddress"
-                    type="text"
-                    {...register('walletAddress', { required: true })}
-                  />
-                </div>
-                {errors.walletAddress && (
-                  <p className={styles.error}>{errors.walletAddress.message}</p>
-                )}
-              </>
-            )}
+        {watchAccountType === 'owner' && (
+          <>
+            <FormInputWithLabel
+              label="Wallet Address"
+              id="walletAddress"
+              type="text"
+              error={fieldErrors.walletAddress}
+              register={register}
+            />
+            <VerticalSpacer />
+          </>
+        )}
 
-            {authError && <p className={styles.error}>{authError}</p>}
-            <div className={styles.buttonContainer}>
-              <Button>Sign Up</Button>
-            </div>
-          </form>
-          <span className={styles.redirectLink}>
-            Already have an account? <Link href="/auth">Sign in</Link>
-          </span>
+        <AnimatePresence>
+          {authError && <FormErrorMessage>{authError}</FormErrorMessage>}
+        </AnimatePresence>
+        <VerticalSpacer />
+
+        <div className={styles.buttonContainer}>
+          <FlipButton backgroundColor1="transparent">Sign Up</FlipButton>
         </div>
-      </section>
+        <VerticalSpacer />
+
+        <FormRedirectLink
+          message="Already have an account?"
+          href="/auth"
+          linkText="Sign in"
+        />
+      </Form>
     </div>
   );
 };
