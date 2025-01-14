@@ -14,7 +14,7 @@ interface Props {
   backgroundColor2?: string;
   borderColor?: string;
   scale?: number;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const hoverVariants: Variants = {
@@ -70,13 +70,13 @@ const FlipButton = ({
       />
 
       {/* Main Text */}
-      <span
+      <button
         onClick={onClick}
         className={styles.mainText}
         style={{ color: isHovered ? textColor2 : textColor1 }}
       >
         <SlideUpText playAnimation={isHovered}>{children}</SlideUpText>
-      </span>
+      </button>
     </motion.div>
   );
 };

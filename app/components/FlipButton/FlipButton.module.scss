@@ -3,10 +3,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid var(--color-dark-green);
   border-radius: calc(50px * var(--scale));
+  border: 2px solid var(--color-dark-green);
   overflow: hidden;
-  cursor: pointer;
 
   .duplicate {
     position: absolute;
@@ -19,10 +18,13 @@
   }
 
   .mainText {
-    font-weight: bold;
     font-size: calc(1.1rem * var(--scale));
+    font-weight: bold;
     letter-spacing: 1px;
     padding: calc(0.75rem * var(--scale)) calc(1rem * var(--scale));
+    background-color: transparent;
+    border: none;
     transition: color 0.2s;
+    cursor: pointer;
   }
 }

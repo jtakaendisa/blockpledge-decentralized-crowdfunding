@@ -1,92 +1,60 @@
 'use client';
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { SubmitHandler } from 'react-hook-form';
-import { FirebaseError } from 'firebase/app';
-import { z } from 'zod';
+import { AnimatePresence } from 'framer-motion';
 
-import { signInSchema } from '../validationSchemas';
-import { signInAuthUser } from '../services/authService';
-import useFormHandler from '../hooks/useFormHandler';
-import Button from '../components/Button/Button';
+import { useAuthPage } from '../hooks/useAuthPage';
+import Form from '../components/Form/Form';
+import FormHeading from '../components/FormHeading/FormHeading';
+import FormInputWithLabel from '../components/FormInputWithLabel/FormInputWithLabel';
+import FormErrorMessage from '../components/FormErrorMessage/FormErrorMessage';
+import FormRedirectLink from '../components/FormRedirectLink/FormRedirectLink';
+import FlipButton from '../components/FlipButton/FlipButton';
+import VerticalSpacer from '../components/VerticalSpacer/VerticalSpacer';
 
 import styles from './page.module.scss';
 
-type SignInFormData = z.infer<typeof signInSchema>;
-
 const AuthPage = () => {
-  const router = useRouter();
+  const { fieldErrors, authError, register, handleSubmit, onSubmit } = useAuthPage();
 
-  const [authError, setAuthError] = useState<string | null>(null);
-
-  const { errors, register, handleSubmit } = useFormHandler({
-    schema: signInSchema,
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-  });
-
-  const onSubmit: SubmitHandler<SignInFormData> = async (data) => {
-    const { email, password } = data;
-
-    setAuthError(null);
-
-    try {
-      await signInAuthUser(email, password);
-      router.push('/');
-    } catch (error) {
-      if (error instanceof FirebaseError) {
-        switch (error.code) {
-          case 'auth/invalid-credential':
-            setAuthError('Incorrect email or password.');
-            break;
-          default:
-            setAuthError('An unexpected error occurred. Please try again.');
-        }
-      }
-    }
-  };
+  const fields = [
+    { label: 'Email', id: 'email', type: 'text' },
+    { label: 'Password', id: 'password', type: 'password' },
+  ] as const;
 
   return (
     <div className={styles.authPage}>
-      <section>
-        <div className={styles.card}>
-          <h2 className={styles.heading}>Sign In</h2>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className={styles.formInput}>
-              <label htmlFor="email">Email</label>
-              <input
-                id="email"
-                type="text"
-                {...register('email', { required: true })}
-              />
-            </div>
-            {errors.email && <p className={styles.error}>{errors.email.message}</p>}
-            <div className={styles.formInput}>
-              <label htmlFor="password">Password</label>
-              <input
-                id="password"
-                type="password"
-                {...register('password', { required: true })}
-              />
-            </div>
-            {errors.password && (
-              <p className={styles.error}>{errors.password.message}</p>
-            )}
+      <Form onSubmit={handleSubmit(onSubmit)} width="400px">
+        <FormHeading>Sign In</FormHeading>
+        <VerticalSpacer />
 
-            {authError && <p className={styles.error}>{authError}</p>}
-            <div className={styles.buttonContainer}>
-              <Button>Sign In</Button>
-            </div>
-          </form>
-          <span className={styles.redirectLink}>
-            Don&apos;t have an account? <Link href="/auth/signup">Sign up</Link>
-          </span>
+        {fields.map(({ label, id, type }) => (
+          <div key={id}>
+            <FormInputWithLabel
+              label={label}
+              id={id}
+              type={type}
+              error={fieldErrors[id]}
+              register={register}
+            />
+            <VerticalSpacer />
+          </div>
+        ))}
+
+        <AnimatePresence>
+          {authError && <FormErrorMessage>{authError}</FormErrorMessage>}
+        </AnimatePresence>
+
+        <div className={styles.buttonContainer}>
+          <FlipButton backgroundColor1="transparent">Sign In</FlipButton>
         </div>
-      </section>
+        <VerticalSpacer />
+
+        <FormRedirectLink
+          message="Don't have an account?"
+          href="/auth/signup"
+          linkText="Sign up"
+        />
+      </Form>
     </div>
   );
 };
