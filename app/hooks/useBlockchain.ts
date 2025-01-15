@@ -5,7 +5,7 @@ import { formatDistance } from 'date-fns';
 import { Project } from '../entities';
 import { truncateAccount } from '../utils';
 import { useEmail } from './useEmail';
-import { AddFormInputs } from '../components/modals/AddProjectModal/AddProjectModal';
+import { AddFormInputs } from '../components/modals/CreateProjectModal/CreateProjectModal';
 import { EditFormInputs } from '../components/modals/EditProjectModal/EditProjectModal';
 
 import contractAddress from '../abis/contractAddress.json';

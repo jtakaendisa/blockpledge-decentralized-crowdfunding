@@ -3,7 +3,6 @@ import { FieldError, FieldValues, Path, UseFormRegister } from 'react-hook-form'
 import { AnimatePresence } from 'framer-motion';
 
 import FormErrorMessage from '../FormErrorMessage/FormErrorMessage';
-import VerticalSpacer from '../VerticalSpacer/VerticalSpacer';
 
 import styles from './FormInputWithLabel.module.scss';
 
@@ -29,12 +28,9 @@ const FormInputWithLabel = <T extends FieldValues>({
   return (
     <div className={styles.formInput}>
       {label && (
-        <>
-          <label htmlFor={id} className={styles.label}>
-            {label}
-          </label>
-          <VerticalSpacer height={8} />
-        </>
+        <label htmlFor={id} className={styles.label}>
+          {label}
+        </label>
       )}
 
       <input
@@ -44,7 +40,6 @@ const FormInputWithLabel = <T extends FieldValues>({
         placeholder={placeholder}
         {...register(id, { required })}
       />
-      <VerticalSpacer height={4} />
 
       <AnimatePresence>
         {error && <FormErrorMessage>{error.message}</FormErrorMessage>}

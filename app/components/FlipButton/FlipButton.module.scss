@@ -24,6 +24,7 @@
     padding: calc(0.75rem * var(--scale)) calc(1rem * var(--scale));
     background-color: transparent;
     border: none;
+    outline: none;
     transition: color 0.2s;
     cursor: pointer;
   }

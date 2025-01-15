@@ -33,7 +33,7 @@ const SignupPage = () => {
 
   return (
     <div className={styles.signupPage}>
-      <Form onSubmit={handleFormSubmit} width="400px">
+      <Form onSubmit={handleFormSubmit} width={400}>
         <FormHeading>Create Account</FormHeading>
         <VerticalSpacer height={20} />
 

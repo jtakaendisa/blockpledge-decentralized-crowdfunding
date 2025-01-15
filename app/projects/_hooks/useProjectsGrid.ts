@@ -13,7 +13,7 @@ interface FastContextSearchQuery {
   set: (value: string) => void;
 }
 
-const INCREMENT_SIZE = 5;
+const INCREMENT_SIZE = 10;
 
 export const useProjectsGrid = (
   projects: Project[],

@@ -1,8 +1,10 @@
+import { AnimatePresence } from 'framer-motion';
+
 import { useProjectModals } from '@/app/hooks/useProjectModals';
 import CallToAction from '../CallToAction/CallToAction';
 import ImageCollage from '../ImageCollage/ImageCollage';
 import StatCards from '../StatCards/StatCards';
-import AddProjectModal from '../../../components/modals/AddProjectModal/AddProjectModal';
+import CreateProjectModal from '../../../components/modals/CreateProjectModal/CreateProjectModal';
 
 import styles from './Hero.module.scss';
 
@@ -15,9 +17,11 @@ const Hero = () => {
       <ImageCollage delay={1.25} />
       <StatCards />
 
-      {isAddProjectModalOpen && (
-        <AddProjectModal closeModal={toggleAddProjectModalState} />
-      )}
+      <AnimatePresence>
+        {isAddProjectModalOpen && (
+          <CreateProjectModal onClose={toggleAddProjectModalState} />
+        )}
+      </AnimatePresence>
     </section>
   );
 };

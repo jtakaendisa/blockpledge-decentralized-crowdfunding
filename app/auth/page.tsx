@@ -24,7 +24,7 @@ const AuthPage = () => {
 
   return (
     <div className={styles.authPage}>
-      <Form onSubmit={handleFormSubmit} width="400px">
+      <Form onSubmit={handleFormSubmit} width={400}>
         <FormHeading>Sign In</FormHeading>
         <VerticalSpacer height={20} />
 

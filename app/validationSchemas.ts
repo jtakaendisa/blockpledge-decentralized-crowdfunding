@@ -57,3 +57,39 @@ export const signUpSchema = z
       }
     }
   });
+
+export const titleSchema = z
+  .string()
+  .min(2, { message: 'Title must be at least 2 characters long.' })
+  .max(50, { message: 'Title must not exceed 50 characters.' });
+
+export const costSchema = z
+  .number()
+  .positive({ message: 'Cost must be a positive number.' });
+
+export const expiresAtSchema = z
+  .string()
+  .refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date format.' });
+
+export const imagesSchema = z
+  .array(z.instanceof(File))
+  .nonempty({ message: 'At least one image is required.' });
+
+export const categorySchema = z
+  .number()
+  .int()
+  .positive({ message: 'Category must be a positive integer.' });
+
+export const descriptionSchema = z
+  .string()
+  .min(2, { message: 'Description must be at least 2 characters long.' })
+  .max(400, { message: 'Title must not exceed 400 characters.' });
+
+export const createProjectSchema = z.object({
+  title: titleSchema,
+  cost: costSchema,
+  expiresAt: expiresAtSchema,
+  images: imagesSchema,
+  category: categorySchema,
+  description: descriptionSchema,
+});

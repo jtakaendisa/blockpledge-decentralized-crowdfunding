@@ -1,9 +1,12 @@
-export const usePinata = (setUploading: (uploading: boolean) => void) => {
-  const uploadFiles = async (filesToUpload: File[]) => {
-    let uploadedCids: string[] = [];
+import { useState } from 'react';
 
+export const usePinata = () => {
+  const [isUploading, setIsUploading] = useState(false);
+
+  const uploadImageFiles = async (filesToUpload: File[]) => {
     try {
-      setUploading(true);
+      setIsUploading(true);
+
       const promises = filesToUpload.map(async (file) => {
         const data = new FormData();
 
@@ -18,16 +21,15 @@ export const usePinata = (setUploading: (uploading: boolean) => void) => {
         return resData.IpfsHash;
       });
 
-      uploadedCids = await Promise.all(promises);
-      setUploading(false);
-    } catch (e) {
-      console.log(e);
-      setUploading(false);
-      alert('Trouble uploading files');
-    }
+      const uploadedCids = await Promise.all(promises);
 
-    return { uploadedCids };
+      return { uploadedCids };
+    } catch (error) {
+      throw error;
+    } finally {
+      setIsUploading(false);
+    }
   };
 
-  return { uploadFiles };
+  return { isUploading, uploadImageFiles };
 };

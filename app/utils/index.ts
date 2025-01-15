@@ -50,6 +50,11 @@ export const getTomorrowsDate = () => {
   return format(nextDay, 'yyyy-MM-dd');
 };
 
+export const getFutureDate = (dayOffset: number) => {
+  const futureDate = addDays(new Date(), dayOffset);
+  return format(futureDate, 'yyyy-MM-dd');
+};
+
 export const convertToTimestamp = (dateString: string) => Date.parse(dateString) / 1000;
 
 export const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
