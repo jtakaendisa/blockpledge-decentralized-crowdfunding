@@ -2,19 +2,19 @@ import { FieldValues, Path, UseFormRegister } from 'react-hook-form';
 
 import styles from './FormRadioWithLabel.module.scss';
 
-interface Props<T extends FieldValues, U extends string> {
+interface Props<T extends FieldValues, F extends Path<T>> {
   label?: string;
-  id: U;
-  field: Path<T>;
+  id: T[F];
+  field: F;
   register: UseFormRegister<T>;
 }
 
-const FormRadioWithLabel = <T extends FieldValues, U extends string>({
+const FormRadioWithLabel = <T extends FieldValues, F extends Path<T>>({
   label,
   id,
   field,
   register,
-}: Props<T, U>) => {
+}: Props<T, F>) => {
   return (
     <div className={styles.radioOption}>
       <input id={id} type="radio" value={id} {...register(field)} />

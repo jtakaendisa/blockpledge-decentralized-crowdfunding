@@ -1,10 +1,8 @@
 'use client';
 
 import { Fragment } from 'react';
-import { z } from 'zod';
 import { AnimatePresence } from 'framer-motion';
 
-import { accountTypeSchema, signUpSchema } from '@/app/validationSchemas';
 import { useSignupPage } from '@/app/hooks/useSignupPage';
 import Form from '@/app/components/Form/Form';
 import FormHeading from '@/app/components/FormHeading/FormHeading';
@@ -17,10 +15,6 @@ import FlipButton from '@/app/components/FlipButton/FlipButton';
 import VerticalSpacer from '@/app/components/VerticalSpacer/VerticalSpacer';
 
 import styles from './page.module.scss';
-
-type SignUpFormData = z.infer<typeof signUpSchema>;
-
-type AccountType = z.infer<typeof accountTypeSchema>;
 
 const fields = [
   { label: 'Email', id: 'email', type: 'email' },
@@ -59,7 +53,7 @@ const SignupPage = () => {
 
         <FormFieldsetWithLegend legend="Account Type" error={fieldErrors.accountType}>
           {radioOptions.map(({ label, id }) => (
-            <FormRadioWithLabel<SignUpFormData, AccountType>
+            <FormRadioWithLabel
               key={id}
               label={label}
               id={id}

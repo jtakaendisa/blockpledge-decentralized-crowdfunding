@@ -8,6 +8,8 @@ import { signUpSchema } from '../validationSchemas';
 import { createAuthUser, createUserDocument } from '../services/authService';
 import useFormHandler from './useFormHandler';
 
+type SignUpFormData = z.infer<typeof signUpSchema>;
+
 export const useSignupPage = () => {
   const router = useRouter();
 
@@ -31,7 +33,7 @@ export const useSignupPage = () => {
 
   const watchAccountType = watch('accountType');
 
-  const onSubmit: SubmitHandler<z.infer<typeof signUpSchema>> = async (data) => {
+  const onSubmit: SubmitHandler<SignUpFormData> = async (data) => {
     const { email, password, accountType, walletAddress } = data;
 
     setAuthError(null);
