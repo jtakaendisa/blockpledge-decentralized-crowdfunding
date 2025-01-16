@@ -31,7 +31,7 @@ const FormImageUploader = <T extends FieldValues>({
   setValue,
   watch,
 }: Props<T>) => {
-  const images = watch('images');
+  const images = watch(field);
 
   return (
     <div className={styles.formImageUploader}>

@@ -1,5 +1,5 @@
 import { ChangeEvent } from 'react';
-import { FieldValues, Path, UseFormSetValue } from 'react-hook-form';
+import { FieldValues, Path, PathValue, UseFormSetValue } from 'react-hook-form';
 
 import styles from './FormImageUploaderInput.module.scss';
 
@@ -7,11 +7,11 @@ interface Props<T extends FieldValues> {
   field: Path<T>;
   label: string;
   required?: boolean;
-  images: File[];
+  images: PathValue<T, Path<T>>;
   setValue: UseFormSetValue<T>;
 }
 
-const getCountText = (files: File[]) =>
+const getCountText = <T extends FieldValues>(files: PathValue<T, Path<T>>) =>
   files.length === 0
     ? 'No file chosen'
     : files.length === 1
@@ -26,8 +26,11 @@ const FormImageUploaderInput = <T extends FieldValues>({
   setValue,
 }: Props<T>) => {
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(event.target.files);
-    setValue('images', files.slice(0, 3), { shouldValidate: true });
+    const files = event.target.files ? Array.from(event.target.files) : [];
+
+    setValue(field, files.slice(0, 3) as PathValue<T, Path<T>>, {
+      shouldValidate: true,
+    });
   };
 
   return (
