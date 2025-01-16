@@ -382,8 +382,7 @@ export const useBlockchain = () => {
         await tx.wait();
         await getProject(id);
       } catch (error) {
-        console.log((error as Error).message);
-        throw error;
+        throw new Error(`Failed to accept project: ${(error as Error).message}`);
       }
     },
     [getProject, getContract]
@@ -407,8 +406,7 @@ export const useBlockchain = () => {
         await tx.wait();
         await getProject(id);
       } catch (error) {
-        console.log((error as Error).message);
-        throw error;
+        throw new Error(`Failed to reject project: ${(error as Error).message}`);
       }
     },
     [getProject, getContract]

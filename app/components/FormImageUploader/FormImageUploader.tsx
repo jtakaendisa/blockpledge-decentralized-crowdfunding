@@ -29,18 +29,18 @@ const FormImageUploader = <T extends FieldValues>({
   setValue,
   watch,
 }: Props<T>) => {
-  const images = watch(field);
+  const watchImages = watch(field);
 
   return (
     <div className={styles.formImageUploader}>
       <FormImageUploaderInput
         field={field}
         label={label}
-        images={images}
+        images={watchImages}
         setValue={setValue}
       />
 
-      {!!images.length && <FormImageUploaderPreview images={images} />}
+      {!!watchImages.length && <FormImageUploaderPreview images={watchImages} />}
 
       <AnimatePresence>
         {error && <FormErrorMessage>{error.message}</FormErrorMessage>}

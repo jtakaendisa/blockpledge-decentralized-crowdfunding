@@ -36,6 +36,7 @@ type CreateProjectFormData = z.infer<typeof createProjectSchema>;
 const CreateProjectModal = ({ onClose }: Props) => {
   const categories = useProjectStore((s) => s.categories);
 
+  const [isLoading, setIsLoading] = useState(false);
   const [submissionError, setSubmissionError] = useState<Error | null>(null);
 
   const { createProject } = useBlockchain();
@@ -56,6 +57,8 @@ const CreateProjectModal = ({ onClose }: Props) => {
 
   const onSubmit: SubmitHandler<CreateProjectFormData> = async (data) => {
     try {
+      setIsLoading(true);
+
       const { uploadedCids } = await uploadImageFiles(data.images);
 
       const parsedFormData: ParsedCreateProjectFormData = {
@@ -69,6 +72,8 @@ const CreateProjectModal = ({ onClose }: Props) => {
       onClose();
     } catch (error) {
       setSubmissionError(error as Error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -77,7 +82,7 @@ const CreateProjectModal = ({ onClose }: Props) => {
       <Form width={670} onSubmit={handleSubmit(onSubmit)}>
         <SpaceBetweenRow>
           <FormHeading>Create Project</FormHeading>
-          <CloseModalButton onClose={onClose} disabled={isUploading} />
+          <CloseModalButton onClose={onClose} disabled={isLoading} />
         </SpaceBetweenRow>
         <VerticalSpacer height={20} />
 
@@ -137,7 +142,7 @@ const CreateProjectModal = ({ onClose }: Props) => {
 
         <FormTextarea
           field="description"
-          placeholder="Description"
+          placeholder="Description..."
           error={fieldErrors.description}
           register={register}
           required
@@ -154,8 +159,12 @@ const CreateProjectModal = ({ onClose }: Props) => {
         </AnimatePresence>
 
         <VerticalSpacer />
-        <FormSubmitButton disabled={isUploading}>
-          {isUploading ? 'Uploading Images...' : 'Submit Project'}
+        <FormSubmitButton disabled={isLoading}>
+          {isLoading && isUploading
+            ? 'Uploading Images...'
+            : isLoading
+            ? 'Working on it...'
+            : 'Submit Project'}
         </FormSubmitButton>
       </Form>
     </ModalBackdrop>

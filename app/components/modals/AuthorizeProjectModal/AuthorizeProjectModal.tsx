@@ -1,107 +1,134 @@
-import { useEffect } from 'react';
-import Image from 'next/image';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useState } from 'react';
+import { SubmitHandler } from 'react-hook-form';
+import { z } from 'zod';
+import { AnimatePresence } from 'framer-motion';
 import { toast } from 'react-toastify';
-import classNames from 'classnames';
 
-import { Project } from '@/app/entities';
+import { authorizeProjectSchema } from '@/app/validationSchemas';
 import { useBlockchain } from '@/app/hooks/useBlockchain';
-import Button from '../../Button/Button';
-import xmarkSVG from '@/public/icons/xmark.svg';
-
-import styles from '../modal.module.scss';
+import { useFormHandler } from '@/app/hooks/useFormHandler';
+import ModalBackdrop from '../../ModalBackdrop/ModalBackdrop';
+import Form from '../../Form/Form';
+import FormHeading from '../../FormHeading/FormHeading';
+import CloseModalButton from '../CloseModalButton/CloseModalButton';
+import FormFieldsetWithLegend from '../../FormFieldsetWithLegend/FormFieldsetWithLegend';
+import FormRadioWithLabel from '../../FormRadioWithLabel/FormRadioWithLabel';
+import FormTextarea from '../../FormTextarea/FormTextarea';
+import FormSubmitButton from '../../FormSubmitButton/FormSubmitButton';
+import FormErrorMessage from '../../FormErrorMessage/FormErrorMessage';
+import SpaceBetweenRow from '../../SpaceBetweenRow/SpaceBetweenRow';
+import VerticalSpacer from '../../VerticalSpacer/VerticalSpacer';
 
 interface Props {
-  project: Project | null;
-  closeModal: () => void;
+  projectId: number;
+  onClose: () => void;
 }
 
-interface AuthorizeFormInputs {
-  decision: 'accept' | 'reject';
-  reason: string;
-}
+type AuthorizeProjectFormData = z.infer<typeof authorizeProjectSchema>;
 
-const AuthorizeProjectModal = ({ project, closeModal }: Props) => {
+const radioOptions = [
+  {
+    label: 'Accept',
+    id: 'accept',
+  },
+  {
+    label: 'Reject',
+    id: 'reject',
+  },
+] as const;
+
+const AuthorizeProjectModal = ({ projectId, onClose }: Props) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [submissionError, setSubmissionError] = useState<Error | null>(null);
+
   const { acceptProject, rejectProject } = useBlockchain();
 
   const {
+    errors: fieldErrors,
     register,
-    handleSubmit,
-    reset,
     watch,
-    formState: { isSubmitSuccessful },
-  } = useForm<AuthorizeFormInputs>({
+    handleSubmit,
+  } = useFormHandler({
+    schema: authorizeProjectSchema,
     defaultValues: {
       decision: 'accept',
-      reason: '',
     },
   });
 
-  const watchShowReason = watch('decision');
+  const watchDecision = watch('decision');
 
-  const onSubmit: SubmitHandler<AuthorizeFormInputs> = async ({ decision, reason }) => {
-    if (!project) return;
+  const onSubmit: SubmitHandler<AuthorizeProjectFormData> = async ({
+    decision,
+    reason,
+  }) => {
+    try {
+      setIsLoading(true);
 
-    if (decision === 'accept') {
-      await acceptProject(project.id);
-      toast.success('Project has been accepted, changes will reflect momentarily.');
-    } else {
-      await rejectProject(project.id, reason);
-      toast.success('Project has been rejected, changes will reflect momentarily.');
+      if (decision === 'accept') {
+        await acceptProject(projectId);
+        toast.success('Project has been accepted, changes will reflect momentarily.');
+      } else {
+        await rejectProject(projectId, reason!);
+        toast.success('Project has been rejected, changes will reflect momentarily.');
+      }
+
+      onClose();
+    } catch (error) {
+      setSubmissionError(error as Error);
+    } finally {
+      setIsLoading(false);
     }
-    closeModal();
   };
 
-  useEffect(() => {
-    reset();
-  }, [isSubmitSuccessful, reset]);
-
-  if (!project) return null;
-
   return (
-    <div className={styles.backdrop}>
-      <div className={styles.modal}>
-        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-          <div className={styles.row}>
-            <p>{project.title}</p>
-            <button className={styles.close} type="button" onClick={() => closeModal()}>
-              <Image src={xmarkSVG} alt="close" width={22} height={22} />
-            </button>
-          </div>
-          <fieldset className={styles.formFieldset}>
-            <legend>Accept or Reject the Project</legend>
+    <ModalBackdrop>
+      <Form width={670} onSubmit={handleSubmit(onSubmit)}>
+        <SpaceBetweenRow>
+          <FormHeading>Authorize Project</FormHeading>
+          <CloseModalButton disabled={isLoading} onClose={onClose} />
+        </SpaceBetweenRow>
+        <VerticalSpacer height={20} />
 
-            <div className={styles.formOption}>
-              <label htmlFor="accept">Accept Project</label>
-              <input
-                id="accept"
-                type="radio"
-                value="accept"
-                {...register('decision')}
-              />
-            </div>
-
-            <div className={styles.formOption}>
-              <label htmlFor="reject">Reject Project</label>
-              <input
-                id="reject"
-                type="radio"
-                value="reject"
-                {...register('decision')}
-              />
-            </div>
-          </fieldset>
-          {watchShowReason === 'reject' && (
-            <textarea
-              className={classNames(styles.input, styles.textArea)}
-              placeholder="Reason for rejection"
-              {...register('reason', { required: true })}
+        <FormFieldsetWithLegend legend="Approval Decision" error={fieldErrors.decision}>
+          {radioOptions.map(({ label, id }) => (
+            <FormRadioWithLabel
+              key={id}
+              label={label}
+              id={id}
+              field="decision"
+              register={register}
             />
+          ))}
+        </FormFieldsetWithLegend>
+        <VerticalSpacer />
+
+        {watchDecision === 'reject' && (
+          <>
+            <FormTextarea
+              field="reason"
+              placeholder="Reason for rejection..."
+              error={fieldErrors.reason}
+              register={register}
+            />
+            <VerticalSpacer />
+          </>
+        )}
+
+        <AnimatePresence>
+          {submissionError && (
+            <>
+              <FormErrorMessage>{submissionError.message}</FormErrorMessage>
+              <VerticalSpacer />
+            </>
           )}
-          <Button>Submit Decision</Button>
-        </form>
-      </div>
-    </div>
+        </AnimatePresence>
+
+        <VerticalSpacer />
+        <FormSubmitButton color="orange" disabled={isLoading}>
+          {isLoading ? 'Working on it...' : 'Submit Decision'}
+        </FormSubmitButton>
+      </Form>
+    </ModalBackdrop>
   );
 };
 

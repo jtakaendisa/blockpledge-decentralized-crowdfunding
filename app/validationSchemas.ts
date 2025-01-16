@@ -48,6 +48,7 @@ export const signUpSchema = z
         });
       } else {
         const walletAddressValidation = walletAddressSchema.safeParse(walletAddress);
+
         if (!walletAddressValidation.success) {
           walletAddressValidation.error.issues.forEach((issue) => {
             ctx.addIssue({
@@ -138,3 +139,44 @@ export const createProjectSchema = z.object({
   images: imagesSchema,
   description: descriptionSchema,
 });
+
+export const decisionSchema = z.enum(['accept', 'reject'], {
+  message: "Decision must be either 'accept' or 'reject'",
+});
+
+export const reasonSchema = z
+  .string()
+  .refine((val) => val.trim().split(/\s+/).length >= 2, {
+    message: 'Reason must be at least 2 words',
+  })
+  .refine((val) => val.trim().split(/\s+/).length <= 200, {
+    message: 'Reason must be no more than 200 words',
+  });
+
+export const authorizeProjectSchema = z
+  .object({
+    decision: decisionSchema,
+    reason: z.string().optional(),
+  })
+  .superRefine(({ decision, reason }, ctx) => {
+    if (decision === 'reject') {
+      if (!reason) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['reason'],
+          message: 'Reason is required',
+        });
+      } else {
+        const reasonValidation = reasonSchema.safeParse(reason);
+
+        if (!reasonValidation.success) {
+          reasonValidation.error.issues.forEach((issue) => {
+            ctx.addIssue({
+              ...issue,
+              path: ['reason'],
+            });
+          });
+        }
+      }
+    }
+  });

@@ -30,7 +30,7 @@ const ProjectDetailsContentModals = ({
   return (
     <>
       {isAuthorizeProjectModalOpen && (
-        <AuthorizeProjectModal project={project} closeModal={onAuthorizeProject} />
+        <AuthorizeProjectModal projectId={project.id} onClose={onAuthorizeProject} />
       )}
 
       {isBackProjectModalOpen && (
