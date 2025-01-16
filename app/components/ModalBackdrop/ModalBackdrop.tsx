@@ -20,6 +20,10 @@ const revealVariants: Variants = {
   },
   exit: {
     opacity: 0,
+    transition: {
+      duration: 0.35,
+      ease: 'easeInOut',
+    },
   },
 };
 
@@ -36,6 +40,10 @@ const slideUpVariants: Variants = {
   },
   exit: {
     y: '-10%',
+    transition: {
+      duration: 0.35,
+      ease: 'easeInOut',
+    },
   },
 };
 

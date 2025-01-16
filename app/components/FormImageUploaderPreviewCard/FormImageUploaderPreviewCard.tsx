@@ -23,7 +23,7 @@ const FormImageUploaderPreviewCard = ({ image, index }: Props) => {
           blurDataURL={defaultBlurDataURL.blurDataURL}
         />
       </div>
-      <span className={styles.name}>{truncateText(image.name, 70, true)}</span>
+      <span className={styles.name}>{truncateText(image.name, 65, true)}</span>
     </div>
   );
 };

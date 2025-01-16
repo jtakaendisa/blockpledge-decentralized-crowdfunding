@@ -1,0 +1,30 @@
+.submitButton {
+  --button-color: var(--color-dark-green);
+
+  font-family: 'Inter';
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-white);
+  padding: 0.5rem 1rem;
+  background-color: var(--button-color);
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.green {
+  --button-color: var(--color-dark-green);
+}
+
+.gray {
+  --button-color: var(--color-dark-gray);
+}
+
+.orange {
+  --button-color: var(--color-orange);
+}
+
+.red {
+  --button-color: var(--color-red);
+}

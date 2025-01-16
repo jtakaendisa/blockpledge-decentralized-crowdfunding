@@ -18,7 +18,6 @@ interface Props<T extends FieldValues> {
   label: string;
   field: Path<T>;
   error?: Merge<FieldError, (FieldError | undefined)[]> | undefined;
-  required?: boolean;
   setValue: UseFormSetValue<T>;
   watch: UseFormWatch<T>;
 }
@@ -27,7 +26,6 @@ const FormImageUploader = <T extends FieldValues>({
   label,
   field,
   error,
-  required,
   setValue,
   watch,
 }: Props<T>) => {
@@ -39,7 +37,6 @@ const FormImageUploader = <T extends FieldValues>({
         field={field}
         label={label}
         images={images}
-        required={required}
         setValue={setValue}
       />
 

@@ -25,6 +25,7 @@ import FormImageUploader from '../../FormImageUploader/FormImageUploader';
 import FormErrorMessage from '../../FormErrorMessage/FormErrorMessage';
 import SpaceBetweenRow from '../../SpaceBetweenRow/SpaceBetweenRow';
 import VerticalSpacer from '../../VerticalSpacer/VerticalSpacer';
+import FormSubmitButton from '../../FormSubmitButton/FormSubmitButton';
 
 interface Props {
   onClose: () => void;
@@ -131,7 +132,6 @@ const CreateProjectModal = ({ onClose }: Props) => {
           error={fieldErrors.images}
           setValue={setValue}
           watch={watch}
-          required
         />
         <VerticalSpacer />
 
@@ -153,16 +153,13 @@ const CreateProjectModal = ({ onClose }: Props) => {
           )}
         </AnimatePresence>
 
-        {/* Temp Button */}
-        <button onClick={handleSubmit(onSubmit)}>Submit</button>
-        {/* Temp Button */}
+        <VerticalSpacer />
+        <FormSubmitButton disabled={isUploading}>
+          {isUploading ? 'Uploading Images...' : 'Submit Project'}
+        </FormSubmitButton>
       </Form>
     </ModalBackdrop>
   );
-
-  // <Button disabled={isUploading}>
-  //   {isUploading ? 'Uploading Images...' : 'Submit Project'}
-  // </Button>;
 };
 
 export default CreateProjectModal;
