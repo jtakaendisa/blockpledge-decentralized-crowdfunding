@@ -1,4 +1,4 @@
-import { HTMLInputTypeAttribute, useRef } from 'react';
+import { HTMLInputTypeAttribute, useLayoutEffect, useRef } from 'react';
 import { FieldError, FieldValues, Path, UseFormRegister } from 'react-hook-form';
 import { AnimatePresence } from 'framer-motion';
 
@@ -26,16 +26,18 @@ const FormInputWithInlineLabel = <T extends FieldValues>({
   register,
 }: Props<T>) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const labelRef = useRef<HTMLLabelElement | null>(null);
 
-  const labelRef = (element: HTMLLabelElement) => {
+  useLayoutEffect(() => {
     const container = containerRef.current;
+    const label = labelRef.current;
 
-    if (element && container) {
-      const bounds = element.getBoundingClientRect();
+    if (container && label) {
+      const bounds = label.getBoundingClientRect();
 
       container.style.setProperty('--label-width', `${bounds.width}px`);
     }
-  };
+  }, []);
 
   return (
     <div ref={containerRef} className={styles.formInput}>

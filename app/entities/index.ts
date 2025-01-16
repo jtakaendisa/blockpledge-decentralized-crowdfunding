@@ -59,3 +59,12 @@ export interface Project {
   date: string;
   deletionReason: string;
 }
+
+export interface ParsedCreateProjectFormData {
+  title: string;
+  description: string;
+  images: string[];
+  cost: number;
+  categoryId: number;
+  expiresAt: number;
+}

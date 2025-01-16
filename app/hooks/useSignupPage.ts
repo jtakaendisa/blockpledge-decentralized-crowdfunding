@@ -6,7 +6,7 @@ import { FirebaseError } from 'firebase/app';
 
 import { signUpSchema } from '../validationSchemas';
 import { createAuthUser, createUserDocument } from '../services/authService';
-import useFormHandler from './useFormHandler';
+import { useFormHandler } from './useFormHandler';
 
 type SignUpFormData = z.infer<typeof signUpSchema>;
 

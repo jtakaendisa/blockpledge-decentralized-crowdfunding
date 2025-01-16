@@ -6,7 +6,7 @@ import { FirebaseError } from 'firebase/app';
 
 import { signInSchema } from '../validationSchemas';
 import { signInAuthUser } from '../services/authService';
-import useFormHandler from './useFormHandler';
+import { useFormHandler } from './useFormHandler';
 
 type SignInFormData = z.infer<typeof signInSchema>;
 

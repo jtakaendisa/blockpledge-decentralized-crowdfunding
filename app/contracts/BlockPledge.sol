@@ -448,8 +448,8 @@ contract BlockPledge {
     }
 
     /**
-     * @dev Retrieves all projects.
-     * @return ProjectStruct[] Array of projects.
+     * @dev Retrieves all categories.
+     * @return CategoryStruct[] Array of categories.
      */
     function getCategories() public view returns (CategoryStruct[] memory) {
         return categories;

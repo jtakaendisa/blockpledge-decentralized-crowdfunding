@@ -2,10 +2,9 @@ import { useCallback } from 'react';
 import { ethers } from 'ethers';
 import { formatDistance } from 'date-fns';
 
-import { Project } from '../entities';
+import { ParsedCreateProjectFormData, Project } from '../entities';
 import { truncateAccount } from '../utils';
 import { useEmail } from './useEmail';
-import { AddFormInputs } from '../components/modals/CreateProjectModal/CreateProjectModal';
 import { EditFormInputs } from '../components/modals/EditProjectModal/EditProjectModal';
 
 import contractAddress from '../abis/contractAddress.json';
@@ -245,11 +244,11 @@ export const useBlockchain = () => {
     async ({
       title,
       description,
-      imageURLs,
+      images,
       cost,
-      category,
+      categoryId,
       expiresAt,
-    }: AddFormInputs) => {
+    }: ParsedCreateProjectFormData) => {
       try {
         if (!window.ethereum) {
           throw new Error('Please install Metamask');
@@ -261,13 +260,13 @@ export const useBlockchain = () => {
           throw new Error("Can't connect to smart contract");
         }
 
-        const convertedCost = ethers.parseEther(cost);
+        const convertedCost = ethers.parseEther(cost.toString());
 
         const tx = await contract.createProject(
           title,
           description,
-          imageURLs,
-          category,
+          images,
+          categoryId,
           convertedCost,
           expiresAt
         );
@@ -275,8 +274,9 @@ export const useBlockchain = () => {
         await tx.wait();
         await getProjects();
       } catch (error) {
-        console.log((error as Error).message);
-        throw error;
+        throw new Error(
+          `Failed to commit changes to blockchain: ${(error as Error).message}`
+        );
       }
     },
     [getProjects, getContract]

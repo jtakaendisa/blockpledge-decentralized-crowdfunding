@@ -4,6 +4,8 @@ export const usePinata = () => {
   const [isUploading, setIsUploading] = useState(false);
 
   const uploadImageFiles = async (filesToUpload: File[]) => {
+    let uploadedCids: string[] = [];
+
     try {
       setIsUploading(true);
 
@@ -21,14 +23,14 @@ export const usePinata = () => {
         return resData.IpfsHash;
       });
 
-      const uploadedCids = await Promise.all(promises);
-
-      return { uploadedCids };
+      uploadedCids = await Promise.all(promises);
     } catch (error) {
-      throw error;
+      throw new Error(`Failed to upload images: ${(error as Error).message}`);
     } finally {
       setIsUploading(false);
     }
+
+    return { uploadedCids };
   };
 
   return { isUploading, uploadImageFiles };

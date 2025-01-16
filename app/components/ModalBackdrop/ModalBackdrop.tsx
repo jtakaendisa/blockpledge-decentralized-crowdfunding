@@ -23,6 +23,22 @@ const revealVariants: Variants = {
   },
 };
 
+const slideUpVariants: Variants = {
+  initial: {
+    y: '10%',
+  },
+  animate: {
+    y: 0,
+    transition: {
+      duration: 0.65,
+      ease: 'easeInOut',
+    },
+  },
+  exit: {
+    y: '-10%',
+  },
+};
+
 const ModalBackdrop = ({ children }: Props) => {
   return (
     <motion.div
@@ -32,7 +48,14 @@ const ModalBackdrop = ({ children }: Props) => {
       exit="exit"
       variants={revealVariants}
     >
-      {children}
+      <motion.div
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        variants={slideUpVariants}
+      >
+        {children}
+      </motion.div>
     </motion.div>
   );
 };

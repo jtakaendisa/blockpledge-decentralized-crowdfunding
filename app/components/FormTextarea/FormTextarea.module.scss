@@ -1,0 +1,15 @@
+.textAreaContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  .textArea {
+    font-size: 1rem;
+    font-family: 'Inter';
+    color: var(--color-dark-gray);
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--color-base-gray);
+    outline: none;
+  }
+}

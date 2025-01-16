@@ -1,4 +1,4 @@
-import { addDays, format } from 'date-fns';
+import { addDays, addYears, format } from 'date-fns';
 
 export const truncateAccount = (
   account: string,
@@ -50,9 +50,10 @@ export const getTomorrowsDate = () => {
   return format(nextDay, 'yyyy-MM-dd');
 };
 
-export const getFutureDate = (dayOffset: number) => {
-  const futureDate = addDays(new Date(), dayOffset);
-  return format(futureDate, 'yyyy-MM-dd');
+export const getFutureDate = (offset: number, unit: 'days' | 'years' = 'days') => {
+  const today = new Date();
+
+  return unit === 'days' ? addDays(today, offset) : addYears(today, offset);
 };
 
 export const convertToTimestamp = (dateString: string) => Date.parse(dateString) / 1000;
