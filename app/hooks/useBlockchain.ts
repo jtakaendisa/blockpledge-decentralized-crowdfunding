@@ -334,7 +334,12 @@ export const useBlockchain = () => {
   );
 
   const backProject = useCallback(
-    async (id: number, amount: string, comment: string, connectedAccount: string) => {
+    async (
+      id: number,
+      amount: number,
+      comment: string = '',
+      connectedAccount: string
+    ) => {
       try {
         if (!window.ethereum) {
           throw new Error('Please install Metamask');
@@ -346,7 +351,7 @@ export const useBlockchain = () => {
           throw new Error("Can't connect to smart contract");
         }
 
-        const convertedAmount = ethers.parseEther(amount);
+        const convertedAmount = ethers.parseEther(amount.toString());
 
         const tx = await contract.backProject(id, comment, {
           from: connectedAccount,
@@ -357,8 +362,7 @@ export const useBlockchain = () => {
         await getProject(id);
         await getBackers(id);
       } catch (error) {
-        console.log((error as Error).message);
-        throw error;
+        throw new Error(`Failed to back project: ${(error as Error).message}`);
       }
     },
     [getBackers, getProject, getContract]

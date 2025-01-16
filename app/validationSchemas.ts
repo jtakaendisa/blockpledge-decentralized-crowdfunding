@@ -180,3 +180,29 @@ export const authorizeProjectSchema = z
       }
     }
   });
+
+export const commentSchema = z
+  .string()
+  .refine((val) => val.trim().split(/\s+/).length <= 50, {
+    message: 'Comment must be no more than 50 words',
+  });
+
+export const backProjectSchema = z
+  .object({
+    amount: costSchema,
+    comment: z.string().optional(),
+  })
+  .superRefine(({ comment }, ctx) => {
+    if (comment && comment.trim().length > 0) {
+      const commentValidation = commentSchema.safeParse(comment);
+      if (!commentValidation.success) {
+        commentValidation.error.issues.forEach((issue) =>
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['comment'],
+            message: issue.message,
+          })
+        );
+      }
+    }
+  });

@@ -11,7 +11,7 @@ import FormFieldsetWithLegend from '@/app/components/FormFieldsetWithLegend/Form
 import FormRadioWithLabel from '@/app/components/FormRadioWithLabel/FormRadioWithLabel';
 import FormRedirectLink from '@/app/components/FormRedirectLink/FormRedirectLink';
 import FormErrorMessage from '@/app/components/FormErrorMessage/FormErrorMessage';
-import FlipButton from '@/app/components/FlipButton/FlipButton';
+import FormSubmitButton from '@/app/components/FormSubmitButton/FormSubmitButton';
 import VerticalSpacer from '@/app/components/VerticalSpacer/VerticalSpacer';
 
 import styles from './page.module.scss';
@@ -82,9 +82,7 @@ const SignupPage = () => {
         </AnimatePresence>
         <VerticalSpacer />
 
-        <div className={styles.buttonContainer}>
-          <FlipButton backgroundColor1="transparent">Sign Up</FlipButton>
-        </div>
+        <FormSubmitButton>Sign up</FormSubmitButton>
         <VerticalSpacer />
 
         <FormRedirectLink

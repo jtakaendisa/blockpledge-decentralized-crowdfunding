@@ -9,7 +9,7 @@ import FormHeading from '../components/FormHeading/FormHeading';
 import FormInputWithLabel from '../components/FormInputWithLabel/FormInputWithLabel';
 import FormErrorMessage from '../components/FormErrorMessage/FormErrorMessage';
 import FormRedirectLink from '../components/FormRedirectLink/FormRedirectLink';
-import FlipButton from '../components/FlipButton/FlipButton';
+import FormSubmitButton from '../components/FormSubmitButton/FormSubmitButton';
 import VerticalSpacer from '../components/VerticalSpacer/VerticalSpacer';
 
 import styles from './page.module.scss';
@@ -47,9 +47,7 @@ const AuthPage = () => {
         </AnimatePresence>
         <VerticalSpacer />
 
-        <div className={styles.buttonContainer}>
-          <FlipButton backgroundColor1="transparent">Sign In</FlipButton>
-        </div>
+        <FormSubmitButton>Sign In</FormSubmitButton>
         <VerticalSpacer />
 
         <FormRedirectLink

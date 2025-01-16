@@ -129,7 +129,9 @@ const backProjectFirebase = async (userAuth: AuthUser, projectId: number) => {
     try {
       await updateDoc(userDocRef, data);
     } catch (error) {
-      console.log('error updating backed list', (error as Error).message);
+      throw new Error(
+        `Failed to update users' backed projects list: ${(error as Error).message}`
+      );
     }
   }
 

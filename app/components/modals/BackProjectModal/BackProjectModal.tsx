@@ -1,96 +1,114 @@
 'use client';
 
-import { useEffect } from 'react';
-import Image from 'next/image';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useState } from 'react';
+import { SubmitHandler } from 'react-hook-form';
+import { z } from 'zod';
+import { AnimatePresence } from 'framer-motion';
 import { toast } from 'react-toastify';
 
-import { Project } from '@/app/entities';
 import { useAccountStore } from '@/app/store';
+import { backProjectSchema } from '@/app/validationSchemas';
 import { backProjectFirebase } from '@/app/services/authService';
 import { useBlockchain } from '@/app/hooks/useBlockchain';
-import Button from '../../Button/Button';
-import xmarkSVG from '@/public/icons/xmark.svg';
-
-import styles from '../modal.module.scss';
+import { useFormHandler } from '@/app/hooks/useFormHandler';
+import ModalBackdrop from '../../ModalBackdrop/ModalBackdrop';
+import Form from '../../Form/Form';
+import FormHeading from '../../FormHeading/FormHeading';
+import CloseModalButton from '../CloseModalButton/CloseModalButton';
+import FormInputWithInlineLabel from '../../FormInputWithInlineLabel/FormInputWithInlineLabel';
+import FormTextarea from '../../FormTextarea/FormTextarea';
+import FormErrorMessage from '../../FormErrorMessage/FormErrorMessage';
+import FormSubmitButton from '../../FormSubmitButton/FormSubmitButton';
+import SpaceBetweenRow from '../../SpaceBetweenRow/SpaceBetweenRow';
+import VerticalSpacer from '../../VerticalSpacer/VerticalSpacer';
 
 interface Props {
-  project: Project | null;
-  closeModal: () => void;
+  projectId: number;
+  onClose: () => void;
 }
 
-export interface BackFormInputs {
-  cost: string;
-  comment: string;
-}
+type BackProjectFormData = z.infer<typeof backProjectSchema>;
 
-const BackProjectModal = ({ project, closeModal }: Props) => {
+const BackProjectModal = ({ projectId, onClose }: Props) => {
   const authUser = useAccountStore((s) => s.authUser);
   const connectedAcount = useAccountStore((s) => s.connectedAccount);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [submissionError, setSubmissionError] = useState<Error | null>(null);
+
   const { backProject } = useBlockchain();
 
   const {
-    register,
+    errors: fieldErrors,
     handleSubmit,
-    reset,
-    formState: { isSubmitSuccessful },
-  } = useForm<BackFormInputs>({
-    defaultValues: {
-      cost: '',
-      comment: '',
-    },
+    register,
+  } = useFormHandler({
+    schema: backProjectSchema,
   });
 
-  const onSubmit: SubmitHandler<BackFormInputs> = async ({ cost, comment }) => {
-    if (!project) return;
+  const onSubmit: SubmitHandler<BackProjectFormData> = async ({ amount, comment }) => {
+    try {
+      setIsLoading(true);
 
-    if (connectedAcount && authUser) {
-      await backProject(project.id, cost, comment, connectedAcount);
-      await backProjectFirebase(authUser, project.id);
+      if (connectedAcount && authUser) {
+        await backProject(projectId, amount, comment, connectedAcount);
+        await backProjectFirebase(authUser, projectId);
+      }
+
+      toast.success(
+        'Thank you! Your donation has been received, changes will reflect momentarily.'
+      );
+
+      onClose();
+    } catch (error) {
+      setSubmissionError(error as Error);
+    } finally {
+      setIsLoading(false);
     }
-
-    toast.success(
-      'Thank you! Your donation has been received, changes will reflect momentarily.'
-    );
-
-    closeModal();
   };
 
-  useEffect(() => {
-    reset();
-  }, [isSubmitSuccessful, reset]);
-
-  if (!project) return null;
-
   return (
-    <div className={styles.backdrop}>
-      <div className={styles.modal}>
-        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-          <div className={styles.row}>
-            <p>{project.title}</p>
-            <button className={styles.close} type="button" onClick={() => closeModal()}>
-              <Image src={xmarkSVG} alt="close" width={22} height={22} />
-            </button>
-          </div>
-          <input
-            className={styles.input}
-            type="number"
-            step={0.01}
-            min={0.01}
-            placeholder="Amount (ETH)"
-            {...register('cost', { required: true })}
-          />
-          <input
-            className={styles.input}
-            type="text"
-            placeholder="Comment (Optional)"
-            {...register('comment')}
-          />
+    <ModalBackdrop>
+      <Form width={670} onSubmit={handleSubmit(onSubmit)}>
+        <SpaceBetweenRow>
+          <FormHeading>Back Project</FormHeading>
+          <CloseModalButton onClose={onClose} disabled={isLoading} />
+        </SpaceBetweenRow>
+        <VerticalSpacer height={20} />
 
-          <Button>Back Project</Button>
-        </form>
-      </div>
-    </div>
+        <FormInputWithInlineLabel
+          label="Amount (ETH)"
+          id="amount"
+          type="number"
+          error={fieldErrors.amount}
+          register={register}
+          required
+        />
+        <VerticalSpacer />
+
+        <FormTextarea
+          field="comment"
+          placeholder="Comment (Optional)..."
+          error={fieldErrors.comment}
+          register={register}
+        />
+        <VerticalSpacer />
+
+        <AnimatePresence>
+          {submissionError && (
+            <>
+              <FormErrorMessage>{submissionError.message}</FormErrorMessage>
+              <VerticalSpacer />
+            </>
+          )}
+        </AnimatePresence>
+
+        <VerticalSpacer />
+        <FormSubmitButton>
+          {isLoading ? 'Working on it...' : 'Submit Donation'}
+        </FormSubmitButton>
+      </Form>
+    </ModalBackdrop>
   );
 };
 

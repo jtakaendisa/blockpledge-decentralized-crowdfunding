@@ -47,6 +47,7 @@ const FormInputWithInlineLabel = <T extends FieldValues>({
           className={styles.input}
           type={type}
           placeholder={placeholder}
+          min={0}
           {...register(id, { required })}
         />
         <label ref={labelRef} htmlFor={id} className={styles.label}>
