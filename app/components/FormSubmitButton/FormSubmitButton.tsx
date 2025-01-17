@@ -6,7 +6,7 @@ import styles from './FormSubmitButton.module.scss';
 interface Props {
   children: ReactNode;
   color?: 'gray' | 'green' | 'orange' | 'red';
-  disabled?: boolean;
+  disabled: boolean;
 }
 
 const FormSubmitButton = ({ children, color = 'green', disabled }: Props) => {

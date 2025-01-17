@@ -1,3 +1,5 @@
+import { AnimatePresence } from 'framer-motion';
+
 import { Project } from '@/app/entities';
 import AuthorizeProjectModal from '@/app/components/modals/AuthorizeProjectModal/AuthorizeProjectModal';
 import BackProjectModal from '@/app/components/modals/BackProjectModal/BackProjectModal';
@@ -28,7 +30,7 @@ const ProjectDetailsContentModals = ({
   onDeleteProject,
 }: Props) => {
   return (
-    <>
+    <AnimatePresence>
       {isAuthorizeProjectModalOpen && (
         <AuthorizeProjectModal projectId={project.id} onClose={onAuthorizeProject} />
       )}
@@ -42,9 +44,9 @@ const ProjectDetailsContentModals = ({
       )}
 
       {isDeleteProjectModalOpen && (
-        <DeleteProjectModal project={project} closeModal={onDeleteProject} />
+        <DeleteProjectModal projectId={project.id} onClose={onDeleteProject} />
       )}
-    </>
+    </AnimatePresence>
   );
 };
 

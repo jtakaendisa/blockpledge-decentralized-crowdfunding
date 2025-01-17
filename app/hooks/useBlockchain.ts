@@ -326,8 +326,7 @@ export const useBlockchain = () => {
         await getProject(id);
         await getBackers(id);
       } catch (error) {
-        console.log((error as Error).message);
-        throw error;
+        throw new Error(`Failed to delete project: ${(error as Error).message}`);
       }
     },
     [getBackers, getProject, getContract]

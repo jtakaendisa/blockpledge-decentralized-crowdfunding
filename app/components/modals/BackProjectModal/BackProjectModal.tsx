@@ -104,7 +104,7 @@ const BackProjectModal = ({ projectId, onClose }: Props) => {
         </AnimatePresence>
 
         <VerticalSpacer />
-        <FormSubmitButton>
+        <FormSubmitButton disabled={isLoading}>
           {isLoading ? 'Working on it...' : 'Submit Donation'}
         </FormSubmitButton>
       </Form>

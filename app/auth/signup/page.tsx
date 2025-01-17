@@ -82,7 +82,7 @@ const SignupPage = () => {
         </AnimatePresence>
         <VerticalSpacer />
 
-        <FormSubmitButton>Sign up</FormSubmitButton>
+        <FormSubmitButton>Sign Up</FormSubmitButton>
         <VerticalSpacer />
 
         <FormRedirectLink

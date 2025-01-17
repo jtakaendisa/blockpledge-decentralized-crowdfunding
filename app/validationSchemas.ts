@@ -206,3 +206,7 @@ export const backProjectSchema = z
       }
     }
   });
+
+export const deleteProjectSchema = z.object({
+  reason: reasonSchema,
+});

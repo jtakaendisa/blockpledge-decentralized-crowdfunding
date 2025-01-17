@@ -1,76 +1,93 @@
-import { useEffect } from 'react';
-import Image from 'next/image';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import classNames from 'classnames';
+import { useState } from 'react';
+import { SubmitHandler } from 'react-hook-form';
+import { z } from 'zod';
+import { AnimatePresence } from 'framer-motion';
 import { toast } from 'react-toastify';
 
-import { Project } from '@/app/entities';
+import { deleteProjectSchema } from '@/app/validationSchemas';
 import { useBlockchain } from '@/app/hooks/useBlockchain';
-import Button from '../../Button/Button';
-import xmarkSVG from '@/public/icons/xmark.svg';
-
-import styles from '../modal.module.scss';
+import { useFormHandler } from '@/app/hooks/useFormHandler';
+import ModalBackdrop from '../../ModalBackdrop/ModalBackdrop';
+import Form from '../../Form/Form';
+import FormHeading from '../../FormHeading/FormHeading';
+import CloseModalButton from '../CloseModalButton/CloseModalButton';
+import FormTextarea from '../../FormTextarea/FormTextarea';
+import FormErrorMessage from '../../FormErrorMessage/FormErrorMessage';
+import FormSubmitButton from '../../FormSubmitButton/FormSubmitButton';
+import SpaceBetweenRow from '../../SpaceBetweenRow/SpaceBetweenRow';
+import VerticalSpacer from '../../VerticalSpacer/VerticalSpacer';
 
 interface Props {
-  project: Project | null;
-  closeModal: () => void;
+  projectId: number;
+  onClose: () => void;
 }
 
-interface DeleteFormInputs {
-  reason: string;
-}
+type DeleteProjectFormData = z.infer<typeof deleteProjectSchema>;
 
-const DeleteProjectModal = ({ project, closeModal }: Props) => {
+const DeleteProjectModal = ({ projectId, onClose }: Props) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [submissionError, setSubmissionError] = useState<Error | null>(null);
+
   const { deleteProject } = useBlockchain();
 
   const {
+    errors: fieldErrors,
     register,
     handleSubmit,
-    reset,
-    formState: { isSubmitSuccessful },
-  } = useForm<DeleteFormInputs>({
+  } = useFormHandler({
+    schema: deleteProjectSchema,
     defaultValues: {
       reason: '',
     },
   });
 
-  const onSubmit: SubmitHandler<DeleteFormInputs> = async (data) => {
-    if (!project) return;
+  const onSubmit: SubmitHandler<DeleteProjectFormData> = async (data) => {
+    try {
+      setIsLoading(true);
 
-    await deleteProject(project.id, data.reason);
-    toast.success('Project has been deleted, changes will reflect momentarily.');
-    closeModal();
+      await deleteProject(projectId, data.reason);
+      toast.success('Project has been deleted, changes will reflect momentarily.');
+      onClose();
+    } catch (error) {
+      setSubmissionError(error as Error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  useEffect(() => {
-    reset();
-  }, [isSubmitSuccessful, reset]);
-
-  if (!project) return null;
-
   return (
-    <div className={styles.backdrop}>
-      <div className={styles.modal}>
-        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-          <div className={styles.row}>
-            <p>{project.title}</p>
-            <button className={styles.close} type="button" onClick={() => closeModal()}>
-              <Image src={xmarkSVG} alt="close" width={22} height={22} />
-            </button>
-          </div>
-          <textarea
-            className={classNames(styles.input, styles.textArea)}
-            placeholder="Reason for deletion"
-            {...register('reason', { required: true })}
-          />
-          <div className={styles.warning}>
-            <p>Are you sure you wish to delete this project?</p>
-            <span>This action is irreversable.</span>
-          </div>
-          <Button color="red">Delete Project</Button>
-        </form>
-      </div>
-    </div>
+    <ModalBackdrop>
+      <Form width={670} onSubmit={handleSubmit(onSubmit)}>
+        <SpaceBetweenRow>
+          <FormHeading>Delete Project</FormHeading>
+          <CloseModalButton onClose={onClose} disabled={isLoading} />
+        </SpaceBetweenRow>
+        <VerticalSpacer height={20} />
+
+        <FormTextarea
+          field="reason"
+          placeholder="Reason for deletion..."
+          error={fieldErrors.reason}
+          register={register}
+          required
+        />
+        <VerticalSpacer />
+
+        <AnimatePresence>
+          {submissionError && (
+            <>
+              <FormErrorMessage>{submissionError.message}</FormErrorMessage>
+              <VerticalSpacer />
+            </>
+          )}
+        </AnimatePresence>
+
+        <VerticalSpacer />
+        <FormSubmitButton color="red" disabled={isLoading}>
+          {isLoading ? 'Working on it...' : 'Confirm Deletion'}
+        </FormSubmitButton>
+      </Form>
+    </ModalBackdrop>
   );
 };
 
