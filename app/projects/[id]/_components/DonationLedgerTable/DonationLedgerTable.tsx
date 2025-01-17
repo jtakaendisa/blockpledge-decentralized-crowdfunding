@@ -2,12 +2,12 @@ import Identicon from 'react-hooks-identicons';
 
 import { useProjectPageState } from '@/app/contexts/ProjectPageContext';
 import { truncateText } from '@/app/utils';
-import Table from '../Table/Table';
-import TableRow from '../TableRow/TableRow';
-import TableHeader from '../TableHeader/TableHeader';
-import TableHeaderCell from '../TableHeaderCell/TableHeaderCell';
-import TableBody from '../TableBody/TableBody';
-import TableDataCell from '../TableDataCell/TableDataCell';
+import Table from '../tables/Table/Table';
+import TableRow from '../tables/TableRow/TableRow';
+import TableHeader from '../tables/TableHeader/TableHeader';
+import TableHeaderCell from '../tables/TableHeaderCell/TableHeaderCell';
+import TableBody from '../tables/TableBody/TableBody';
+import TableDataCell from '../tables/TableDataCell/TableDataCell';
 import RefundedIcon from '@/app/components/icons/RefundedIcon';
 
 import styles from './DonationLedgerTable.module.scss';

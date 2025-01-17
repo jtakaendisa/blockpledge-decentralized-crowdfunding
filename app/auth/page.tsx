@@ -4,12 +4,12 @@ import { Fragment } from 'react';
 import { AnimatePresence } from 'framer-motion';
 
 import { useAuthPage } from '../hooks/useAuthPage';
-import Form from '../components/Form/Form';
-import FormHeading from '../components/FormHeading/FormHeading';
-import FormInputWithLabel from '../components/FormInputWithLabel/FormInputWithLabel';
-import FormErrorMessage from '../components/FormErrorMessage/FormErrorMessage';
-import FormRedirectLink from '../components/FormRedirectLink/FormRedirectLink';
-import FormSubmitButton from '../components/FormSubmitButton/FormSubmitButton';
+import Form from '../components/forms/Form/Form';
+import FormHeading from '../components/forms/FormHeading/FormHeading';
+import FormInputWithLabel from '../components/forms/FormInputWithLabel/FormInputWithLabel';
+import FormErrorMessage from '../components/forms/FormErrorMessage/FormErrorMessage';
+import FormRedirectLink from '../components/forms/FormRedirectLink/FormRedirectLink';
+import FormSubmitButton from '../components/forms/FormSubmitButton/FormSubmitButton';
 import VerticalSpacer from '../components/VerticalSpacer/VerticalSpacer';
 
 import styles from './page.module.scss';

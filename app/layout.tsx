@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
 import { mediaStyles } from './media';
-import TopNav from './components/TopNav/TopNav';
-import BottomNav from './components/BottomNav/BottomNav';
+import TopNav from './components/header/TopNav/TopNav';
+import BottomNav from './components/footer/BottomNav/BottomNav';
 
 import './globals.scss';
 import 'react-toastify/dist/ReactToastify.css';
