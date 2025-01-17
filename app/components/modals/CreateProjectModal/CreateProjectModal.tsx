@@ -8,7 +8,7 @@ import { AnimatePresence } from 'framer-motion';
 
 import { ParsedCreateProjectFormData } from '@/app/entities';
 import { useProjectStore } from '@/app/store';
-import { convertToTimestamp } from '@/app/utils';
+import { convertToTimestamp, truncateText } from '@/app/utils';
 import { createProjectSchema } from '@/app/validationSchemas';
 import { usePinata } from '@/app/hooks/usePinata';
 import { useBlockchain } from '@/app/hooks/useBlockchain';
@@ -22,6 +22,7 @@ import FormSelect from '../../FormSelect/FormSelect';
 import FormSelectOption from '../../FormSelectOption/FormSelectOption';
 import FormTextarea from '../../FormTextarea/FormTextarea';
 import FormImageUploader from '../../FormImageUploader/FormImageUploader';
+import FormImageUploaderPreview from '../../FormImageUploaderPreview/FormImageUploaderPreview';
 import FormErrorMessage from '../../FormErrorMessage/FormErrorMessage';
 import SpaceBetweenRow from '../../SpaceBetweenRow/SpaceBetweenRow';
 import VerticalSpacer from '../../VerticalSpacer/VerticalSpacer';
@@ -55,15 +56,19 @@ const CreateProjectModal = ({ onClose }: Props) => {
     },
   });
 
+  const watchImages = watch('images');
+
   const onSubmit: SubmitHandler<CreateProjectFormData> = async (data) => {
     try {
       setIsLoading(true);
 
-      const { uploadedCids } = await uploadImageFiles(data.images);
+      const { uploadedImageCIDs } = await uploadImageFiles(data.images);
+
+      const { images, ...rest } = data;
 
       const parsedFormData: ParsedCreateProjectFormData = {
-        ...data,
-        images: uploadedCids,
+        ...rest,
+        imageURLs: uploadedImageCIDs,
         expiresAt: convertToTimestamp(data.expiresAt),
       };
 
@@ -135,9 +140,11 @@ const CreateProjectModal = ({ onClose }: Props) => {
           label="Image Upload"
           field="images"
           error={fieldErrors.images}
+          imageCount={watchImages.length}
           setValue={setValue}
-          watch={watch}
-        />
+        >
+          {!!watchImages.length && <FormImageUploaderPreview images={watchImages} />}
+        </FormImageUploader>
         <VerticalSpacer />
 
         <FormTextarea
@@ -152,7 +159,9 @@ const CreateProjectModal = ({ onClose }: Props) => {
         <AnimatePresence>
           {submissionError && (
             <>
-              <FormErrorMessage>{submissionError.message}</FormErrorMessage>
+              <FormErrorMessage>
+                {truncateText(submissionError.message, 300, true)}
+              </FormErrorMessage>
               <VerticalSpacer />
             </>
           )}
@@ -161,9 +170,9 @@ const CreateProjectModal = ({ onClose }: Props) => {
         <VerticalSpacer />
         <FormSubmitButton disabled={isLoading}>
           {isLoading && isUploading
-            ? 'Uploading Images...'
+            ? 'Uploading Image(s)...'
             : isLoading
-            ? 'Working on it...'
+            ? 'Please confirm in MetaMask...'
             : 'Submit Project'}
         </FormSubmitButton>
       </Form>

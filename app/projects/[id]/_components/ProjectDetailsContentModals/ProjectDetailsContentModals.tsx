@@ -40,7 +40,7 @@ const ProjectDetailsContentModals = ({
       )}
 
       {isEditProjectModalOpen && (
-        <EditProjectModal project={project} closeModal={onEditProject} />
+        <EditProjectModal project={project} onClose={onEditProject} />
       )}
 
       {isDeleteProjectModalOpen && (

@@ -6,21 +6,21 @@ import styles from './FormImageUploaderInput.module.scss';
 interface Props<T extends FieldValues> {
   field: Path<T>;
   label: string;
-  images: PathValue<T, Path<T>>;
+  imageCount: number;
   setValue: UseFormSetValue<T>;
 }
 
-const getCountText = <T extends FieldValues>(files: PathValue<T, Path<T>>) =>
-  files.length === 0
+const getCountText = (imageCount: number) =>
+  imageCount === 0
     ? 'No file chosen'
-    : files.length === 1
+    : imageCount === 1
     ? '1 file chosen'
-    : `${files.length} files chosen`;
+    : `${imageCount} files chosen`;
 
 const FormImageUploaderInput = <T extends FieldValues>({
   field,
   label,
-  images,
+  imageCount,
   setValue,
 }: Props<T>) => {
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -44,7 +44,7 @@ const FormImageUploaderInput = <T extends FieldValues>({
         multiple
         onChange={handleFileChange}
       />
-      <span className={styles.count}>{getCountText(images)}</span>
+      <span className={styles.count}>{getCountText(imageCount)}</span>
     </div>
   );
 };

@@ -210,3 +210,36 @@ export const backProjectSchema = z
 export const deleteProjectSchema = z.object({
   reason: reasonSchema,
 });
+
+export const editProjectSchema = z
+  .object({
+    currentImageURLs: z.array(z.string()).optional(),
+    images: z.array(z.instanceof(File)).optional(),
+    description: descriptionSchema,
+  })
+  .superRefine(({ images, currentImageURLs }, ctx) => {
+    const hasCurrentImages = currentImageURLs && currentImageURLs.length > 0;
+
+    // If no current images and no new images provided
+    if (!hasCurrentImages && (!images || images.length === 0)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['images'],
+        message: 'At least 1 image is required',
+      });
+    }
+
+    // Validate the images array only if provided
+    if (images && images.length > 0) {
+      const imageValidation = imagesSchema.safeParse(images);
+      if (!imageValidation.success) {
+        imageValidation.error.issues.forEach((issue) => {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['images'],
+            message: issue.message,
+          });
+        });
+      }
+    }
+  });

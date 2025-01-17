@@ -5,6 +5,7 @@ import { AnimatePresence } from 'framer-motion';
 import { toast } from 'react-toastify';
 
 import { deleteProjectSchema } from '@/app/validationSchemas';
+import { truncateText } from '@/app/utils';
 import { useBlockchain } from '@/app/hooks/useBlockchain';
 import { useFormHandler } from '@/app/hooks/useFormHandler';
 import ModalBackdrop from '../../ModalBackdrop/ModalBackdrop';
@@ -76,7 +77,9 @@ const DeleteProjectModal = ({ projectId, onClose }: Props) => {
         <AnimatePresence>
           {submissionError && (
             <>
-              <FormErrorMessage>{submissionError.message}</FormErrorMessage>
+              <FormErrorMessage>
+                {truncateText(submissionError.message, 300, true)}
+              </FormErrorMessage>
               <VerticalSpacer />
             </>
           )}
@@ -84,7 +87,7 @@ const DeleteProjectModal = ({ projectId, onClose }: Props) => {
 
         <VerticalSpacer />
         <FormSubmitButton color="red" disabled={isLoading}>
-          {isLoading ? 'Working on it...' : 'Confirm Deletion'}
+          {isLoading ? 'Please confirm in MetaMask...' : 'Confirm Deletion'}
         </FormSubmitButton>
       </Form>
     </ModalBackdrop>

@@ -1,176 +1,147 @@
-import { ChangeEvent, useEffect, useState } from 'react';
-import Image from 'next/image';
-import classNames from 'classnames';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useEffect, useState } from 'react';
+import { SubmitHandler } from 'react-hook-form';
+import { z } from 'zod';
+import { AnimatePresence } from 'framer-motion';
 import { toast } from 'react-toastify';
 
 import { Project } from '@/app/entities';
-import { usePinata } from '@/app/hooks/usePinata';
+import { editProjectSchema } from '@/app/validationSchemas';
+import { truncateText } from '@/app/utils';
 import { useBlockchain } from '@/app/hooks/useBlockchain';
-import Button from '../../Button/Button';
-import xmarkSVG from '@/public/icons/xmark.svg';
-
-import styles from '../modal.module.scss';
+import { useFormHandler } from '@/app/hooks/useFormHandler';
+import { usePinata } from '@/app/hooks/usePinata';
+import ModalBackdrop from '../../ModalBackdrop/ModalBackdrop';
+import Form from '../../Form/Form';
+import FormHeading from '../../FormHeading/FormHeading';
+import CloseModalButton from '../CloseModalButton/CloseModalButton';
+import FormImageUploader from '../../FormImageUploader/FormImageUploader';
+import FormImageUploaderPreview from '../../FormImageUploaderPreview/FormImageUploaderPreview';
+import FormTextarea from '../../FormTextarea/FormTextarea';
+import FormErrorMessage from '../../FormErrorMessage/FormErrorMessage';
+import FormSubmitButton from '../../FormSubmitButton/FormSubmitButton';
+import SpaceBetweenRow from '../../SpaceBetweenRow/SpaceBetweenRow';
+import VerticalSpacer from '../../VerticalSpacer/VerticalSpacer';
 
 interface Props {
-  project: Project | null;
-  closeModal: () => void;
+  project: Project;
+  onClose: () => void;
 }
 
-export interface EditFormInputs {
-  imageURLs: File[] | string[];
-  description: string;
-}
+type EditProjectFormData = z.infer<typeof editProjectSchema>;
 
-const EditProjectModal = ({ project, closeModal }: Props) => {
+const EditProjectModal = ({ project, onClose }: Props) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [submissionError, setSubmissionError] = useState<Error | null>(null);
+
   const { updateProject } = useBlockchain();
-  const { uploadFiles } = usePinata((uploading) => setUploading(uploading));
-  const [files, setFiles] = useState<File[]>([]);
-  const [existingImageURLs, setExistingImageURLs] = useState(
-    project ? project.imageURLs : []
-  );
-  const [fileError, setFileError] = useState(false);
-  const [uploading, setUploading] = useState(false);
+  const { isUploading, uploadImageFiles } = usePinata();
 
   const {
-    register,
+    errors: fieldErrors,
     handleSubmit,
-    reset,
-    formState: { isSubmitSuccessful },
-  } = useForm<EditFormInputs>({
+    register,
+    watch,
+    setValue,
+  } = useFormHandler({
+    schema: editProjectSchema,
     defaultValues: {
-      imageURLs: project?.imageURLs,
-      description: project?.description,
+      currentImageURLs: project.imageURLs,
+      images: [],
+      description: project.description,
     },
   });
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
+  const { currentImageURLs, images, description } = watch();
 
-    const selectedFiles = Array.from(e.target.files);
-    const remainingSlots = Math.max(0, 3 - existingImageURLs.length);
-    const newFiles = [...files, ...selectedFiles].slice(0, remainingSlots); // Limit to remaining slots
+  const isSubmitButtonDisabled =
+    isLoading ||
+    (!images?.length && project.description === description) ||
+    (!images?.length && !currentImageURLs?.length);
 
-    setFiles(newFiles);
-  };
+  const onSubmit: SubmitHandler<EditProjectFormData> = async (data) => {
+    try {
+      setIsLoading(true);
 
-  const onSubmit: SubmitHandler<EditFormInputs> = async (data) => {
-    if (!project) return;
+      let imageURLs: string[] = [];
 
-    if (!files.length && !existingImageURLs.length) {
-      setFileError(true);
-      return;
+      if (images?.length) {
+        const { uploadedImageCIDs } = await uploadImageFiles(images);
+        imageURLs = uploadedImageCIDs;
+      } else {
+        if (currentImageURLs?.length) {
+          imageURLs = currentImageURLs;
+        }
+      }
+
+      await updateProject(project.id, description, imageURLs);
+      toast.success('Project has been updated, changes will reflect momentarily.');
+      onClose();
+    } catch (error) {
+      setSubmissionError(error as Error);
+    } finally {
+      setIsLoading(false);
     }
-
-    if (files.length) {
-      const { uploadedCids } = await uploadFiles(files);
-      const combinedCids = [...uploadedCids, ...existingImageURLs];
-
-      data.imageURLs = combinedCids;
-    } else {
-      data.imageURLs = existingImageURLs;
-    }
-
-    await updateProject({ ...data, id: project.id });
-    toast.success('Project has been updated, changes will reflect momentarily.');
-
-    closeModal();
   };
 
   useEffect(() => {
-    reset();
-  }, [isSubmitSuccessful, reset]);
-
-  if (!project) return null;
+    if (images?.length) {
+      setValue('currentImageURLs', []);
+    }
+  }, [images, setValue]);
 
   return (
-    <div className={styles.backdrop}>
-      <div className={styles.modal}>
-        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-          <div className={styles.row}>
-            <p>{project.title}</p>
-            <button
-              className={classNames({
-                [styles.close]: true,
-                [styles.disabled]: uploading,
-              })}
-              type="button"
-              onClick={() => closeModal()}
-              disabled={uploading}
-            >
-              <Image src={xmarkSVG} alt="close" width={22} height={22} />
-            </button>
-          </div>
-          <div className={styles.imagesContainer}>
-            <label htmlFor="images">Project Images</label>
-            <input
-              id="images"
-              type="file"
-              accept="image/*"
-              multiple
-              {...register('imageURLs', {
-                onChange: handleChange,
-              })}
-            />
-            <ul className={styles.imageList}>
-              {files.map((file, index) => (
-                <li key={index} className={styles.listItem}>
-                  <Image
-                    src={URL.createObjectURL(file)}
-                    alt={file.name}
-                    className={styles.projectImage}
-                    width={100}
-                    height={100}
-                  />
-                  {file.name}
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index))
-                    }
-                    className={styles.removeButton}
-                  >
-                    Remove
-                  </button>
-                </li>
-              ))}
-              {existingImageURLs.map((image, index) => (
-                <li key={index} className={styles.listItem}>
-                  <Image
-                    src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${image}`}
-                    alt={image}
-                    className={styles.projectImage}
-                    width={100}
-                    height={100}
-                  />
-                  image {index + 1}
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setExistingImageURLs((prevFiles) =>
-                        prevFiles.filter((_, i) => i !== index)
-                      )
-                    }
-                    className={styles.removeButton}
-                  >
-                    Remove
-                  </button>
-                </li>
-              ))}
-            </ul>
-            {fileError && <span>Select at least 1 image to proceed</span>}
-          </div>
-          <textarea
-            className={classNames(styles.input, styles.textArea)}
-            placeholder="Description"
-            {...register('description', { required: true })}
-          />
-          <Button disabled={uploading}>
-            {uploading ? 'Uploading Images...' : 'Update Project'}
-          </Button>
-        </form>
-      </div>
-    </div>
+    <ModalBackdrop>
+      <Form width={670} onSubmit={handleSubmit(onSubmit)}>
+        <SpaceBetweenRow>
+          <FormHeading>Edit Project</FormHeading>
+          <CloseModalButton onClose={onClose} disabled={isLoading} />
+        </SpaceBetweenRow>
+        <VerticalSpacer height={20} />
+
+        <FormImageUploader
+          label="Image Upload"
+          field="images"
+          error={fieldErrors.images}
+          imageCount={images!.length}
+          setValue={setValue}
+        >
+          {!!currentImageURLs?.length && (
+            <FormImageUploaderPreview images={currentImageURLs} />
+          )}
+          {!!images?.length && <FormImageUploaderPreview images={images} />}
+        </FormImageUploader>
+        <VerticalSpacer />
+
+        <FormTextarea
+          field="description"
+          placeholder="Description..."
+          error={fieldErrors.description}
+          register={register}
+          required
+        />
+        <VerticalSpacer />
+
+        <AnimatePresence>
+          {submissionError && (
+            <>
+              <FormErrorMessage>
+                {truncateText(submissionError.message, 300, true)}
+              </FormErrorMessage>
+              <VerticalSpacer />
+            </>
+          )}
+        </AnimatePresence>
+
+        <VerticalSpacer />
+        <FormSubmitButton color="gray" disabled={isSubmitButtonDisabled}>
+          {isLoading && isUploading
+            ? 'Uploading Image(s)...'
+            : isLoading
+            ? 'Please confirm in MetaMask...'
+            : 'Submit Changes'}
+        </FormSubmitButton>
+      </Form>
+    </ModalBackdrop>
   );
 };
 

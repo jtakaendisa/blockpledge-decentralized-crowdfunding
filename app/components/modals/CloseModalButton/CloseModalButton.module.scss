@@ -9,7 +9,7 @@
   border-radius: 50%;
   outline: none;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color opacity 0.2s;
 
   & > svg {
     fill: var(--color-red);
@@ -22,5 +22,10 @@
     & > svg {
       fill: var(--color-white);
     }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
   }
 }

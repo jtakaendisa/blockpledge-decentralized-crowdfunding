@@ -63,7 +63,7 @@ export interface Project {
 export interface ParsedCreateProjectFormData {
   title: string;
   description: string;
-  images: string[];
+  imageURLs: string[];
   cost: number;
   categoryId: number;
   expiresAt: number;

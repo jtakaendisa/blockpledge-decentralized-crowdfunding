@@ -5,7 +5,6 @@ import { formatDistance } from 'date-fns';
 import { ParsedCreateProjectFormData, Project } from '../entities';
 import { truncateAccount } from '../utils';
 import { useEmail } from './useEmail';
-import { EditFormInputs } from '../components/modals/EditProjectModal/EditProjectModal';
 
 import contractAddress from '../abis/contractAddress.json';
 import contractAbi from '../abis/app/contracts/BlockPledge.sol/BlockPledge.json';
@@ -244,7 +243,7 @@ export const useBlockchain = () => {
     async ({
       title,
       description,
-      images,
+      imageURLs,
       cost,
       categoryId,
       expiresAt,
@@ -265,7 +264,7 @@ export const useBlockchain = () => {
         const tx = await contract.createProject(
           title,
           description,
-          images,
+          imageURLs,
           categoryId,
           convertedCost,
           expiresAt
@@ -283,7 +282,7 @@ export const useBlockchain = () => {
   );
 
   const updateProject = useCallback(
-    async ({ id, description, imageURLs }: EditFormInputs & { id: number }) => {
+    async (id: number, description: string, imageURLs: string[]) => {
       try {
         if (!window.ethereum) {
           throw new Error('Please install Metamask');
@@ -300,8 +299,7 @@ export const useBlockchain = () => {
         await tx.wait();
         await getProject(id!);
       } catch (error) {
-        console.log((error as Error).message);
-        throw error;
+        throw new Error(`Failed to update project: ${(error as Error).message}`);
       }
     },
     [getProject, getContract]

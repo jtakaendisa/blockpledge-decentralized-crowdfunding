@@ -5,6 +5,7 @@ import { AnimatePresence } from 'framer-motion';
 import { toast } from 'react-toastify';
 
 import { authorizeProjectSchema } from '@/app/validationSchemas';
+import { truncateText } from '@/app/utils';
 import { useBlockchain } from '@/app/hooks/useBlockchain';
 import { useFormHandler } from '@/app/hooks/useFormHandler';
 import ModalBackdrop from '../../ModalBackdrop/ModalBackdrop';
@@ -117,7 +118,9 @@ const AuthorizeProjectModal = ({ projectId, onClose }: Props) => {
         <AnimatePresence>
           {submissionError && (
             <>
-              <FormErrorMessage>{submissionError.message}</FormErrorMessage>
+              <FormErrorMessage>
+                {truncateText(submissionError.message, 300, true)}
+              </FormErrorMessage>
               <VerticalSpacer />
             </>
           )}
@@ -125,7 +128,7 @@ const AuthorizeProjectModal = ({ projectId, onClose }: Props) => {
 
         <VerticalSpacer />
         <FormSubmitButton color="orange" disabled={isLoading}>
-          {isLoading ? 'Working on it...' : 'Submit Decision'}
+          {isLoading ? 'Please confirm in MetaMask...' : 'Submit Decision'}
         </FormSubmitButton>
       </Form>
     </ModalBackdrop>

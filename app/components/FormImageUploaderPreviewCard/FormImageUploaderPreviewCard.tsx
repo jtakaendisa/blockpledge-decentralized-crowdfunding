@@ -6,7 +6,7 @@ import defaultBlurDataURL from '@/public/images/defaultBlurDataURL.png';
 import styles from './FormImageUploaderPreviewCard.module.scss';
 
 interface Props {
-  image: File;
+  image: File | string;
   index: number;
 }
 
@@ -15,7 +15,11 @@ const FormImageUploaderPreviewCard = ({ image, index }: Props) => {
     <div className={styles.previewCard}>
       <div className={styles.image}>
         <Image
-          src={URL.createObjectURL(image)}
+          src={
+            typeof image === 'string'
+              ? `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${image}`
+              : URL.createObjectURL(image)
+          }
           alt={`Preview ${index}`}
           width={54}
           height={54}
@@ -23,7 +27,13 @@ const FormImageUploaderPreviewCard = ({ image, index }: Props) => {
           blurDataURL={defaultBlurDataURL.blurDataURL}
         />
       </div>
-      <span className={styles.name}>{truncateText(image.name, 65, true)}</span>
+      <span className={styles.name}>
+        {truncateText(
+          typeof image === 'string' ? `Preview ${index + 1}` : image.name,
+          65,
+          true
+        )}
+      </span>
     </div>
   );
 };
