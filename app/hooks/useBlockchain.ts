@@ -55,13 +55,19 @@ export const useBlockchain = () => {
   }, []);
 
   const formatBackers = useCallback((backers: any[]) => {
+    const offset = 3 * 60 * 1000; // 3mins * 60secs * 1000ms
+
     return backers
       .map((backer) => ({
         backer: truncateAccount(backer[0], 4, 4),
         contribution: Number(ethers.formatEther(backer[1])),
-        timestamp: formatDistance(new Date(Number(backer[2]) * 1000), Date.now(), {
-          addSuffix: true,
-        }),
+        timestamp: formatDistance(
+          new Date(Number(backer[2]) * 1000), // Convert to ms
+          Date.now() + offset,
+          {
+            addSuffix: true,
+          }
+        ),
         comment: backer[3],
         refunded: backer[4],
       }))

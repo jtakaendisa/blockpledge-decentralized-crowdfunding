@@ -53,7 +53,11 @@ const TopNavAuthMenu = ({ authUser, loadingAuth, isAuthenticating }: Props) => {
       <AnimatePresence>
         {authUser && isDropdownOpen && (
           <TopNavDropdownMenu ref={dropdownRef}>
-            <TopNavAuthMenuContent authUser={authUser} onSignOut={handleSignOut} />
+            <TopNavAuthMenuContent
+              authUser={authUser}
+              onSignOut={handleSignOut}
+              onClose={toggleDropdownOpenState}
+            />
           </TopNavDropdownMenu>
         )}
       </AnimatePresence>

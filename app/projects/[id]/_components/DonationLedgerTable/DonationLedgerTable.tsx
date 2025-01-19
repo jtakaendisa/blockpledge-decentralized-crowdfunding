@@ -2,12 +2,12 @@ import Identicon from 'react-hooks-identicons';
 
 import { useProjectPageState } from '@/app/contexts/ProjectPageContext';
 import { truncateText } from '@/app/utils';
-import Table from '../tables/Table/Table';
-import TableRow from '../tables/TableRow/TableRow';
-import TableHeader from '../tables/TableHeader/TableHeader';
-import TableHeaderCell from '../tables/TableHeaderCell/TableHeaderCell';
-import TableBody from '../tables/TableBody/TableBody';
-import TableDataCell from '../tables/TableDataCell/TableDataCell';
+import Table from '../table/Table/Table';
+import TableRow from '../table/TableRow/TableRow';
+import TableHeader from '../table/TableHeader/TableHeader';
+import TableHeaderCell from '../table/TableHeaderCell/TableHeaderCell';
+import TableBody from '../table/TableBody/TableBody';
+import TableDataCell from '../table/TableDataCell/TableDataCell';
 import RefundedIcon from '@/app/components/icons/RefundedIcon';
 
 import styles from './DonationLedgerTable.module.scss';
@@ -41,7 +41,7 @@ const DonationLedgerTable = () => {
   const { status } = project.get;
   const isTerminated = status === 2 || status === 3;
 
-  const filteredHeaderTitles = isTerminated ? headerTitles : headerTitles.slice(0, -1); // Exclude the last element when not terminated
+  const filteredHeaderTitles = isTerminated ? headerTitles : headerTitles.slice(0, -1); // Exclude the refunded column when the project is not terminated
 
   if (!backers.get.length) {
     return <span>No contributions have been received yet.</span>;

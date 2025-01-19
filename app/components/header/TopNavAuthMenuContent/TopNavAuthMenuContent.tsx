@@ -12,9 +12,10 @@ import styles from './TopNavAuthMenuContent.module.scss';
 interface Props {
   authUser: AuthUser;
   onSignOut: () => void;
+  onClose: () => void;
 }
 
-const TopNavAuthMenuContent = ({ authUser, onSignOut }: Props) => {
+const TopNavAuthMenuContent = ({ authUser, onSignOut, onClose }: Props) => {
   const connectedAccount = useAccountStore((s) => s.connectedAccount);
 
   const contentItems = [
@@ -28,6 +29,11 @@ const TopNavAuthMenuContent = ({ authUser, onSignOut }: Props) => {
     },
   ];
 
+  const handleSignOut = () => {
+    onSignOut();
+    onClose();
+  };
+
   return (
     <div className={styles.authMenuContent}>
       <h6 className={styles.heading}>Account Info</h6>
@@ -37,7 +43,7 @@ const TopNavAuthMenuContent = ({ authUser, onSignOut }: Props) => {
       ))}
 
       <div className={styles.buttonContainer}>
-        <FlipButton onClick={onSignOut} scale={0.8} backgroundColor1="transparent">
+        <FlipButton onClick={handleSignOut} scale={0.8} backgroundColor1="transparent">
           Sign Out
         </FlipButton>
       </div>

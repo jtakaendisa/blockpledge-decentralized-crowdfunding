@@ -3,12 +3,12 @@ import { AnimatePresence } from 'framer-motion';
 import { truncateText } from '@/app/utils';
 import { useDeleteProjectModal } from '../../../_hooks/useDeleteProjectModal';
 import ModalBackdrop from '../ModalBackdrop/ModalBackdrop';
-import Form from '../../../../../components/forms/Form/Form';
-import FormHeading from '../../../../../components/forms/FormHeading/FormHeading';
+import Form from '../../../../../components/form/Form/Form';
+import FormHeading from '../../../../../components/form/FormHeading/FormHeading';
 import CloseModalButton from '../CloseModalButton/CloseModalButton';
-import FormTextarea from '../../../../../components/forms/FormTextarea/FormTextarea';
-import FormErrorMessage from '../../../../../components/forms/FormErrorMessage/FormErrorMessage';
-import FormSubmitButton from '../../../../../components/forms/FormSubmitButton/FormSubmitButton';
+import FormTextarea from '../../../../../components/form/FormTextarea/FormTextarea';
+import FormErrorMessage from '../../../../../components/form/FormErrorMessage/FormErrorMessage';
+import FormSubmitButton from '../../../../../components/form/FormSubmitButton/FormSubmitButton';
 import SpaceBetweenRow from '../../../../../components/SpaceBetweenRow/SpaceBetweenRow';
 import VerticalSpacer from '../../../../../components/VerticalSpacer/VerticalSpacer';
 

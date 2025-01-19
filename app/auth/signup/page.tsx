@@ -4,14 +4,14 @@ import { Fragment } from 'react';
 import { AnimatePresence } from 'framer-motion';
 
 import { useSignupPage } from '@/app/hooks/useSignupPage';
-import Form from '@/app/components/forms/Form/Form';
-import FormHeading from '@/app/components/forms/FormHeading/FormHeading';
-import FormInputWithLabel from '@/app/components/forms/FormInputWithLabel/FormInputWithLabel';
-import FormFieldsetWithLegend from '@/app/components/forms/FormFieldsetWithLegend/FormFieldsetWithLegend';
-import FormRadioWithLabel from '@/app/components/forms/FormRadioWithLabel/FormRadioWithLabel';
-import FormRedirectLink from '@/app/components/forms/FormRedirectLink/FormRedirectLink';
-import FormErrorMessage from '@/app/components/forms/FormErrorMessage/FormErrorMessage';
-import FormSubmitButton from '@/app/components/forms/FormSubmitButton/FormSubmitButton';
+import Form from '@/app/components/form/Form/Form';
+import FormHeading from '@/app/components/form/FormHeading/FormHeading';
+import FormInputWithLabel from '@/app/components/form/FormInputWithLabel/FormInputWithLabel';
+import FormFieldsetWithLegend from '@/app/components/form/FormFieldsetWithLegend/FormFieldsetWithLegend';
+import FormRadioWithLabel from '@/app/components/form/FormRadioWithLabel/FormRadioWithLabel';
+import FormRedirectLink from '@/app/components/form/FormRedirectLink/FormRedirectLink';
+import FormErrorMessage from '@/app/components/form/FormErrorMessage/FormErrorMessage';
+import FormSubmitButton from '@/app/components/form/FormSubmitButton/FormSubmitButton';
 import VerticalSpacer from '@/app/components/VerticalSpacer/VerticalSpacer';
 
 import styles from './page.module.scss';
