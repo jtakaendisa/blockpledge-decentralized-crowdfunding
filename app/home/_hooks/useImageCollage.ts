@@ -4,18 +4,14 @@ import gsap from 'gsap';
 const ROTATION_INTENSITY = 8;
 
 export const useImageCollage = (
-  cardElementsRef: MutableRefObject<HTMLDivElement[]>,
+  cardElementsRef: MutableRefObject<Set<HTMLDivElement>>,
   containerRef: MutableRefObject<HTMLDivElement | null>,
   isIntroCompleteRef: MutableRefObject<boolean>,
   delay: number
 ) => {
   // Function to update the cardElements array when a card is mounted to the DOM
   const handleCardMount = (element: HTMLDivElement) => {
-    const cards = cardElementsRef.current;
-
-    if (cards.length < 11) {
-      cards.push(element);
-    }
+    cardElementsRef.current.add(element);
   };
 
   // Function to handle hover interaction on individual cards
@@ -29,7 +25,7 @@ export const useImageCollage = (
 
   useLayoutEffect(() => {
     const container = containerRef.current;
-    const cards = cardElementsRef.current;
+    const cards = Array.from(cardElementsRef.current);
 
     const setCSSProperties = () => {
       if (!container) return;
@@ -110,13 +106,13 @@ export const useImageCollage = (
   useEffect(() => {
     // Function to handle card movement based on mouse or touch input
     const handleMouseMove = (event: globalThis.MouseEvent) => {
-      if (cardElementsRef.current.length !== 11 || !isIntroCompleteRef.current) return;
+      if (cardElementsRef.current.size !== 11 || !isIntroCompleteRef.current) return;
 
       // Calculate normalized X and Y positions relative to the viewport.
       const xPos = (event.clientX / window.innerWidth - 0.5) * 2;
       const yPos = (event.clientY / window.innerHeight - 0.5) * 2;
 
-      gsap.to(cardElementsRef.current, {
+      gsap.to(Array.from(cardElementsRef.current), {
         duration: 0.64,
         rotationY: xPos * ROTATION_INTENSITY,
         rotationX: -yPos * ROTATION_INTENSITY,
@@ -126,14 +122,10 @@ export const useImageCollage = (
 
     const heroSection = document.getElementById('hero');
 
-    if (!heroSection) return;
-
-    heroSection.addEventListener('mousemove', handleMouseMove);
+    heroSection?.addEventListener('mousemove', handleMouseMove);
 
     return () => {
-      if (heroSection) {
-        heroSection.removeEventListener('mousemove', handleMouseMove);
-      }
+      heroSection?.removeEventListener('mousemove', handleMouseMove);
     };
   }, [cardElementsRef, isIntroCompleteRef]);
 

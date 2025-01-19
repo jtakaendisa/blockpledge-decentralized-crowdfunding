@@ -31,7 +31,7 @@ const cardImages = [
 ];
 
 const ImageCollage = ({ delay = 0 }: Props) => {
-  const cardElementsRef = useRef<HTMLDivElement[]>([]);
+  const cardElementsRef = useRef<Set<HTMLDivElement>>(new Set());
   const containerRef = useRef<HTMLDivElement | null>(null);
   const isIntroCompleteRef = useRef(false);
 
