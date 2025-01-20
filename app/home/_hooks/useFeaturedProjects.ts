@@ -1,22 +1,16 @@
 import { useEffect } from 'react';
 
-import { Project } from '@/app/entities';
+import { useProjectStore } from '@/app/store';
+import { useFeaturedProjectsContext } from '@/app/hooks/useFeaturedProjectsContext';
 import { usePlaiceholder } from '@/app/hooks/usePlaiceholder';
 
-interface FastContextBlurDataURLs {
-  get: string[];
-  set: (value: string[]) => void;
-}
+export const useFeaturedProjects = (totalPages: number, chunkSize: number) => {
+  const projects = useProjectStore((s) => s.projects);
+  const { blurDataUrls, updateBlurDataUrls } = useFeaturedProjectsContext();
 
-export const useFeaturedProjects = (
-  projects: Project[],
-  blurDataURLs: FastContextBlurDataURLs,
-  totalPages: number,
-  chunkSize: number
-) => {
   const { getBlurDataURLs } = usePlaiceholder();
 
-  const isLoading = !projects.length || !blurDataURLs.get.length;
+  const isLoading = !projects.length || !blurDataUrls.length;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,16 +18,15 @@ export const useFeaturedProjects = (
         .slice(0, totalPages * chunkSize + 1)
         .map((project) => project.imageURLs[0]);
 
-      const { blurDataURLs: bdURLs } = await getBlurDataURLs(imageUrls);
+      const { blurDataURLs } = await getBlurDataURLs(imageUrls);
 
-      blurDataURLs.set(bdURLs);
+      updateBlurDataUrls(blurDataURLs);
     };
 
     if (projects.length) {
       fetchData();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [projects, totalPages, chunkSize, getBlurDataURLs]);
+  }, [projects, totalPages, chunkSize, getBlurDataURLs, updateBlurDataUrls]);
 
-  return { isLoading };
+  return { isLoading, projects, blurDataUrls };
 };

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
 import { Project } from '@/app/entities';
-import { useFeaturedProjectsState } from '@/app/contexts/FeaturedProjectsContext';
+import { useFeaturedProjectsContext } from '@/app/hooks/useFeaturedProjectsContext';
 import ProjectCardWithHoverReveal from '../ProjectCardWithHoverReveal/ProjectCardWithHoverReveal';
 
 import styles from './ProjectsCarouselGrid.module.scss';
@@ -13,7 +13,7 @@ interface Props {
 }
 
 const ProjectsCarouselGrid = ({ projects, selectedPage, chunkSize }: Props) => {
-  const { blurDataURLs } = useFeaturedProjectsState(['blurDataURLs']);
+  const { blurDataUrls } = useFeaturedProjectsContext();
 
   const filteredProjectsWithBlurData = useMemo(() => {
     const startIndex = (selectedPage - 1) * chunkSize;
@@ -22,9 +22,9 @@ const ProjectsCarouselGrid = ({ projects, selectedPage, chunkSize }: Props) => {
     // Filter projects and map each one with its corresponding blurDataURL
     return projects.slice(startIndex, endIndex).map((project, index) => ({
       ...project,
-      blurDataURL: blurDataURLs.get[startIndex + index + 1] || '',
+      blurDataURL: blurDataUrls[startIndex + index + 1] || '',
     }));
-  }, [projects, selectedPage, chunkSize, blurDataURLs]);
+  }, [projects, selectedPage, chunkSize, blurDataUrls]);
 
   return (
     <div className={styles.grid}>
