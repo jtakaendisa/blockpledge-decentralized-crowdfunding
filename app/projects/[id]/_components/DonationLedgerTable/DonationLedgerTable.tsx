@@ -1,7 +1,7 @@
 import Identicon from 'react-hooks-identicons';
 
-import { useProjectPageState } from '@/app/contexts/ProjectPageContext';
 import { truncateText } from '@/app/utils';
+import { useProjectPageContext } from '@/app/hooks/useProjectPageContext';
 import Table from '../table/Table/Table';
 import TableRow from '../table/TableRow/TableRow';
 import TableHeader from '../table/TableHeader/TableHeader';
@@ -36,14 +36,13 @@ const headerTitles = [
 ];
 
 const DonationLedgerTable = () => {
-  const { backers, project } = useProjectPageState(['backers', 'project']);
+  const { project, backers } = useProjectPageContext();
 
-  const { status } = project.get;
-  const isTerminated = status === 2 || status === 3;
+  const isTerminated = [2, 3].includes(project.status);
 
   const filteredHeaderTitles = isTerminated ? headerTitles : headerTitles.slice(0, -1); // Exclude the refunded column when the project is not terminated
 
-  if (!backers.get.length) {
+  if (!backers.length) {
     return <span>No contributions have been received yet.</span>;
   }
 
@@ -59,7 +58,7 @@ const DonationLedgerTable = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {backers.get.map(
+        {backers.map(
           ({ backer, contribution, timestamp, comment, refunded }, index) => (
             <TableRow key={index}>
               <TableDataCell>

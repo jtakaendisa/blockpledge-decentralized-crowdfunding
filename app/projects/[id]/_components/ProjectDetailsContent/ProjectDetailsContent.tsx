@@ -1,5 +1,5 @@
-import { useProjectPageState } from '@/app/contexts/ProjectPageContext';
 import { colors } from '@/app/constants';
+import { useProjectPageContext } from '@/app/hooks/useProjectPageContext';
 import { useProjectModals } from '@/app/hooks/useProjectModals';
 import ProjectTitle from '@/app/components/ProjectTitle/ProjectTitle';
 import ProjectFollowButton from '@/app/components/ProjectFollowButton/ProjectFollowButton';
@@ -22,7 +22,7 @@ import styles from './ProjectDetailsContent.module.scss';
 const { darkGreen, baseGray } = colors;
 
 const ProjectDetailsContent = () => {
-  const { project } = useProjectPageState(['project']);
+  const { project } = useProjectPageContext();
 
   const {
     id,
@@ -35,7 +35,7 @@ const ProjectDetailsContent = () => {
     expiresAt,
     raised,
     cost,
-  } = project.get;
+  } = project;
 
   const {
     isAuthorizeProjectModalOpen,
@@ -106,7 +106,7 @@ const ProjectDetailsContent = () => {
       </SpaceBetweenRow>
 
       <ProjectDetailsContentModals
-        project={project.get}
+        project={project}
         isAuthorizeProjectModalOpen={isAuthorizeProjectModalOpen}
         isBackProjectModalOpen={isBackProjectModalOpen}
         isEditProjectModalOpen={isEditProjectModalOpen}

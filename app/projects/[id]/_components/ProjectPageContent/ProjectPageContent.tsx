@@ -1,7 +1,5 @@
 import { ToastContainer } from 'react-toastify';
 
-import { useProjectPageState } from '@/app/contexts/ProjectPageContext';
-import { useBlockchainEventListener } from '@/app/hooks/useBlockchainEventListener';
 import { useProjectPage } from '../../_hooks/useProjectPage';
 import ProjectDetails from '../ProjectDetails/ProjectDetails';
 import DonationLedger from '../DonationLedger/DonationLedger';
@@ -15,20 +13,7 @@ interface Props {
 }
 
 const ProjectPageContent = ({ id }: Props) => {
-  const { project, backers, blurDataURLs } = useProjectPageState([
-    'project',
-    'backers',
-    'blurDataURLs',
-  ]);
-
-  const { updates } = useBlockchainEventListener();
-  const { isLoading, error } = useProjectPage(
-    id,
-    project,
-    backers,
-    blurDataURLs,
-    updates
-  );
+  const { isLoading, error } = useProjectPage(id);
 
   if (error) {
     return <ErrorFallback error={error} />;

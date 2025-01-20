@@ -1,15 +1,54 @@
-import { Backer, Project } from '../entities';
-import createFastContext from './createFastContext';
+import { createContext, PropsWithChildren, useCallback, useState } from 'react';
 
-export const {
-  FastContextProvider: ProjectPageProvider,
-  useFastContextFields: useProjectPageState,
-} = createFastContext<{
+import { Backer, Project } from '../entities';
+
+interface ProjectPageContextType {
   project: Project;
   backers: Backer[];
-  blurDataURLs: string[];
-}>({
+  blurDataUrls: string[];
+  updateProject: (project: Project) => void;
+  updateBackers: (backers: Backer[]) => void;
+  updateBlurDataUrls: (blurDataUrls: string[]) => void;
+}
+
+export const ProjectPageContext = createContext<ProjectPageContextType>({
   project: {} as Project,
   backers: [],
-  blurDataURLs: [],
+  blurDataUrls: [],
+  updateProject: () => {},
+  updateBackers: () => {},
+  updateBlurDataUrls: () => {},
 });
+
+export const ProjectPageProvider = ({ children }: PropsWithChildren) => {
+  const [project, setProject] = useState<Project>({} as Project);
+  const [backers, setBackers] = useState<Backer[]>([]);
+  const [blurDataUrls, setBlurDataUrls] = useState<string[]>([]);
+
+  const updateProject = useCallback((project: Project) => {
+    setProject(project);
+  }, []);
+
+  const updateBackers = useCallback((backers: Backer[]) => {
+    setBackers(backers);
+  }, []);
+
+  const updateBlurDataUrls = useCallback((blurDataUrls: string[]) => {
+    setBlurDataUrls(blurDataUrls);
+  }, []);
+
+  return (
+    <ProjectPageContext.Provider
+      value={{
+        project,
+        backers,
+        blurDataUrls,
+        updateProject,
+        updateBackers,
+        updateBlurDataUrls,
+      }}
+    >
+      {children}
+    </ProjectPageContext.Provider>
+  );
+};

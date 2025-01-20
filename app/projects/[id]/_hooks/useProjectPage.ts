@@ -1,49 +1,29 @@
 import { useEffect, useState } from 'react';
 
-import { Backer, Project } from '@/app/entities';
+import { useProjectPageContext } from '@/app/hooks/useProjectPageContext';
 import { useBlockchain } from '@/app/hooks/useBlockchain';
 import { usePlaiceholder } from '@/app/hooks/usePlaiceholder';
+import { useBlockchainEventListener } from '@/app/hooks/useBlockchainEventListener';
 
-interface FastContextProject {
-  get: Project;
-  set: (value: Project) => void;
-}
-
-interface FastContextBackers {
-  get: Backer[];
-  set: (value: Backer[]) => void;
-}
-
-interface FastContextBlurDataURLs {
-  get: string[];
-  set: (value: string[]) => void;
-}
-
-export const useProjectPage = (
-  id: string,
-  project: FastContextProject,
-  backers: FastContextBackers,
-  blurDataURLs: FastContextBlurDataURLs,
-  updates: number
-) => {
+export const useProjectPage = (id: string) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
+  const { updateProject, updateBackers, updateBlurDataUrls } = useProjectPageContext();
   const { getProject, getBackers } = useBlockchain();
   const { getBlurDataURLs } = usePlaiceholder();
+  const { updates } = useBlockchainEventListener();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { project: fetchedProject } = await getProject(+id);
-        const { backers: fetchedBackers } = await getBackers(+id);
-        const { blurDataURLs: fetchedBlurDataURLs } = await getBlurDataURLs(
-          fetchedProject.imageURLs
-        );
+        const { project } = await getProject(+id);
+        const { backers } = await getBackers(+id);
+        const { blurDataURLs } = await getBlurDataURLs(project.imageURLs);
 
-        project.set(fetchedProject);
-        backers.set(fetchedBackers);
-        blurDataURLs.set(fetchedBlurDataURLs);
+        updateProject(project);
+        updateBackers(backers);
+        updateBlurDataUrls(blurDataURLs);
       } catch (error) {
         setError(error as Error);
       } finally {
@@ -52,9 +32,16 @@ export const useProjectPage = (
     };
 
     fetchData();
+  }, [
+    id,
+    updates,
+    getProject,
+    getBackers,
+    getBlurDataURLs,
+    updateProject,
+    updateBackers,
+    updateBlurDataUrls,
+  ]);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, updates, getProject, getBackers, getBlurDataURLs]);
-
-  return { isLoading, project, backers, blurDataURLs, error };
+  return { isLoading, error };
 };

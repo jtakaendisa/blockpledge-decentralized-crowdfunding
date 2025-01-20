@@ -1,10 +1,10 @@
 import { AnimatePresence } from 'framer-motion';
 
 import { Project } from '@/app/entities';
-import AuthorizeProjectModal from '@/app/projects/[id]/_components/modals/AuthorizeProjectModal/AuthorizeProjectModal';
-import BackProjectModal from '@/app/projects/[id]/_components/modals/BackProjectModal/BackProjectModal';
-import EditProjectModal from '@/app/projects/[id]/_components/modals/EditProjectModal/EditProjectModal';
-import DeleteProjectModal from '@/app/projects/[id]/_components/modals/DeleteProjectModal/DeleteProjectModal';
+import AuthorizeProjectModal from '../modals/AuthorizeProjectModal/AuthorizeProjectModal';
+import BackProjectModal from '../modals/BackProjectModal/BackProjectModal';
+import DeleteProjectModal from '../modals/DeleteProjectModal/DeleteProjectModal';
+import EditProjectModal from '../modals/EditProjectModal/EditProjectModal';
 
 interface Props {
   project: Project;
