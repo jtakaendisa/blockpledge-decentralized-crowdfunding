@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { User } from 'firebase/auth';
 
 import { useAccountStore, useProjectStore } from '../store';
+import { routes } from '../constants';
 import { authStateChangeListener, formatAuthUserData } from '../services/authService';
 import { useBlockchain } from './useBlockchain';
 
@@ -23,6 +24,24 @@ export const useTopNav = () => {
 
   const isAdmin = authUser?.uid === process.env.NEXT_PUBLIC_ADMIN_UID;
   const isAuthenticating = loadingAuth && !authUser;
+
+  const links = [
+    {
+      label: 'Explore Projects',
+      routePath: routes.projects,
+      isEnabled: true,
+    },
+    {
+      label: 'My Dashboard',
+      routePath: routes.userDashboard,
+      isEnabled: authUser && !isAdmin,
+    },
+    {
+      label: 'Admin Dashboard',
+      routePath: routes.adminDashboard,
+      isEnabled: isAdmin,
+    },
+  ];
 
   const handleWalletConnection = useCallback(async () => {
     const { accounts } = await connectWallet();
@@ -86,7 +105,7 @@ export const useTopNav = () => {
   }, [listenForEvents]);
 
   return {
-    isAdmin,
+    links,
     isAuthenticating,
     authUser,
     loadingAuth,
