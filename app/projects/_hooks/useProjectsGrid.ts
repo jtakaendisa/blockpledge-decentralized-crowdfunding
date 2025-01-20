@@ -1,27 +1,19 @@
 import { RefObject, useCallback, useEffect, useMemo, useState } from 'react';
 
-import { Project } from '@/app/entities';
+import { useProjectStore } from '@/app/store';
+import { useProjectsPageContext } from '@/app/hooks/useProjectsPageContext';
 import { debounce } from '@/app/utils';
-
-interface FastContextSelectedCategoryId {
-  get: number | null;
-  set: (value: number | null) => void;
-}
-
-interface FastContextSearchQuery {
-  get: string;
-  set: (value: string) => void;
-}
 
 const INCREMENT_SIZE = 10;
 
 export const useProjectsGrid = (
-  projects: Project[],
-  selectedCategoryId: FastContextSelectedCategoryId,
   containerRef: RefObject<HTMLDivElement>,
-  searchQuery: FastContextSearchQuery,
   initialListSize: number
 ) => {
+  const projects = useProjectStore((s) => s.projects);
+
+  const { searchQuery, selectedCategoryId } = useProjectsPageContext();
+
   const [listSize, setListSize] = useState(initialListSize);
 
   const increaseListSize = useCallback(
@@ -32,15 +24,15 @@ export const useProjectsGrid = (
   const filteredProjects = useMemo(() => {
     return projects.filter((project) => {
       const matchesCategory =
-        selectedCategoryId.get == null || project.categoryId === selectedCategoryId.get;
+        selectedCategoryId == null || project.categoryId === selectedCategoryId;
 
       const matchesSearchQuery = project.title
         .toLowerCase()
-        .includes(searchQuery.get.toLowerCase());
+        .includes(searchQuery.toLowerCase());
 
       return matchesCategory && matchesSearchQuery;
     });
-  }, [projects, searchQuery.get, selectedCategoryId.get]);
+  }, [projects, searchQuery, selectedCategoryId]);
 
   const visibleProjects = filteredProjects.slice(0, listSize);
 
@@ -68,7 +60,7 @@ export const useProjectsGrid = (
 
   useEffect(() => {
     setListSize(initialListSize);
-  }, [initialListSize, selectedCategoryId.get, searchQuery.get]);
+  }, [initialListSize, selectedCategoryId, searchQuery]);
 
-  return { visibleProjects, shouldShowMoreProjects, increaseListSize };
+  return { projects, visibleProjects, shouldShowMoreProjects, increaseListSize };
 };

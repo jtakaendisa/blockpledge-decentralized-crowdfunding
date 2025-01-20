@@ -28,7 +28,7 @@ const revealVariants: Variants = {
 const ProjectFilterSearchIcon = ({ children, align, onClick }: Props) => {
   return (
     <motion.div
-      onClick={() => onClick?.()}
+      onClick={onClick}
       className={classNames({
         [styles.icon]: true,
         [styles[align]]: true,

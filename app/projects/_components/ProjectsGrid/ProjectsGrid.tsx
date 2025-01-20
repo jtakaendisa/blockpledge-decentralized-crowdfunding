@@ -1,7 +1,5 @@
 import { useRef } from 'react';
 
-import { useProjectStore } from '@/app/store';
-import { useProjectsPageState } from '@/app/contexts/ProjectsPageContext';
 import { generateIncrementingArray } from '@/app/utils';
 import { useProjectsGrid } from '../../_hooks/useProjectsGrid';
 import ProjectsGridNoResults from '../ProjectsGridNoResults/ProjectsGridNoResults';
@@ -17,20 +15,10 @@ const INITIAL_LIST_SIZE = 10;
 const skeletons = generateIncrementingArray(INITIAL_LIST_SIZE);
 
 const ProjectsGrid = () => {
-  const projects = useProjectStore((s) => s.projects);
-  const { searchQuery, selectedCategoryId } = useProjectsPageState([
-    'searchQuery',
-    'selectedCategoryId',
-  ]);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const { visibleProjects, shouldShowMoreProjects, increaseListSize } = useProjectsGrid(
-    projects,
-    selectedCategoryId,
-    containerRef,
-    searchQuery,
-    INITIAL_LIST_SIZE
-  );
+  const { projects, visibleProjects, shouldShowMoreProjects, increaseListSize } =
+    useProjectsGrid(containerRef, INITIAL_LIST_SIZE);
 
   if (projects.length && !visibleProjects.length) {
     return <ProjectsGridNoResults />;

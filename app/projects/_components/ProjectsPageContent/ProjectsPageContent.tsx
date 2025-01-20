@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useProjectsPageState } from '@/app/contexts/ProjectsPageContext';
+import { useProjectsPageContext } from '@/app/hooks/useProjectsPageContext';
 import ProjectFilterPanel from '../ProjectFilterPanel/ProjectFilterPanel';
 import ProjectsGrid from '../ProjectsGrid/ProjectsGrid';
 
@@ -11,12 +11,11 @@ interface Props {
 }
 
 const ProjectsPageContent = ({ categoryId }: Props) => {
-  const { selectedCategoryId } = useProjectsPageState(['selectedCategoryId']);
+  const { updateSelectedCategoryId } = useProjectsPageContext();
 
   useEffect(() => {
-    selectedCategoryId.set(categoryId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categoryId]);
+    updateSelectedCategoryId(categoryId);
+  }, [categoryId, updateSelectedCategoryId]);
 
   return (
     <div className={styles.projectsPage}>

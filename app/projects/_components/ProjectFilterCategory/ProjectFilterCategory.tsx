@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 
 import { Category } from '@/app/entities';
-import { useProjectsPageState } from '@/app/contexts/ProjectsPageContext';
+import { useProjectsPageContext } from '@/app/hooks/useProjectsPageContext';
 import { usePageNavigation } from '@/app/hooks/usePageNavigation';
 import CategoryIcon from '@/app/components/icons/CategoryIcon';
 
@@ -19,18 +19,19 @@ const isSelected = (
   (!category && typeof selectedCategoryId !== 'number');
 
 const ProjectFilterCategory = ({ category }: Props) => {
-  const { selectedCategoryId } = useProjectsPageState(['selectedCategoryId']);
+  const { selectedCategoryId } = useProjectsPageContext();
 
   const { navigateToPage } = usePageNavigation();
 
-  const handleCategorySelect = () =>
+  const handleCategorySelect = () => {
     navigateToPage(category ? `/projects?categoryId=${category.id}` : '/projects');
+  };
 
   return (
     <div
       className={classNames({
         [styles.filterCategory]: true,
-        [styles.selected]: isSelected(category, selectedCategoryId.get),
+        [styles.selected]: isSelected(category, selectedCategoryId),
       })}
       onClick={handleCategorySelect}
     >

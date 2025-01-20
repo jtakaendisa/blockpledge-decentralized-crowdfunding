@@ -1,7 +1,6 @@
 import { AnimatePresence } from 'framer-motion';
 
 import { colors } from '@/app/constants';
-import { useProjectsPageState } from '@/app/contexts/ProjectsPageContext';
 import { useProjectFilterSearch } from '../../_hooks/useProjectFilterSearch';
 import ProjectFilterSearchInput from '../ProjectFilterSearchInput/ProjectFilterSearchInput';
 import ProjectFilterSearchIcon from '../ProjectFilterSearchIcon/ProjectFilterSearchIcon';
@@ -13,8 +12,7 @@ import styles from './ProjectFilterSearch.module.scss';
 const { baseGray, red } = colors;
 
 const ProjectFilterSearch = () => {
-  const { searchQuery } = useProjectsPageState(['searchQuery']);
-  const { searchTerm, handleChange, handleReset } = useProjectFilterSearch(searchQuery);
+  const { searchTerm, handleChange, handleReset } = useProjectFilterSearch();
 
   return (
     <div className={styles.search}>

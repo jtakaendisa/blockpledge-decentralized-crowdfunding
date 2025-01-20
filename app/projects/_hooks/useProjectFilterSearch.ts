@@ -1,14 +1,12 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 
+import { useProjectsPageContext } from '@/app/hooks/useProjectsPageContext';
 import { useDebounce } from './useDebounce';
 
-interface FastContextSearchQuery {
-  get: string;
-  set: (value: string) => void;
-}
-
-export const useProjectFilterSearch = (searchQuery: FastContextSearchQuery) => {
+export const useProjectFilterSearch = () => {
   const [searchTerm, setSearchTerm] = useState('');
+
+  const { updateSearchQuery } = useProjectsPageContext();
 
   const { debouncedValue: debouncedSearchTerm } = useDebounce(searchTerm);
 
@@ -17,13 +15,12 @@ export const useProjectFilterSearch = (searchQuery: FastContextSearchQuery) => {
 
   const handleReset = () => {
     setSearchTerm('');
-    searchQuery.set('');
+    updateSearchQuery('');
   };
 
   useEffect(() => {
-    searchQuery.set(debouncedSearchTerm);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedSearchTerm]);
+    updateSearchQuery(debouncedSearchTerm);
+  }, [debouncedSearchTerm, updateSearchQuery]);
 
   return { searchTerm, handleChange, handleReset };
 };

@@ -1,11 +1,11 @@
 import { createContext, PropsWithChildren, useCallback, useState } from 'react';
 
-interface FeaturedProjectsType {
+interface FeaturedProjectsContextType {
   blurDataUrls: string[];
   updateBlurDataUrls: (blurDataUrls: string[]) => void;
 }
 
-export const FeaturedProjectsContext = createContext<FeaturedProjectsType>({
+export const FeaturedProjectsContext = createContext<FeaturedProjectsContextType>({
   blurDataUrls: [],
   updateBlurDataUrls: () => {},
 });
