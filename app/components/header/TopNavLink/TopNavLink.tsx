@@ -1,9 +1,9 @@
 import { ReactNode } from 'react';
+import { usePathname } from 'next/navigation';
+import { Link as TransitionLink } from 'next-transition-router';
 import classNames from 'classnames';
 
 import { RoutePath } from '@/app/entities';
-import { usePathname } from 'next/navigation';
-import TransitionLink from '../../TransitionLink/TransitionLink';
 import SlideUpText from '../../SlideUpText/SlideUpText';
 
 import styles from './TopNavLink.module.scss';

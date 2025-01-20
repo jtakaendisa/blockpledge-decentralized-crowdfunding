@@ -23,24 +23,25 @@ const TopNavAuthMenu = ({ authUser, loadingAuth, isAuthenticating }: Props) => {
   const menuButtonRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const { animatePageOut } = usePageNavigation();
+  const { navigateToPageWithTransition } = usePageNavigation();
   const { isDropdownOpen, toggleDropdownOpenState } = useTopNavDropdownMenu(
     menuButtonRef,
     dropdownRef
   );
 
+  const handleClick = () => {
+    navigateToPageWithTransition('/auth');
+  };
+
   const handleSignOut = () => {
     signOutAuthUser();
-    animatePageOut('/');
+    navigateToPageWithTransition('/');
   };
 
   return (
     <div className={styles.authMenu}>
       {!loadingAuth && !authUser && (
-        <FlipButton
-          onClick={() => animatePageOut('/auth')}
-          backgroundColor1="transparent"
-        >
+        <FlipButton onClick={handleClick} backgroundColor1="transparent">
           Sign In
         </FlipButton>
       )}

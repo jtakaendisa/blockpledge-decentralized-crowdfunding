@@ -44,7 +44,11 @@ const ProjectsHighlight = ({ project, blurDataURL }: Props) => {
   const cardRef = useRef<HTMLDivElement | null>(null);
 
   const { projectImageHeight } = useProjectsHighlight(cardRef);
-  const { animatePageOut } = usePageNavigation();
+  const { navigateToPage } = usePageNavigation();
+
+  const handleClick = () => {
+    navigateToPage(`/projects/${id}`);
+  };
 
   return (
     <div ref={cardRef} className={styles.highlight}>
@@ -92,9 +96,7 @@ const ProjectsHighlight = ({ project, blurDataURL }: Props) => {
         <VerticalSpacer height={24} />
 
         <div className={styles.buttonContainer}>
-          <FlipButton onClick={() => animatePageOut(`/projects/${id}`)}>
-            View Project
-          </FlipButton>
+          <FlipButton onClick={handleClick}>View Project</FlipButton>
         </div>
       </div>
     </div>

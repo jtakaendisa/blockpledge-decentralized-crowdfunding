@@ -29,11 +29,13 @@ const revealVariants = {
 const splitName = (name: string) => name.split(' & ');
 
 const CategoryCard = ({ category, index }: Props) => {
-  const { animatePageOut } = usePageNavigation();
+  const { navigateToPageWithTransition } = usePageNavigation();
 
   const { id, name } = category;
 
-  const handleCategorySelect = () => animatePageOut(`/projects?categoryId=${id}`);
+  const handleCategorySelect = () => {
+    navigateToPageWithTransition(`/projects?categoryId=${id}`);
+  };
 
   return (
     <motion.div

@@ -20,6 +20,7 @@
     "framer-motion": "^11.11.17",
     "gsap": "^3.12.5",
     "next": "14.1.0",
+    "next-transition-router": "^0.2.7",
     "plaiceholder": "^3.0.0",
     "react": "^18",
     "react-dom": "^18",

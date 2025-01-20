@@ -15,7 +15,11 @@ const { orange } = colors;
 const ErrorFallback = ({ error }: Props) => {
   const { name, message } = error;
 
-  const { animatePageOut } = usePageNavigation();
+  const { navigateToPageWithTransition } = usePageNavigation();
+
+  const handleClick = () => {
+    navigateToPageWithTransition('/');
+  };
 
   const handlePageReload = () => window.location.reload();
 
@@ -31,7 +35,7 @@ const ErrorFallback = ({ error }: Props) => {
         <SpaceBetweenRow>
           <FlipButton onClick={handlePageReload}>Retry?</FlipButton>
           <FlipButton
-            onClick={() => animatePageOut('/')}
+            onClick={handleClick}
             textColor1={orange}
             backgroundColor2={orange}
             borderColor={orange}

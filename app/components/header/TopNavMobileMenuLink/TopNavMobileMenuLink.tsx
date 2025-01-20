@@ -16,17 +16,19 @@ interface Props {
 const TopNavMobileMenuLink = ({ children, routePath }: Props) => {
   const controls = useAnimationControls();
 
-  const { animatePageOut } = usePageNavigation();
+  const { navigateToPageWithTransition } = usePageNavigation();
   const { toggleHoveredState } = useTopNavMenuIconAnimations(controls);
 
-  const handleNavigate = () => animatePageOut(routePath);
+  const handleClick = () => {
+    navigateToPageWithTransition(routePath);
+  };
 
   return (
     <div
       className={styles.mobileMenuLink}
       onMouseEnter={toggleHoveredState}
       onMouseLeave={toggleHoveredState}
-      onClick={handleNavigate}
+      onClick={handleClick}
     >
       <motion.span className={styles.icon} initial={{ y: 0 }} animate={controls}>
         <TopRightArrow size={14} />

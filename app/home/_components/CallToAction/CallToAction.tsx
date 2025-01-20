@@ -12,7 +12,11 @@ interface Props {
 const { white, lightGray, darkGreen } = colors;
 
 const CallToAction = ({ onToggle }: Props) => {
-  const { animatePageOut } = usePageNavigation();
+  const { navigateToPageWithTransition } = usePageNavigation();
+
+  const handleClick = () => {
+    navigateToPageWithTransition('/projects');
+  };
 
   return (
     <div className={styles.callToAction}>
@@ -39,9 +43,7 @@ const CallToAction = ({ onToggle }: Props) => {
         >
           Create Project
         </FlipButton>
-        <FlipButton onClick={() => animatePageOut('/projects')}>
-          View All Projects
-        </FlipButton>
+        <FlipButton onClick={handleClick}>View All Projects</FlipButton>
       </div>
     </div>
   );

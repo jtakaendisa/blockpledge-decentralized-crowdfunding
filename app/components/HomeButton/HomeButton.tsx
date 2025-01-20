@@ -1,6 +1,6 @@
 'use client';
 
-import TransitionLink from '../TransitionLink/TransitionLink';
+import { Link as TransitionLink } from 'next-transition-router';
 import Coin from '../icons/Coin';
 
 import styles from './HomeButton.module.scss';
@@ -17,10 +17,9 @@ const HomeButton = ({ scale = 1 }: Props) => {
   };
 
   return (
-    <TransitionLink href="/">
-      <div ref={homeButtonRef} className={styles.homeButton}>
+    <TransitionLink className={styles.homeButton} href="/">
+      <div ref={homeButtonRef} className={styles.row}>
         <span className={styles.text}>BlockPledge</span>
-
         <span className={styles.icon}>
           <Coin />
         </span>
