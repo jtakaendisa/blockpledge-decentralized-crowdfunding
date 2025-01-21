@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 
-import { useProjectStore } from '@/app/store';
+import { useGlobalStateContext } from '@/app/hooks/useGlobalStateContext';
 import ProjectFilterSearch from '../ProjectFilterSearch/ProjectFilterSearch';
 import ProjectFilterCategories from '../ProjectFilterCategories/ProjectFilterCategories';
 import ProjectFilterSearchSkeleton from '../ProjectFilterSearchSkeleton/ProjectFilterSearchSkeleton/ProjectFilterSearchSkeleton';
@@ -9,7 +9,7 @@ import ProjectFilterCategoriesSkeleton from '../ProjectFilterCategoriesSkeleton/
 import styles from './ProjectFilterPanel.module.scss';
 
 const ProjectFilterPanel = () => {
-  const categories = useProjectStore((s) => s.categories);
+  const { categories } = useGlobalStateContext();
 
   return (
     <aside

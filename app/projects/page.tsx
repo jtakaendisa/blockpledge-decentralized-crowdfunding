@@ -1,5 +1,3 @@
-'use client';
-
 import { ProjectsPageProvider } from '../contexts/ProjectsPageContext';
 import ProjectsPageContent from './_components/ProjectsPageContent/ProjectsPageContent';
 

@@ -1,6 +1,6 @@
 import { RefObject, useCallback, useEffect, useMemo, useState } from 'react';
 
-import { useProjectStore } from '@/app/store';
+import { useGlobalStateContext } from '@/app/hooks/useGlobalStateContext';
 import { useProjectsPageContext } from '@/app/hooks/useProjectsPageContext';
 import { debounce } from '@/app/utils';
 
@@ -10,7 +10,7 @@ export const useProjectsGrid = (
   containerRef: RefObject<HTMLDivElement>,
   initialListSize: number
 ) => {
-  const projects = useProjectStore((s) => s.projects);
+  const { projects } = useGlobalStateContext();
 
   const { searchQuery, selectedCategoryId } = useProjectsPageContext();
 
