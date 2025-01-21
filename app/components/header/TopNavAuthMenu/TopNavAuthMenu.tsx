@@ -14,12 +14,11 @@ import FlipButton from '../../FlipButton/FlipButton';
 import styles from './TopNavAuthMenu.module.scss';
 
 interface Props {
+  isLoadingAuth: boolean;
   authUser: AuthUser | null;
-  loadingAuth: boolean;
-  isAuthenticating: boolean;
 }
 
-const TopNavAuthMenu = ({ authUser, loadingAuth, isAuthenticating }: Props) => {
+const TopNavAuthMenu = ({ isLoadingAuth, authUser }: Props) => {
   const menuButtonRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -28,6 +27,8 @@ const TopNavAuthMenu = ({ authUser, loadingAuth, isAuthenticating }: Props) => {
     menuButtonRef,
     dropdownRef
   );
+
+  const isAuthenticating = isLoadingAuth && !authUser;
 
   const handleClick = () => {
     navigateToPageWithTransition('/auth');
@@ -40,14 +41,14 @@ const TopNavAuthMenu = ({ authUser, loadingAuth, isAuthenticating }: Props) => {
 
   return (
     <div className={styles.authMenu}>
-      {!loadingAuth && !authUser && (
+      {!isLoadingAuth && !authUser && (
         <FlipButton onClick={handleClick} backgroundColor1="transparent">
           Sign In
         </FlipButton>
       )}
 
-      {isAuthenticating && <Skeleton width={44} height={44} circle />}
-      {authUser && (
+      {isLoadingAuth && !authUser && <Skeleton width={44} height={44} circle />}
+      {!isLoadingAuth && authUser && (
         <TopNavAuthMenuButton ref={menuButtonRef} onClick={toggleDropdownOpenState} />
       )}
 

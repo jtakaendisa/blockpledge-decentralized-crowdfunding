@@ -3,17 +3,16 @@ import { SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
 import { toast } from 'react-toastify';
 
-import { useAccountStore } from '@/app/store';
 import { backProjectSchema } from '@/app/validationSchemas';
 import { backProjectFirebase } from '@/app/services/authService';
+import { useGlobalStateContext } from '@/app/hooks/useGlobalStateContext';
 import { useBlockchain } from '@/app/hooks/useBlockchain';
 import { useFormHandler } from '@/app/hooks/useFormHandler';
 
 type BackProjectFormData = z.infer<typeof backProjectSchema>;
 
 export const useBackProjectModal = (projectId: number, onClose: () => void) => {
-  const authUser = useAccountStore((s) => s.authUser);
-  const connectedAcount = useAccountStore((s) => s.connectedAccount);
+  const { authUser, connectedAccount } = useGlobalStateContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [submissionError, setSubmissionError] = useState<Error | null>(null);
@@ -32,8 +31,8 @@ export const useBackProjectModal = (projectId: number, onClose: () => void) => {
     try {
       setIsLoading(true);
 
-      if (connectedAcount && authUser) {
-        await backProject(projectId, amount, comment, connectedAcount);
+      if (connectedAccount && authUser) {
+        await backProject(projectId, amount, comment, connectedAccount);
         await backProjectFirebase(authUser, projectId);
       }
 

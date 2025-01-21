@@ -1,25 +1,16 @@
-import { useCallback, useEffect, useState } from 'react';
-import { User } from 'firebase/auth';
+import { useEffect, useState } from 'react';
 
-import { useAccountStore, useProjectStore } from '../store';
 import { routes } from '../constants';
-import { authStateChangeListener, formatAuthUserData } from '../services/authService';
+import { useGlobalStateContext } from './useGlobalStateContext';
 import { useBlockchain } from './useBlockchain';
 
 export const useTopNav = () => {
-  const authUser = useAccountStore((s) => s.authUser);
-  const updatingAuthUserData = useAccountStore((s) => s.updatingAuthUserData);
-  const setConnectedAccount = useAccountStore((s) => s.setConnectedAccount);
-  const setAuthUser = useAccountStore((s) => s.setAuthUser);
-  const setUpdatingFollowStatus = useProjectStore((s) => s.setUpdatingFollowStatus);
+  const { isLoadingAuth, authUser, handleWalletConnection } = useGlobalStateContext();
+  const { listenForEvents } = useBlockchain();
 
-  const { connectWallet, listenForEvents } = useBlockchain();
-
-  const [loadingAuth, setLoadingAuth] = useState(false);
   const [refreshUi, setRefreshUi] = useState(false);
 
   const isAdmin = authUser?.uid === process.env.NEXT_PUBLIC_ADMIN_UID;
-  const isAuthenticating = loadingAuth && !authUser;
 
   const links = [
     {
@@ -39,14 +30,6 @@ export const useTopNav = () => {
     },
   ];
 
-  const handleWalletConnection = useCallback(async () => {
-    const { accounts } = await connectWallet();
-
-    if (accounts.length) {
-      setConnectedAccount(accounts[0]);
-    }
-  }, [connectWallet, setConnectedAccount]);
-
   useEffect(() => {
     const handleChainChange = () => {
       window.location.reload();
@@ -64,18 +47,6 @@ export const useTopNav = () => {
   }, [handleWalletConnection]);
 
   useEffect(() => {
-    setLoadingAuth(true);
-    const unsubscribe = authStateChangeListener(async (user: User) => {
-      const formattedAuthUser = await formatAuthUserData(user);
-      setAuthUser(formattedAuthUser);
-      setLoadingAuth(false);
-      setUpdatingFollowStatus(false);
-    });
-
-    return unsubscribe;
-  }, [updatingAuthUserData, setAuthUser, setUpdatingFollowStatus]);
-
-  useEffect(() => {
     const unsubscribe = listenForEvents(() => setRefreshUi((prev) => !prev));
 
     return () => {
@@ -84,10 +55,9 @@ export const useTopNav = () => {
   }, [listenForEvents]);
 
   return {
-    links,
-    isAuthenticating,
+    isLoadingAuth,
     authUser,
-    loadingAuth,
+    links,
     handleWalletConnection,
   };
 };

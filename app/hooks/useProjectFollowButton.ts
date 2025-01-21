@@ -1,42 +1,40 @@
 import { useState } from 'react';
 
-import { useAccountStore } from '../store';
+import { useGlobalStateContext } from './useGlobalStateContext';
 import { followProject } from '../services/authService';
 
 export const useProjectFollowButton = (projectId: number) => {
-  const authUser = useAccountStore((s) => s.authUser);
-  const setUpdatingAuthUserData = useAccountStore((s) => s.setUpdatingAuthUserData);
+  const { authUser } = useGlobalStateContext();
 
   const [isHovered, setIsHovered] = useState(false);
-  const [isUpdatingFollowStatus, setIsUpdatingFollowStatus] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const isFollowing = authUser?.following.includes(projectId);
 
-  const isDisabled = isUpdatingFollowStatus || !authUser;
-
-  const toggleHoveredState = () => setIsHovered((prev) => !prev);
+  const isDisabled = isLoading || !authUser;
 
   const handleProjectFollow = async () => {
     if (!authUser) return;
 
-    setIsUpdatingFollowStatus(true);
+    setIsLoading(true);
 
     try {
       await followProject(authUser, projectId, isFollowing);
-      setUpdatingAuthUserData();
     } catch (error) {
       console.log('Failed to update follow status', (error as Error).message);
     } finally {
-      setIsUpdatingFollowStatus(false);
+      setIsLoading(false);
     }
   };
+
+  const toggleHoveredState = () => setIsHovered((prev) => !prev);
 
   return {
     authUser,
     isHovered,
     isFollowing,
     isDisabled,
-    toggleHoveredState,
     handleProjectFollow,
+    toggleHoveredState,
   };
 };

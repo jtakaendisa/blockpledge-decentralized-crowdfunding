@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import emailjs from '@emailjs/browser';
 
-import { useProjectStore } from '../store';
+import { useGlobalStateContext } from './useGlobalStateContext';
 
 interface PaymentNotificationProps {
   id: number;
@@ -12,7 +12,7 @@ interface PaymentNotificationProps {
 }
 
 export const useEmail = () => {
-  const projects = useProjectStore((s) => s.projects);
+  const { projects } = useGlobalStateContext();
 
   emailjs.init({
     publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,

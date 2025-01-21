@@ -1,17 +1,18 @@
 import { useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-import { RoutePath, TopNavLink as TNLink } from '@/app/entities';
+import { AuthUser, RoutePath, TopNavLink as TNLink } from '@/app/entities';
 import TopNavLink from '../TopNavLink/TopNavLink';
 
 import styles from './TopNavLinks.module.scss';
 
 interface Props {
+  isLoadingAuth: boolean;
+  authUser: AuthUser | null;
   links: TNLink[];
-  isAuthenticating: boolean;
 }
 
-const TopNavLinks = ({ links, isAuthenticating }: Props) => {
+const TopNavLinks = ({ isLoadingAuth, authUser, links }: Props) => {
   const [hoveredLink, setHoveredLink] = useState<RoutePath | null>(null);
 
   const handleLinkHover = (hoveredLink: RoutePath | null) =>
@@ -32,7 +33,7 @@ const TopNavLinks = ({ links, isAuthenticating }: Props) => {
         ) : null
       )}
 
-      {isAuthenticating && <Skeleton width={110} height={16} />}
+      {isLoadingAuth && !authUser && <Skeleton width={110} height={16} />}
     </ul>
   );
 };

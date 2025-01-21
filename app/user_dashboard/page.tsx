@@ -1,6 +1,5 @@
 'use client';
 
-import { useAccountStore, useProjectStore } from '../store';
 import { useUserDashboard } from './hooks/useUserDashboard';
 import DashboardProjectsSection from '../components/DashboardProjectsSection/DashboardProjectsSection';
 import DashboardProjectsSectionSkeleton from '../components/DashboardProjectsSectionSkeleton/DashboardProjectsSectionSkeleton';
@@ -8,10 +7,7 @@ import DashboardProjectsSectionSkeleton from '../components/DashboardProjectsSec
 import styles from './page.module.scss';
 
 const UserDashboardPage = () => {
-  const projects = useProjectStore((s) => s.projects);
-  const authUser = useAccountStore((s) => s.authUser);
-
-  const { sections } = useUserDashboard(projects, authUser);
+  const { projects, sections, authUser } = useUserDashboard();
 
   if (!authUser) {
     return <div>Redirecting to sign in page...</div>;

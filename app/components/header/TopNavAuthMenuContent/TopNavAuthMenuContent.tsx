@@ -1,7 +1,6 @@
-import { useAccountStore } from '@/app/store';
-import { truncateAccount } from '@/app/utils';
-
 import { AuthUser } from '@/app/entities';
+import { truncateAccount } from '@/app/utils';
+import { useGlobalStateContext } from '@/app/hooks/useGlobalStateContext';
 import TopNavAuthMenuContentItem from '../TopNavAuthMenuContentItem/TopNavAuthMenuContentItem';
 import FlipButton from '../../FlipButton/FlipButton';
 import Envelope from '../../icons/Envelope';
@@ -16,7 +15,7 @@ interface Props {
 }
 
 const TopNavAuthMenuContent = ({ authUser, onSignOut, onClose }: Props) => {
-  const connectedAccount = useAccountStore((s) => s.connectedAccount);
+  const { connectedAccount } = useGlobalStateContext();
 
   const contentItems = [
     {

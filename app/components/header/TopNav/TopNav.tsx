@@ -10,7 +10,7 @@ import TopNavAuthMenu from '../TopNavAuthMenu/TopNavAuthMenu';
 import styles from './TopNav.module.scss';
 
 const TopNav = () => {
-  const { links, isAuthenticating, authUser, loadingAuth } = useTopNav();
+  const { isLoadingAuth, authUser, links } = useTopNav();
 
   return (
     <header className={styles.header}>
@@ -18,18 +18,18 @@ const TopNav = () => {
 
       <div className={styles.row}>
         <Media greaterThanOrEqual="sm">
-          <TopNavLinks links={links} isAuthenticating={isAuthenticating} />
+          <TopNavLinks
+            links={links}
+            isLoadingAuth={isLoadingAuth}
+            authUser={authUser}
+          />
         </Media>
 
         <Media lessThan="sm">
           <TopNavMobileMenu links={links} />
         </Media>
 
-        <TopNavAuthMenu
-          authUser={authUser}
-          loadingAuth={loadingAuth}
-          isAuthenticating={isAuthenticating}
-        />
+        <TopNavAuthMenu isLoadingAuth={isLoadingAuth} authUser={authUser} />
       </div>
     </header>
   );

@@ -1,4 +1,4 @@
-import { useProjectStore } from '@/app/store';
+import { useGlobalStateContext } from '@/app/hooks/useGlobalStateContext';
 
 import styles from './ProjectCategory.module.scss';
 
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const ProjectCategory = ({ categoryId, fontSize, fontWeight, color }: Props) => {
-  const categories = useProjectStore((s) => s.categories);
+  const { categories } = useGlobalStateContext();
 
   return (
     <span style={{ fontSize, fontWeight, color }} className={styles.category}>

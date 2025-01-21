@@ -1,10 +1,11 @@
 import { useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { AuthUser, Project } from '@/app/entities';
+import { useGlobalStateContext } from '@/app/hooks/useGlobalStateContext';
 
-const useAdminDashboard = (projects: Project[], authUser: AuthUser | null) => {
+export const useAdminDashboard = () => {
   const router = useRouter();
+  const { projects, authUser } = useGlobalStateContext();
 
   const categorizedProjects = useMemo(
     () => ({
@@ -38,7 +39,5 @@ const useAdminDashboard = (projects: Project[], authUser: AuthUser | null) => {
     }
   }, [authUser, isAdmin, router]);
 
-  return { isAdmin, sections };
+  return { isAdmin, projects, sections };
 };
-
-export default useAdminDashboard;

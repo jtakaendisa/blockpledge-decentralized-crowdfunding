@@ -1,5 +1,5 @@
 import { colors } from '@/app/constants';
-import { useAccountStore } from '@/app/store';
+import { useGlobalStateContext } from '@/app/hooks/useGlobalStateContext';
 import FlipButton from '../FlipButton/FlipButton';
 
 import styles from './ProjectButtons.module.scss';
@@ -23,8 +23,7 @@ const ProjectButtons = ({
   onEditProject,
   onDeleteProject,
 }: Props) => {
-  const authUser = useAccountStore((s) => s.authUser);
-  const connectedAccount = useAccountStore((s) => s.connectedAccount);
+  const { authUser, connectedAccount } = useGlobalStateContext();
 
   const isAdmin = authUser?.uid === process.env.NEXT_PUBLIC_ADMIN_UID;
   const isOwner = connectedAccount === projectOwner;

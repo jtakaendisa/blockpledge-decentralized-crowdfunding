@@ -7,8 +7,8 @@ import { toast } from 'react-toastify';
 
 import { ParsedCreateProjectFormData } from '@/app/entities';
 import { createProjectSchema } from '@/app/validationSchemas';
-import { useProjectStore } from '@/app/store';
 import { convertToTimestamp } from '@/app/utils';
+import { useGlobalStateContext } from '@/app/hooks/useGlobalStateContext';
 import { useBlockchain } from '@/app/hooks/useBlockchain';
 import { useFormHandler } from '@/app/hooks/useFormHandler';
 import { usePinata } from '@/app/hooks/usePinata';
@@ -16,7 +16,7 @@ import { usePinata } from '@/app/hooks/usePinata';
 type CreateProjectFormData = z.infer<typeof createProjectSchema>;
 
 export const useCreateProjectModal = (onClose: () => void) => {
-  const categories = useProjectStore((s) => s.categories);
+  const { categories } = useGlobalStateContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [submissionError, setSubmissionError] = useState<Error | null>(null);
