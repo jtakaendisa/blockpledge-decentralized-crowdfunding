@@ -11,27 +11,27 @@ const ProjectDetailsImageGallery = () => {
 
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-  const { imageURLs } = project;
+  const { imageUrls } = project;
 
   const handleImageSelect = (selectedImageIndex: number) =>
     setSelectedImageIndex(selectedImageIndex);
 
   return (
     <div className={styles.imageGallery}>
-      {imageURLs.length > 1 && (
+      {imageUrls.length > 1 && (
         <ProjectDetailsImageGalleryImageCards
-          imageURLs={imageURLs}
+          imageUrls={imageUrls}
           selectedImageIndex={selectedImageIndex}
-          blurDataURLs={blurDataUrls}
+          blurDataUrls={blurDataUrls}
           onSelect={handleImageSelect}
         />
       )}
 
       <ProjectDetailsImageGalleryMainImage
         key={selectedImageIndex}
-        imageURLs={imageURLs}
+        imageUrls={imageUrls}
         selectedImageIndex={selectedImageIndex}
-        blurDataURLs={blurDataUrls}
+        blurDataUrls={blurDataUrls}
       />
     </div>
   );

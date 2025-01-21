@@ -47,7 +47,7 @@ const ProjectCardWithHoverReveal = ({ project }: Props) => {
     owner,
     title,
     categoryId,
-    imageURLs,
+    imageUrls,
     description,
     backers,
     raised,
@@ -71,7 +71,7 @@ const ProjectCardWithHoverReveal = ({ project }: Props) => {
     >
       <Link href={`/projects/${id}`} className={styles.link}>
         <ProjectImage
-          imageURLs={imageURLs}
+          imageUrls={imageUrls}
           title={title}
           height={176}
           sizes="22vw"

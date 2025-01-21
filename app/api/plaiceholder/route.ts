@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const generateBlurDataURLs = async () => {
+    const generateBlurDataUrls = async () => {
       const promises = imageUrls.map(async (imageUrl) => {
         const buffer = await fetch(
           `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageUrl}?img-width=10&img-height=10`
@@ -26,13 +26,13 @@ export async function POST(req: NextRequest) {
       return results;
     };
 
-    const blurDataURLs = await generateBlurDataURLs();
+    const blurDataUrls = await generateBlurDataUrls();
 
-    return NextResponse.json({ blurDataURLs }, { status: 200 });
+    return NextResponse.json({ blurDataUrls }, { status: 200 });
   } catch (error) {
     console.error('Error generating plaiceholder:', error);
     return NextResponse.json(
-      { error: 'Failed to generate blurDataURLs' },
+      { error: 'Failed to generate blurDataUrls' },
       { status: 500 }
     );
   }

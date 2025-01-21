@@ -3,27 +3,27 @@ import ProjectDetailsImageGalleryImageCard from '../ProjectDetailsImageGalleryIm
 import styles from './ProjectDetailsImageGalleryImageCards.module.scss';
 
 interface Props {
-  imageURLs: string[];
+  imageUrls: string[];
   selectedImageIndex: number;
-  blurDataURLs: string[];
+  blurDataUrls: string[];
   onSelect: (index: number) => void;
 }
 
 const ProjectDetailsImageGalleryImageCards = ({
-  imageURLs,
+  imageUrls,
   selectedImageIndex,
-  blurDataURLs,
+  blurDataUrls,
   onSelect,
 }: Props) => {
   return (
     <div className={styles.imageCards}>
-      {imageURLs.map((imageURL, index) => (
+      {imageUrls.map((imageUrl, index) => (
         <ProjectDetailsImageGalleryImageCard
-          key={imageURL}
-          imageURL={imageURL}
+          key={imageUrl}
+          imageURL={imageUrl}
           index={index}
           selectedImageIndex={selectedImageIndex}
-          blurDataURL={blurDataURLs[index]}
+          blurDataURL={blurDataUrls[index]}
           onSelect={onSelect}
         />
       ))}

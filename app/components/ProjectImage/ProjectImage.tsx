@@ -6,7 +6,7 @@ import { motion, useAnimationControls } from 'framer-motion';
 import styles from './ProjectImage.module.scss';
 
 interface Props {
-  imageURLs: string[];
+  imageUrls: string[];
   title: string;
   height?: number;
   sizes?: string;
@@ -26,7 +26,7 @@ const transitionProps = {
 const MotionImage = motion.create(Image);
 
 const ProjectImage = ({
-  imageURLs,
+  imageUrls,
   title,
   height = 256,
   sizes = '15vw',
@@ -62,7 +62,7 @@ const ProjectImage = ({
       })}
     >
       <MotionImage
-        src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageURLs[0]}`}
+        src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageUrls[0]}`}
         alt={title}
         fill
         sizes={sizes}

@@ -35,7 +35,7 @@ const ProjectsHighlight = ({ project, blurDataURL }: Props) => {
     owner,
     title,
     categoryId,
-    imageURLs,
+    imageUrls,
     description,
     expiresAt,
     raised,
@@ -55,7 +55,7 @@ const ProjectsHighlight = ({ project, blurDataURL }: Props) => {
   return (
     <div ref={cardRef} className={styles.highlight}>
       <ProjectImage
-        imageURLs={imageURLs}
+        imageUrls={imageUrls}
         title={title}
         height={projectImageHeight}
         sizes="30vw"

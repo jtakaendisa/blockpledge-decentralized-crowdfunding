@@ -31,7 +31,7 @@ export const useBlockchain = () => {
         owner: project[1].toLowerCase(),
         title: project[2],
         description: project[3],
-        imageURLs: Array.from(project[4]) as string[],
+        imageUrls: Array.from(project[4]) as string[],
         cost: Number(project[5]) / 10 ** 18,
         raised: Number(ethers.formatEther(project[6])),
         timestamp: new Date(Number(project[7])).getTime(),
@@ -266,7 +266,7 @@ export const useBlockchain = () => {
     async ({
       title,
       description,
-      imageURLs,
+      imageUrls,
       cost,
       categoryId,
       expiresAt,
@@ -287,7 +287,7 @@ export const useBlockchain = () => {
         const tx = await contract.createProject(
           title,
           description,
-          imageURLs,
+          imageUrls,
           categoryId,
           convertedCost,
           expiresAt
@@ -305,7 +305,7 @@ export const useBlockchain = () => {
   );
 
   const updateProject = useCallback(
-    async (id: number, description: string, imageURLs: string[]) => {
+    async (id: number, description: string, imageUrls: string[]) => {
       try {
         if (!window.ethereum) {
           throw new Error('Please install Metamask');
@@ -317,7 +317,7 @@ export const useBlockchain = () => {
           throw new Error("Can't connect to smart contract");
         }
 
-        const tx = await contract.updateProject(id, description, imageURLs);
+        const tx = await contract.updateProject(id, description, imageUrls);
 
         await tx.wait();
         await getProject(id!);

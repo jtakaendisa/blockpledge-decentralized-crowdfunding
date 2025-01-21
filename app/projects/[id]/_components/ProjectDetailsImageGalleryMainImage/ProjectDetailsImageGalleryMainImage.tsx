@@ -4,9 +4,9 @@ import { motion } from 'framer-motion';
 import styles from './ProjectDetailsImageGalleryMainImage.module.scss';
 
 interface Props {
-  imageURLs: string[];
+  imageUrls: string[];
   selectedImageIndex: number;
-  blurDataURLs: string[];
+  blurDataUrls: string[];
 }
 
 const revealVariants = {
@@ -22,11 +22,11 @@ const revealVariants = {
 };
 
 const ProjectDetailsImageGalleryMainImage = ({
-  imageURLs,
+  imageUrls,
   selectedImageIndex,
-  blurDataURLs,
+  blurDataUrls,
 }: Props) => {
-  const mainImageUrl = `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageURLs[selectedImageIndex]}`;
+  const mainImageUrl = `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageUrls[selectedImageIndex]}`;
 
   return (
     <motion.div
@@ -41,7 +41,7 @@ const ProjectDetailsImageGalleryMainImage = ({
         fill
         sizes="40vw"
         placeholder="blur"
-        blurDataURL={blurDataURLs[selectedImageIndex]}
+        blurDataURL={blurDataUrls[selectedImageIndex]}
       />
     </motion.div>
   );

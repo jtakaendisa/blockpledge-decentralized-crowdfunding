@@ -38,7 +38,7 @@ const IMAGE_SIZE = 100;
 const { baseGray, darkGreen } = colors;
 
 const CompactProjectCard = ({ project }: Props) => {
-  const { id, title, categoryId, owner, description, imageURLs } = project;
+  const { id, title, categoryId, owner, description, imageUrls } = project;
 
   const controls = useAnimationControls();
 
@@ -62,7 +62,7 @@ const CompactProjectCard = ({ project }: Props) => {
       <Link href={`/projects/${id}`} className={styles.link}>
         <div ref={imageContainerRef} className={styles.imageContainer}>
           <ProjectImage
-            imageURLs={imageURLs}
+            imageUrls={imageUrls}
             title={title}
             height={IMAGE_SIZE}
             blurDataURL={defaultBlurDataURL.blurDataURL}

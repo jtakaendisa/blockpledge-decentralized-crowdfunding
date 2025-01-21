@@ -8,7 +8,7 @@ export const useFeaturedProjects = (totalPages: number, chunkSize: number) => {
   const { projects } = useGlobalStateContext();
   const { blurDataUrls, updateBlurDataUrls } = useFeaturedProjectsContext();
 
-  const { getBlurDataURLs } = usePlaiceholder();
+  const { getBlurDataUrls } = usePlaiceholder();
 
   const isLoading = !projects.length || !blurDataUrls.length;
 
@@ -16,17 +16,17 @@ export const useFeaturedProjects = (totalPages: number, chunkSize: number) => {
     const fetchData = async () => {
       const imageUrls = projects
         .slice(0, totalPages * chunkSize + 1)
-        .map((project) => project.imageURLs[0]);
+        .map((project) => project.imageUrls[0]);
 
-      const { blurDataURLs } = await getBlurDataURLs(imageUrls);
+      const { blurDataUrls } = await getBlurDataUrls(imageUrls);
 
-      updateBlurDataUrls(blurDataURLs);
+      updateBlurDataUrls(blurDataUrls);
     };
 
     if (projects.length) {
       fetchData();
     }
-  }, [projects, totalPages, chunkSize, getBlurDataURLs, updateBlurDataUrls]);
+  }, [projects, totalPages, chunkSize, getBlurDataUrls, updateBlurDataUrls]);
 
   return { isLoading, projects, blurDataUrls };
 };

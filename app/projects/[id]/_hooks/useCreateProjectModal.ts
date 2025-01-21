@@ -49,7 +49,7 @@ export const useCreateProjectModal = (onClose: () => void) => {
 
       const parsedFormData: ParsedCreateProjectFormData = {
         ...rest,
-        imageURLs: uploadedImageCIDs,
+        imageUrls: uploadedImageCIDs,
         expiresAt: convertToTimestamp(data.expiresAt),
       };
 

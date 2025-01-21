@@ -54,7 +54,7 @@ contract BlockPledge {
         address owner;
         string title;
         string description;
-        string[] imageURLs; // Changed to string array
+        string[] imageUrls; // Changed to string array
         uint256 cost;
         uint256 raised;
         uint256 timestamp;
@@ -127,7 +127,7 @@ contract BlockPledge {
      * @dev Creates a new project.
      * @param _title Title of the project.
      * @param _description Description of the project.
-     * @param _imageURLs URLs of the project's images.
+     * @param _imageUrls Urls of the project's images.
      * @param _category Category of the project.
      * @param _cost Cost of the project.
      * @param _expiresAt Expiration timestamp of the project.
@@ -136,7 +136,7 @@ contract BlockPledge {
     function createProject(
         string memory _title,
         string memory _description,
-        string[] memory _imageURLs, // Changed to string array
+        string[] memory _imageUrls, // Changed to string array
         uint256 _category,
         uint256 _cost,
         uint256 _expiresAt
@@ -144,7 +144,7 @@ contract BlockPledge {
         // Input validations
         require(bytes(_title).length > 0, "Title cannot be empty");
         require(bytes(_description).length > 0, "Description cannot be empty");
-        require(_imageURLs.length > 0, "ImageURLs cannot be empty"); // Ensure imageURLs array is not empty
+        require(_imageUrls.length > 0, "ImageUrls cannot be empty"); // Ensure imageUrls array is not empty
         require(_cost > 0 ether, "Cost cannot be zero");
         require(_category < categories.length, "Invalid category ID");
 
@@ -154,7 +154,7 @@ contract BlockPledge {
         project.owner = msg.sender;
         project.title = _title;
         project.description = _description;
-        project.imageURLs = _imageURLs; // Assign imageURLs
+        project.imageUrls = _imageUrls; // Assign imageUrls
         project.categoryId = _category;
         project.cost = _cost;
         project.timestamp = block.timestamp;
@@ -177,20 +177,20 @@ contract BlockPledge {
      * @dev Updates an existing project.
      * @param _id ID of the project to be updated.
      * @param _description New description for the project.
-     * @param _imageURLs New imageURLs for the project.
+     * @param _imageUrls New imageUrls for the project.
      * @return bool Success status.
      */
     function updateProject(
         uint256 _id,
         string memory _description,
-        string[] memory _imageURLs // Changed to string array
+        string[] memory _imageUrls // Changed to string array
     ) public returns (bool) {
         require(msg.sender == projects[_id].owner, "Unauthorized Entity");
         require(bytes(_description).length > 0, "Description cannot be empty");
-        require(_imageURLs.length > 0, "ImageURLs cannot be empty"); // Ensure imageURLs array is not empty
+        require(_imageUrls.length > 0, "ImageUrls cannot be empty"); // Ensure imageUrls array is not empty
 
         projects[_id].description = _description;
-        projects[_id].imageURLs = _imageURLs; // Assign imageURLs
+        projects[_id].imageUrls = _imageUrls; // Assign imageUrls
 
         emit ProjectUpdated(_id, projects[_id].title, block.timestamp);
 

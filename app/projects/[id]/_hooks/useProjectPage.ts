@@ -11,7 +11,7 @@ export const useProjectPage = (id: string) => {
 
   const { updateProject, updateBackers, updateBlurDataUrls } = useProjectPageContext();
   const { getProject, getBackers } = useBlockchain();
-  const { getBlurDataURLs } = usePlaiceholder();
+  const { getBlurDataUrls } = usePlaiceholder();
   const { updates } = useBlockchainEventListener();
 
   useEffect(() => {
@@ -19,11 +19,11 @@ export const useProjectPage = (id: string) => {
       try {
         const { project } = await getProject(+id);
         const { backers } = await getBackers(+id);
-        const { blurDataURLs } = await getBlurDataURLs(project.imageURLs);
+        const { blurDataUrls } = await getBlurDataUrls(project.imageUrls);
 
         updateProject(project);
         updateBackers(backers);
-        updateBlurDataUrls(blurDataURLs);
+        updateBlurDataUrls(blurDataUrls);
       } catch (error) {
         setError(error as Error);
       } finally {
@@ -37,7 +37,7 @@ export const useProjectPage = (id: string) => {
     updates,
     getProject,
     getBackers,
-    getBlurDataURLs,
+    getBlurDataUrls,
     updateProject,
     updateBackers,
     updateBlurDataUrls,

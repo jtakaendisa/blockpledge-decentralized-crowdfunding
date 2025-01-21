@@ -48,7 +48,7 @@ export interface Project {
   owner: string;
   title: string;
   description: string;
-  imageURLs: string[];
+  imageUrls: string[];
   categoryId: number;
   cost: number;
   raised: number;
@@ -63,7 +63,7 @@ export interface Project {
 export interface ParsedCreateProjectFormData {
   title: string;
   description: string;
-  imageURLs: string[];
+  imageUrls: string[];
   cost: number;
   categoryId: number;
   expiresAt: number;

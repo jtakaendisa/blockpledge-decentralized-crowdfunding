@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 
 export const usePlaiceholder = () => {
-  const getBlurDataURLs = useCallback(async (imageUrls: string[]) => {
-    let blurDataURLs: string[] = [];
+  const getBlurDataUrls = useCallback(async (imageUrls: string[]) => {
+    let blurDataUrls: string[] = [];
 
     try {
       const response = await fetch('/api/plaiceholder', {
@@ -15,15 +15,15 @@ export const usePlaiceholder = () => {
 
       const data = await response.json();
 
-      blurDataURLs = data.blurDataURLs;
+      blurDataUrls = data.blurDataUrls;
     } catch (error) {
       console.error('Error fetching blurDataURL:', error);
     }
 
-    return { blurDataURLs };
+    return { blurDataUrls };
   }, []);
 
   return {
-    getBlurDataURLs,
+    getBlurDataUrls,
   };
 };

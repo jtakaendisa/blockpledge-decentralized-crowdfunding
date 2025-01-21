@@ -26,7 +26,7 @@ const EditProjectModal = ({ project, onClose }: Props) => {
     isUploading,
     isSubmitButtonDisabled,
     images,
-    currentImageURLs,
+    currentImageUrls,
     fieldErrors,
     submissionError,
     register,
@@ -50,8 +50,8 @@ const EditProjectModal = ({ project, onClose }: Props) => {
           imageCount={images!.length}
           setValue={setValue}
         >
-          {!!currentImageURLs?.length && (
-            <FormImageUploaderPreview images={currentImageURLs} />
+          {!!currentImageUrls?.length && (
+            <FormImageUploaderPreview images={currentImageUrls} />
           )}
           {!!images?.length && <FormImageUploaderPreview images={images} />}
         </FormImageUploader>

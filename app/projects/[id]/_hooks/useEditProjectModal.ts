@@ -27,35 +27,35 @@ export const useEditProjectModal = (project: Project, onClose: () => void) => {
   } = useFormHandler({
     schema: editProjectSchema,
     defaultValues: {
-      currentImageURLs: project.imageURLs,
+      currentImageUrls: project.imageUrls,
       images: [],
       description: project.description,
     },
   });
 
-  const { currentImageURLs, images, description } = watch();
+  const { currentImageUrls, images, description } = watch();
 
   const isSubmitButtonDisabled =
     isLoading ||
     (!images?.length && project.description === description) ||
-    (!images?.length && !currentImageURLs?.length);
+    (!images?.length && !currentImageUrls?.length);
 
   const onSubmit: SubmitHandler<EditProjectFormData> = async (data) => {
     try {
       setIsLoading(true);
 
-      let imageURLs: string[] = [];
+      let imageUrls: string[] = [];
 
       if (data.images?.length) {
         const { uploadedImageCIDs } = await uploadImageFiles(data.images);
-        imageURLs = uploadedImageCIDs;
+        imageUrls = uploadedImageCIDs;
       } else {
-        if (currentImageURLs?.length) {
-          imageURLs = currentImageURLs;
+        if (currentImageUrls?.length) {
+          imageUrls = currentImageUrls;
         }
       }
 
-      await updateProject(project.id, data.description, imageURLs);
+      await updateProject(project.id, data.description, imageUrls);
       toast.success('Project has been updated, changes will reflect momentarily.');
       onClose();
     } catch (error) {
@@ -73,7 +73,7 @@ export const useEditProjectModal = (project: Project, onClose: () => void) => {
 
   useEffect(() => {
     if (images?.length) {
-      setValue('currentImageURLs', []);
+      setValue('currentImageUrls', []);
     }
   }, [images, setValue]);
 
@@ -82,7 +82,7 @@ export const useEditProjectModal = (project: Project, onClose: () => void) => {
     isUploading,
     isSubmitButtonDisabled,
     images,
-    currentImageURLs,
+    currentImageUrls,
     fieldErrors,
     submissionError,
     register,

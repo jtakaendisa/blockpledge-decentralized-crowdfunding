@@ -213,12 +213,12 @@ export const deleteProjectSchema = z.object({
 
 export const editProjectSchema = z
   .object({
-    currentImageURLs: z.array(z.string()).optional(),
+    currentImageUrls: z.array(z.string()).optional(),
     images: z.array(z.instanceof(File)).optional(),
     description: descriptionSchema,
   })
-  .superRefine(({ images, currentImageURLs }, ctx) => {
-    const hasCurrentImages = currentImageURLs && currentImageURLs.length > 0;
+  .superRefine(({ images, currentImageUrls }, ctx) => {
+    const hasCurrentImages = currentImageUrls && currentImageUrls.length > 0;
 
     // If no current images and no new images provided
     if (!hasCurrentImages && (!images || images.length === 0)) {

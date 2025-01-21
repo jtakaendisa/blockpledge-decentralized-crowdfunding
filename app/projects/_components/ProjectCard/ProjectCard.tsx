@@ -37,7 +37,7 @@ const revealVariants = {
 const { baseGray } = colors;
 
 const ProjectCard = ({ project, blurDataURL }: Props) => {
-  const { id, owner, title, imageURLs, backers, expiresAt, raised, cost, status } =
+  const { id, owner, title, imageUrls, backers, expiresAt, raised, cost, status } =
     project;
 
   const [isHovered, setIsHovered] = useState(false);
@@ -55,7 +55,7 @@ const ProjectCard = ({ project, blurDataURL }: Props) => {
     >
       <Link href={`/projects/${id}`} className={styles.link}>
         <ProjectImage
-          imageURLs={imageURLs}
+          imageUrls={imageUrls}
           blurDataURL={blurDataURL}
           title={title}
           isHovered={isHovered}
