@@ -1,3 +1,5 @@
+'use client';
+
 import { useFeaturedProjects } from '@/app/home/_hooks/useFeaturedProjects';
 import SectionHeading from '../../../components/SectionHeading/SectionHeading';
 import ProjectsHighlight from '@/app/home/_components/ProjectsHighlight/ProjectsHighlight';

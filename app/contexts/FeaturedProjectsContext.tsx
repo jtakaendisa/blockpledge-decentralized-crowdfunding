@@ -1,3 +1,5 @@
+'use client';
+
 import { createContext, PropsWithChildren, useCallback, useState } from 'react';
 
 interface FeaturedProjectsContextType {

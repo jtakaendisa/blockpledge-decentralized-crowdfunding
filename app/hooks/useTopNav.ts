@@ -11,13 +11,9 @@ export const useTopNav = () => {
   const updatingAuthUserData = useAccountStore((s) => s.updatingAuthUserData);
   const setConnectedAccount = useAccountStore((s) => s.setConnectedAccount);
   const setAuthUser = useAccountStore((s) => s.setAuthUser);
-  const setProjects = useProjectStore((s) => s.setProjects);
-  const setStats = useProjectStore((s) => s.setStats);
-  const setCategories = useProjectStore((s) => s.setCategories);
   const setUpdatingFollowStatus = useProjectStore((s) => s.setUpdatingFollowStatus);
 
-  const { connectWallet, getProjects, getCategories, listenForEvents } =
-    useBlockchain();
+  const { connectWallet, listenForEvents } = useBlockchain();
 
   const [loadingAuth, setLoadingAuth] = useState(false);
   const [refreshUi, setRefreshUi] = useState(false);
@@ -66,23 +62,6 @@ export const useTopNav = () => {
       window.ethereum.removeListener('chainChanged', handleChainChange);
     };
   }, [handleWalletConnection]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { projects, stats } = await getProjects();
-        const { categories } = await getCategories();
-
-        setProjects(projects);
-        setStats(stats);
-        setCategories(categories);
-      } catch (error) {
-        console.log((error as Error).message);
-      }
-    };
-
-    fetchData();
-  }, [refreshUi, getProjects, getCategories, setProjects, setStats, setCategories]);
 
   useEffect(() => {
     setLoadingAuth(true);

@@ -437,6 +437,14 @@ contract BlockPledge {
     }
 
     /**
+     * @dev Retrieves stats.
+     * @return StatsStruct stats details.
+     */
+    function getStats() public view returns (StatsStruct memory) {
+        return stats;
+    }
+
+    /**
      * @dev Retrieves backers of a project.
      * @param _id ID of the project.
      * @return BackerStruct[] Array of backers.

@@ -9,6 +9,7 @@ import BottomNav from './components/footer/BottomNav/BottomNav';
 import './globals.scss';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { GlobalStateProvider } from './contexts/GlobalStateContext';
 
 const inter = localFont({ src: '../public/fonts/inter-variable.ttf' });
 
@@ -28,11 +29,13 @@ export default function RootLayout({
         <style type="text/css" dangerouslySetInnerHTML={{ __html: mediaStyles }} />
       </head>
       <body className={inter.className}>
-        <TransitionProvider>
-          <TopNav />
-          <div id="pt-page">{children}</div>
-          <BottomNav />
-        </TransitionProvider>
+        <GlobalStateProvider>
+          <TransitionProvider>
+            <TopNav />
+            <div id="pt-page">{children}</div>
+            <BottomNav />
+          </TransitionProvider>
+        </GlobalStateProvider>
 
         {/* Page Transition Blocks */}
         <div id="pt-blocks" className="pt-blocks">

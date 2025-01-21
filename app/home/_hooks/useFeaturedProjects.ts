@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 
-import { useProjectStore } from '@/app/store';
+import { useGlobalStateContext } from '@/app/hooks/useGlobalStateContext';
 import { useFeaturedProjectsContext } from '@/app/hooks/useFeaturedProjectsContext';
 import { usePlaiceholder } from '@/app/hooks/usePlaiceholder';
 
 export const useFeaturedProjects = (totalPages: number, chunkSize: number) => {
-  const projects = useProjectStore((s) => s.projects);
+  const { projects } = useGlobalStateContext();
   const { blurDataUrls, updateBlurDataUrls } = useFeaturedProjectsContext();
 
   const { getBlurDataURLs } = usePlaiceholder();

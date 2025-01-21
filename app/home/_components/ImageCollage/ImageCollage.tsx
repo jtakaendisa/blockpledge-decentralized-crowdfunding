@@ -1,3 +1,5 @@
+'use client';
+
 import { useRef } from 'react';
 
 import { useImageCollage } from '@/app/home/_hooks/useImageCollage';

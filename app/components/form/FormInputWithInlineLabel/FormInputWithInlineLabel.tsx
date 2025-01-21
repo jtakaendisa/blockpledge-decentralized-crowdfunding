@@ -1,3 +1,5 @@
+'use client';
+
 import { HTMLInputTypeAttribute, useLayoutEffect, useRef } from 'react';
 import { FieldError, FieldValues, Path, UseFormRegister } from 'react-hook-form';
 import { AnimatePresence } from 'framer-motion';

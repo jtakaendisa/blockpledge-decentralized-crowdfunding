@@ -131,19 +131,16 @@ export const useBlockchain = () => {
       }
 
       const fetchedProjects = await contract.getProjects();
-      const fetchedStats = await contract.stats();
 
       const projects: Project[] = fetchedProjects
         .map((project: any) => formatProject(project))
         .reverse();
-      const stats = formatStats(fetchedStats);
 
-      return { projects, stats };
+      return { projects };
     } catch (error) {
-      console.error('Error loading projects:', (error as Error).message);
-      throw error;
+      throw new Error(`Failed to retrieve projects: ${(error as Error).message}`);
     }
-  }, [formatProject, formatStats, getContract]);
+  }, [formatProject, getContract]);
 
   const getProject = useCallback(
     async (id: number) => {
@@ -198,6 +195,27 @@ export const useBlockchain = () => {
     [formatProject, getContract]
   );
 
+  const getStats = useCallback(async () => {
+    try {
+      if (!window.ethereum) {
+        throw new Error('Please install Metamask');
+      }
+
+      const contract = await getContract();
+
+      if (!contract) {
+        throw new Error("Can't connect to smart contract");
+      }
+
+      const fetchedStats = await contract.stats();
+      const stats = formatStats(fetchedStats);
+
+      return { stats };
+    } catch (error) {
+      throw new Error(`Failed to retrieve stats: ${(error as Error).message}`);
+    }
+  }, [formatStats, getContract]);
+
   const getBackers = useCallback(
     async (id: number) => {
       try {
@@ -240,8 +258,7 @@ export const useBlockchain = () => {
 
       return { categories };
     } catch (error) {
-      console.error('Error loading categories:', (error as Error).message);
-      throw error;
+      throw new Error(`Failed to retrieve categories: ${(error as Error).message}`);
     }
   }, [formatCategories, getContract]);
 
@@ -474,6 +491,7 @@ export const useBlockchain = () => {
     getProjects,
     getProject,
     getUserProjects,
+    getStats,
     getBackers,
     getCategories,
     listenForEvents,

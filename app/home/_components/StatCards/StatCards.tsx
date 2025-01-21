@@ -1,12 +1,12 @@
 import { motion } from 'framer-motion';
 
-import { useProjectStore } from '@/app/store';
+import { useGlobalStateContext } from '@/app/hooks/useGlobalStateContext';
 import StatCard from '../StatCard/StatCard';
 
 import styles from './StatCards.module.scss';
 
 const StatCards = () => {
-  const stats = useProjectStore((s) => s.stats);
+  const { stats } = useGlobalStateContext();
 
   const { totalBackings, totalDonations, totalProjects } = stats;
 

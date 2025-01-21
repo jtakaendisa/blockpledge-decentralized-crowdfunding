@@ -1,15 +1,17 @@
-import { useProjectStore } from '@/app/store';
+'use client';
+
 import { generateIncrementingArray } from '@/app/utils';
 import SectionHeading from '../../../components/SectionHeading/SectionHeading';
 import CategoryCard from '../CategoryCard/CategoryCard';
 import CategoryCardSkeleton from '../CategoryCardSkeleton/CategoryCardSkeleton';
 
 import styles from './CategoriesGrid.module.scss';
+import { useGlobalStateContext } from '@/app/hooks/useGlobalStateContext';
 
 const skeletons = generateIncrementingArray(12);
 
 const CategoriesGrid = () => {
-  const categories = useProjectStore((s) => s.categories);
+  const { categories } = useGlobalStateContext();
 
   return (
     <section className={styles.categoriesGrid}>

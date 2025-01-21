@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect } from 'react';
 import { motion, useAnimationControls } from 'framer-motion';
 import classNames from 'classnames';

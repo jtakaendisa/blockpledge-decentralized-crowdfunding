@@ -1,3 +1,5 @@
+'use client';
+
 import { FormEvent, useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
