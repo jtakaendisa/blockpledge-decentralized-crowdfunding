@@ -82,9 +82,10 @@ export const useBlockchain = () => {
   }, []);
 
   const formatPayoutInfo = useCallback(
-    (id: any, recipient: any, amount: any, timestamp: any) => {
+    (id: any, title: any, recipient: any, amount: any, timestamp: any) => {
       return {
         id: Number(id),
+        title,
         recipient,
         amount: Number(ethers.formatEther(amount)),
         timestamp: new Date(Number(timestamp) * 1000).toString(),
@@ -436,49 +437,6 @@ export const useBlockchain = () => {
     [getProject, getContract]
   );
 
-  const listenForEvents = useCallback(
-    async (refreshUi: () => void) => {
-      try {
-        if (!window.ethereum) {
-          throw new Error('Please install Metamask');
-        }
-
-        const contract = await getContract();
-
-        if (!contract) {
-          throw new Error("Can't connect to smart contract");
-        }
-
-        contract.on('ProjectPaidOut', async (id, recipient, amount, timestamp) => {
-          const formattedPayoutInfo = formatPayoutInfo(
-            id,
-            recipient,
-            amount,
-            timestamp
-          );
-
-          // await sendPaymentNotification(formattedPayoutInfo);
-          refreshUi();
-        });
-
-        contract.on('ProjectCreated', refreshUi);
-        contract.on('ProjectUpdated', refreshUi);
-        contract.on('ProjectDeleted', refreshUi);
-        contract.on('ProjectBacked', refreshUi);
-        contract.on('ProjectApproved', refreshUi);
-        contract.on('ProjectRejected', refreshUi);
-
-        return () => {
-          contract.removeAllListeners();
-        };
-      } catch (error) {
-        console.error('Error listening for payout:', (error as Error).message);
-        throw error;
-      }
-    },
-    [formatPayoutInfo, getContract]
-  );
-
   return {
     connectWallet,
     getContract,
@@ -494,7 +452,7 @@ export const useBlockchain = () => {
     getStats,
     getBackers,
     getCategories,
-    listenForEvents,
+    formatPayoutInfo,
   };
 };
 

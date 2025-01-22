@@ -1,17 +1,12 @@
 'use client';
 
-import {
-  createContext,
-  PropsWithChildren,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import { createContext, PropsWithChildren, useEffect, useState } from 'react';
 import { User } from 'firebase/auth';
 
 import { AuthUser, Category, Project, Stats } from '../entities';
 import { authStateChangeListener, formatAuthUserData } from '../services/authService';
 import { useBlockchain } from '../hooks/useBlockchain';
+import { useEmail } from '../hooks/useEmail';
 
 interface GlobalStateContextType {
   projects: Project[];
@@ -21,7 +16,6 @@ interface GlobalStateContextType {
   authUser: AuthUser | null;
   isLoadingAuth: boolean;
   error: Error | null;
-  handleWalletConnection: () => void;
 }
 
 export const GlobalStateContext = createContext<GlobalStateContextType>({
@@ -32,7 +26,6 @@ export const GlobalStateContext = createContext<GlobalStateContextType>({
   authUser: null,
   isLoadingAuth: true,
   error: null,
-  handleWalletConnection: () => {},
 });
 
 export const GlobalStateProvider = ({ children }: PropsWithChildren) => {
@@ -48,16 +41,18 @@ export const GlobalStateProvider = ({ children }: PropsWithChildren) => {
   const [authUser, setAuthUser] = useState<AuthUser | null>(null);
   const [error, setError] = useState<Error | null>(null);
 
-  const { getProjects, getStats, getCategories, connectWallet } = useBlockchain();
+  const {
+    connectWallet,
+    getProjects,
+    getStats,
+    getCategories,
+    getContract,
+    formatPayoutInfo,
+  } = useBlockchain();
 
-  const handleWalletConnection = useCallback(async () => {
-    const { accounts } = await connectWallet();
+  const { sendPaymentNotification } = useEmail();
 
-    if (accounts.length) {
-      setConnectedAccount(accounts[0]);
-    }
-  }, [connectWallet, setConnectedAccount]);
-
+  // Initialize client state
   useEffect(() => {
     const initialize = async () => {
       try {
@@ -76,6 +71,77 @@ export const GlobalStateProvider = ({ children }: PropsWithChildren) => {
     initialize();
   }, [getCategories, getProjects, getStats]);
 
+  // Listen for emitted smart contract events and update the client state accordingly
+  useEffect(() => {
+    const listenForEvents = async () => {
+      const contract = await getContract();
+
+      // contract.on('ProjectCreated', (...args) =>
+      //   console.log('ProjectCreated', ...args)
+      // );
+      // contract.on('ProjectUpdated', (...args) =>
+      //   console.log('ProjectUpdated', ...args)
+      // );
+      // contract.on('ProjectDeleted', (...args) =>
+      //   console.log('ProjectDeleted', ...args)
+      // );
+      // contract.on('ProjectBacked', (...args) => console.log('ProjectBacked', ...args));
+      // contract.on('ProjectApproved', (...args) =>
+      //   console.log('ProjectApproved', ...args)
+      // );
+      // contract.on('ProjectRejected', (...args) =>
+      //   console.log('ProjectRejected', ...args)
+      // );
+
+      contract.on('ProjectPaidOut', async (id, title, recipient, amount, timestamp) => {
+        const formattedPayoutInfo = formatPayoutInfo(
+          id,
+          title,
+          recipient,
+          amount,
+          timestamp
+        );
+        await sendPaymentNotification(formattedPayoutInfo);
+      });
+
+      return async () => {
+        await contract.removeAllListeners();
+      };
+    };
+
+    const unsubscribe = listenForEvents();
+
+    return () => {
+      unsubscribe.then(async (cleanup) => await cleanup());
+    };
+  }, [getContract, formatPayoutInfo, sendPaymentNotification]);
+
+  // Handle wallet address and blockchain network changes
+  useEffect(() => {
+    const handleWalletConnection = async () => {
+      const { accounts } = await connectWallet();
+
+      if (accounts.length) {
+        setConnectedAccount(accounts[0]);
+      }
+    };
+
+    const handleChainChange = () => {
+      window.location.reload();
+    };
+
+    handleWalletConnection();
+
+    window.ethereum.on('accountsChanged', handleWalletConnection);
+    window.ethereum.on('chainChanged', handleChainChange);
+
+    return () => {
+      window.ethereum.removeListener('accountsChanged', handleWalletConnection);
+      window.ethereum.removeListener('chainChanged', handleChainChange);
+    };
+  }, [connectWallet]);
+
+  // Handle updates to user authentication status
   useEffect(() => {
     const unsubscribe = authStateChangeListener(async (user: User) => {
       setIsLoadingAuth(true);
@@ -97,7 +163,6 @@ export const GlobalStateProvider = ({ children }: PropsWithChildren) => {
         authUser,
         isLoadingAuth,
         error,
-        handleWalletConnection,
       }}
     >
       {children}

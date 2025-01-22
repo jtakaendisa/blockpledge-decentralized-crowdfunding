@@ -88,6 +88,7 @@ contract BlockPledge {
     );
     event ProjectPaidOut(
         uint256 id,
+        string title,
         address recipient,
         uint256 amount,
         uint256 timestamp
@@ -354,6 +355,7 @@ contract BlockPledge {
 
         emit ProjectPaidOut(
             _id,
+            projects[_id].title,
             projects[_id].owner,
             (raised - tax),
             block.timestamp

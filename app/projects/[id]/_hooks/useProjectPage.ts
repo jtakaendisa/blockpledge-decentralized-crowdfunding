@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { useProjectPageContext } from '@/app/hooks/useProjectPageContext';
 import { useBlockchain } from '@/app/hooks/useBlockchain';
 import { usePlaiceholder } from '@/app/hooks/usePlaiceholder';
-import { useBlockchainEventListener } from '@/app/hooks/useBlockchainEventListener';
 
 export const useProjectPage = (id: string) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -12,7 +11,6 @@ export const useProjectPage = (id: string) => {
   const { updateProject, updateBackers, updateBlurDataUrls } = useProjectPageContext();
   const { getProject, getBackers } = useBlockchain();
   const { getBlurDataUrls } = usePlaiceholder();
-  const { updates } = useBlockchainEventListener();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,7 +32,6 @@ export const useProjectPage = (id: string) => {
     fetchData();
   }, [
     id,
-    updates,
     getProject,
     getBackers,
     getBlurDataUrls,
