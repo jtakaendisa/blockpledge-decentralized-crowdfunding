@@ -57,7 +57,7 @@ contract BlockPledge {
         string[] imageUrls; // Changed to string array
         uint256 cost;
         uint256 raised;
-        uint256 timestamp;
+        uint256 createdAt;
         uint256 expiresAt;
         uint256 backers;
         uint256 categoryId;
@@ -76,13 +76,28 @@ contract BlockPledge {
         uint256 id,
         address owner,
         string title,
+        string description,
+        string[] imageUrls,
+        uint256 categoryId,
+        uint256 cost,
+        uint256 raised,
+        uint256 createdAt,
+        uint256 expiresAt,
+        uint256 backers,
+        StatusEnum status
+    );
+
+    event ProjectUpdated(
+        uint256 id,
+        string description,
+        string[] imageUrls,
         uint256 timestamp
     );
-    event ProjectUpdated(uint256 id, string title, uint256 timestamp);
     event ProjectDeleted(uint256 id, uint256 timestamp);
     event ProjectBacked(
         uint256 id,
         address backer,
+        uint256 amount,
         string comment,
         uint256 timestamp
     );
@@ -155,10 +170,10 @@ contract BlockPledge {
         project.owner = msg.sender;
         project.title = _title;
         project.description = _description;
-        project.imageUrls = _imageUrls; // Assign imageUrls
+        project.imageUrls = _imageUrls;
         project.categoryId = _category;
         project.cost = _cost;
-        project.timestamp = block.timestamp;
+        project.createdAt = block.timestamp;
         project.expiresAt = _expiresAt;
         project.status = StatusEnum.PENDING_APPROVAL;
 
@@ -169,7 +184,20 @@ contract BlockPledge {
         stats.totalProjects += 1;
 
         // Emit event
-        emit ProjectCreated(projectCount, msg.sender, _title, block.timestamp);
+        emit ProjectCreated(
+            project.id,
+            project.owner,
+            project.title,
+            project.description,
+            project.imageUrls,
+            project.categoryId,
+            project.cost,
+            project.raised,
+            project.createdAt,
+            project.expiresAt,
+            project.backers,
+            project.status
+        );
         projectCount++;
         return true;
     }
@@ -188,12 +216,17 @@ contract BlockPledge {
     ) public returns (bool) {
         require(msg.sender == projects[_id].owner, "Unauthorized Entity");
         require(bytes(_description).length > 0, "Description cannot be empty");
-        require(_imageUrls.length > 0, "ImageUrls cannot be empty"); // Ensure imageUrls array is not empty
+        require(_imageUrls.length > 0, "ImageUrls cannot be empty");
 
         projects[_id].description = _description;
-        projects[_id].imageUrls = _imageUrls; // Assign imageUrls
+        projects[_id].imageUrls = _imageUrls;
 
-        emit ProjectUpdated(_id, projects[_id].title, block.timestamp);
+        emit ProjectUpdated(
+            _id,
+            projects[_id].description,
+            projects[_id].imageUrls,
+            block.timestamp
+        );
 
         return true;
     }
@@ -323,7 +356,13 @@ contract BlockPledge {
             )
         );
 
-        emit ProjectBacked(_id, msg.sender, _comment, block.timestamp);
+        emit ProjectBacked(
+            _id,
+            msg.sender,
+            msg.value,
+            _comment,
+            block.timestamp
+        );
 
         if (projects[_id].raised >= projects[_id].cost) {
             projects[_id].status = StatusEnum.APPROVED;

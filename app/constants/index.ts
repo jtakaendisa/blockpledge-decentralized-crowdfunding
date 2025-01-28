@@ -37,6 +37,15 @@ export const statusMap = {
   5: 'Pending approval',
 } as const;
 
+export enum StatusEnum {
+  Open = 0,
+  Approved = 1,
+  Reverted = 2,
+  Deleted = 3,
+  PaidOut = 4,
+  PendingApproval = 5,
+}
+
 export const statusColorMap = {
   0: 'gray',
   1: 'green',

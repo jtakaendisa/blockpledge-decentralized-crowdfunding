@@ -56,6 +56,15 @@ export const getFutureDate = (offset: number, unit: 'days' | 'years' = 'days') =
   return unit === 'days' ? addDays(today, offset) : addYears(today, offset);
 };
 
+export const formatDate = (timestamp: number) => {
+  const date = new Date(timestamp);
+  const day = date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`;
+  const month =
+    date.getMonth() + 1 > 9 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`;
+  const year = date.getFullYear();
+  return `${year}-${month}-${day}`;
+};
+
 export const convertToTimestamp = (dateString: string) => Date.parse(dateString) / 1000;
 
 export const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));

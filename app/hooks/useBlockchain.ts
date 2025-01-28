@@ -2,9 +2,8 @@ import { useCallback } from 'react';
 import { ethers } from 'ethers';
 import { formatDistance } from 'date-fns';
 
-import { ParsedCreateProjectFormData, Project } from '../entities';
+import { ParsedCreateProjectFormData, Project, Status } from '../entities';
 import { truncateAccount } from '../utils';
-import { useEmail } from './useEmail';
 
 import contractAddress from '../abis/contractAddress.json';
 import contractAbi from '../abis/app/contracts/BlockPledge.sol/BlockPledge.json';
@@ -13,38 +12,23 @@ const address = contractAddress.address;
 const abi = contractAbi.abi;
 
 export const useBlockchain = () => {
-  const { sendPaymentNotification } = useEmail();
-
-  const formatDate = useCallback((timestamp: number) => {
-    const date = new Date(timestamp);
-    const day = date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`;
-    const month =
-      date.getMonth() + 1 > 9 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`;
-    const year = date.getFullYear();
-    return `${year}-${month}-${day}`;
+  const formatProject = useCallback((project: any): Project => {
+    return {
+      id: Number(project[0]),
+      owner: project[1].toLowerCase(),
+      title: project[2],
+      description: project[3],
+      imageUrls: Array.from(project[4]) as string[],
+      cost: Number(project[5]) / 10 ** 18,
+      raised: Number(ethers.formatEther(project[6])),
+      createdAt: new Date(Number(project[7])).getTime(),
+      expiresAt: new Date(Number(project[8])).getTime(),
+      backers: Number(project[9]),
+      categoryId: Number(project[10]),
+      status: Number(project[11]) as Project['status'],
+      deletionReason: project[12],
+    };
   }, []);
-
-  const formatProject = useCallback(
-    (project: any): Project => {
-      return {
-        id: Number(project[0]),
-        owner: project[1].toLowerCase(),
-        title: project[2],
-        description: project[3],
-        imageUrls: Array.from(project[4]) as string[],
-        cost: Number(project[5]) / 10 ** 18,
-        raised: Number(ethers.formatEther(project[6])),
-        timestamp: new Date(Number(project[7])).getTime(),
-        expiresAt: new Date(Number(project[8])).getTime(),
-        backers: Number(project[9]),
-        categoryId: Number(project[10]),
-        status: Number(project[11]) as Project['status'],
-        deletionReason: project[12],
-        date: formatDate(Number(project[8]) * 1000),
-      };
-    },
-    [formatDate]
-  );
 
   const formatStats = useCallback((stats: any) => {
     return {
@@ -81,16 +65,68 @@ export const useBlockchain = () => {
     }));
   }, []);
 
-  const formatPayoutInfo = useCallback(
-    (id: any, title: any, recipient: any, amount: any, timestamp: any) => {
-      return {
-        id: Number(id),
-        title,
-        recipient,
-        amount: Number(ethers.formatEther(amount)),
-        timestamp: new Date(Number(timestamp) * 1000).toString(),
-      };
-    },
+  const formatProjectCreatedInfo = useCallback(
+    (
+      id: bigint,
+      owner: string,
+      title: string,
+      description: string,
+      imageUrls: string[],
+      categoryId: bigint,
+      cost: bigint,
+      raised: bigint,
+      createdAt: bigint,
+      expiresAt: bigint,
+      backers: bigint,
+      status: bigint
+    ) => ({
+      id: Number(id),
+      owner,
+      title,
+      description,
+      imageUrls,
+      categoryId: Number(categoryId),
+      cost: Number(ethers.formatEther(cost)),
+      raised: Number(ethers.formatEther(raised)),
+      createdAt: new Date(Number(createdAt)).getTime(),
+      expiresAt: new Date(Number(expiresAt)).getTime(),
+      backers: Number(backers),
+      status: Number(status) as Status,
+    }),
+    []
+  );
+
+  const formatProjectBackingInfo = useCallback(
+    (
+      id: bigint,
+      backer: string,
+      contribution: bigint,
+      comment: string,
+      timestamp: bigint
+    ) => ({
+      id: Number(id),
+      backer,
+      contribution: Number(ethers.formatEther(contribution)),
+      comment,
+      timestamp: new Date(Number(timestamp)).getTime().toString(),
+    }),
+    []
+  );
+
+  const formatProjectPayoutInfo = useCallback(
+    (
+      id: bigint,
+      title: string,
+      recipient: string,
+      amount: bigint,
+      timestamp: bigint
+    ) => ({
+      id: Number(id),
+      title,
+      recipient,
+      amount: Number(ethers.formatEther(amount)),
+      timestamp: new Date(Number(timestamp) * 1000).toString(),
+    }),
     []
   );
 
@@ -452,7 +488,9 @@ export const useBlockchain = () => {
     getStats,
     getBackers,
     getCategories,
-    formatPayoutInfo,
+    formatProjectCreatedInfo,
+    formatProjectBackingInfo,
+    formatProjectPayoutInfo,
   };
 };
 

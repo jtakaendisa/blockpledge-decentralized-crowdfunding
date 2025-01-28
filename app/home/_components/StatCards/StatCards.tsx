@@ -20,7 +20,7 @@ const StatCards = () => {
       value: totalBackings,
     },
     {
-      metric: 'Total Received (ETH)',
+      metric: 'Total ETH Donated',
       value: totalDonations,
     },
   ];

@@ -1,9 +1,17 @@
 'use client';
 
-import { createContext, PropsWithChildren, useEffect, useState } from 'react';
+import {
+  createContext,
+  PropsWithChildren,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { User } from 'firebase/auth';
+import { Contract } from 'ethers';
 
 import { AuthUser, Category, Project, Stats } from '../entities';
+import { StatusEnum } from '../constants';
 import { authStateChangeListener, formatAuthUserData } from '../services/authService';
 import { useBlockchain } from '../hooks/useBlockchain';
 import { useEmail } from '../hooks/useEmail';
@@ -47,15 +55,158 @@ export const GlobalStateProvider = ({ children }: PropsWithChildren) => {
     getStats,
     getCategories,
     getContract,
-    formatPayoutInfo,
+    formatProjectCreatedInfo,
+    formatProjectBackingInfo,
+    formatProjectPayoutInfo,
   } = useBlockchain();
 
   const { sendPaymentNotification } = useEmail();
 
-  // Initialize client state
+  const handleProjectCreated = useCallback(
+    (
+      id: bigint,
+      owner: string,
+      title: string,
+      description: string,
+      imageUrls: string[],
+      categoryId: bigint,
+      cost: bigint,
+      raised: bigint,
+      createdAt: bigint,
+      expiresAt: bigint,
+      backers: bigint,
+      status: bigint
+    ) => {
+      const newProject = formatProjectCreatedInfo(
+        id,
+        owner,
+        title,
+        description,
+        imageUrls,
+        categoryId,
+        cost,
+        raised,
+        createdAt,
+        expiresAt,
+        backers,
+        status
+      );
+
+      setProjects((prev) => [{ ...newProject, deletionReason: '' }, ...prev]);
+    },
+    [formatProjectCreatedInfo]
+  );
+
+  const handleProjectUpdated = useCallback(
+    (id: bigint, description: string, imageUrls: string[]) => {
+      setProjects((prev) =>
+        prev.map((project) =>
+          project.id === Number(id)
+            ? {
+                ...project,
+                description,
+                imageUrls,
+              }
+            : project
+        )
+      );
+    },
+    []
+  );
+
+  const handleProjectTerminated = useCallback((id: bigint) => {
+    setProjects((prev) =>
+      prev.map((project) =>
+        project.id === Number(id)
+          ? {
+              ...project,
+              status: StatusEnum.Deleted,
+            }
+          : project
+      )
+    );
+  }, []);
+
+  const handleProjectBacked = useCallback(
+    (
+      id: bigint,
+      backer: string,
+      contribution: bigint,
+      comment: string,
+      timestamp: bigint
+    ) => {
+      const backingInfo = formatProjectBackingInfo(
+        id,
+        backer,
+        contribution,
+        comment,
+        timestamp
+      );
+
+      setProjects((prev) =>
+        prev.map((project) =>
+          project.id === backingInfo.id
+            ? {
+                ...project,
+                raised: project.raised + backingInfo.contribution,
+              }
+            : project
+        )
+      );
+
+      setStats((prev) => ({
+        ...prev,
+        totalBackings: prev.totalBackings + 1,
+        totalDonations: prev.totalDonations + backingInfo.contribution,
+      }));
+    },
+    [formatProjectBackingInfo]
+  );
+
+  const handleProjectPaidOut = useCallback(
+    async (
+      id: bigint,
+      title: string,
+      recipient: string,
+      amount: bigint,
+      timestamp: bigint
+    ) => {
+      const payoutInfo = formatProjectPayoutInfo(
+        id,
+        title,
+        recipient,
+        amount,
+        timestamp
+      );
+      await sendPaymentNotification(payoutInfo);
+
+      setProjects((prev) =>
+        prev.map((project) =>
+          project.id === payoutInfo.id
+            ? { ...project, status: StatusEnum.PaidOut }
+            : project
+        )
+      );
+    },
+    [formatProjectPayoutInfo, sendPaymentNotification]
+  );
+
+  const handleProjectApproved = useCallback((id: bigint) => {
+    setProjects((prev) =>
+      prev.map((project) =>
+        project.id === Number(id) ? { ...project, status: StatusEnum.Open } : project
+      )
+    );
+  }, []);
+
   useEffect(() => {
-    const initialize = async () => {
+    let contract: Contract | undefined;
+
+    const init = async () => {
       try {
+        contract = await getContract();
+
+        // Fetch initial data
         const { projects } = await getProjects();
         const { stats } = await getStats();
         const { categories } = await getCategories();
@@ -63,58 +214,46 @@ export const GlobalStateProvider = ({ children }: PropsWithChildren) => {
         setProjects(projects);
         setStats(stats);
         setCategories(categories);
+
+        // Set up event listeners
+        contract.on('ProjectCreated', handleProjectCreated);
+        contract.on('ProjectUpdated', handleProjectUpdated);
+        contract.on('ProjectDeleted', handleProjectTerminated);
+        contract.on('ProjectBacked', handleProjectBacked);
+        contract.on('ProjectPaidOut', handleProjectPaidOut);
+        contract.on('ProjectApproved', handleProjectApproved);
+        contract.on('ProjectRejected', handleProjectTerminated);
       } catch (error) {
         setError(error as Error);
       }
     };
 
-    initialize();
-  }, [getCategories, getProjects, getStats]);
+    init();
 
-  // Listen for emitted smart contract events and update the client state accordingly
-  useEffect(() => {
-    const listenForEvents = async () => {
-      const contract = await getContract();
-
-      // contract.on('ProjectCreated', (...args) =>
-      //   console.log('ProjectCreated', ...args)
-      // );
-      // contract.on('ProjectUpdated', (...args) =>
-      //   console.log('ProjectUpdated', ...args)
-      // );
-      // contract.on('ProjectDeleted', (...args) =>
-      //   console.log('ProjectDeleted', ...args)
-      // );
-      // contract.on('ProjectBacked', (...args) => console.log('ProjectBacked', ...args));
-      // contract.on('ProjectApproved', (...args) =>
-      //   console.log('ProjectApproved', ...args)
-      // );
-      // contract.on('ProjectRejected', (...args) =>
-      //   console.log('ProjectRejected', ...args)
-      // );
-
-      contract.on('ProjectPaidOut', async (id, title, recipient, amount, timestamp) => {
-        const formattedPayoutInfo = formatPayoutInfo(
-          id,
-          title,
-          recipient,
-          amount,
-          timestamp
-        );
-        await sendPaymentNotification(formattedPayoutInfo);
-      });
-
-      return async () => {
-        await contract.removeAllListeners();
-      };
-    };
-
-    const unsubscribe = listenForEvents();
-
+    // Clean up event listeners on unmount
     return () => {
-      unsubscribe.then(async (cleanup) => await cleanup());
+      if (contract) {
+        contract.off('ProjectCreated', handleProjectCreated);
+        contract.off('ProjectUpdated', handleProjectUpdated);
+        contract.off('ProjectDeleted', handleProjectTerminated);
+        contract.off('ProjectBacked', handleProjectBacked);
+        contract.off('ProjectPaidOut', handleProjectPaidOut);
+        contract.off('ProjectApproved', handleProjectApproved);
+        contract.off('ProjectRejected', handleProjectTerminated);
+      }
     };
-  }, [getContract, formatPayoutInfo, sendPaymentNotification]);
+  }, [
+    getContract,
+    getProjects,
+    getStats,
+    getCategories,
+    handleProjectCreated,
+    handleProjectUpdated,
+    handleProjectTerminated,
+    handleProjectBacked,
+    handleProjectPaidOut,
+    handleProjectApproved,
+  ]);
 
   // Handle wallet address and blockchain network changes
   useEffect(() => {

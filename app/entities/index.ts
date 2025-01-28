@@ -52,11 +52,10 @@ export interface Project {
   categoryId: number;
   cost: number;
   raised: number;
-  timestamp: number;
+  createdAt: number;
   expiresAt: number;
   backers: number;
   status: Status;
-  date: string;
   deletionReason: string;
 }
 
