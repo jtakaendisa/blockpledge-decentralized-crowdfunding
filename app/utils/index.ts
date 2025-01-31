@@ -83,6 +83,17 @@ export const splitArray = <T>(array: T[], chunks: number) => {
 export const generateIncrementingArray = (length: number) =>
   Array.from({ length }, (_, i) => i + 1);
 
+// Function to check if two primitive type arrays are equal
+export const areArraysEqual = <T>(array1: T[], array2: T[]) => {
+  if (array1.length !== array2.length) return false;
+
+  // Sort both arrays and compare
+  const sortedArray1 = [...array1].sort();
+  const sortedArray2 = [...array2].sort();
+
+  return sortedArray1.every((val, index) => val === sortedArray2[index]);
+};
+
 export const debounce = (func: (...args: any[]) => void, wait: number) => {
   let timeout: NodeJS.Timeout;
   return (...args: any[]) => {

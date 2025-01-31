@@ -1,3 +1,5 @@
+'use client';
+
 import { colors } from '@/app/constants';
 import { useProjectPageContext } from '@/app/hooks/useProjectPageContext';
 import { useProjectModals } from '@/app/hooks/useProjectModals';

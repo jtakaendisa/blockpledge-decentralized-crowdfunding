@@ -1,41 +1,198 @@
-import { createContext, PropsWithChildren, useCallback, useState } from 'react';
+'use client';
 
-import { Backer, Project } from '../entities';
+import { createContext, ReactNode, useCallback, useEffect, useState } from 'react';
+import { Contract, Listener } from 'ethers';
+
+import { Backer, Project, ProjectBackedEvent } from '../entities';
+import { StatusEnum } from '../constants';
+import { useBlockchain } from '../hooks/useBlockchain';
+import { usePlaiceholder } from '../hooks/usePlaiceholder';
 
 interface ProjectPageContextType {
   project: Project;
   backers: Backer[];
   blurDataUrls: string[];
-  updateProject: (project: Project) => void;
-  updateBackers: (backers: Backer[]) => void;
-  updateBlurDataUrls: (blurDataUrls: string[]) => void;
+  isLoading: boolean;
+  error: Error | null;
 }
 
 export const ProjectPageContext = createContext<ProjectPageContextType>({
   project: {} as Project,
   backers: [],
   blurDataUrls: [],
-  updateProject: () => {},
-  updateBackers: () => {},
-  updateBlurDataUrls: () => {},
+  isLoading: true,
+  error: null,
 });
 
-export const ProjectPageProvider = ({ children }: PropsWithChildren) => {
+interface ProjectPageProviderProps {
+  children: ReactNode;
+  id: string;
+}
+
+export const ProjectPageProvider = ({ children, id }: ProjectPageProviderProps) => {
   const [project, setProject] = useState<Project>({} as Project);
   const [backers, setBackers] = useState<Backer[]>([]);
   const [blurDataUrls, setBlurDataUrls] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
-  const updateProject = useCallback((project: Project) => {
-    setProject(project);
+  const {
+    getContract,
+    getProject,
+    getBackers,
+    formatProjectBackingInfo,
+    formatBacker,
+  } = useBlockchain();
+  const { getBlurDataUrls } = usePlaiceholder();
+
+  const handleProjectUpdated = useCallback(
+    (id: bigint, description: string, imageUrls: string[]) => {
+      setProject((prev) => {
+        if (prev.id !== Number(id)) {
+          return prev;
+        }
+
+        return { ...prev, description, imageUrls };
+      });
+    },
+    []
+  );
+
+  const handleProjectTerminated = useCallback((id: bigint) => {
+    setProject((prev) => {
+      if (prev.id !== Number(id)) {
+        return prev;
+      }
+
+      return { ...prev, status: StatusEnum.Deleted };
+    });
   }, []);
 
-  const updateBackers = useCallback((backers: Backer[]) => {
-    setBackers(backers);
+  const handleProjectBacked: Listener = useCallback(
+    (...args) => {
+      const event: { args: ProjectBackedEvent } = args[args.length - 1];
+      const {
+        projectId,
+        contributionId,
+        backer,
+        raised,
+        contribution,
+        timestamp,
+        comment,
+        refunded,
+      } = formatProjectBackingInfo(event.args);
+
+      setProject((prev) => {
+        if (prev.id !== projectId || prev.raised === raised) {
+          return prev;
+        }
+
+        return {
+          ...prev,
+          raised,
+        };
+      });
+
+      setBackers((prev) => {
+        const foundContribution = prev.find(
+          (contribution) => contribution.id === contributionId
+        );
+
+        if (projectId !== parseInt(id) || foundContribution) {
+          return prev;
+        }
+
+        return [
+          formatBacker({
+            id: contributionId,
+            backer,
+            contribution,
+            timestamp,
+            comment,
+            refunded,
+          }),
+          ...prev,
+        ];
+      });
+    },
+    [id, formatProjectBackingInfo, formatBacker]
+  );
+
+  const handleProjectPaidOut = useCallback(async (id: bigint) => {
+    setProject((prev) => {
+      if (prev.id !== Number(id)) {
+        return prev;
+      }
+
+      return { ...prev, status: StatusEnum.PaidOut };
+    });
   }, []);
 
-  const updateBlurDataUrls = useCallback((blurDataUrls: string[]) => {
-    setBlurDataUrls(blurDataUrls);
+  const handleProjectApproved = useCallback((id: bigint) => {
+    setProject((prev) => {
+      if (prev.id !== Number(id)) {
+        return prev;
+      }
+
+      return { ...prev, status: StatusEnum.Open };
+    });
   }, []);
+
+  useEffect(() => {
+    let contract: Contract | undefined;
+
+    const init = async () => {
+      try {
+        contract = await getContract();
+
+        // Fetch initial data
+        const { project } = await getProject(+id);
+        const { backers } = await getBackers(+id);
+        const { blurDataUrls } = await getBlurDataUrls(project.imageUrls);
+
+        setProject(project);
+        setBackers(backers);
+        setBlurDataUrls(blurDataUrls);
+
+        // Set up event listeners
+        contract.on('ProjectUpdated', handleProjectUpdated);
+        contract.on('ProjectDeleted', handleProjectTerminated);
+        contract.on('ProjectBacked', handleProjectBacked);
+        contract.on('ProjectPaidOut', handleProjectPaidOut);
+        contract.on('ProjectApproved', handleProjectApproved);
+        contract.on('ProjectRejected', handleProjectTerminated);
+      } catch (error) {
+        setError(error as Error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    init();
+
+    // Clean up event listeners on unmount
+    return () => {
+      if (contract) {
+        contract.off('ProjectUpdated', handleProjectUpdated);
+        contract.off('ProjectDeleted', handleProjectTerminated);
+        contract.off('ProjectBacked', handleProjectBacked);
+        contract.off('ProjectPaidOut', handleProjectPaidOut);
+        contract.off('ProjectApproved', handleProjectApproved);
+        contract.off('ProjectRejected', handleProjectTerminated);
+      }
+    };
+  }, [
+    id,
+    getContract,
+    getProject,
+    getBackers,
+    getBlurDataUrls,
+    handleProjectUpdated,
+    handleProjectTerminated,
+    handleProjectBacked,
+    handleProjectPaidOut,
+    handleProjectApproved,
+  ]);
 
   return (
     <ProjectPageContext.Provider
@@ -43,9 +200,8 @@ export const ProjectPageProvider = ({ children }: PropsWithChildren) => {
         project,
         backers,
         blurDataUrls,
-        updateProject,
-        updateBackers,
-        updateBlurDataUrls,
+        isLoading,
+        error,
       }}
     >
       {children}

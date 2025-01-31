@@ -42,6 +42,7 @@ contract BlockPledge {
     }
 
     struct BackerStruct {
+        uint256 id;
         address backer;
         uint256 contribution;
         uint256 timestamp;
@@ -95,11 +96,16 @@ contract BlockPledge {
     );
     event ProjectDeleted(uint256 id, uint256 timestamp);
     event ProjectBacked(
-        uint256 id,
+        uint256 projectId,
+        uint256 contributionId,
         address backer,
-        uint256 amount,
+        uint256 raised,
+        uint256 contribution,
+        uint256 totalBackings,
+        uint256 totalDonations,
         string comment,
-        uint256 timestamp
+        uint256 timestamp,
+        bool refunded
     );
     event ProjectPaidOut(
         uint256 id,
@@ -344,10 +350,10 @@ contract BlockPledge {
         stats.totalBackings += 1;
         stats.totalDonations += msg.value;
         projects[_id].raised += msg.value;
-        projects[_id].backers += 1;
 
         backersOf[_id].push(
             BackerStruct(
+                projects[_id].backers,
                 msg.sender,
                 msg.value,
                 block.timestamp,
@@ -358,11 +364,18 @@ contract BlockPledge {
 
         emit ProjectBacked(
             _id,
+            projects[_id].backers,
             msg.sender,
+            projects[_id].raised,
             msg.value,
+            stats.totalBackings,
+            stats.totalDonations,
             _comment,
-            block.timestamp
+            block.timestamp,
+            false
         );
+
+        projects[_id].backers += 1;
 
         if (projects[_id].raised >= projects[_id].cost) {
             projects[_id].status = StatusEnum.APPROVED;

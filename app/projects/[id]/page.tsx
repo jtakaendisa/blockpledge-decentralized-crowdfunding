@@ -1,5 +1,3 @@
-'use client';
-
 import { ProjectPageProvider } from '@/app/contexts/ProjectPageContext';
 import ProjectPageContent from './_components/ProjectPageContent/ProjectPageContent';
 
@@ -11,8 +9,8 @@ interface Props {
 
 const ProjectPage = ({ params: { id } }: Props) => {
   return (
-    <ProjectPageProvider>
-      <ProjectPageContent id={id} />
+    <ProjectPageProvider id={id}>
+      <ProjectPageContent />
     </ProjectPageProvider>
   );
 };

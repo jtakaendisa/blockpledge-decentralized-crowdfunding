@@ -8,11 +8,22 @@ import {
   useState,
 } from 'react';
 import { User } from 'firebase/auth';
-import { Contract } from 'ethers';
+import { Contract, Listener } from 'ethers';
 
-import { AuthUser, Category, Project, Stats } from '../entities';
+import {
+  AuthUser,
+  Category,
+  Stats,
+  Project,
+  ProjectCreatedEvent,
+  ProjectUpdatedEvent,
+  ProjectTerminatedEvent,
+  ProjectPaidOutEvent,
+  ProjectBackedEvent,
+} from '../entities';
 import { StatusEnum } from '../constants';
 import { authStateChangeListener, formatAuthUserData } from '../services/authService';
+import { areArraysEqual } from '../utils';
 import { useBlockchain } from '../hooks/useBlockchain';
 import { useEmail } from '../hooks/useEmail';
 
@@ -62,133 +73,18 @@ export const GlobalStateProvider = ({ children }: PropsWithChildren) => {
 
   const { sendPaymentNotification } = useEmail();
 
-  const handleProjectCreated = useCallback(
-    (
-      id: bigint,
-      owner: string,
-      title: string,
-      description: string,
-      imageUrls: string[],
-      categoryId: bigint,
-      cost: bigint,
-      raised: bigint,
-      createdAt: bigint,
-      expiresAt: bigint,
-      backers: bigint,
-      status: bigint
-    ) => {
-      const newProject = formatProjectCreatedInfo(
-        id,
-        owner,
-        title,
-        description,
-        imageUrls,
-        categoryId,
-        cost,
-        raised,
-        createdAt,
-        expiresAt,
-        backers,
-        status
-      );
+  const handleProjectCreated: Listener = useCallback(
+    (...args) => {
+      const event: { args: ProjectCreatedEvent } = args[args.length - 1];
+      const newProject = formatProjectCreatedInfo(event.args);
 
-      setProjects((prev) => [{ ...newProject, deletionReason: '' }, ...prev]);
+      setProjects((prev) => {
+        const foundProject = prev.find((projects) => projects.id === newProject.id);
+
+        return foundProject ? prev : [{ ...newProject, deletionReason: '' }, ...prev];
+      });
     },
     [formatProjectCreatedInfo]
-  );
-
-  const handleProjectUpdated = useCallback(
-    (id: bigint, description: string, imageUrls: string[]) => {
-      setProjects((prev) =>
-        prev.map((project) =>
-          project.id === Number(id)
-            ? {
-                ...project,
-                description,
-                imageUrls,
-              }
-            : project
-        )
-      );
-    },
-    []
-  );
-
-  const handleProjectTerminated = useCallback((id: bigint) => {
-    setProjects((prev) =>
-      prev.map((project) =>
-        project.id === Number(id)
-          ? {
-              ...project,
-              status: StatusEnum.Deleted,
-            }
-          : project
-      )
-    );
-  }, []);
-
-  const handleProjectBacked = useCallback(
-    (
-      id: bigint,
-      backer: string,
-      contribution: bigint,
-      comment: string,
-      timestamp: bigint
-    ) => {
-      const backingInfo = formatProjectBackingInfo(
-        id,
-        backer,
-        contribution,
-        comment,
-        timestamp
-      );
-
-      setProjects((prev) =>
-        prev.map((project) =>
-          project.id === backingInfo.id
-            ? {
-                ...project,
-                raised: project.raised + backingInfo.contribution,
-              }
-            : project
-        )
-      );
-
-      setStats((prev) => ({
-        ...prev,
-        totalBackings: prev.totalBackings + 1,
-        totalDonations: prev.totalDonations + backingInfo.contribution,
-      }));
-    },
-    [formatProjectBackingInfo]
-  );
-
-  const handleProjectPaidOut = useCallback(
-    async (
-      id: bigint,
-      title: string,
-      recipient: string,
-      amount: bigint,
-      timestamp: bigint
-    ) => {
-      const payoutInfo = formatProjectPayoutInfo(
-        id,
-        title,
-        recipient,
-        amount,
-        timestamp
-      );
-      await sendPaymentNotification(payoutInfo);
-
-      setProjects((prev) =>
-        prev.map((project) =>
-          project.id === payoutInfo.id
-            ? { ...project, status: StatusEnum.PaidOut }
-            : project
-        )
-      );
-    },
-    [formatProjectPayoutInfo, sendPaymentNotification]
   );
 
   const handleProjectApproved = useCallback((id: bigint) => {
@@ -198,6 +94,122 @@ export const GlobalStateProvider = ({ children }: PropsWithChildren) => {
       )
     );
   }, []);
+
+  const handleProjectTerminated: Listener = useCallback((...args) => {
+    const event: { args: ProjectTerminatedEvent } = args[args.length - 1];
+    const { id } = event.args;
+
+    setProjects((prev) => {
+      const foundProject = prev.find((project) => project.id === Number(id));
+
+      if (foundProject?.status === StatusEnum.Deleted) {
+        return prev;
+      }
+
+      return prev.map((project) =>
+        project.id === Number(id)
+          ? {
+              ...project,
+              status: StatusEnum.Deleted,
+            }
+          : project
+      );
+    });
+  }, []);
+
+  const handleProjectUpdated: Listener = useCallback((...args) => {
+    const event: { args: ProjectUpdatedEvent } = args[args.length - 1];
+    const { id, description, imageUrls } = event.args;
+
+    setProjects((prev) => {
+      const foundProject = prev.find((project) => project.id === Number(id));
+
+      if (
+        foundProject &&
+        foundProject.description === description &&
+        areArraysEqual(foundProject.imageUrls, imageUrls)
+      ) {
+        return prev;
+      }
+
+      return prev.map((project) =>
+        project.id === Number(id)
+          ? {
+              ...project,
+              description,
+              imageUrls,
+            }
+          : project
+      );
+    });
+  }, []);
+
+  const handleProjectBacked: Listener = useCallback(
+    (...args) => {
+      const event: { args: ProjectBackedEvent } = args[args.length - 1];
+      const backingInfo = formatProjectBackingInfo(event.args);
+      const { projectId, raised, totalBackings, totalDonations } = backingInfo;
+
+      setProjects((prev) => {
+        const foundProject = prev.find((project) => project.id === projectId);
+
+        if (foundProject?.raised === raised) {
+          return prev;
+        }
+
+        return prev.map((project) =>
+          project.id === projectId
+            ? {
+                ...project,
+                raised,
+              }
+            : project
+        );
+      });
+
+      setStats((prev) => {
+        if (
+          prev.totalBackings === totalBackings &&
+          prev.totalDonations === totalDonations
+        ) {
+          return prev;
+        }
+
+        return {
+          ...prev,
+          totalBackings,
+          totalDonations,
+        };
+      });
+    },
+    [formatProjectBackingInfo]
+  );
+
+  const handleProjectPaidOut: Listener = useCallback(
+    (...args) => {
+      const event: { args: ProjectPaidOutEvent } = args[args.length - 1];
+
+      setProjects((prev) => {
+        const foundProject = prev.find(
+          (project) => project.id === Number(event.args.id)
+        );
+
+        if (foundProject?.status === StatusEnum.PaidOut) {
+          return prev;
+        }
+
+        const payoutInfo = formatProjectPayoutInfo(event.args);
+        sendPaymentNotification(payoutInfo);
+
+        return prev.map((project) =>
+          project.id === payoutInfo.id
+            ? { ...project, status: StatusEnum.PaidOut }
+            : project
+        );
+      });
+    },
+    [formatProjectPayoutInfo, sendPaymentNotification]
+  );
 
   useEffect(() => {
     let contract: Contract | undefined;
@@ -217,12 +229,12 @@ export const GlobalStateProvider = ({ children }: PropsWithChildren) => {
 
         // Set up event listeners
         contract.on('ProjectCreated', handleProjectCreated);
-        contract.on('ProjectUpdated', handleProjectUpdated);
-        contract.on('ProjectDeleted', handleProjectTerminated);
-        contract.on('ProjectBacked', handleProjectBacked);
-        contract.on('ProjectPaidOut', handleProjectPaidOut);
         contract.on('ProjectApproved', handleProjectApproved);
         contract.on('ProjectRejected', handleProjectTerminated);
+        contract.on('ProjectDeleted', handleProjectTerminated);
+        contract.on('ProjectUpdated', handleProjectUpdated);
+        contract.on('ProjectBacked', handleProjectBacked);
+        contract.on('ProjectPaidOut', handleProjectPaidOut);
       } catch (error) {
         setError(error as Error);
       }
@@ -234,12 +246,12 @@ export const GlobalStateProvider = ({ children }: PropsWithChildren) => {
     return () => {
       if (contract) {
         contract.off('ProjectCreated', handleProjectCreated);
-        contract.off('ProjectUpdated', handleProjectUpdated);
-        contract.off('ProjectDeleted', handleProjectTerminated);
-        contract.off('ProjectBacked', handleProjectBacked);
-        contract.off('ProjectPaidOut', handleProjectPaidOut);
         contract.off('ProjectApproved', handleProjectApproved);
         contract.off('ProjectRejected', handleProjectTerminated);
+        contract.off('ProjectDeleted', handleProjectTerminated);
+        contract.off('ProjectUpdated', handleProjectUpdated);
+        contract.off('ProjectBacked', handleProjectBacked);
+        contract.off('ProjectPaidOut', handleProjectPaidOut);
       }
     };
   }, [

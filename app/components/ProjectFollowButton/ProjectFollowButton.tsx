@@ -1,3 +1,5 @@
+'use client';
+
 import classNames from 'classnames';
 
 import { AuthUser } from '@/app/entities';

@@ -1,6 +1,8 @@
+'use client';
+
 import { ToastContainer } from 'react-toastify';
 
-import { useProjectPage } from '../../_hooks/useProjectPage';
+import { useProjectPageContext } from '@/app/hooks/useProjectPageContext';
 import ProjectDetails from '../ProjectDetails/ProjectDetails';
 import DonationLedger from '../DonationLedger/DonationLedger';
 import ErrorFallback from '@/app/components/ErrorFallback/ErrorFallback';
@@ -8,12 +10,8 @@ import ProjectDetailsSkeleton from '../ProjectDetailsSkeleton/ProjectDetailsSkel
 
 import styles from './ProjectPageContent.module.scss';
 
-interface Props {
-  id: string;
-}
-
-const ProjectPageContent = ({ id }: Props) => {
-  const { isLoading, error } = useProjectPage(id);
+const ProjectPageContent = () => {
+  const { isLoading, error } = useProjectPageContext();
 
   if (error) {
     return <ErrorFallback error={error} />;

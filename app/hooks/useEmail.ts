@@ -4,7 +4,7 @@ import emailjs from '@emailjs/browser';
 interface PaymentNotificationProps {
   id: number;
   title: string;
-  recipient: any;
+  recipient: string;
   amount: number;
   timestamp: string;
 }
@@ -25,7 +25,7 @@ export const useEmail = () => {
         await emailjs.send(
           process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
           process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
-          payoutInfo as any
+          { ...payoutInfo }
         );
       } catch (error) {
         console.log(error);

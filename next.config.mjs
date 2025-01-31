@@ -12,7 +12,6 @@ const config = {
       },
     ],
   },
-  reactStrictMode: false,
 };
 
 export default withPlaiceholder(config);

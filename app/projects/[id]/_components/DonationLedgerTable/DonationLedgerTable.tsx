@@ -1,5 +1,6 @@
 import Identicon from 'react-hooks-identicons';
 
+import { StatusEnum } from '@/app/constants';
 import { truncateText } from '@/app/utils';
 import { useProjectPageContext } from '@/app/hooks/useProjectPageContext';
 import Table from '../table/Table/Table';
@@ -38,12 +39,20 @@ const headerTitles = [
 const DonationLedgerTable = () => {
   const { project, backers } = useProjectPageContext();
 
-  const isTerminated = [2, 3].includes(project.status);
+  const isTerminated = [StatusEnum.Reverted, StatusEnum.Deleted].includes(
+    project.status
+  );
 
   const filteredHeaderTitles = isTerminated ? headerTitles : headerTitles.slice(0, -1); // Exclude the refunded column when the project is not terminated
 
   if (!backers.length) {
-    return <span>No contributions have been received yet.</span>;
+    return (
+      <span>
+        {isTerminated
+          ? 'This project is closed and cannot receive contributions.'
+          : 'No contributions have been received yet.'}
+      </span>
+    );
   }
 
   return (
@@ -58,28 +67,26 @@ const DonationLedgerTable = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {backers.map(
-          ({ backer, contribution, timestamp, comment, refunded }, index) => (
-            <TableRow key={index}>
+        {backers.map(({ id, backer, contribution, timestamp, comment, refunded }) => (
+          <TableRow key={id}>
+            <TableDataCell>
+              <div className={styles.backerInfo}>
+                <Identicon string={backer} size={25} />
+                <span>{backer}</span>
+              </div>
+            </TableDataCell>
+            <TableDataCell>{contribution}</TableDataCell>
+            <TableDataCell>{timestamp}</TableDataCell>
+            <TableDataCell>{truncateText(comment, 130, true) || '---'}</TableDataCell>
+            {isTerminated && (
               <TableDataCell>
-                <div className={styles.backerInfo}>
-                  <Identicon string={backer} size={25} />
-                  <span>{backer}</span>
+                <div className={styles.refundStatus}>
+                  <RefundedIcon refunded={refunded} />
                 </div>
               </TableDataCell>
-              <TableDataCell>{contribution}</TableDataCell>
-              <TableDataCell>{timestamp}</TableDataCell>
-              <TableDataCell>{truncateText(comment, 130, true) || '---'}</TableDataCell>
-              {isTerminated && (
-                <TableDataCell>
-                  <div className={styles.refundStatus}>
-                    <RefundedIcon refunded={refunded} />
-                  </div>
-                </TableDataCell>
-              )}
-            </TableRow>
-          )
-        )}
+            )}
+          </TableRow>
+        ))}
       </TableBody>
     </Table>
   );

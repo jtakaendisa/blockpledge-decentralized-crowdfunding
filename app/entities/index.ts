@@ -1,6 +1,7 @@
 import { User } from 'firebase/auth';
 
 import { pathnameMap, socials } from '../constants';
+import { bigint, string } from 'zod';
 
 export type RoutePath =
   | keyof typeof pathnameMap
@@ -29,6 +30,7 @@ export type AuthUser = User & {
 };
 
 export interface Backer {
+  id: number;
   backer: string;
   contribution: number;
   timestamp: string;
@@ -66,4 +68,52 @@ export interface ParsedCreateProjectFormData {
   cost: number;
   categoryId: number;
   expiresAt: number;
+}
+
+export interface ProjectCreatedEvent {
+  id: bigint;
+  owner: string;
+  title: string;
+  description: string;
+  imageUrls: string[];
+  categoryId: bigint;
+  cost: bigint;
+  raised: bigint;
+  createdAt: bigint;
+  expiresAt: bigint;
+  backers: bigint;
+  status: Status;
+}
+
+export interface ProjectBackedEvent {
+  projectId: bigint;
+  contributionId: bigint;
+  backer: string;
+  raised: bigint;
+  contribution: bigint;
+  totalBackings: bigint;
+  totalDonations: bigint;
+  comment: string;
+  timestamp: bigint;
+  refunded: boolean;
+}
+
+export interface ProjectUpdatedEvent {
+  id: bigint;
+  description: string;
+  imageUrls: string[];
+  timestamp: bigint;
+}
+
+export interface ProjectTerminatedEvent {
+  id: bigint;
+  timestamp: bigint;
+}
+
+export interface ProjectPaidOutEvent {
+  id: bigint;
+  title: string;
+  recipient: string;
+  amount: bigint;
+  timestamp: bigint;
 }
