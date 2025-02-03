@@ -8,8 +8,9 @@ export const useProjectFollowButton = (projectId: number) => {
 
   const [isHovered, setIsHovered] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  const isFollowing = authUser?.following.includes(projectId);
+  const [isFollowing, setIsFollowing] = useState(
+    !!authUser?.following.includes(projectId)
+  );
 
   const isDisabled = isLoading || !authUser;
 
@@ -20,6 +21,7 @@ export const useProjectFollowButton = (projectId: number) => {
 
     try {
       await followProject(authUser, projectId, isFollowing);
+      setIsFollowing((prev) => !prev);
     } catch (error) {
       console.log('Failed to update follow status', (error as Error).message);
     } finally {
