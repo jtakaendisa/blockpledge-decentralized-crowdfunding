@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 
+import defaultBlurDataUrl from '@/public/images/defaultBlurDataURL.png';
+
 import styles from './ProjectDetailsImageGalleryMainImage.module.scss';
 
 interface Props {
@@ -41,7 +43,11 @@ const ProjectDetailsImageGalleryMainImage = ({
         fill
         sizes="40vw"
         placeholder="blur"
-        blurDataURL={blurDataUrls[selectedImageIndex]}
+        blurDataURL={
+          blurDataUrls
+            ? blurDataUrls[selectedImageIndex]
+            : defaultBlurDataUrl.blurDataURL!
+        }
       />
     </motion.div>
   );

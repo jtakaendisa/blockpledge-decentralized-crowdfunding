@@ -1,4 +1,5 @@
 import ProjectDetailsImageGalleryImageCard from '../ProjectDetailsImageGalleryImageCard/ProjectDetailsImageGalleryImageCard';
+import defaultBlurDataUrl from '@/public/images/defaultBlurDataURL.png';
 
 import styles from './ProjectDetailsImageGalleryImageCards.module.scss';
 
@@ -23,7 +24,9 @@ const ProjectDetailsImageGalleryImageCards = ({
           imageURL={imageUrl}
           index={index}
           selectedImageIndex={selectedImageIndex}
-          blurDataURL={blurDataUrls[index]}
+          blurDataURL={
+            blurDataUrls ? blurDataUrls[index] : defaultBlurDataUrl.blurDataURL!
+          }
           onSelect={onSelect}
         />
       ))}
