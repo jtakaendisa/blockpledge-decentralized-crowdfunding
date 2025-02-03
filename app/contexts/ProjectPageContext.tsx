@@ -3,10 +3,11 @@
 import { createContext, ReactNode, useCallback, useEffect, useState } from 'react';
 import { Contract, Listener } from 'ethers';
 
-import { Backer, Project, ProjectBackedEvent } from '../entities';
+import { Backer, Project, ProjectBackedEvent, ProjectPaidOutEvent } from '../entities';
 import { StatusEnum } from '../constants';
 import { useBlockchain } from '../hooks/useBlockchain';
 import { usePlaiceholder } from '../hooks/usePlaiceholder';
+import { useEmail } from '../hooks/useEmail';
 
 interface ProjectPageContextType {
   project: Project;
@@ -41,9 +42,11 @@ export const ProjectPageProvider = ({ children, id }: ProjectPageProviderProps) 
     getProject,
     getBackers,
     formatProjectBackingInfo,
+    formatProjectPayoutInfo,
     formatBacker,
   } = useBlockchain();
   const { getBlurDataUrls } = usePlaiceholder();
+  const { sendPaymentNotification } = useEmail();
 
   const handleProjectUpdated = useCallback(
     (id: bigint, description: string, imageUrls: string[]) => {
@@ -118,15 +121,23 @@ export const ProjectPageProvider = ({ children, id }: ProjectPageProviderProps) 
     [id, formatProjectBackingInfo, formatBacker]
   );
 
-  const handleProjectPaidOut = useCallback(async (id: bigint) => {
-    setProject((prev) => {
-      if (prev.id !== Number(id)) {
-        return prev;
-      }
+  const handleProjectPaidOut: Listener = useCallback(
+    async (...args) => {
+      const event: { args: ProjectPaidOutEvent } = args[args.length - 1];
 
-      return { ...prev, status: StatusEnum.PaidOut };
-    });
-  }, []);
+      setProject((prev) => {
+        if (prev.id !== Number(event.args.id) || prev.status === StatusEnum.PaidOut) {
+          return prev;
+        }
+
+        const payoutInfo = formatProjectPayoutInfo(event.args);
+        sendPaymentNotification(payoutInfo);
+
+        return { ...prev, status: StatusEnum.PaidOut };
+      });
+    },
+    [formatProjectPayoutInfo, sendPaymentNotification]
+  );
 
   const handleProjectApproved = useCallback((id: bigint) => {
     setProject((prev) => {

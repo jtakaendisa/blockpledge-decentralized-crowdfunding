@@ -18,14 +18,12 @@ import {
   ProjectCreatedEvent,
   ProjectUpdatedEvent,
   ProjectTerminatedEvent,
-  ProjectPaidOutEvent,
   ProjectBackedEvent,
 } from '../entities';
 import { StatusEnum } from '../constants';
 import { authStateChangeListener, formatAuthUserData } from '../services/authService';
 import { areArraysEqual } from '../utils';
 import { useBlockchain } from '../hooks/useBlockchain';
-import { useEmail } from '../hooks/useEmail';
 
 interface GlobalStateContextType {
   projects: Project[];
@@ -68,10 +66,7 @@ export const GlobalStateProvider = ({ children }: PropsWithChildren) => {
     getContract,
     formatProjectCreatedInfo,
     formatProjectBackingInfo,
-    formatProjectPayoutInfo,
   } = useBlockchain();
-
-  const { sendPaymentNotification } = useEmail();
 
   const handleProjectCreated: Listener = useCallback(
     (...args) => {
@@ -185,31 +180,19 @@ export const GlobalStateProvider = ({ children }: PropsWithChildren) => {
     [formatProjectBackingInfo]
   );
 
-  const handleProjectPaidOut: Listener = useCallback(
-    (...args) => {
-      const event: { args: ProjectPaidOutEvent } = args[args.length - 1];
+  const handleProjectPaidOut = useCallback((id: bigint) => {
+    setProjects((prev) => {
+      const foundProject = prev.find((project) => project.id === Number(id));
 
-      setProjects((prev) => {
-        const foundProject = prev.find(
-          (project) => project.id === Number(event.args.id)
-        );
+      if (foundProject?.status === StatusEnum.PaidOut) {
+        return prev;
+      }
 
-        if (foundProject?.status === StatusEnum.PaidOut) {
-          return prev;
-        }
-
-        const payoutInfo = formatProjectPayoutInfo(event.args);
-        sendPaymentNotification(payoutInfo);
-
-        return prev.map((project) =>
-          project.id === payoutInfo.id
-            ? { ...project, status: StatusEnum.PaidOut }
-            : project
-        );
-      });
-    },
-    [formatProjectPayoutInfo, sendPaymentNotification]
-  );
+      return prev.map((project) =>
+        project.id === Number(id) ? { ...project, status: StatusEnum.PaidOut } : project
+      );
+    });
+  }, []);
 
   useEffect(() => {
     let contract: Contract | undefined;
