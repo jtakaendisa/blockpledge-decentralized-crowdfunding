@@ -1,12 +1,12 @@
 'use client';
 
 import { generateIncrementingArray } from '@/app/utils';
+import { useGlobalStateContext } from '@/app/hooks/useGlobalStateContext';
 import SectionHeading from '../../../components/SectionHeading/SectionHeading';
 import CategoryCard from '../CategoryCard/CategoryCard';
 import CategoryCardSkeleton from '../CategoryCardSkeleton/CategoryCardSkeleton';
 
 import styles from './CategoriesGrid.module.scss';
-import { useGlobalStateContext } from '@/app/hooks/useGlobalStateContext';
 
 const skeletons = generateIncrementingArray(12);
 

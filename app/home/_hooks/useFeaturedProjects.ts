@@ -10,7 +10,7 @@ export const useFeaturedProjects = (totalPages: number, chunkSize: number) => {
 
   const { getBlurDataUrls } = usePlaiceholder();
 
-  const isLoading = !projects.length || !blurDataUrls.length;
+  const isLoading = !projects.length || !blurDataUrls?.length;
 
   useEffect(() => {
     const fetchData = async () => {

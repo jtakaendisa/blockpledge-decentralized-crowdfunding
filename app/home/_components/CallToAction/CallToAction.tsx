@@ -1,4 +1,5 @@
 import { colors } from '@/app/constants';
+import { useGlobalStateContext } from '@/app/hooks/useGlobalStateContext';
 import { usePageNavigation } from '@/app/hooks/usePageNavigation';
 import SlideUpText from '../../../components/SlideUpText/SlideUpText';
 import FlipButton from '../../../components/FlipButton/FlipButton';
@@ -12,6 +13,7 @@ interface Props {
 const { white, lightGray, darkGreen } = colors;
 
 const CallToAction = ({ onToggle }: Props) => {
+  const { authUser } = useGlobalStateContext();
   const { navigateToPageWithTransition } = usePageNavigation();
 
   const handleClick = () => {
@@ -34,15 +36,17 @@ const CallToAction = ({ onToggle }: Props) => {
       </div>
 
       <div className={styles.buttons}>
-        <FlipButton
-          onClick={onToggle}
-          textColor1={white}
-          backgroundColor1={darkGreen}
-          textColor2={darkGreen}
-          backgroundColor2={lightGray}
-        >
-          Create Project
-        </FlipButton>
+        {authUser?.accountType === 'owner' && (
+          <FlipButton
+            onClick={onToggle}
+            textColor1={white}
+            backgroundColor1={darkGreen}
+            textColor2={darkGreen}
+            backgroundColor2={lightGray}
+          >
+            Create Project
+          </FlipButton>
+        )}
         <FlipButton onClick={handleClick}>View All Projects</FlipButton>
       </div>
     </div>
