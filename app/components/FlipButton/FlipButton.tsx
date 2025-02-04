@@ -64,7 +64,7 @@ const FlipButton = ({
       className={styles.button}
       style={{ backgroundColor: backgroundColor1, borderColor }}
     >
-      {/* Animated Background Sheet*/}
+      {/* Animated Background*/}
       <motion.div
         variants={hoverVariants}
         className={styles.duplicate}

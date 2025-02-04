@@ -12,7 +12,7 @@ const TopNavMobileMenuLinks = ({ links }: Props) => {
 
   return (
     <div className={styles.mobileMenuLinks}>
-      {enabledLinks.map(({ label, routePath }, index) => (
+      {enabledLinks.map(({ label, routePath }) => (
         <TopNavMobileMenuLink key={label} routePath={routePath}>
           {label}
         </TopNavMobileMenuLink>

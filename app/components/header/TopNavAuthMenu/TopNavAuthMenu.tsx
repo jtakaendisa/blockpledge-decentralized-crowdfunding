@@ -28,11 +28,7 @@ const TopNavAuthMenu = ({ isLoadingAuth, authUser }: Props) => {
     dropdownRef
   );
 
-  const isAuthenticating = isLoadingAuth && !authUser;
-
-  const handleClick = () => {
-    navigateToPageWithTransition('/auth');
-  };
+  const handleClick = () => navigateToPageWithTransition('/auth');
 
   const handleSignOut = () => {
     signOutAuthUser();

@@ -35,19 +35,19 @@ body {
   height: 100vh;
   z-index: 5;
   pointer-events: none;
-}
 
-.pt-blocks .pt-blocks-row {
-  flex: 1;
-  width: 100%;
-  display: flex;
-}
+  .pt-blocks-row {
+    flex: 1;
+    width: 100%;
+    display: flex;
 
-.pt-blocks .pt-blocks-row .pt-blocks-row-column {
-  position: relative;
-  flex: 1;
-  background: var(--color-mauve);
-  margin: -0.25px;
+    .pt-blocks-row-column {
+      position: relative;
+      flex: 1;
+      background: var(--color-mauve);
+      margin: -0.25px;
+    }
+  }
 }
 
 .pt-route {

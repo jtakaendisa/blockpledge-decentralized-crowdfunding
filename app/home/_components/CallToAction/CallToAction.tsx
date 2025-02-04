@@ -16,9 +16,7 @@ const CallToAction = ({ onToggle }: Props) => {
   const { authUser } = useGlobalStateContext();
   const { navigateToPageWithTransition } = usePageNavigation();
 
-  const handleClick = () => {
-    navigateToPageWithTransition('/projects');
-  };
+  const handleClick = () => navigateToPageWithTransition('/projects');
 
   return (
     <div className={styles.callToAction}>

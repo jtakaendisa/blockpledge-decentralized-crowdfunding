@@ -10,18 +10,16 @@ export const useImageCollage = (
   delay: number
 ) => {
   // Function to update the cardElements array when a card is mounted to the DOM
-  const handleCardMount = (element: HTMLDivElement) => {
+  const handleCardMount = (element: HTMLDivElement) =>
     cardElementsRef.current.add(element);
-  };
 
   // Function to handle hover interaction on individual cards
-  const handleHover = (event: MouseEvent<HTMLDivElement>) => {
+  const handleHover = (event: MouseEvent<HTMLDivElement>) =>
     gsap.to(event.currentTarget, {
       duration: 1.2,
       z: event.type === 'mouseenter' ? 30 : 0,
       ease: 'expo.out',
     });
-  };
 
   useLayoutEffect(() => {
     const container = containerRef.current;
@@ -77,9 +75,7 @@ export const useImageCollage = (
     setCSSProperties();
     init();
 
-    setTimeout(() => {
-      introAnimation();
-    }, delay * 1000); // Converting delay to milliseconds
+    setTimeout(() => introAnimation(), delay * 1000); // Converting delay to milliseconds
   }, [delay, cardElementsRef, containerRef, isIntroCompleteRef]);
 
   useEffect(() => {

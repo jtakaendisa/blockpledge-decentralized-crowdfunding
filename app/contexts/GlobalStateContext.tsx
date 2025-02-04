@@ -82,13 +82,15 @@ export const GlobalStateProvider = ({ children }: PropsWithChildren) => {
     [formatProjectCreatedInfo]
   );
 
-  const handleProjectApproved = useCallback((id: bigint) => {
-    setProjects((prev) =>
-      prev.map((project) =>
-        project.id === Number(id) ? { ...project, status: StatusEnum.Open } : project
-      )
-    );
-  }, []);
+  const handleProjectApproved = useCallback(
+    (id: bigint) =>
+      setProjects((prev) =>
+        prev.map((project) =>
+          project.id === Number(id) ? { ...project, status: StatusEnum.Open } : project
+        )
+      ),
+    []
+  );
 
   const handleProjectTerminated: Listener = useCallback((...args) => {
     const event: { args: ProjectTerminatedEvent } = args[args.length - 1];
@@ -180,19 +182,23 @@ export const GlobalStateProvider = ({ children }: PropsWithChildren) => {
     [formatProjectBackingInfo]
   );
 
-  const handleProjectPaidOut = useCallback((id: bigint) => {
-    setProjects((prev) => {
-      const foundProject = prev.find((project) => project.id === Number(id));
+  const handleProjectPaidOut = useCallback(
+    (id: bigint) =>
+      setProjects((prev) => {
+        const foundProject = prev.find((project) => project.id === Number(id));
 
-      if (foundProject?.status === StatusEnum.PaidOut) {
-        return prev;
-      }
+        if (foundProject?.status === StatusEnum.PaidOut) {
+          return prev;
+        }
 
-      return prev.map((project) =>
-        project.id === Number(id) ? { ...project, status: StatusEnum.PaidOut } : project
-      );
-    });
-  }, []);
+        return prev.map((project) =>
+          project.id === Number(id)
+            ? { ...project, status: StatusEnum.PaidOut }
+            : project
+        );
+      }),
+    []
+  );
 
   useEffect(() => {
     let contract: Contract | undefined;

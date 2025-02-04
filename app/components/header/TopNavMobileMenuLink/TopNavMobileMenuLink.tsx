@@ -19,9 +19,7 @@ const TopNavMobileMenuLink = ({ children, routePath }: Props) => {
   const { navigateToPageWithTransition } = usePageNavigation();
   const { toggleHoveredState } = useTopNavMenuIconAnimations(controls);
 
-  const handleClick = () => {
-    navigateToPageWithTransition(routePath);
-  };
+  const handleClick = () => navigateToPageWithTransition(routePath);
 
   return (
     <div

@@ -48,9 +48,7 @@ const ProjectsHighlight = ({ project, blurDataURL }: Props) => {
   const { projectImageHeight } = useProjectsHighlight(cardRef);
   const { navigateToPage } = usePageNavigation();
 
-  const handleClick = () => {
-    navigateToPage(`/projects/${id}`);
-  };
+  const handleClick = () => navigateToPage(`/projects/${id}`);
 
   return (
     <div ref={cardRef} className={styles.highlight}>

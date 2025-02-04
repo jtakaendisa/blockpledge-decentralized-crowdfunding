@@ -3,13 +3,13 @@ import localFont from 'next/font/local';
 
 import { mediaStyles } from './media';
 import { TransitionProvider } from './transitionProvider';
+import { GlobalStateProvider } from './contexts/GlobalStateContext';
 import TopNav from './components/header/TopNav/TopNav';
 import BottomNav from './components/footer/BottomNav/BottomNav';
 
 import './globals.scss';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { GlobalStateProvider } from './contexts/GlobalStateContext';
 
 const inter = localFont({ src: '../public/fonts/inter-variable.ttf' });
 
