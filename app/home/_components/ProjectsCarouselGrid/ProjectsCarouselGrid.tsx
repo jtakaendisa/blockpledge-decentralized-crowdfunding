@@ -22,7 +22,7 @@ const ProjectsCarouselGrid = ({ projects, selectedPage, chunkSize }: Props) => {
     // Filter projects and map each one with its corresponding blurDataURL
     return projects.slice(startIndex, endIndex).map((project, index) => ({
       ...project,
-      blurDataURL: blurDataUrls[startIndex + index + 1] || '',
+      blurDataURL: blurDataUrls[startIndex + index + 1],
     }));
   }, [projects, selectedPage, chunkSize, blurDataUrls]);
 

@@ -1,23 +1,29 @@
+import { useMemo } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames';
 
 import styles from './ProjectDetailsImageGalleryImageCard.module.scss';
 
 interface Props {
-  imageURL: string;
+  imageUrl: string;
   index: number;
   selectedImageIndex: number;
-  blurDataURL: string;
+  blurDataUrl: string;
   onSelect: (index: number) => void;
 }
 
 const ProjectDetailsImageGalleryImageCard = ({
-  imageURL,
+  imageUrl,
   index,
   selectedImageIndex,
-  blurDataURL,
+  blurDataUrl,
   onSelect,
 }: Props) => {
+  const memoizedImageUrl = useMemo(
+    () => `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageUrl}`,
+    [imageUrl]
+  );
+
   return (
     <div
       className={classNames({
@@ -27,12 +33,12 @@ const ProjectDetailsImageGalleryImageCard = ({
       onClick={() => onSelect(index)}
     >
       <Image
-        src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageURL}`}
+        src={memoizedImageUrl}
         alt={`thumbnail image ${index}`}
         fill
         sizes="76px"
         placeholder="blur"
-        blurDataURL={blurDataURL}
+        blurDataURL={blurDataUrl}
       />
     </div>
   );

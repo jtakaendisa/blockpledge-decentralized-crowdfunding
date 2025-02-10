@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import Image from 'next/image';
 
 import { truncateText } from '@/app/utils';
@@ -12,15 +13,20 @@ interface Props {
 
 const FormImageUploaderPreviewCard = ({ image, index }: Props) => {
   const isUrl = typeof image === 'string';
-  const imageUrl = isUrl
-    ? `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${image}`
-    : URL.createObjectURL(image);
+
+  const memoizedImageUrl = useMemo(
+    () =>
+      isUrl
+        ? `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${image}`
+        : URL.createObjectURL(image),
+    [isUrl, image]
+  );
 
   return (
     <div className={styles.previewCard}>
       <div className={styles.image}>
         <Image
-          src={imageUrl}
+          src={memoizedImageUrl}
           alt={`Preview ${index}`}
           width={54}
           height={54}

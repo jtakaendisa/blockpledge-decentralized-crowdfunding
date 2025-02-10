@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames';
 import { motion, useAnimationControls } from 'framer-motion';
@@ -39,6 +39,11 @@ const ProjectImage = ({
 }: Props) => {
   const controls = useAnimationControls();
 
+  const memoizedImageUrl = useMemo(
+    () => `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageUrls[0]}`,
+    [imageUrls]
+  );
+
   useEffect(() => {
     if (isHovered) {
       controls.start({ scale: 1.02 });
@@ -62,7 +67,7 @@ const ProjectImage = ({
       })}
     >
       <MotionImage
-        src={`${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageUrls[0]}`}
+        src={memoizedImageUrl}
         alt={title}
         fill
         sizes={sizes}

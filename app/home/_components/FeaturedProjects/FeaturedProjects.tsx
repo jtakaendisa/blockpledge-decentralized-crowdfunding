@@ -1,6 +1,6 @@
 'use client';
 
-import { useFeaturedProjects } from '@/app/home/_hooks/useFeaturedProjects';
+import { useFeaturedProjectsContext } from '@/app/hooks/useFeaturedProjectsContext';
 import SectionHeading from '../../../components/SectionHeading/SectionHeading';
 import ProjectsHighlight from '@/app/home/_components/ProjectsHighlight/ProjectsHighlight';
 import ProjectsHighlightSkeleton from '@/app/home/_components/ProjectsHighlightSkeleton/ProjectsHighlightSkeleton';
@@ -9,14 +9,9 @@ import ProjectsCarouselSkeleton from '@/app/home/_components/ProjectsCarouselSke
 
 import styles from './FeaturedProjects.module.scss';
 
-const TOTAL_PAGES = 3;
-const CHUNK_SIZE = 4;
-
 const FeaturedProjects = () => {
-  const { isLoading, projects, blurDataUrls } = useFeaturedProjects(
-    TOTAL_PAGES,
-    CHUNK_SIZE
-  );
+  const { isLoading, projects, blurDataUrls, totalPages, chunkSize } =
+    useFeaturedProjectsContext();
 
   return (
     <section className={styles.featuredProjects}>
@@ -34,8 +29,8 @@ const FeaturedProjects = () => {
         ) : (
           <ProjectsCarousel
             projects={projects.slice(1)}
-            totalPages={TOTAL_PAGES}
-            chunkSize={CHUNK_SIZE}
+            totalPages={totalPages}
+            chunkSize={chunkSize}
           />
         )}
       </div>

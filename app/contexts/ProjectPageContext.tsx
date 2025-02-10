@@ -154,6 +154,7 @@ export const ProjectPageProvider = ({ children, id }: ProjectPageProviderProps) 
 
     const init = async () => {
       try {
+        console.log('fetching page');
         contract = await getContract();
 
         // Fetch initial data

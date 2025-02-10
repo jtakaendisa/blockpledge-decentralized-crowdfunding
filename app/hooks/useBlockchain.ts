@@ -161,11 +161,15 @@ export const useBlockchain = () => {
     []
   );
 
+  const checkForMetamask = () => {
+    if (!window.ethereum) {
+      throw new Error('Please install Metamask');
+    }
+  };
+
   const connectWallet = useCallback(async () => {
     try {
-      if (!window.ethereum) {
-        throw new Error('Please install Metamask');
-      }
+      checkForMetamask();
 
       const accounts: string[] = await window.ethereum.request({
         method: 'eth_requestAccounts',
@@ -188,9 +192,7 @@ export const useBlockchain = () => {
 
   const getProjects = useCallback(async () => {
     try {
-      if (!window.ethereum) {
-        throw new Error('Please install Metamask');
-      }
+      checkForMetamask();
 
       const contract = await getContract();
 
@@ -265,9 +267,7 @@ export const useBlockchain = () => {
 
   const getStats = useCallback(async () => {
     try {
-      if (!window.ethereum) {
-        throw new Error('Please install Metamask');
-      }
+      checkForMetamask();
 
       const contract = await getContract();
 
@@ -311,9 +311,7 @@ export const useBlockchain = () => {
 
   const getCategories = useCallback(async () => {
     try {
-      if (!window.ethereum) {
-        throw new Error('Please install Metamask');
-      }
+      checkForMetamask();
 
       const contract = await getContract();
 

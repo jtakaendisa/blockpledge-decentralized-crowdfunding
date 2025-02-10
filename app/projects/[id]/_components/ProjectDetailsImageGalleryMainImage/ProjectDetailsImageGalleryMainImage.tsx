@@ -1,7 +1,6 @@
+import { useMemo } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-
-import defaultBlurDataUrl from '@/public/images/defaultBlurDataURL.png';
 
 import styles from './ProjectDetailsImageGalleryMainImage.module.scss';
 
@@ -28,7 +27,11 @@ const ProjectDetailsImageGalleryMainImage = ({
   selectedImageIndex,
   blurDataUrls,
 }: Props) => {
-  const mainImageUrl = `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageUrls[selectedImageIndex]}`;
+  const memoizedImageUrl = useMemo(
+    () =>
+      `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${imageUrls[selectedImageIndex]}`,
+    [imageUrls, selectedImageIndex]
+  );
 
   return (
     <motion.div
@@ -38,16 +41,12 @@ const ProjectDetailsImageGalleryMainImage = ({
       variants={revealVariants}
     >
       <Image
-        src={mainImageUrl}
+        src={memoizedImageUrl}
         alt="main image"
         fill
         sizes="40vw"
         placeholder="blur"
-        blurDataURL={
-          blurDataUrls
-            ? blurDataUrls[selectedImageIndex]
-            : defaultBlurDataUrl.blurDataURL!
-        }
+        blurDataURL={blurDataUrls[selectedImageIndex]}
       />
     </motion.div>
   );

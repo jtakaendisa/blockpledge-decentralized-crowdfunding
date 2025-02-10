@@ -1,5 +1,4 @@
 import ProjectDetailsImageGalleryImageCard from '../ProjectDetailsImageGalleryImageCard/ProjectDetailsImageGalleryImageCard';
-import defaultBlurDataUrl from '@/public/images/defaultBlurDataURL.png';
 
 import styles from './ProjectDetailsImageGalleryImageCards.module.scss';
 
@@ -21,12 +20,10 @@ const ProjectDetailsImageGalleryImageCards = ({
       {imageUrls.map((imageUrl, index) => (
         <ProjectDetailsImageGalleryImageCard
           key={imageUrl}
-          imageURL={imageUrl}
+          imageUrl={imageUrl}
           index={index}
           selectedImageIndex={selectedImageIndex}
-          blurDataURL={
-            blurDataUrls ? blurDataUrls[index] : defaultBlurDataUrl.blurDataURL!
-          }
+          blurDataUrl={blurDataUrls[index]}
           onSelect={onSelect}
         />
       ))}
